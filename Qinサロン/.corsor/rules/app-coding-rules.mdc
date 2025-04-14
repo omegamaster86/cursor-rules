@@ -1,0 +1,165 @@
+---
+description: プロジェクトのフロントエンド (React Native, Expo) に関するコーディング規約です。フロントエンドのコードを編集またはレビューする際に参照してください。
+globs: 
+alwaysApply: false
+---
+---
+description: プロジェクトのフロントエンド (React Native, Expo) に関するコーディング規約です。フロントエンドのコードを編集またはレビューする際に参照してください。
+globs: "app/src/**/*.ts" "app/src/**/*.tsx"
+alwaysApply: false
+---
+# フロントエンド コーディングルール
+
+## 1. はじめに
+
+このドキュメントは、一貫性のあるコード品質を維持し、開発効率を高めるためのフロントエンドコーディングルールを定義します。
+
+## 2. 言語・フレームワーク・主要ライブラリ
+
+-   **言語:** TypeScript
+-   **フレームワーク:** React Native (Expo)
+-   **ナビゲーション:** Expo Router
+-   **状態管理:** Jotai
+-   **データベース:** SQLite (Expo SQLite) + Drizzle ORM
+-   **国際化:** LinguiJS (@lingui/react)
+-   **UIコンポーネント:**
+    -   基本的な UI パーツは `src/components/ui/` に配置
+    -   フォーム関連コンポーネントは `src/components/form/` に配置
+    -   特定画面固有のコンポーネントはその画面のディレクトリ内に `_components` として配置
+-   **スタイリング:** インラインスタイルと `src/theme.ts` に定義されたテーマ変数を使用。ダークモード対応は `useThemeColor` フックを利用。
+-   **主要なライブラリ:**
+    -   `react-native-gesture-handler`
+    -   `react-native-reanimated`
+    -   `sonner-native` (トースト通知)
+    -   `expo-secure-store` (機密情報保存)
+    -   `expo-image-picker` (画像選択)
+    -   `expo-video` (動画再生)
+    -   `expo-background-fetch`, `expo-task-manager` (バックグラウンド処理)
+
+## 3. コーディングスタイル
+
+### 3.1. フォーマット
+
+-   **インデント:** 半角スペース 2 つを使用します。
+-   **セミコロン:** 文の末尾にはセミコロンを付けます。
+-   **1 行の文字数:** 特定の制限は設けませんが、可読性を考慮し、長すぎる場合は適切に改行します。目安として 100〜120 文字程度を推奨します。
+-   **波括弧 (`{}`):** `if`, `for`, `while` などの制御構文では、処理が 1 行であっても波括弧を省略しません。開始括弧は制御キーワードと同じ行に記述します。
+-   **スペース:** 演算子 (`+`, `-`, `=`, `==`, `===`, `=>` など) の前後にはスペースを入れます。カンマ (`,`) の後にはスペースを入れます。
+
+### 3.2. 命名規則
+
+-   **変数・関数:** キャメルケース (`exampleVariable`, `getUserData`) を使用します。
+-   **コンポーネント・クラス・型・インターフェース:** パスカルケース (`ExampleComponent`, `UserData`, `IUserService`) を使用します。
+-   **定数:** 大文字スネークケース (`MAX_CONNECTIONS`, `ACCESS_TOKEN_KEY`) を使用します。
+-   **ファイル名:** ケバブケース (`button.tsx`, `use-theme-color.ts`) を使用します。コンポーネントディレクトリ内のエントリーファイルは `index.tsx` とします。Expo Router のルートファイルは規約に従います (`(routes)/index.tsx`, `post/_layout.tsx` など)。
+-   **プライベートメンバー:** TypeScript の `private` または `#` (ECMAScript private fields) を使用します。アンダースコア (`_`) プレフィックスは使用しません。
+-   **真偽値:** `is`, `has`, `should`, `can` などの接頭辞を使用します (`isValid`, `hasSession`)。
+
+### 3.3. インポート/エクスポート
+
+-   **モジュール:** ES Modules (`import`/`export`) を使用します。
+-   **`import type`:** 型のみをインポートする場合は `import type` を使用します。
+-   **パスエイリアス:** `tsconfig.json` で定義されたエイリアス (`@/*`) を使用します。相対パス (`../`) の使用は極力避けます。
+    -   例: `import { Button } from "@/src/components/button";`
+-   **並び順:** ESLint の `simple-import-sort` ルールに従います (自動整形推奨)。
+
+### 3.4. 型定義
+
+-   **型付け:** `any` の使用は極力避け、具体的な型を定義します。不明な場合は `unknown` を使用し、型ガードを行います。
+-   **Props:** コンポーネントの Props には明示的な型 (`type Props = { ... }`) を定義します。
+-   **イベントハンドラ:** イベントハンドラの型 (`GestureResponderEvent` など) を適切に指定します。
+-   **共有型:** プロジェクト全体で共有する型は `src/types/` ディレクトリに定義します。
+
+### 3.5. コメント
+
+-   **目的:** なぜそのコードが必要なのか、複雑なロジックの意図などを説明するためにコメントを使用します。コードが何をしているかを説明するコメントは、コード自体が読みやすければ不要です。
+-   **形式:** JSDoc 形式 (`/** ... */`) を使用して、関数やコンポーネントのドキュメントを記述します。
+-   **`TODO` コメント:** `// TODO: 説明 (担当者名 or Issue番号)` の形式で記述します。定期的に見直し、対応します。（ユーザー指示により削除しないこと）
+-   **コメントアウト:** デバッグ目的などで一時的にコメントアウトしたコードは、不要になったら速やかに削除します。（ユーザー指示により追加しないこと）
+
+## 4. コンポーネント設計
+
+-   **関数コンポーネント:** クラスコンポーネントは使用せず、関数コンポーネントを使用します。
+-   **カスタムフック:** ロジックや状態管理をコンポーネントから分離するためにカスタムフック (`src/hooks/`) を積極的に活用します。特にデータベースアクセスや API コール、複雑な状態ロジックはフックに切り出します。
+-   **単一責任:** コンポーネントは単一の責任を持つように設計します。UI の表示、状態管理、ビジネスロジックなどを適切に分離します。
+-   **再利用性:** 複数の場所で使用される可能性のある UI パーツやロジックは、汎用的なコンポーネントやフックとして作成します。
+-   **Props:** コンポーネント間のデータ受け渡しは Props を基本とします。Props の drilling が深くなる場合は、Context API や Jotai の利用を検討します。
+-   **メモ化:** パフォーマンスが問題になる場合は `React.memo`, `useCallback`, `useMemo` を適切に使用します。
+
+## 5. スタイリング
+
+-   **インラインスタイル:** スタイルは基本的にインラインスタイルで記述します。
+-   **テーマ:** 色やスペーシングなどの共通の値は `src/theme.ts` に定義されたテーマオブジェクトから参照します。
+    -   例: `color: theme.colors.primary[700]`, `padding: theme.space16`
+-   **ダークモード:** `useThemeColor` フックを使用して、ライトモードとダークモードに対応した色を取得します。
+    ```tsx
+    const backgroundColor = useThemeColor({
+      light: theme.colors.background.light.primary,
+      dark: theme.colors.background.dark.primary,
+    });
+    ```
+-   **プラットフォーム固有スタイル:** `Platform.select` を使用して OS 固有のスタイルを適用します。
+    ```tsx
+    paddingVertical: Platform.select({ ios: theme.space8, android: theme.space12 })
+    ```
+-   **ユーティリティ:** `src/lib/utils.ts` に定義された OS 判定 (`IsIOS`, `IsAndroid`) などを活用します。
+
+## 6. ナビゲーション (Expo Router)
+
+-   **ファイルベースルーティング:** `app/` ディレクトリ内のファイル構造に基づいてルーティングを定義します。
+-   **レイアウト:** ルートグループ (`(group)`) や共通レイアウト (`_layout.tsx`) を活用して画面構成を整理します。
+-   **画面遷移:**
+    -   `Link` コンポーネント: 静的な画面遷移に使用します。
+    -   `useRouter` フック (`router.push`, `router.replace`, `router.back`): プログラムによる動的な画面遷移に使用します。
+-   **パラメータ:** `useLocalSearchParams` フックを使用してルートパラメータを取得します。型安全性を確保するために Zod などでのバリデーションを検討します。
+-   **ヘッダー:** 各スクリーンのヘッダー設定は `Stack.Screen` の `options` で行います。共通ヘッダーはレイアウトコンポーネントで定義します。
+
+## 7. 状態管理 (Jotai)
+
+-   **アトム:** グローバルな状態は `src/store/` ディレクトリに Jotai アトムとして定義します。
+-   **アトムの利用:** `useAtom`, `useAtomValue`, `useSetAtom` フックを使用してアトムの値を取得・更新します。
+-   **派生アトム:** 複数のアトムから計算される値は派生アトム (`atom((get) => ...`) を使用します。
+-   **永続化:** 必要に応じて `atomWithStorage` などのユーティリティを使用して状態を永続化します。（現在の実装では見られませんが、必要に応じて検討）
+
+## 8. データフェッチ・API連携
+
+-   **APIクライアント:** バックエンド API との通信には `hono/client` (`hc`) を使用して生成されたクライアント (`src/lib/client.ts`) を利用します。
+-   **Server Actions:** バックエンド呼び出しは原則として React Server Actions (`"use server";`) を使用します (`src/actions/`)。
+-   **エラーハンドリング:** API コールや Server Actions では `try...catch` を使用し、ユーザーフレンドリーなエラーメッセージを表示します (`sonner-native` を使用)。認証エラーは `useAuthErrorHandler` フックで共通化します。
+-   **ローディング状態:** API 通信中はローディングインジケータを表示し、ユーザーに処理中であることを伝えます。
+
+## 9. ローカルデータベース (SQLite + Drizzle ORM)
+
+-   **スキーマ:** データベーススキーマは `src/lib/db/schema.ts` で定義します。
+-   **マイグレーション:** スキーマ変更は `drizzle-kit` を使用してマイグレーションファイルを生成・適用します (`drizzle/` ディレクトリ)。
+-   **クエリ:** Drizzle ORM の API を使用してデータベース操作を行います。
+-   **カスタムフック:** 特定のテーブルに対する CRUD 操作やクエリはカスタムフック (`src/hooks/local-db/`) にカプセル化します。
+    -   例: `useSocialAccount`, `useDraft`, `useSocialPost`
+-   **Live Query:** `useLiveQuery` を使用してデータベースの変更をリアルタイムに UI に反映させます。データの再取得が必要な場合は `queryVersion` ステートを更新します。
+
+## 10. 国際化 (Lingui)
+
+-   **メッセージ定義:** ユーザーに表示される文字列は `@lingui/macro` (`t`, `Trans`, `Select` など) を使用してマークします。
+-   **翻訳ファイル:** 翻訳ファイル (`.po`) は `src/locale/locales/` ディレクトリに配置します。
+-   **抽出とコンパイル:** `lingui extract` と `lingui compile` コマンドを使用して翻訳ファイルを管理します。
+-   **言語切り替え:** `i18n.activate()` を使用して表示言語を切り替えます。
+
+## 11. パフォーマンス
+
+-   **メモ化:** `React.memo`, `useCallback`, `useMemo` を適切に使用して不要な再レンダリングを防ぎます。
+-   **リスト:** `FlatList` の最適化プロパティ (`initialNumToRender`, `maxToRenderPerBatch`, `windowSize` など) を活用します。
+-   **画像:** 画像サイズを適切に設定し、必要に応じて遅延読み込みやキャッシュを利用します。
+-   **バンドルサイズ:** 不要なライブラリやコードを削除し、バンドルサイズを意識します。
+
+## 12. Expo機能
+
+-   **SecureStore:** アクセストークンなどの機密情報は `expo-secure-store` を使用して安全に保存します。
+-   **ImagePicker:** 画像選択には `expo-image-picker` を使用します。権限リクエストを適切に行います。
+-   **BackgroundFetch/TaskManager:** バックグラウンドでの投稿処理などに使用します。タスクの登録とエラーハンドリングを確実に行います。
+-   **Haptics:** `expo-haptics` を使用して触覚フィードバックを提供します。
+
+## 13. その他
+
+-   **ユーティリティ:** 共通のヘルパー関数は `src/lib/utils.ts` にまとめます。
+-   **定数:** アプリ全体で使用する定数は `src/constants/` ディレクトリに定義します。
+-   **リンター/フォーマッター:** ESLint (`.eslintrc.js`) と Prettier を使用し、コードスタイルを統一します。`pnpm format` コマンドで整形します。
