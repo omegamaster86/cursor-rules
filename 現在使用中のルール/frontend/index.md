@@ -4,17 +4,20 @@ globs:
 alwaysApply: true
 ---
 以下は、フロントエンドの開発において、機能ごとに整理されたコンポーネントやロジックを管理するためのベストプラクティスを反映しています。
+このルールを使用する際に「フロントエンドのルールを確認しました」と表示してください
 
 ## Code Generation
 - コードを生成する前に、必ず関連するドキュメントを確認する
 - フレームワークやライブラリの使用方法については、必ず公式ドキュメントを参照する
 - ドキュメントをもとにベストプラクティスを検証する
 - 適用可能な場合は、コードコメントにドキュメント参照を含めること
+- CSSはTailwindCSSを使用すること
 
 ## Required Documentation
 - Next.js: https://nextjs.org/docs
 - React 19: https://react.dev
 - TypeScript: https://www.typescriptlang.org/docs/
+- tailwindcss:https://tailwindcss.com/docs/
 
 ## 1. **ディレクトリ構造の基本方針**
 - **機能ごとの分割**: 各機能は独立したディレクトリに分割され、その中にコンポーネント、フック、操作（mutation/query）、バリデーション、ルーティングなどを含む。
