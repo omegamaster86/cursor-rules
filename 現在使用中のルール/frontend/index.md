@@ -46,23 +46,44 @@ alwaysApply: true
 - **コンポーネント名**: パスカルケースを使用します。（例: `HeaderBreadcrumb`, `NewFeatureDropdown`）。
 
 ## 4. **ルーティング**
-- **ルーティングファイル**: `routes` ディレクトリに配置し、React Routerを使用してルーティングを管理。
-- **ルートコンポーネント**: `index.tsx` をエントリーポイントとして使用し、モジュールのカプセル化を実現。
+- **前提**: Next.js App Router を使用する。React Router は使用しない。
+- **場所**: `app/` 配下のファイルシステムルーティングで管理。
+- **基本ファイル**: `layout.tsx`（必須レイアウト）, `page.tsx`（ページ）, `template.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`。
+- **動的ルート**: `[id]`, `[...slug]`, `[[...slug]]` を使用。`generateStaticParams` で SSG のパラメータを定義。
+- **ルートグループ/ネスト**: `(group)` はURLに影響しないグルーピング。フォルダ階層でネストを表現。
+- **API ルート**: `app/api/**/route.ts`（`GET`, `POST` などをエクスポート）。
+- **ナビゲーション**: `Link` を優先。クライアント側で制御が必要な場合のみ `'use client'` + `useRouter()` を使用（`push`, `replace`, `prefetch`）。
+- **遷移/例外**: `redirect()`・`notFound()` はサーバー/クライアント双方で利用可能（`next/navigation`）。
+- **データ取得とキャッシュ**: 既定はサーバーコンポーネントで `fetch` を使用。
+  - 変化頻度に応じて `cache: 'no-store'` または `next: { revalidate: 秒 }` を指定。
+  - ページ単位での再検討は `export const revalidate = 秒` を利用。
+- **メタデータ**: `generateMetadata` で動的メタ。静的ならレイアウトの `metadata` を使用。
 
-## 5. **エラーハンドリング**
-- **エラーメッセージ**: ユーザーに表示するエラーメッセージは、`constants` ディレクトリに定義。
-- **エラーハンドリング**: GraphQLのエラーハンドリングは、`operations` ディレクトリ内で実施。
+例（構成）:
+```text
+app/
+  layout.tsx
+  page.tsx
+  (dashboard)/
+    layout.tsx
+    users/
+      page.tsx
+      [id]/
+        page.tsx
+  api/
+    users/route.ts
+```
 
-## 6. **状態管理**
+## 5. **状態管理**
 - **ローカルステート**: コンポーネント内での状態管理は `useState` や `useReducer` を使用。
 - **グローバルステート**: 必要に応じてContextやRecoilを使用。
 
-## 7. **データ取得**
+## 6. **データ取得**
 - SSRを使用し、fetchで取得してください。
 - `useEffect`は使用しないでください。どうしても使用する場合にはchatで教えてください。
 
-## 8. **ドキュメント**
+## 7. **ドキュメント**
 - **README**: 各ディレクトリにREADMEを配置し、機能や使用方法を記載。
-- **コメント**: コード内に適切なコメントを記載し、可読性を向上。
+- **コメント**: コード内に適切なJSDocを記載し、レビュアーの可読性を向上。
 
 この構成は、機能ごとに整理されたコードベースを維持し、開発者が効率的に作業を進めるためのガイドラインとして活用できます。
