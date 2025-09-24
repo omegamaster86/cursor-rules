@@ -1,7 +1,7 @@
 ---
 description: Next.js(App Router) / React 19 準拠フロントエンド実装ガイド
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 
 以下は、Next.js(App Router) 15系および React 19 系の公式ドキュメントに準拠した実装ガイドです。
