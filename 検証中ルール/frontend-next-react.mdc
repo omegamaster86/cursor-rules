@@ -90,7 +90,7 @@ alwaysApply: true
 - 最低限含める項目: 概要、`@param`、`@returns`、必要に応じて `@remarks`、`@example`、`@throws`。
 - API ルートやサーバーアクションは副作用・例外・認可要件を明記する。
 - 複雑なドメインロジックでは「なぜこの設計か」を簡潔に説明する。
-- ファイル先頭に、そのファイルの目的が一目で分かる 1 行コメントを推奨。
+- ファイル先頭に、そのファイルの目的が一目で分かるコメントを日本語で記載
 
 ---
 出典: Next.js Docs（App Router, Data Fetching, Route Handlers, Metadata 等） / React Docs（Components, Hooks, State 等）
