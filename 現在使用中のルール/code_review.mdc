@@ -1,0 +1,454 @@
+---
+alwaysApply: false
+---
+
+## 1. エラーハンドリング 🚨
+
+### チェックポイント
+- [ ] **Server Actions**: `try-catch`でエラーを適切にキャッチしているか
+- [ ] **fetch呼び出し**: HTTPエラー（4xx/5xx）のステータスチェックを行っているか
+- [ ] **データベースクエリ**: SQLエラーやコネクションエラーの処理があるか
+- [ ] **型安全性**: `unknown`型のエラーを適切に型ガードしているか
+- [ ] **ユーザー体験**: エラー時のフォールバックUIが用意されているか
+
+### 悪い例
+```typescript
+// ❌ fetchは5xxエラーでも例外を投げない
+async function getUser(id: string) {
+  const response = await fetch(`/api/users/${id}`);
+  const user = await response.json();
+  return user.name;
+}
+```
+
+### 良い例
+```typescript
+// ✅ 適切なエラーハンドリング
+async function getUser(id: string): Promise<string | null> {
+  try {
+    const response = await fetch(`/api/users/${id}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const user = await response.json();
+    return user?.name ?? null;
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    return null;
+  }
+}
+```
+
+---
+
+## 2. パフォーマンス ⚡
+
+### チェックポイント
+- [ ] **N+1問題**: ループ内でのAPI呼び出しやDBクエリを避けているか
+- [ ] **オーバーフェッチ**: 必要最小限のデータのみ取得しているか
+- [ ] **キャッシュ戦略**: Next.jsのキャッシュ機能を適切に活用しているか
+- [ ] **Server Components**: クライアント側の処理を最小限に抑えているか
+- [ ] **動的インポート**: 大きなライブラリの遅延読み込みを検討しているか
+
+### 悪い例
+```typescript
+// ❌ N+1問題：50人のユーザーがいると50回API呼び出し
+async function UserList({ userIds }: { userIds: string[] }) {
+  return (
+    <div>
+      {userIds.map(id => (
+        <UserName key={id} userId={id} />
+      ))}
+    </div>
+  );
+}
+
+async function UserName({ userId }: { userId: string }) {
+  const user = await fetch(`/api/users/${userId}`);
+  return <span>{user.name}</span>;
+}
+```
+
+### 良い例
+```typescript
+// ✅ バッチ処理で1回のAPI呼び出し
+async function UserList({ userIds }: { userIds: string[] }) {
+  const users = await fetch(`/api/users?ids=${userIds.join(',')}`);
+  
+  return (
+    <div>
+      {users.map(user => (
+        <span key={user.id}>{user.name}</span>
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+## 3. セキュリティ 🔒
+
+### チェックポイント
+- [ ] **入力検証**: ユーザー入力を直接URLやSQLに組み込んでいないか
+- [ ] **SQLインジェクション**: パラメータ化クエリを使用しているか
+- [ ] **XSS対策**: ユーザー入力をHTMLに直接出力していないか
+- [ ] **認証・認可**: 適切な権限チェックが行われているか
+- [ ] **機密情報**: APIキーやパスワードがハードコードされていないか
+
+### 悪い例
+```typescript
+// ❌ URLインジェクションの脆弱性
+async function getUser(userId: string) {
+  const response = await fetch(`https://api.example.com/users/${userId}`);
+  return response.json();
+}
+// userId = "../admin/secrets" のような値が渡される可能性
+```
+
+### 良い例
+```typescript
+// ✅ 入力検証とエスケープ
+async function getUser(userId: string) {
+  // 入力検証
+  if (!/^[a-zA-Z0-9-_]+$/.test(userId)) {
+    throw new Error('Invalid user ID format');
+  }
+  
+  const response = await fetch(`https://api.example.com/users/${encodeURIComponent(userId)}`);
+  return response.json();
+}
+```
+
+---
+
+## 4. 認証・認可 🔐
+
+### チェックポイント
+- [ ] **Server Actions**: `'use server'`関数で認証状態を確認しているか
+- [ ] **API Routes**: 適切な認証ミドルウェアが適用されているか
+- [ ] **ページレベル**: 保護されたページで認証チェックを行っているか
+- [ ] **データアクセス**: ユーザーが自分のデータのみアクセスできるか
+- [ ] **権限分離**: 管理者機能が適切に保護されているか
+
+### 良い例
+```typescript
+// ✅ Server Actionでの認証チェック
+export async function updateUser(formData: FormData) {
+  'use server';
+  
+  const session = await getServerSession();
+  if (!session?.user) {
+    throw new Error('Unauthorized');
+  }
+  
+  // 処理続行...
+}
+```
+
+---
+
+## 5. 信頼性 🛡️
+
+### チェックポイント
+- [ ] **タイムアウト**: 長時間実行される処理にタイムアウトを設定しているか
+- [ ] **リトライ機構**: 一時的な障害に対するリトライ処理があるか
+- [ ] **サーキットブレーカー**: 外部サービスの障害時の保護機構があるか
+- [ ] **グレースフルデグラデーション**: 機能の一部が停止してもサービス継続できるか
+- [ ] **ヘルスチェック**: システムの状態を監視する仕組みがあるか
+
+### 良い例
+```typescript
+// ✅ タイムアウトとリトライを含む堅牢な実装
+async function fetchWithRetry(url: string, maxRetries = 3): Promise<Response> {
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒タイムアウト
+      
+      const response = await fetch(url, { 
+        signal: controller.signal,
+        next: { revalidate: 60 } // Next.jsキャッシュ
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (response.ok) return response;
+      if (response.status >= 400 && response.status < 500) {
+        // クライアントエラーはリトライしない
+        throw new Error(`Client error: ${response.status}`);
+      }
+    } catch (error) {
+      if (i === maxRetries) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i))); // 指数バックオフ
+    }
+  }
+  throw new Error('Max retries exceeded');
+}
+```
+
+---
+
+## 6. 保守性 🔧
+
+### チェックポイント
+- [ ] **設定の外部化**: ハードコードされた値を環境変数や設定ファイルに移しているか
+- [ ] **関数の単一責任**: 1つの関数が1つの責任のみを持っているか
+- [ ] **型定義**: 適切な型定義で自己文書化されているか
+- [ ] **コメント**: 「なぜ」を説明するコメントがあるか（「何を」ではなく）
+- [ ] **依存関係**: 外部ライブラリへの依存を最小限に抑えているか
+
+### 悪い例
+```typescript
+// ❌ 保守性の低いコード
+function processUser(id: string) {
+  const user = fetch('https://api.prod.example.com/users/' + id); // ハードコード
+  // 複数の責任を持つ巨大な関数...
+}
+```
+
+### 良い例
+```typescript
+// ✅ 保守性の高いコード
+const API_BASE_URL = process.env.API_BASE_URL || 'https://api.example.com';
+
+/**
+ * ユーザー情報を取得する
+ * @param id ユーザーID
+ * @returns ユーザー情報またはnull
+ */
+async function fetchUser(id: string): Promise<User | null> {
+  // 単一責任：ユーザー情報の取得のみ
+  const response = await fetch(`${API_BASE_URL}/users/${id}`);
+  return response.ok ? await response.json() : null;
+}
+```
+
+---
+
+## 7. テスタビリティ 🧪
+
+### チェックポイント
+- [ ] **依存性注入**: 外部依存をモック可能な形で注入しているか
+- [ ] **純粋関数**: 副作用のない関数として設計されているか
+- [ ] **テストデータ**: テスト用のモックデータが用意されているか
+- [ ] **境界値テスト**: エッジケースのテストが考慮されているか
+- [ ] **統合テスト**: Server Actionsの統合テストが可能か
+
+### 良い例
+```typescript
+// ✅ テスタブルな設計
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+}
+
+class DatabaseUserRepository implements UserRepository {
+  async findById(id: string): Promise<User | null> {
+    // 実際のDB処理
+  }
+}
+
+// 依存性注入でテスト可能
+export async function getUserName(
+  id: string, 
+  userRepo: UserRepository = new DatabaseUserRepository()
+): Promise<string | null> {
+  const user = await userRepo.findById(id);
+  return user?.name ?? null;
+}
+```
+
+---
+
+## 8. スケーラビリティ 📈
+
+### チェックポイント
+- [ ] **ページネーション**: 大量データの分割取得を実装しているか
+- [ ] **インデックス**: データベースクエリに適切なインデックスがあるか
+- [ ] **キャッシュ戦略**: Redis等の外部キャッシュを活用しているか
+- [ ] **非同期処理**: 重い処理をバックグラウンドで実行しているか
+- [ ] **リソース制限**: メモリやCPU使用量の制限を考慮しているか
+
+### 良い例
+```typescript
+// ✅ スケーラブルなページネーション実装
+export async function getTrendWords(params: {
+  page?: number;
+  pageSize?: number;
+  category?: string;
+}) {
+  'use server';
+  
+  const page = Math.max(1, params.page ?? 1);
+  const pageSize = Math.max(1, Math.min(100, params.pageSize ?? 20)); // 上限制限
+  const offset = (page - 1) * pageSize;
+  
+  // インデックスを活用したクエリ
+  const result = await query(
+    `SELECT * FROM trend_words 
+     WHERE category = $1 
+     ORDER BY id ASC 
+     LIMIT $2 OFFSET $3`,
+    [params.category, pageSize, offset]
+  );
+  
+  return result.rows;
+}
+```
+
+---
+
+## 9. 可観測性 👁️
+
+### チェックポイント
+- [ ] **構造化ログ**: JSON形式での一貫したログ出力があるか
+- [ ] **エラー追跡**: エラーの詳細情報とスタックトレースを記録しているか
+- [ ] **パフォーマンス計測**: 重要な処理の実行時間を測定しているか
+- [ ] **ビジネスメトリクス**: 重要な業務指標をログに記録しているか
+- [ ] **相関ID**: リクエスト間の関連性を追跡できるか
+
+### 良い例
+```typescript
+// ✅ 可観測性を考慮した実装
+export async function updateTrendWord(id: number, data: UpdateData) {
+  'use server';
+  
+  const startTime = Date.now();
+  const correlationId = crypto.randomUUID();
+  
+  try {
+    console.log(JSON.stringify({
+      event: 'trend_word_update_start',
+      correlationId,
+      trendWordId: id,
+      timestamp: new Date().toISOString()
+    }));
+    
+    const result = await query(
+      'UPDATE trend_words SET name = $1 WHERE id = $2',
+      [data.name, id]
+    );
+    
+    const duration = Date.now() - startTime;
+    console.log(JSON.stringify({
+      event: 'trend_word_update_success',
+      correlationId,
+      trendWordId: id,
+      duration,
+      timestamp: new Date().toISOString()
+    }));
+    
+    return result;
+  } catch (error) {
+    console.error(JSON.stringify({
+      event: 'trend_word_update_error',
+      correlationId,
+      trendWordId: id,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString()
+    }));
+    throw error;
+  }
+}
+```
+
+---
+
+## 10. チーム開発 👥
+
+### チェックポイント
+- [ ] **型定義の共有**: `types/index.ts`で型を一元管理しているか
+- [ ] **コンポーネント設計**: 再利用可能なコンポーネントになっているか
+- [ ] **ドキュメント**: JSDocで適切に文書化されているか
+
+### 良い例
+```typescript
+/**
+ * トレンドワード一覧を取得する Server Action
+ * 
+ * @param params - 検索パラメータ
+ * @param params.category - カテゴリーフィルター（nullの場合は全カテゴリー）
+ * @param params.q - 検索クエリ（部分一致）
+ * @param params.page - ページ番号（1から開始、デフォルト: 1）
+ * @param params.pageSize - 1ページあたりの件数（最大200、デフォルト: 20）
+ * @returns ページネーション情報を含むトレンドワード一覧
+ * @throws {Error} データベースエラーまたは不正なパラメータの場合
+ * 
+ * @example
+ * ```typescript
+ * const result = await getTrendWords({
+ *   category: 'テクノロジー',
+ *   q: 'AI',
+ *   page: 1,
+ *   pageSize: 20
+ * });
+ * ```
+ */
+export async function getTrendWords(params: ListParams): Promise<EditTrendwordListResponse> {
+  'use server';
+  // 実装...
+}
+```
+
+---
+
+## 12. トレードオフの理解 ⚖️
+
+### チェックポイント
+- [ ] **パフォーマンス vs 可読性**: 最適化の必要性を適切に判断しているか
+- [ ] **セキュリティ vs 利便性**: セキュリティレベルが要件に適しているか
+- [ ] **開発速度 vs 品質**: 技術的負債の蓄積を意識しているか
+- [ ] **機能性 vs 保守性**: 過度な抽象化を避けているか
+- [ ] **現在 vs 将来**: 将来の拡張性を適度に考慮しているか
+
+### 判断基準の例
+```typescript
+// ✅ トレードオフを明示したコード
+export async function getUser(id: string) {
+  'use server';
+  
+  // トレードオフ判断：
+  // - パフォーマンス重視でキャッシュを短時間に設定
+  // - 可用性重視でエラー時はnullを返す（例外を投げない）
+  // - 開発速度重視でシンプルな実装を選択
+  
+  try {
+    const response = await fetch(`/api/users/${id}`, {
+      next: { revalidate: 30 } // 30秒キャッシュ
+    });
+    
+    return response.ok ? await response.json() : null;
+  } catch {
+    // ログは出力するが、エラーは隠蔽してサービス継続を優先
+    console.error(`Failed to fetch user: ${id}`);
+    return null;
+  }
+}
+```
+
+---
+
+## レビューチェックリスト
+
+### 必須チェック項目
+- [ ] エラーハンドリングが適切に実装されている
+- [ ] セキュリティ脆弱性がない
+- [ ] 型安全性が確保されている
+- [ ] パフォーマンスの問題がない
+
+### 推奨チェック項目
+- [ ] テスタブルな設計になっている
+- [ ] 適切なログ出力がある
+- [ ] JSDocで文書化されている
+- [ ] 保守性が考慮されている
+
+### 上級チェック項目
+- [ ] スケーラビリティが考慮されている
+- [ ] 可観測性が確保されている
+- [ ] 適切なトレードオフ判断がされている
+- [ ] チーム開発に配慮した設計になっている
+
+---
