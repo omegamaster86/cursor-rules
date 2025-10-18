@@ -5,6 +5,36 @@
 - 実行（Act）：対象関数/メソッドを1回だけ実行。
 - 検証（Assert）：期待値を明確に。副作用はモック呼び出しで検証。
 
+### 再現性
+**再現性の重要性**
+- バグの特定が容易
+- テスト結果の信頼性
+- 環境に依存しない
+
+**再現性を保つ方法**
+```ts
+// ❌ 再現性がない例
+test('randomNumber', () => {
+  const random = Math.random(); // 毎回異なる値
+  expect(random).toBeGreaterThan(0);
+});
+
+// ✅ 再現性がある例
+test('calculateTax', () => {
+  const price = 1000;
+  const taxRate = 0.1;
+  const result = calculateTax(price, taxRate);
+  expect(result).toBe(100); // 常に同じ結果
+});
+
+// 日付の固定
+test('formatDate', () => {
+  const fixedDate = new Date('2024-01-01');
+  const result = formatDate(fixedDate);
+  expect(result).toBe('2024/01/01');
+});
+```
+
 ### ケース網羅
 - 正常系、異常系（例外/エラー）、境界値（最小/最大/±1）、エッジケースを用意。
 - 回帰視点を含め、既存仕様の保持を保証。
@@ -46,5 +76,4 @@ test('年齢の検証まとめ', () => {
   expect(validateAge(200)).toBe(false);
 });
 ```
-
 
