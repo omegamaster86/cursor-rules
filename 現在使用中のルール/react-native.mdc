@@ -1,0 +1,168 @@
+---
+description: React Native/Expo ベストプラクティスと実装ルール
+globs:
+alwaysApply: true
+---
+
+# React Native / Expo 実装ルール（プロジェクト準拠）
+
+このルールは本リポジトリ（Expo + expo-router + TypeScript）での統一的な実装ガイドです。基本的な進め方・承認フローは `global.mdc`（本ファイルの兄弟）に従います。
+
+> 注意: 依存追加やバージョン変更、UI/UXの変更は必ず事前承認（`global.mdc`の「重要な注意事項」）を守ってください。
+
+## 1. 基本方針
+- 関数コンポーネント + Hooks を原則。クラスコンポーネントは使用しない。
+- TypeScript を徹底（`any` は禁止。やむを得ない場合は型ガードで囲い込み）。
+- 単一責任の原則: ファイル/コンポーネント/フックは役割を一つに絞る。
+- import は `@/*` エイリアスを優先。
+ - スタイリングは `native-wind`（Tailwind ユーティリティ）をデフォルト採用。`className` を用いて記述。
+
+## 2. フォルダ構成・ルーティング
+- 画面とルーティングは `app/`（expo-router のファイルベース）。
+- レイアウトは `_layout.tsx`、グループは `(group)`、動的は `[id].tsx` を使用。
+
+## 3. コードスタイル / Lint
+- ESLint は既存設定（`eslint.config.js`）を使用。Lint エラーは随時解消。
+- 整形ルールの追加・変更（Prettier 導入など）は事前承認。
+- 長い JSX は読みやすい改行・インデント。複雑な式は事前に変数へ分解。
+ - コンポーネント関数内で新しいコンポーネントをネスト定義しない（毎レンダー再作成を防ぐ）。
+ - スタイル・定数・ハンドラ関数はコンポーネント外か `useMemo`/`useCallback` で安定化（必要な場合のみ）。
+
+## 4. コンポーネント規約
+- ファイル名: `kebab-case.tsx`、コンポーネント名: `PascalCase`。
+- `Props` は明示型定義。UI とロジックを分離（ロジックはフックに移す）。
+- スタイルは `StyleSheet.create` を基本。テーマ依存は `ThemedView`/`ThemedText` と `constants/theme.ts` を利用。
+- 再レンダリングが重い場合のみ `React.memo` を検討。props の安定化は必要に応じ `useCallback`/`useMemo`。
+- `key` は一意な ID を優先（インデックスは原則不可）。
+ - タップ/ジェスチャは `Pressable` を第一候補（高度なニーズにのみ他の Touchable を検討）。
+
+## 5. Hooks 規約
+- 命名は `useXxx`。返り値/引数に型を付与。
+- UI から切り出したビジネス/副作用ロジックはカスタムフックへ。
+- `useMemo`/`useCallback` は計測や明確な再レンダリング課題がある場合に限定して使用（闇雲な最適化は避ける）。
+
+## 6. パフォーマンス
+- リストは `FlatList`/`SectionList` を使用し仮想化（`renderItem` 安定化、`getItemLayout` などを適宜設定）。
+- 非同期・重い処理はデバウンス/スロットリングやバックグラウンド化を検討。
+- 画像は `expo-image` を使用し、適切なサイズ・キャッシュを設定。
+- expo-router によるルート単位のコード分割を前提に、巨大コンポーネントは分割。
+ - `FlatList` は `keyExtractor` を実装し、安定したキーを割り当てる。固定高アイテムでは `getItemLayout` を必ず指定。
+ - 初期描画・スクロール特性に応じて `initialNumToRender`/`windowSize`/`maxToRenderPerBatch` を調整。
+
+## 7. スタイリング（native-wind）
+- 標準は `native-wind` を使用（Tailwind のユーティリティクラスを `className` で適用）。
+- テーマの軸（色・余白・タイポ）は `constants/theme.ts` を単一の参照元とし、必要に応じ `tailwind.config.js` の `theme.extend` に同期。
+- 例（使用方法）:
+
+```tsx
+import { View, Text } from 'react-native';
+
+export function Example() {
+  return (
+    <View className="flex-1 items-center justify-center bg-blue-500">
+      <Text className="text-white text-lg">Hello, NativeWind!</Text>
+    </View>
+  );
+}
+```
+
+- 例（StyleSheet との併用方針）:
+  - レイアウト/配色/余白/タイポは基本的に `className` を使用。
+  - 複雑な動的スタイルや非対応プロパティは `style`/`StyleSheet.create` を併用。
+  - ランタイム生成の無駄を避けるため、インラインのオブジェクトは極力作らず `className` を優先。
+
+- 導入手順（承認済みの前提で実施）:
+  1) 依存追加:
+
+  ```bash
+  npm install nativewind tailwindcss
+  ```
+
+  2) `tailwind.config.js` をプロジェクトルートに作成:
+
+  ```js
+  /** @type {import('tailwindcss').Config} */
+  module.exports = {
+    content: [
+      './app/**/*.{js,jsx,ts,tsx}',
+      './components/**/*.{js,jsx,ts,tsx}',
+    ],
+    theme: { extend: {} },
+    plugins: [],
+  };
+  ```
+
+  3) Babel 設定にプラグインを追加（`babel.config.js`）:
+
+  ```js
+  module.exports = function (api) {
+    api.cache(true);
+    return {
+      presets: ['babel-preset-expo'],
+      plugins: ['nativewind/babel'],
+    };
+  };
+  ```
+
+- 注意点:
+  - `content` には `className` を記述するファイルパス（`app/`, `components/`）を必ず含める。
+  - パフォーマンス要件が厳しい箇所は `StyleSheet.create` を検討しつつ、まずは `className` を基準に設計。
+  - UI ライブラリ（例: Restyle）等の追加は別途承認が必要。
+
+- セーフエリア（`SafeAreaView`）/キーボード回避（`KeyboardAvoidingView`）/アクセシビリティも引き続き考慮。
+
+## 8. 状態管理
+- まずはローカル state とコンポーネント分割で解決。
+- 横断的な小規模共有は React Context。規模が増す場合のみ Zustand/Redux 等を検討（導入は事前承認）。
+- ネットワークキャッシュは API クライアント側で扱う（SWR/RTK Query 等の導入は承認必須）。
+
+## 9. テスト
+- ユニット/コンポーネント: Jest + @testing-library/react-native を推奨。
+- 重要 UI はアクセシビリティクエリ（`getByRole`/`getByLabelText`）で検証。
+- ビジネスロジックはフック/ユーティリティ単位でテスト。
+
+## 10. ネットワーク / セキュリティ
+- API ラッパーは `services/`（必要になった時点で作成）に集約。ベースURL、タイムアウト、リトライ、共通ヘッダーを一元化。
+- 認証トークンはヘッダー付与。保存は `expo-secure-store` 等のセキュアストレージを使用（`AsyncStorage` に平文保存しない）。
+- ログに機密情報を出力しない。例外にはユーザー影響の少ないメッセージを表示。
+
+## 11. アセット
+- 画像は `assets/images/`、必要に応じて `@2x`/`@3x` を用意。
+- 読み込みは `expo-image` の `require()` 参照を基本に、外部 URL はキャッシュ戦略を検討。
+
+## 12. ナビゲーション（expo-router）
+- 画面追加/モーダル/タブは `FOLDER_STRUCTURE.md` のレシピに従う。
+- 画面遷移は `Link`/`router` を使用。Stack/Tabs のオプションは該当 `_layout.tsx` で設定。
+
+## 13. アクセシビリティ
+- 主要なタップ要素に `accessibilityRole`/`accessibilityLabel` を付与。
+- タップ領域は 44dp 以上、フォーカス順序に注意。
+
+## 14. 重複実装の防止（遵守事項）
+- 既存コンポーネント/フック/ユーティリティの再利用を最優先。
+- 同名/類似名の有無を検索してから作成（`components/` と `hooks/`）。
+- 共通化できる処理は切り出し、画面直下にロジックを持たない。
+
+---
+## 15. 公式ドキュメント準拠の補足
+- スタイリング: `StyleSheet` と Flexbox を基本に、パフォーマンスのためにスタイルオブジェクトを安定化。
+- イベント: タップは `Pressable` を推奨し、press/hover/focus のフィードバックはスタイル関数で制御。
+- プラットフォーム差分: `Platform`/`PlatformColor`/`DynamicColorIOS` を活用。必要最小限の分岐に限定。
+- デバッグ: Fast Refresh/LogBox/Flipper を活用して、パフォーマンスとネットワークの可視化を行う。
+- イメージ: 適切なサイズ・キャッシュ戦略を取り、巨大画像の読み込みを避ける（本プロジェクトは `expo-image` を採用）。
+- リスト: `FlatList` の性能調整パラメータを適切に設定し、`ScrollView` での大規模一覧は避ける。
+- アクセシビリティ: ロール/ラベル/Hint を付与し、タップ領域 44dp 以上・コントラストに配慮。
+
+## 参考（公式）
+- React Native 公式トップ: https://reactnative.dev/
+- 環境セットアップ: https://reactnative.dev/docs/environment-setup
+- スタイルとレイアウト: https://reactnative.dev/docs/style
+- Flexbox: https://reactnative.dev/docs/flexbox
+- Pressable: https://reactnative.dev/docs/pressable
+- FlatList: https://reactnative.dev/docs/flatlist
+- 画像（Image）: https://reactnative.dev/docs/image
+- アクセシビリティ: https://reactnative.dev/docs/accessibility
+- パフォーマンス: https://reactnative.dev/docs/performance
+- デバッグ: https://reactnative.dev/docs/debugging
+- テスト（Jest 概要）: https://reactnative.dev/docs/testing-overview
+- プラットフォーム API: https://reactnative.dev/docs/platform
