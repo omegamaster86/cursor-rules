@@ -1,67 +1,94 @@
 ---
-name: nextjs-frontend
-description: Next.js (App Router) と React 19 を使用したフロントエンド開発タスクに適用。コンポーネント作成、ルーティング、データ取得、状態管理などのフロントエンド実装時に使用。
+name: frontend
+description: Next.js (App Router) と React 19 を使用したフロントエンド開発タスクに適用。app/を編集する際には必ず参照して。
 ---
 
-# Next.js フロントエンド開発
+以下は、Next.js(App Router) 15系および React 19 系の公式ドキュメントに準拠した実装ガイドです。
+このskillを使用する際に「フロントエンドのskillを確認しました」と表示してください。
 
-## 基本方針
+## Code Generation
+- コードを生成する前に、必ず関連するドキュメントを確認する
+- フレームワークやライブラリの使用方法については、必ず公式ドキュメントを参照する
+- ドキュメントをもとにベストプラクティスを検証する
+- CSSはTailwindCSSを使用すること
 
-### Server Components 優先
-- デフォルトは Server Components を使用
-- `'use client'` はインタラクションが必要な場合のみ付与
-- データ取得はサーバー側で行う
+## Required Documentation
+- Next.js: https://nextjs.org/docs
+- React 19: https://react.dev
+- TypeScript: https://www.typescriptlang.org/docs/
+- tailwindcss:https://tailwindcss.com/docs/
 
-### 命名規則
-- **ディレクトリ**: 機能名で明確に（例: `Header`, `UserProfile`）
-- **ファイル**: ケバブケース（例: `user-table.tsx`, `use-selected-ids.ts`）
-- **コンポーネント**: パスカルケース（例: `UserTable`, `HeaderBreadcrumb`）
+## 1. プロジェクト基本方針
+- App Router を前提とし、Server Components を既定とする。
+- データ取得はサーバー優先（`fetch` と Next.js のキャッシュ戦略を活用）。
+- UI層（表示）とロジック層（データ取得・処理）を明確に分離し、コンポーネントをシンプルに保つ。
+- UI はクライアント側でインタラクションが必要な箇所のみ `'use client'` を付ける。
+- ディレクトリ名は機能や役割が明確に分かる命名（例:`NewFeatureListItemPage`, `Header`）
+- ファイル名はパスカルケースかつ処理や役割が分かる命名にしてください。 (button.tsx, UseThemeColor.ts)
+- コンポーネント名はパスカルケースを使用します。（例: `HeaderBreadcrumb`, `NewFeatureDropdown`）
 
-## ルーティング
+## 2. ディレクトリ構成
+- ヘッダー関連のコンポーネント（例: `Header.tsx`, `HeaderBreadcrumb.tsx`
+- モーダル関連のコンポーネント（例: `ArchiveNewFeatureModal.tsx`）
 
-- Next.js App Router を使用（React Router は不可）
-- 動的セグメント: `[id]`, `[...slug]`
-- SSG が必要な場合: `generateStaticParams` を実装
-- ナビゲーション: `Link` を優先、制御が必要な場合のみ `useRouter()`
-- メタデータ: `generateMetadata`（動的）または `export const metadata`（静的）
 
-## データ取得・キャッシュ
+## 3. ルーティングとメタデータ
+- Next.js App Router を使用する。React Router は使用しない。
+- 動的セグメント `[id]`, キャッチオール `[...slug]` を使用。
+- SSG が必要な場合は `generateStaticParams` を実装。
+- `Link` を優先。クライアント側で制御が必要な場合のみ `'use client'` + `useRouter()` を使用（`push`, `replace`, `prefetch`）。
+- メタは `generateMetadata`（動的）または `layout.tsx` の `export const metadata`（静的）。
+- サーバーサイドの遷移は必要に応じて`redirect()`・`notFound()` を使用する。
 
-```typescript
-// リアルタイム/常に最新
-fetch(url, { cache: 'no-store' })
+## 4. データ取得・キャッシュ
+- 既定はサーバーで `fetch`。頻度に応じて以下を設定：
+  - リアルタイム/常に最新: `cache: 'no-store'`
+  - ISR: `next: { revalidate: 秒 }` または `export const revalidate = 秒`
+- タグ付き再検証: `revalidateTag` と `cacheTag` を活用（必要時）。
 
-// ISR（増分静的再生成）
-fetch(url, { next: { revalidate: 60 } })
-```
+## 5. クライアントコンポーネントの指針
+- フォーム、イベント、アニメーションなどのみ `'use client'` を付与。
+- ルーター操作は `useRouter()`、リンクは `Link` を優先。
+- 例外遷移/404: `redirect()` / `notFound()` を使用（`next/navigation`）。
 
-## クライアントコンポーネント
+## 6. 状態管理
+- ローカル: `useState`, `useReducer`。
+- グローバル: Context で十分な場合は Context。外部状態管理は必要性を精査して導入。
 
-以下の場合のみ `'use client'` を使用:
-- フォーム操作
-- イベントハンドリング
-- アニメーション
-- ブラウザ API の使用
+## 7. フォームとアクション
+- サーバーアクション（`'use server'`）の利用を検討。副作用はサーバーへ寄せる。
+- 従来の API ルートは `app/api/**/route.ts` で実装（`GET/POST` エクスポート）。
 
-## 状態管理
+## 8. エラーハンドリング
+- `error.tsx` と `not-found.tsx` をルート直下に配置し、グローバル扱いする。
+- 例外はサーバー側で投げ、UI で適切にフォールバック（`loading.tsx` も活用）。
 
-- ローカル: `useState`, `useReducer`
-- グローバル: Context で十分な場合は Context を使用
+## 9. パフォーマンス
+- 画像は `next/image`。フォントは `next/font`。
+- クライアントバンドルを最小化（不要な `'use client'` を避ける）。
 
-## エラーハンドリング
+## 10. 命名・可読性
+- ディレクトリ: 機能名で明確に。
+- ファイル,コンポーネント: パスカルケース（例: `UserTable.tsx`, `UseSelectedIds.ts`）。
 
-- `error.tsx`: エラー境界
-- `not-found.tsx`: 404 ページ
-- `loading.tsx`: ローディング状態
+## 11. TypeScript
+- すべて型定義。公開 API/props は明示的な型注釈。
+- `any` は禁止。ユーティリティ型を積極活用。
+ - 型の集約: プロジェクト共通の型は `types/index.ts` に集約し、各所からは同ファイル経由でインポートする。
+ - 機能固有の型: `features/<feature>/domain` に配置可。共有が必要になった時点で `types/index.ts` へ移し、参照を置換する。
+ - API 型: リクエスト/レスポンスの型も `types/index.ts` に定義して一元管理する。
 
-## TypeScript
+## 12. CSS
+- Tailwind CSS を使用し、ユーティリティクラスで構成。
+- コンポーネント外観は既存デザイン指針に従い、独自変更は承認必須。
+- `className` の合成は既定で `clsx` を使用する。
 
-- すべて型定義必須、`any` は禁止
-- 共通型は `types/index.ts` に集約
+## 13. ドキュメント（JSDoc）
+- 公開コンポーネント/関数/型には JSDoc を付与する。
+- 最低限含める項目: 概要、`@param`、`@returns`、必要に応じて `@remarks`、`@example`、`@throws`。
+- API ルートやサーバーアクションは副作用・例外・認可要件を明記する。
+- 複雑なドメインロジックでは「なぜこの設計か」を簡潔に説明する。
+- ファイル先頭に、そのファイルの目的が一目で分かるコメントを日本語で記載
 
-## CSS
-
-- Tailwind CSS を使用
-- `className` の合成は `clsx` を使用
-
-詳細は [references/REFERENCE.md](references/REFERENCE.md) を参照。
+---
+出典: Next.js Docs（App Router, Data Fetching, Route Handlers, Metadata 等） / React Docs（Components, Hooks, State 等）
