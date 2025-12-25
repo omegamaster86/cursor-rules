@@ -25,7 +25,7 @@ alwaysApply: true
 - UI層（表示）とロジック層（データ取得・処理）を明確に分離し、コンポーネントをシンプルに保つ。
 - UI はクライアント側でインタラクションが必要な箇所のみ `'use client'` を付ける。
 - ディレクトリ名は機能や役割が明確に分かる命名（例:`NewFeatureListItemPage`, `Header`）
-- ファイル名はケバブケースかつ処理や役割が分かる命名にしてください。 (button.tsx, use-theme-color.ts)
+- ファイル名はパスカルケースかつ処理や役割が分かる命名にしてください。 (button.tsx, UseThemeColor.ts)
 - コンポーネント名はパスカルケースを使用します。（例: `HeaderBreadcrumb`, `NewFeatureDropdown`）
 
 ## 2. ディレクトリ構成
@@ -70,8 +70,7 @@ alwaysApply: true
 
 ## 10. 命名・可読性
 - ディレクトリ: 機能名で明確に。
-- ファイル: ケバブケース（例: `user-table.tsx`, `use-selected-ids.ts`）。
-- コンポーネント: パスカルケース（例: `UserTable`）。
+- ファイル,コンポーネント: パスカルケース（例: `UserTable.tsx`, `UseSelectedIds.ts`）。
 
 ## 11. TypeScript
 - すべて型定義。公開 API/props は明示的な型注釈。
