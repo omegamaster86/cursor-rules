@@ -208,3 +208,118 @@ Deno.serve(async (req) => {
   }
 });
 ```
+
+### 5.3 Database Function: UPSERT（設定の登録・更新）
+
+```sql
+create or replace function upsert_user_settings(
+  p_user_id bigint,
+  p_key text,
+  p_value text
+)
+returns TABLE(
+  user_id bigint,
+  key text,
+  value text,
+  updated_at timestamptz
+)
+language plpgsql
+as $$
+begin
+  return query
+  insert into user_settings (user_id, key, value, updated_at)
+  values (p_user_id, p_key, p_value, now())
+  on conflict (user_id, key)
+  do update set
+    value = excluded.value,
+    updated_at = now()
+  returning
+    user_settings.user_id,
+    user_settings.key,
+    user_settings.value,
+    user_settings.updated_at;
+end;
+$$;
+```
+
+### 5.4 Database Function: カーソルベースのページネーション
+
+```sql
+create or replace function sel_orders_paged(
+  p_customer_id bigint,
+  p_last_id bigint default 0,
+  p_limit int default 20
+)
+returns TABLE(
+  id bigint,
+  customer_id bigint,
+  total numeric,
+  status text,
+  created_at timestamptz
+)
+language plpgsql
+as $$
+begin
+  return query
+  select
+    o.id,
+    o.customer_id,
+    o.total,
+    o.status,
+    o.created_at
+  from
+    orders o
+  where
+    o.customer_id = p_customer_id
+    and o.id > p_last_id
+  order by
+    o.id
+  limit
+    p_limit;
+end;
+$$;
+
+-- 使用例:
+-- 1ページ目: select * from sel_orders_paged(123, 0, 20);
+-- 2ページ目: select * from sel_orders_paged(123, last_id, 20);
+-- ※ last_id = 前ページの最後のレコードの id
+```
+
+### 5.5 テーブル定義 + RLS のセット例
+
+新しいテーブルを作成する際の推奨パターンです。
+
+```sql
+-- テーブル定義（推奨されるデータ型を使用）
+create table orders (
+  id bigint generated always as identity primary key,
+  customer_id bigint not null references customers(id) on delete cascade,
+  total numeric(10,2) not null default 0,
+  status text not null default 'pending',
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  deleted_at timestamptz  -- 論理削除
+);
+
+-- RLS を有効化
+alter table orders enable row level security;
+alter table orders force row level security;
+
+-- RLS ポリシー（SELECT でラップしてパフォーマンス最適化）
+create policy orders_select_policy on orders
+  for select
+  to authenticated
+  using (customer_id in (
+    select c.id from customers c
+    where c.auth_user_id = (select auth.uid())
+  ));
+
+create policy orders_insert_policy on orders
+  for insert
+  to authenticated
+  with check (customer_id in (
+    select c.id from customers c
+    where c.auth_user_id = (select auth.uid())
+  ));
+```

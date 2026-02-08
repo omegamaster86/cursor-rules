@@ -85,4 +85,61 @@ returns bigint
 returns void
 ```
 
+### 1.5 SQL パターン
+
+#### UPSERT（INSERT ... ON CONFLICT）
+
+SELECT → INSERT/UPDATE を別々に行うと競合が発生します。`ON CONFLICT` で原子的に処理してください。
+
+```sql
+-- ❌ 悪い例: チェック→挿入で競合が起きる
+-- 2つのリクエストが同時に SELECT → 両方 INSERT を試行 → 片方がエラー
+
+-- ✅ 良い例: 原子的な UPSERT
+create or replace function upsert_user_settings(
+  p_user_id bigint,
+  p_key text,
+  p_value text
+)
+returns void
+language plpgsql
+as $$
+begin
+  insert into user_settings (user_id, key, value)
+  values (p_user_id, p_key, p_value)
+  on conflict (user_id, key)
+  do update set value = excluded.value, updated_at = now();
+end;
+$$;
+```
+
+> 💡 `on conflict ... do nothing` で「既存なら挿入しない」パターンも可能です。
+
+#### カーソルベースのページネーション
+
+OFFSET ベースはページが深くなるほど遅くなります（スキップした行をすべて走査）。カーソルベースは常に O(1) です。
+
+```sql
+-- ❌ 悪い例: OFFSET（10000ページ目 = 200,000行を走査）
+select * from products order by id limit 20 offset 199980;
+
+-- ✅ 良い例: カーソルベース（常にインデックススキャンで高速）
+create or replace function sel_products_paged(
+  p_last_id bigint default 0,
+  p_limit int default 20
+)
+returns TABLE(id bigint, name text, price numeric, created_at timestamptz)
+language plpgsql
+as $$
+begin
+  return query
+  select p.id, p.name, p.price, p.created_at
+  from products p
+  where p.id > p_last_id
+  order by p.id
+  limit p_limit;
+end;
+$$;
+```
+
 ---
