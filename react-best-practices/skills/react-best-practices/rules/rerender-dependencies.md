@@ -1,15 +1,17 @@
 ---
-title: Narrow Effect Dependencies
+title: Effect 依存を狭める
 impact: LOW
 impactDescription: minimizes effect re-runs
 tags: rerender, useEffect, dependencies, optimization
 ---
 
-## Narrow Effect Dependencies
+## Effect 依存を狭める
 
-Specify primitive dependencies instead of objects to minimize effect re-runs.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (re-runs on any user field change):**
+Effect の再実行を減らすため、オブジェクトではなくプリミティブを依存に指定します。
+
+**Incorrect（re-runs on any user field change):**
 
 ```tsx
 useEffect(() => {
@@ -17,7 +19,7 @@ useEffect(() => {
 }, [user])
 ```
 
-**Correct (re-runs only when id changes):**
+**Correct（re-runs only when id changes):**
 
 ```tsx
 useEffect(() => {
@@ -25,7 +27,7 @@ useEffect(() => {
 }, [user.id])
 ```
 
-**For derived state, compute outside effect:**
+**導出 state は Effect 外で計算:**
 
 ```tsx
 // Incorrect: runs on width=767, 766, 765...

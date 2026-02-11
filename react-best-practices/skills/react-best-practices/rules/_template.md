@@ -1,28 +1,28 @@
 ---
-title: Rule Title Here
+title: ここにルールタイトル
 impact: MEDIUM
-impactDescription: Optional description of impact (e.g., "20-50% improvement")
+impactDescription: 影響の説明（例: "20-50% 改善"）
 tags: tag1, tag2
 ---
 
-## Rule Title Here
+## ここにルールタイトル
 
-**Impact: MEDIUM (optional impact description)**
+**影響: MEDIUM（任意の補足説明）**
 
-Brief explanation of the rule and why it matters. This should be clear and concise, explaining the performance implications.
+ルールの要点と、なぜ重要かを簡潔に記載します。性能面の含意が伝わる説明にします。
 
-**Incorrect (description of what's wrong):**
+**Incorrect（問題のある例）:**
 
 ```typescript
-// Bad code example here
+// 悪いコード例
 const bad = example()
 ```
 
-**Correct (description of what's right):**
+**Correct（推奨される例）:**
 
 ```typescript
-// Good code example here
+// 良いコード例
 const good = example()
 ```
 
-Reference: [Link to documentation or resource](https://example.com)
+参考: [ドキュメントまたは資料](https://example.com)

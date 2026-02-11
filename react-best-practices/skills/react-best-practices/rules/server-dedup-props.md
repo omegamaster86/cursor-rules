@@ -1,24 +1,26 @@
 ---
-title: Avoid Duplicate Serialization in RSC Props
+title: RSC Props の重複シリアライズを避ける
 impact: LOW
 impactDescription: reduces network payload by avoiding duplicate serialization
 tags: server, rsc, serialization, props, client-components
 ---
 
-## Avoid Duplicate Serialization in RSC Props
+## RSC Props の重複シリアライズを避ける
 
-**Impact: LOW (reduces network payload by avoiding duplicate serialization)**
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (`.toSorted()`, `.filter()`, `.map()`) in client, not server.
+**影響: LOW（重複シリアライズ回避によりネットワーク転送量を削減）**
 
-**Incorrect (duplicates array):**
+RSC→client のシリアライズは値ではなくオブジェクト参照で重複排除されます。同じ参照は 1 回だけ、新しい参照は再シリアライズされます。変換（`.toSorted()` / `.filter()` / `.map()`）は server ではなく client 側で行ってください。
+
+**Incorrect（duplicates array):**
 
 ```tsx
 // RSC: sends 6 strings (2 arrays × 3 items)
 <ClientList usernames={usernames} usernamesOrdered={usernames.toSorted()} />
 ```
 
-**Correct (sends 3 strings):**
+**Correct（sends 3 strings):**
 
 ```tsx
 // RSC: send once
@@ -29,12 +31,12 @@ RSC→client serialization deduplicates by object reference, not value. Same ref
 const sorted = useMemo(() => [...usernames].sort(), [usernames])
 ```
 
-**Nested deduplication behavior:**
+**ネスト時の重複排除挙動:**
 
-Deduplication works recursively. Impact varies by data type:
+重複排除は再帰的に働きます。効果はデータ型で変わります:
 
-- `string[]`, `number[]`, `boolean[]`: **HIGH impact** - array + all primitives fully duplicated
-- `object[]`: **LOW impact** - array duplicated, but nested objects deduplicated by reference
+- `string[]` / `number[]` / `boolean[]`: **影響 HIGH** - 配列とすべてのプリミティブが完全重複
+- `object[]`: **影響 LOW** - 配列は重複するが、ネストオブジェクトは参照で重複排除される
 
 ```tsx
 // string[] - duplicates everything
@@ -44,12 +46,12 @@ usernames={['a','b']} sorted={usernames.toSorted()} // sends 4 strings
 users={[{id:1},{id:2}]} sorted={users.toSorted()} // sends 2 arrays + 2 unique objects (not 4)
 ```
 
-**Operations breaking deduplication (create new references):**
+**重複排除を壊す操作（新しい参照を作る）:**
 
-- Arrays: `.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`
-- Objects: `{...obj}`, `Object.assign()`, `structuredClone()`, `JSON.parse(JSON.stringify())`
+- 配列: `.toSorted()` / `.filter()` / `.map()` / `.slice()` / `[...arr]`
+- オブジェクト: `{...obj}` / `Object.assign()` / `structuredClone()` / `JSON.parse(JSON.stringify())`
 
-**More examples:**
+**追加例:**
 
 ```tsx
 // ❌ Bad
@@ -62,4 +64,4 @@ users={[{id:1},{id:2}]} sorted={users.toSorted()} // sends 2 arrays + 2 unique o
 // Do filtering/destructuring in client
 ```
 
-**Exception:** Pass derived data when transformation is expensive or client doesn't need original.
+**例外:** 変換が高コストな場合や client 側で元データが不要な場合は、導出データを渡して構いません。

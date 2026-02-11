@@ -1,15 +1,17 @@
 ---
-title: Defer Await Until Needed
+title: 必要になるまで Await を遅延する
 impact: HIGH
 impactDescription: avoids blocking unused code paths
 tags: async, await, conditional, optimization
 ---
 
-## Defer Await Until Needed
+## 必要になるまで Await を遅延する
 
-Move `await` operations into the branches where they're actually used to avoid blocking code paths that don't need them.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (blocks both branches):**
+必要な分岐でのみ `await` するように移動し、不要なコードパスをブロックしないようにします。
+
+**Incorrect（blocks both branches):**
 
 ```typescript
 async function handleRequest(userId: string, skipProcessing: boolean) {
@@ -25,7 +27,7 @@ async function handleRequest(userId: string, skipProcessing: boolean) {
 }
 ```
 
-**Correct (only blocks when needed):**
+**Correct（only blocks when needed):**
 
 ```typescript
 async function handleRequest(userId: string, skipProcessing: boolean) {
@@ -40,7 +42,7 @@ async function handleRequest(userId: string, skipProcessing: boolean) {
 }
 ```
 
-**Another example (early return optimization):**
+**別の例（早期 return 最適化）:**
 
 ```typescript
 // Incorrect: always fetches permissions
@@ -77,4 +79,4 @@ async function updateResource(resourceId: string, userId: string) {
 }
 ```
 
-This optimization is especially valuable when the skipped branch is frequently taken, or when the deferred operation is expensive.
+この最適化は、スキップされる分岐が頻繁に選ばれる場合や、遅延させる処理が高コストな場合に特に有効です。

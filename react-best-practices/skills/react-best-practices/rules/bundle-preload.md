@@ -1,15 +1,17 @@
 ---
-title: Preload Based on User Intent
+title: ユーザー意図に基づいて Preload する
 impact: MEDIUM
 impactDescription: reduces perceived latency
 tags: bundle, preload, user-intent, hover
 ---
 
-## Preload Based on User Intent
+## ユーザー意図に基づいて Preload する
 
-Preload heavy bundles before they're needed to reduce perceived latency.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Example (preload on hover/focus):**
+重いバンドルは必要になる前に preload して体感遅延を下げます。
+
+**例（hover/focus で preload）:**
 
 ```tsx
 function EditorButton({ onClick }: { onClick: () => void }) {
@@ -31,7 +33,7 @@ function EditorButton({ onClick }: { onClick: () => void }) {
 }
 ```
 
-**Example (preload when feature flag is enabled):**
+**例（feature flag 有効時に preload）:**
 
 ```tsx
 function FlagsProvider({ children, flags }: Props) {
@@ -47,4 +49,4 @@ function FlagsProvider({ children, flags }: Props) {
 }
 ```
 
-The `typeof window !== 'undefined'` check prevents bundling preloaded modules for SSR, optimizing server bundle size and build speed.
+`typeof window !== 'undefined'` の判定により、preload 対象モジュールが SSR 用にバンドルされるのを防ぎ、サーバーバンドルサイズとビルド速度を最適化できます。

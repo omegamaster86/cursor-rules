@@ -1,15 +1,17 @@
 ---
-title: Cross-Request LRU Caching
+title: リクエスト間は LRU キャッシュを使う
 impact: HIGH
 impactDescription: caches across requests
 tags: server, cache, lru, cross-request
 ---
 
-## Cross-Request LRU Caching
+## リクエスト間は LRU キャッシュを使う
 
-`React.cache()` only works within one request. For data shared across sequential requests (user clicks button A then button B), use an LRU cache.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Implementation:**
+`React.cache()` は 1 リクエスト内でのみ有効です。連続する複数リクエスト（例: ユーザーが A ボタンの後に B ボタンを押す）で共有したいデータには LRU キャッシュを使います。
+
+**実装例:**
 
 ```typescript
 import { LRUCache } from 'lru-cache'
@@ -32,10 +34,10 @@ export async function getUser(id: string) {
 // Request 2: cache hit, no DB query
 ```
 
-Use when sequential user actions hit multiple endpoints needing the same data within seconds.
+ユーザーの連続操作が短時間に同じデータを必要とする複数エンドポイントへ到達する場合に有効です。
 
-**With Vercel's [Fluid Compute](https://vercel.com/docs/fluid-compute):** LRU caching is especially effective because multiple concurrent requests can share the same function instance and cache. This means the cache persists across requests without needing external storage like Redis.
+**Vercel の [Fluid Compute](https://vercel.com/docs/fluid-compute) 利用時:** 複数の同時リクエストが同じ関数インスタンスとキャッシュを共有できるため、LRU キャッシュは特に効果的です。Redis などの外部ストレージを使わなくても、リクエストをまたいでキャッシュを維持できます。
 
-**In traditional serverless:** Each invocation runs in isolation, so consider Redis for cross-process caching.
+**従来型 serverless の場合:** 各呼び出しは分離されるため、プロセス間キャッシュには Redis などを検討してください。
 
-Reference: [https://github.com/isaacs/node-lru-cache](https://github.com/isaacs/node-lru-cache)
+参考: [https://github.com/isaacs/node-lru-cache](https://github.com/isaacs/node-lru-cache)

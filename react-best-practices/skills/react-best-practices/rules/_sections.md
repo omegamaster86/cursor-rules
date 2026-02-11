@@ -1,46 +1,46 @@
-# Sections
+# セクション
 
-This file defines all sections, their ordering, impact levels, and descriptions.
-The section ID (in parentheses) is the filename prefix used to group rules.
+このファイルは、すべてのセクション（順序・影響度・説明）を定義します。
+セクション ID（括弧内）は、ルールをグルーピングするファイル名プレフィックスです。
 
 ---
 
-## 1. Eliminating Waterfalls (async)
+## 1. ウォーターフォール排除 (async)
 
-**Impact:** CRITICAL  
-**Description:** Waterfalls are the #1 performance killer. Each sequential await adds full network latency. Eliminating them yields the largest gains.
+**影響:** CRITICAL  
+**説明:** ウォーターフォールは最大の性能劣化要因です。逐次 await が増えるたびにネットワーク待ちが積み上がるため、排除が最も高い効果を生みます。
 
-## 2. Bundle Size Optimization (bundle)
+## 2. バンドルサイズ最適化 (bundle)
 
-**Impact:** CRITICAL  
-**Description:** Reducing initial bundle size improves Time to Interactive and Largest Contentful Paint.
+**影響:** CRITICAL  
+**説明:** 初期バンドルを削減すると、TTI（Time to Interactive）と LCP（Largest Contentful Paint）が改善します。
 
-## 3. Server-Side Performance (server)
+## 3. サーバーサイド性能 (server)
 
-**Impact:** HIGH  
-**Description:** Optimizing server-side rendering and data fetching eliminates server-side waterfalls and reduces response times.
+**影響:** HIGH  
+**説明:** サーバー側レンダリングとデータ取得を最適化し、サーバー側ウォーターフォールを解消して応答時間を短縮します。
 
-## 4. Client-Side Data Fetching (client)
+## 4. クライアント側データ取得 (client)
 
-**Impact:** MEDIUM-HIGH  
-**Description:** Automatic deduplication and efficient data fetching patterns reduce redundant network requests.
+**影響:** MEDIUM-HIGH  
+**説明:** 自動重複排除と効率的なデータ取得パターンにより、無駄なネットワークリクエストを減らします。
 
-## 5. Re-render Optimization (rerender)
+## 5. 再レンダー最適化 (rerender)
 
-**Impact:** MEDIUM  
-**Description:** Reducing unnecessary re-renders minimizes wasted computation and improves UI responsiveness.
+**影響:** MEDIUM  
+**説明:** 不要な再レンダーを減らし、無駄な計算を抑えて UI 応答性を向上させます。
 
-## 6. Rendering Performance (rendering)
+## 6. 描画性能 (rendering)
 
-**Impact:** MEDIUM  
-**Description:** Optimizing the rendering process reduces the work the browser needs to do.
+**影響:** MEDIUM  
+**説明:** 描画処理を最適化し、ブラウザ側の作業量を減らします。
 
-## 7. JavaScript Performance (js)
+## 7. JavaScript 性能 (js)
 
-**Impact:** LOW-MEDIUM  
-**Description:** Micro-optimizations for hot paths can add up to meaningful improvements.
+**影響:** LOW-MEDIUM  
+**説明:** ホットパスのマイクロ最適化を積み重ね、全体の体感性能改善につなげます。
 
-## 8. Advanced Patterns (advanced)
+## 8. 高度なパターン (advanced)
 
-**Impact:** LOW  
-**Description:** Advanced patterns for specific cases that require careful implementation.
+**影響:** LOW  
+**説明:** 実装難度が高い特定ケース向けの発展的パターンです。

@@ -1,15 +1,17 @@
 ---
-title: Cache Repeated Function Calls
+title: 関数呼び出し結果をキャッシュする
 impact: MEDIUM
 impactDescription: avoid redundant computation
 tags: javascript, cache, memoization, performance
 ---
 
-## Cache Repeated Function Calls
+## 関数呼び出し結果をキャッシュする
 
-Use a module-level Map to cache function results when the same function is called repeatedly with the same inputs during render.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (redundant computation):**
+render 中に同じ入力で同じ関数を繰り返し呼ぶ場合は、モジュールスコープの Map で結果をキャッシュします。
+
+**Incorrect（redundant computation):**
 
 ```typescript
 function ProjectList({ projects }: { projects: Project[] }) {
@@ -26,7 +28,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 }
 ```
 
-**Correct (cached results):**
+**Correct（cached results):**
 
 ```typescript
 // Module-level cache
@@ -55,7 +57,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 }
 ```
 
-**Simpler pattern for single-value functions:**
+**単一値関数向けのよりシンプルなパターン:**
 
 ```typescript
 let isLoggedInCache: boolean | null = null
@@ -75,6 +77,6 @@ function onAuthChange() {
 }
 ```
 
-Use a Map (not a hook) so it works everywhere: utilities, event handlers, not just React components.
+Map（hook ではなく）を使うことで、React コンポーネントだけでなく utility や event handler でも使えます。
 
-Reference: [How we made the Vercel Dashboard twice as fast](https://vercel.com/blog/how-we-made-the-vercel-dashboard-twice-as-fast)
+参考: [How we made the Vercel Dashboard twice as fast](https://vercel.com/blog/how-we-made-the-vercel-dashboard-twice-as-fast)

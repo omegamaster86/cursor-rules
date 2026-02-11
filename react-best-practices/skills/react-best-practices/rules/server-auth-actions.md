@@ -1,19 +1,21 @@
 ---
-title: Authenticate Server Actions Like API Routes
+title: Server Actions も API ルート同様に認証する
 impact: CRITICAL
 impactDescription: prevents unauthorized access to server mutations
 tags: server, server-actions, authentication, security, authorization
 ---
 
-## Authenticate Server Actions Like API Routes
+## Server Actions も API ルート同様に認証する
 
-**Impact: CRITICAL (prevents unauthorized access to server mutations)**
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-Server Actions (functions with `"use server"`) are exposed as public endpoints, just like API routes. Always verify authentication and authorization **inside** each Server Action—do not rely solely on middleware, layout guards, or page-level checks, as Server Actions can be invoked directly.
+**影響: CRITICAL（サーバー更新処理への不正アクセスを防ぐ）**
 
-Next.js documentation explicitly states: "Treat Server Actions with the same security considerations as public-facing API endpoints, and verify if the user is allowed to perform a mutation."
+Server Actions（`"use server"` を持つ関数）は API ルートと同様に公開エンドポイントです。各 Server Action **内部**で必ず認証・認可を検証してください。middleware / layout ガード / ページレベル検査だけに依存すると、直接呼び出しを防げません。
 
-**Incorrect (no authentication check):**
+Next.js 公式にも、Server Actions は公開 API エンドポイントと同等のセキュリティ前提で扱い、ユーザーがその更新を実行可能か検証すべきだと明記されています。
+
+**Incorrect（no authentication check):**
 
 ```typescript
 'use server'
@@ -25,7 +27,7 @@ export async function deleteUser(userId: string) {
 }
 ```
 
-**Correct (authentication inside the action):**
+**Correct（authentication inside the action):**
 
 ```typescript
 'use server'
@@ -51,7 +53,7 @@ export async function deleteUser(userId: string) {
 }
 ```
 
-**With input validation:**
+**入力検証を組み合わせる場合:**
 
 ```typescript
 'use server'
@@ -93,4 +95,4 @@ export async function updateProfile(data: unknown) {
 }
 ```
 
-Reference: [https://nextjs.org/docs/app/guides/authentication](https://nextjs.org/docs/app/guides/authentication)
+参考: [https://nextjs.org/docs/app/guides/authentication](https://nextjs.org/docs/app/guides/authentication)

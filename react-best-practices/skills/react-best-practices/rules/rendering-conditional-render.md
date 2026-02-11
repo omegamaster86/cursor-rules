@@ -1,15 +1,17 @@
 ---
-title: Use Explicit Conditional Rendering
+title: 条件レンダリングは明示的に書く
 impact: LOW
 impactDescription: prevents rendering 0 or NaN
 tags: rendering, conditional, jsx, falsy-values
 ---
 
-## Use Explicit Conditional Rendering
+## 条件レンダリングは明示的に書く
 
-Use explicit ternary operators (`? :`) instead of `&&` for conditional rendering when the condition can be `0`, `NaN`, or other falsy values that render.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (renders "0" when count is 0):**
+条件が `0` / `NaN` など描画されうる falsy 値を取り得る場合、条件レンダリングは `&&` ではなく明示的な三項演算子（`? :`）を使います。
+
+**Incorrect（renders "0" when count is 0):**
 
 ```tsx
 function Badge({ count }: { count: number }) {
@@ -24,7 +26,7 @@ function Badge({ count }: { count: number }) {
 // When count = 5, renders: <div><span class="badge">5</span></div>
 ```
 
-**Correct (renders nothing when count is 0):**
+**Correct（renders nothing when count is 0):**
 
 ```tsx
 function Badge({ count }: { count: number }) {

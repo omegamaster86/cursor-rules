@@ -1,15 +1,17 @@
 ---
-title: Strategic Suspense Boundaries
+title: 戦略的に Suspense 境界を配置する
 impact: HIGH
 impactDescription: faster initial paint
 tags: async, suspense, streaming, layout-shift
 ---
 
-## Strategic Suspense Boundaries
+## 戦略的に Suspense 境界を配置する
 
-Instead of awaiting data in async components before returning JSX, use Suspense boundaries to show the wrapper UI faster while data loads.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (wrapper blocked by data fetching):**
+async コンポーネントで JSX を返す前に await するのではなく、Suspense 境界を使ってデータ読み込み中でもラッパー UI を先に表示します。
+
+**Incorrect（wrapper blocked by data fetching):**
 
 ```tsx
 async function Page() {
@@ -28,9 +30,9 @@ async function Page() {
 }
 ```
 
-The entire layout waits for data even though only the middle section needs it.
+実際にデータが必要なのは中央セクションだけなのに、レイアウト全体が待たされます。
 
-**Correct (wrapper shows immediately, data streams in):**
+**Correct（wrapper shows immediately, data streams in):**
 
 ```tsx
 function Page() {
@@ -54,9 +56,9 @@ async function DataDisplay() {
 }
 ```
 
-Sidebar, Header, and Footer render immediately. Only DataDisplay waits for data.
+Sidebar / Header / Footer は即時描画され、データ待ちになるのは DataDisplay のみです。
 
-**Alternative (share promise across components):**
+**代替案（share promise across components):**
 
 ```tsx
 function Page() {
@@ -87,13 +89,13 @@ function DataSummary({ dataPromise }: { dataPromise: Promise<Data> }) {
 }
 ```
 
-Both components share the same promise, so only one fetch occurs. Layout renders immediately while both components wait together.
+2つのコンポーネントで同じ Promise を共有するため fetch は 1 回で済みます。レイアウトは先に描画され、2 コンポーネントは同時に待機します。
 
-**When NOT to use this pattern:**
+**このパターンを使わない方がよいケース:**
 
-- Critical data needed for layout decisions (affects positioning)
-- SEO-critical content above the fold
-- Small, fast queries where suspense overhead isn't worth it
-- When you want to avoid layout shift (loading → content jump)
+- レイアウト判断に必須の重要データ（配置に影響する）
+- ファーストビューの SEO 重要コンテンツ
+- Suspense のオーバーヘッドに見合わない小規模・高速クエリ
+- レイアウトシフト（loading から content へのジャンプ）を避けたい場合
 
-**Trade-off:** Faster initial paint vs potential layout shift. Choose based on your UX priorities.
+**トレードオフ:** 初期描画の速さとレイアウトシフトの可能性のバランスです。UX 優先度に応じて選んでください。

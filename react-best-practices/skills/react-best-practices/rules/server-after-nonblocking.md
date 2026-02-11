@@ -1,15 +1,17 @@
 ---
-title: Use after() for Non-Blocking Operations
+title: 非ブロッキング処理に after() を使う
 impact: MEDIUM
 impactDescription: faster response times
 tags: server, async, logging, analytics, side-effects
 ---
 
-## Use after() for Non-Blocking Operations
+## 非ブロッキング処理に after() を使う
 
-Use Next.js's `after()` to schedule work that should execute after a response is sent. This prevents logging, analytics, and other side effects from blocking the response.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (blocks response):**
+Next.js の `after()` を使って、レスポンス送信後に実行すべき処理をスケジュールします。これによりログ・分析などの副作用がレスポンスをブロックしなくなります。
+
+**Incorrect（blocks response):**
 
 ```tsx
 import { logUserAction } from '@/app/utils'
@@ -29,7 +31,7 @@ export async function POST(request: Request) {
 }
 ```
 
-**Correct (non-blocking):**
+**Correct（non-blocking):**
 
 ```tsx
 import { after } from 'next/server'
@@ -55,19 +57,19 @@ export async function POST(request: Request) {
 }
 ```
 
-The response is sent immediately while logging happens in the background.
+レスポンスは即時返却され、ログ処理はバックグラウンドで実行されます。
 
-**Common use cases:**
+**よくあるユースケース：**
 
-- Analytics tracking
-- Audit logging
-- Sending notifications
-- Cache invalidation
-- Cleanup tasks
+- 分析トラッキング
+- 監査ログ
+- 通知送信
+- キャッシュ無効化
+- クリーンアップ処理
 
-**Important notes:**
+**重要な注意点：**
 
-- `after()` runs even if the response fails or redirects
-- Works in Server Actions, Route Handlers, and Server Components
+- `after()` はレスポンス失敗時やリダイレクト時でも実行される
+- Server Actions / Route Handlers / Server Components で利用可能
 
-Reference: [https://nextjs.org/docs/app/api-reference/functions/after](https://nextjs.org/docs/app/api-reference/functions/after)
+参考: [https://nextjs.org/docs/app/api-reference/functions/after](https://nextjs.org/docs/app/api-reference/functions/after)

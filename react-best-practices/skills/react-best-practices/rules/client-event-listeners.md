@@ -1,15 +1,17 @@
 ---
-title: Deduplicate Global Event Listeners
+title: グローバルイベントリスナーを重複させない
 impact: LOW
 impactDescription: single listener for N components
 tags: client, swr, event-listeners, subscription
 ---
 
-## Deduplicate Global Event Listeners
+## グローバルイベントリスナーを重複させない
 
-Use `useSWRSubscription()` to share global event listeners across component instances.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (N instances = N listeners):**
+`useSWRSubscription()` を使い、コンポーネントインスタンス間でグローバルイベントリスナーを共有します。
+
+**Incorrect（N instances = N listeners):**
 
 ```tsx
 function useKeyboardShortcut(key: string, callback: () => void) {
@@ -25,9 +27,9 @@ function useKeyboardShortcut(key: string, callback: () => void) {
 }
 ```
 
-When using the `useKeyboardShortcut` hook multiple times, each instance will register a new listener.
+`useKeyboardShortcut` フックを複数回使うと、各インスタンスが新しいリスナーを登録してしまいます。
 
-**Correct (N instances = 1 listener):**
+**Correct（N instances = 1 listener):**
 
 ```tsx
 import useSWRSubscription from 'swr/subscription'

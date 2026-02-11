@@ -1,15 +1,17 @@
 ---
-title: Prevent Hydration Mismatch Without Flickering
+title: チラつきなしで Hydration 不一致を防ぐ
 impact: MEDIUM
 impactDescription: avoids visual flicker and hydration errors
 tags: rendering, ssr, hydration, localStorage, flicker
 ---
 
-## Prevent Hydration Mismatch Without Flickering
+## チラつきなしで Hydration 不一致を防ぐ
 
-When rendering content that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before React hydrates.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**Incorrect (breaks SSR):**
+client-side storage（localStorage / cookies）に依存する内容を描画する場合は、React が hydration する前に DOM を更新する同期スクリプトを注入し、SSR 破綻と hydration 後のチラつきを同時に防ぎます。
+
+**Incorrect（breaks SSR):**
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -24,9 +26,9 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 }
 ```
 
-Server-side rendering will fail because `localStorage` is undefined.
+`localStorage` はサーバーでは未定義のため、SSR は失敗します。
 
-**Incorrect (visual flickering):**
+**Incorrect（visual flickering):**
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -48,9 +50,9 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 }
 ```
 
-Component first renders with default value (`light`), then updates after hydration, causing a visible flash of incorrect content.
+コンポーネントは先にデフォルト値（`light`）で描画され、hydration 後に更新されるため、誤った内容のフラッシュが発生します。
 
-**Correct (no flicker, no hydration mismatch):**
+**Correct（no flicker, no hydration mismatch):**
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -77,6 +79,6 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 }
 ```
 
-The inline script executes synchronously before showing the element, ensuring the DOM already has the correct value. No flickering, no hydration mismatch.
+inline script が要素表示前に同期実行されるため、DOM は最初から正しい値を持ちます。チラつきも hydration mismatch も発生しません。
 
-This pattern is especially useful for theme toggles, user preferences, authentication states, and any client-only data that should render immediately without flashing default values.
+このパターンは、テーマ切替・ユーザー設定・認証状態など、デフォルト値のフラッシュなしに即時表示したい client-only データで特に有効です。

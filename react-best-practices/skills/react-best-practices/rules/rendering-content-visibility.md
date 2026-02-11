@@ -1,15 +1,17 @@
 ---
-title: CSS content-visibility for Long Lists
+title: 長いリストに CSS content-visibility を使う
 impact: HIGH
 impactDescription: faster initial render
 tags: rendering, css, content-visibility, long-lists
 ---
 
-## CSS content-visibility for Long Lists
+## 長いリストに CSS content-visibility を使う
 
-Apply `content-visibility: auto` to defer off-screen rendering.
+このルールの目的はパフォーマンスと保守性の向上です。以下に非推奨例と推奨例を示します。
 
-**CSS:**
+`content-visibility: auto` を適用して、画面外要素の描画を遅延します。
+
+**CSS 例:**
 
 ```css
 .message-item {
@@ -18,7 +20,7 @@ Apply `content-visibility: auto` to defer off-screen rendering.
 }
 ```
 
-**Example:**
+**例:**
 
 ```tsx
 function MessageList({ messages }: { messages: Message[] }) {
@@ -35,4 +37,4 @@ function MessageList({ messages }: { messages: Message[] }) {
 }
 ```
 
-For 1000 messages, browser skips layout/paint for ~990 off-screen items (10× faster initial render).
+1000 件のメッセージでは、約 990 件の画面外要素の layout/paint をスキップでき、初期描画が約 10 倍高速化します。
