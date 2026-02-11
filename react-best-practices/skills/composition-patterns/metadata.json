@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "organization": "エンジニアリング",
+  "date": "2026年1月",
+  "abstract": "柔軟で保守しやすい React コンポーネントを構築するためのコンポジションパターン。複合コンポーネントの活用、state のリフトアップ、内部要素の合成によって boolean props の増殖を避けます。これらのパターンは、コードベースの規模が大きくなっても人間と AI エージェントの双方が扱いやすい状態を維持します。",
+  "references": [
+    "https://react.dev",
+    "https://react.dev/learn/passing-data-deeply-with-context",
+    "https://react.dev/reference/react/use"
+  ]
+}
