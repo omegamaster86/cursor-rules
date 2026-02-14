@@ -1,0 +1,4 @@
+[submodule "supabase-skills"]
+	path = supabase-skills
+	url = https://github.com/supabase/agent-skills.git
+	branch = main
