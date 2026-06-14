@@ -18,7 +18,6 @@
 ## Step 0: リポジトリ構造の把握（短く）
 
 差分を見る前に、当該リポジトリで次を把握する（README、`package.json`、`tsconfig` paths、ディレクトリ一覧、`.cursor/rules`、**`.fallowrc.json` / `fallow.toml` の `boundaries` があれば**）:
-
 - 型・定数の置き場（例: `types/`, `@/types`, `shared/`, `lib/`）
 - 共通 util / helper の置き場
 - API クライアント・サービス層の置き場と命名規則
