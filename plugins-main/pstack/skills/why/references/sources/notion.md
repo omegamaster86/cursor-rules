@@ -1,55 +1,55 @@
-# Notion Docs
+# Notion ドキュメント
 
-## What this source contains
+## このソースが含むもの
 
-- PRDs (product requirement documents)
-- Technical specs and RFCs
-- Architectural decision records (ADRs)
-- Meeting notes from design reviews
-- Team pages with domain context
-- Postmortems from incidents
-- Runbooks that may explain defensive code
-- Strategy documents that set priorities
+- PRD（プロダクト要求ドキュメント）
+- 技術仕様と RFC
+- アーキテクチャ決定記録（ADR）
+- 設計レビューの会議メモ
+- ドメインコンテキストのチームページ
+- インシデントからのポストモーテム
+- 防御的コードを説明しうる Runbook
+- 優先順位を定める戦略ドキュメント
 
-Notion is where "why" often lives in long-form before it becomes code. A significant feature usually has a doc.
+Notion は「why」がコードになる前に長文で住むことが多い。重要機能には通常 doc がある。
 
-## How to search it
+## 検索方法
 
-Use the Notion MCP.
+Notion MCP を使用。
 
-1. **Keyword searches with `notion-search`.** Try:
-   - The feature name
-   - Key symbols / class names from the target code
-   - Author handles (design docs are often authored before the code lands)
-   - Error strings or user-visible terms
-   - Time-bounded queries if you know when the code shipped
-2. **Fetch candidate pages with `notion-fetch`.** Read the full content, not the preview; rationale is often buried mid-document.
-3. **Follow backlinks and child pages.** Design docs often have sub-pages for alternatives considered, appendices, or implementation notes.
-4. **Check related databases.** `notion-query-data-sources` and `notion-query-meeting-notes` can surface meeting notes that discussed the decision.
-5. **Search author-specific spaces.** If the PR author has a personal notebook (common at some companies), it may hold exploratory thinking that preceded the code.
+1. **`notion-search` でキーワード検索。** 試す:
+   - 機能名
+   - 対象コードの主要シンボル/クラス名
+   - 著者ハンドル（設計 doc はコード前に書かれることが多い）
+   - エラー文字列やユーザー可視用語
+   - コード出荷時期が分かれば時間境界クエリ
+2. **`notion-fetch` で候補ページ取得。** プレビューではなく全文。根拠は doc 中盤に埋もれがち。
+3. **バックリンクと子ページを辿る。** 設計 doc は検討代替、付録、実装メモのサブページを持つことが多い。
+4. **関連データベースを確認。** `notion-query-data-sources` と `notion-query-meeting-notes` で決定を議論した会議メモを表面化。
+5. **著者固有スペースを検索。** PR 著者の個人ノート（一部企業で common）にコード前の探索思考があることがある。
 
-## What good evidence looks like here
+## 良い証拠
 
-- A PRD with a "Problem statement" or "Motivation" section that matches the target code's purpose
-- An "Alternatives considered" or "Rejected approaches" section
-- A postmortem that names the target code as the fix for a specific incident
-- Meeting notes that record "we decided X because Y" and tie to the same author/date range as the PR
-- An ADR template filled out non-trivially (status, context, decision, consequences)
+- 対象コードの目的と一致する「Problem statement」または「Motivation」節の PRD
+- 「Alternatives considered」または「Rejected approaches」節
+- 特定インシデント修正として対象コードを名指すポストモーテム
+- 「X にした。Y のため」と記録し PR と同著者/日付範囲に結びつく会議メモ
+- 非自明に記入された ADR（status、context、decision、consequences）
 
-## Common pitfalls
+## 一般的落とし穴
 
-- **Outdated docs.** Specs are often written before implementation and not updated; the doc may describe a plan that changed. Cross-check against the actual PR.
-- **Doc vs. reality drift.** A spec may say "we'll do X" but the code actually does Y. Flag the divergence; the synthesizer will surface the contradiction.
-- **Boilerplate templates.** Some orgs require a "Why" section that gets filled with fluff. Look for specificity.
-- **Unlinked docs.** The most relevant doc may not be linked from anywhere. Broad keyword searches help.
-- **Multiple drafts.** If a topic has multiple docs, find the one that was finalized or most recently updated. Check dates.
-- **Access-restricted pages.** If you can't access a page, note it as a gap.
+- **古い doc。** 仕様は実装前に書かれ更新されないことが多い。doc は変わった計画を述べうる。実 PR と突合。
+- **doc と現実のずれ。** 仕様は「X する」と言い実コードは Y かも。ずれを旗立て。統合者が矛盾を表面化。
+- **定型テンプレート。** 一部組織は fluff で埋める「Why」節必須。具体性を探す。
+- **リンクされていない doc。** 最も関連 doc がどこからもリンクされていないことがある。広いキーワード検索が助ける。
+- **複数草案。** 複数 doc があるトピックでは確定または最新更新のものを見つける。日付確認。
+- **アクセス制限ページ。** ページにアクセスできなければギャップとして記す。
 
-## What to return
+## 返すもの
 
-For each relevant doc:
-- Title and URL
-- Authors and last-updated date
-- The motivation text (verbatim quote), with page/section location
-- Relevant linked pages (so the synthesizer can cite them)
-- Whether the doc was finalized or draft
+各関連 doc について:
+- タイトルと URL
+- 著者と最終更新日
+- 動機テキスト（逐語引用）とページ/節位置
+- 統合者が引用できる関連リンクページ
+- doc が確定か草案か

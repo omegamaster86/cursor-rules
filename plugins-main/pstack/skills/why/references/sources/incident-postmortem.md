@@ -1,15 +1,15 @@
-# Incident & Postmortem Context
+# インシデントとポストモーテムコンテキスト
 
-Not a separate source, a **cross-cutting angle**. Incidents often motivate defensive code ("we added this check after the X outage"), so if the target looks defensive (null checks, retry logic, timeout handling, rate limiting, feature flags), specifically hunt for incident history across every available source:
+別ソースではなく**横断角度**。インシデントは防御的コードを often 動機づける（「X 障害後にこのチェック追加」）。対象が防御的（null チェック、リトライ、タイムアウト、レート制限、feature flag）なら、利用可能なすべてのソースでインシデント履歴を specifically hunt:
 
-- **Notion**: search for postmortems mentioning the target file, feature, or error string
-- **Linear**: look for tickets labeled `incident`, `sev-*`, `postmortem-action-item`, `reliability`
-- **Slack**: search `#sev-*` and `#incident-*` channels around the dates the target code was added
-- **Git**: commits with messages like "fix for incident", "add defensive check", "revert" followed by "re-apply with..." are strong signals
-- **Datadog**: `search_datadog_incidents` for formal incident records with timelines; dashboards and monitors created as postmortem action items
-- **Sentry**: issues whose first-seen/last-seen window aligns with the target's PR ship date; stack traces through the target
-- **Databricks**: product-analytics events that classify an error condition (client-reported failures, user-visible retry events, etc.) often spike during an incident window. A drop in that event count after the target PR ships is circumstantial support that the target code resolved the user-visible symptom, even when Datadog/Sentry signal is noisy.
+- **Notion**: 対象ファイル、機能、エラー文字列を言及するポストモーテム検索
+- **Linear**: `incident`、`sev-*`、`postmortem-action-item`、`reliability` ラベルチケット
+- **Slack**: 対象コード追加日付前後の `#sev-*` と `#incident-*` 検索
+- **Git**: 「fix for incident」「add defensive check」、「revert」の後「re-apply with...」メッセージは強シグナル
+- **Datadog**: タイムライン付き正式インシデント `search_datadog_incidents`、ポストモーテムアクションとして作られたダッシュボード/モニター
+- **Sentry**: first-seen/last-seen ウィンドウが対象 PR 出荷日と一致する issue、対象を通るスタックトレース
+- **Databricks**: エラー条件を分類するプロダクト分析 event（クライアント報告失敗、ユーザー可視リトライ event など）はインシデントウィンドウで often スパイク。対象 PR 出荷後その event count 低下は、Datadog/Sentry シグナルがノイズでもユーザー可視症状を対象コードが解決した circumstantial 支持。
 
-If you find an incident link, fetch the full postmortem. Postmortems typically have an "Action Items" section that ties directly to code changes. When multiple sources corroborate (a Datadog incident ID appears in a Linear ticket, which appears in a Notion postmortem, which appears in a Slack thread that links to the target PR, and the Databricks error-event count drops after the fix), the evidence is especially strong.
+インシデントリンクを見つけたらフルポストモーテム取得。ポストモーテムは typically「Action Items」節がありコード変更に直接結びつく。複数ソースが裏付けるとき（Datadog incident ID が Linear チケットに現れ、Notion ポストモーテムに現れ、Slack スレッドが対象 PR をリンクし、fix 後 Databricks error-event count が落ちる）証拠は特に強い。
 
-Worth spending time on when the code's defensive character makes an incident-driven origin plausible. Skip it for code that doesn't look defensive.
+コードの防御的性格からインシデント駆動起源がもっともらしいとき時間をかける価値あり。防御的に見えないコードではスキップ。

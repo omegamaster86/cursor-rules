@@ -1,54 +1,54 @@
-# Slack Conversations
+# Slack 会話
 
-## What this source contains
+## このソースが含むもの
 
-- Real-time discussions of problems and decisions
-- Incident channels where fire-drill decisions were made
-- Design discussion threads where tradeoffs were debated
-- Questions answered by senior engineers that didn't make it into docs
-- Post-merge discussions that explain why something was revisited
-- DMs (usually not searchable, scope accordingly)
+- 問題と決定のリアルタイム議論
+- 火事消し決定がなされたインシデントチャンネル
+- トレードオフが議論された設計スレッド
+- doc に載らなかったシニアエンジニア回答
+- なぜ再訪されたかを説明するマージ後議論
+- DM（通常検索不可。スコープ accordingly）
 
-Slack is frequently where the *real* decisions got made, especially for smaller changes that didn't warrant a doc. It's also the most ephemeral source: threads get deleted, channels get archived, and search quality degrades over time.
+Slack は*本当の*決定がなされた場所であることが多い。特に doc に値しない小変更。最も ephemeral なソース: スレッド削除、アーカイブ、検索品質劣化。
 
-## How to search it
+## 検索方法
 
-Slack MCP tools vary. Check which Slack MCP is available and inspect its tool schema first. It may require `mcp_auth`. If authentication fails, stop and report the gap.
+Slack MCP ツールは異なる。利用可能 Slack MCP を確認し、まずツールスキーマを検査。`mcp_auth` が要ることがある。認証失敗なら止まりギャップを報告。
 
-1. **Author-bounded search.** Messages from the PR author around the PR merge date. Limits scope dramatically and often hits gold.
-2. **Keyword search for the feature name and key symbols.** Include misspellings and casual phrasings.
-3. **PR URL search.** Slack often links PRs when they're reviewed or discussed. Search for the PR URL (or just `/pull/<number>`).
-4. **Error string search.** If the code handles a specific error, search for the error string. Incident threads often surface.
-5. **Channel-scoped search.** Narrow to likely channels:
-   - `#eng-*`. Engineering discussions
-   - `#proj-*`. Project channels
-   - `#incident-*` / `#sev-*`. Incident channels
-   - Team-specific channels for the owning team
-   - Design review channels
-6. **Thread traversal.** When you find a relevant message, fetch the whole thread. The decision often lives in the replies.
+1. **著者境界検索。** PR マージ日付前後の PR 著者メッセージ。スコープを劇的に狭め gold に当たりやすい。
+2. **機能名と主要シンボルのキーワード検索。**  typo とカジュアル言い回しを含む。
+3. **PR URL 検索。** Slack はレビュー・議論時に PR をリンクすることが多い。PR URL（または `/pull/<number>` だけ）を検索。
+4. **エラー文字列検索。** コードが特定エラーを扱うならその文字列を検索。インシデントスレッドが surface しやすい。
+5. **チャンネルスコープ検索。** 有力チャンネルに絞る:
+   - `#eng-*`. エンジニアリング議論
+   - `#proj-*`. プロジェクトチャンネル
+   - `#incident-*` / `#sev-*`. インシデントチャンネル
+   - 所有チームのチーム固有チャンネル
+   - 設計レビューチャンネル
+6. **スレッド traversal。** 関連メッセージを見つけたらスレッド全体を取得。決定は often 返信に住む。
 
-## What good evidence looks like here
+## 良い証拠
 
-- A thread where tradeoffs were explicitly debated ("I was going to use A but B is better because...")
-- An incident channel message describing the bug the code prevents
-- A question from a reviewer and an authoritative answer from the author or lead
-- A reference to a meeting where a decision was made
-- A message from a product manager or customer-facing engineer explaining a customer ask
+- トレードオフが明示的に議論されたスレッド（「A を使うつもりだったが B の方が良い。なぜなら…」）
+- コードが防ぐバグを述べるインシデントチャンネルメッセージ
+- レビュアーの質問と著者またはリードの権威ある回答
+- 決定がなされた会議への参照
+- 顧客要請を説明する PM または customer-facing エンジニアのメッセージ
 
-## Common pitfalls
+## 一般的落とし穴
 
-- **Channel archaeology limits.** Very old messages may be gone due to retention policies. If you can't find anything before a certain date, note the retention cliff.
-- **Unsearched DMs.** Many decisions happen in DMs that aren't searchable. You'll miss them; that's a known limitation.
-- **Speculative jokes as "decisions."** Slack is casual. "Lol just do the thing" isn't a decision, even if it preceded the commit. Look for considered discussion.
-- **Context collapse in single messages.** Without the thread, a single message often reads differently than in context. Always fetch threads.
-- **Auth failures.** If the MCP isn't authenticated, stop. Don't make up findings. Report that Slack wasn't searchable.
+- **チャンネル考古学限界。** 保持ポリシーで非常に古いメッセージは消えている。特定日より前に何も見つからなければ retention cliff を記す。
+- **未検索 DM。** 多くの決定は検索不可 DM で起きる。見逃す。既知の限界。
+- **「決定」としての投機的ジョーク。** Slack はカジュアル。「lol just do the thing」はコミット前でも決定ではない。熟慮議論を探す。
+- **単一メッセージのコンテキスト崩壊。** スレッドなしでは 1 メッセージは文脈で読み方が変わる。常にスレッド取得。
+- **認証失敗。** MCP 未認証なら止まる。所見をでっち上げない。Slack が検索不能と報告。
 
-## What to return
+## 返すもの
 
-For each relevant thread:
-- Channel name
-- Permalink or thread ID
-- Participants
-- Date range of the discussion
-- The key quotes (verbatim) with attribution
-- Context: what thread/incident/discussion this was part of
+各関連スレッドについて:
+- チャンネル名
+- Permalink またはスレッド ID
+- 参加者
+- 議論の日付範囲
+- 帰属付き主要引用（逐語）
+- 文脈: どのスレッド/インシデント/議論の一部か

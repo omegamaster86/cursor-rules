@@ -1,73 +1,73 @@
 ---
 name: why
-description: "Use for 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems, or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control, issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for runtime behavior."
+description: "「why does X work this way」「why we picked Y」、設計根拠、回帰、ポストモーテム、データ裏付け閾値に使用。利用可能な MCP を発見し、各証拠カテゴリ（ソース管理、課題トラッカー、長文ドキュメント、リアルタイムチャット、インフラ可観測性、エラートラッキング、プロダクト分析ウェアハウス）を並列照会し、引用付きで決定とトレードオフを返す。ランタイム振る舞いは how を使用。"
 ---
 
 # Why
 
-Investigate the motivation and intent behind code. Why was it built this way? What edge cases were considered? What product, business, or operational constraints shaped the design? What alternatives were rejected, and why?
+コードの背後にある動機と意図を調査する。なぜこの形で作られたか。どんなエッジケースが考慮されたか。どんなプロダクト・ビジネス・運用制約が設計を形作ったか。どんな代替が却下され、なぜか。
 
-Companion to the `how` skill. `how` answers what the code does and how it works. `why` answers what forces led to its shape.
+`how` スキルの補助。`how` はコードが何をしどう動くか。`why` はその形に至った力。
 
-## How this skill works
+## このスキルの動き方
 
-Historical context spreads across seven evidence categories: source control history, issue or ticket tracking, long-form documents, real-time team chat, infrastructure observability, error or exception tracking, and product analytics warehouses. You cannot predict from the question alone which one holds the answer, so the skill enumerates available MCPs at run time, maps each to a category, queries all seven in parallel, then synthesizes with explicit confidence calibration. Null results from searched categories are first-class evidence about how the decision was made; report them alongside positive findings. The default is coverage, not minimalism.
+歴史コンテキストは 7 つの証拠カテゴリに分散: ソース管理履歴、課題/チケット、長文ドキュメント、リアルタイムチームチャット、インフラ可観測性、エラー/例外トラッキング、プロダクト分析ウェアハウス。質問だけではどれに答えがあるか予測できない。実行時に利用可能 MCP を列挙し、各をカテゴリにマップし、7 つすべてを並列照会し、明示的信頼度較正で統合する。検索したカテゴリの null 結果は決定のされ方についての第一級証拠。肯定的所見と並べて報告。デフォルトは網羅であり最小主義ではない。
 
-## Operating Posture
+## 運用姿勢
 
-Operate as a careful, cautious, precise investigator. Think like a detective piecing together a historical case from fragmentary records. When the record is thin, say so.
+慎重で控えめで精密な調査者として動く。断片的記録から歴史的事件を組み立てる探偵のように。記録が薄いときはそう言う。
 
-Concretely:
+具体:
 
-- **Evidence before narrative.** Collect the pieces first, then see what story they support. Never pick a story and recruit the evidence that fits it.
-- **Precision over polish.** Prefer the exact quote and citation over a smooth paraphrase. A reader should be able to follow any claim back to its source and verify it in under a minute.
-- **Consider what you haven't seen.** The evidence you find is a sample, not the whole truth. Before concluding, ask what you would expect to see if an alternative explanation were true, and whether you looked for it.
-- **Name the gaps.** If a thread goes cold, a source isn't searchable, or a question has no answer, document the gap. Don't paper it over with an authoritative-sounding guess.
-- **Hedge on purpose.** When evidence is indirect, your language should signal it ("appears to", "likely", "suggests"). Confidence-matching phrasing is a feature of the output, not a stylistic choice the synthesizer may override.
-- **No shortcut by code-reading.** The code tells you what it does, rarely why it exists. Resist inferring intent from code shape.
+- **物語より証拠。** まず断片を集め、それが支える物語を見る。物語を先に選び合う証拠を集めない。
+- **磨きより精度。** 滑らかな言い換えより正確な引用と引用。読者は任意の主張を 1 分以内にソースへ辿れるべき。
+- **見ていないものを考慮。** 見つけた証拠は標本であり全体の真実ではない。結論前に、代替説明が真なら何が見えるはずか、それを探したか問う。
+- **ギャップを名指す。** スレッドが途切れる、ソースが検索不能、答えがないならギャップを文書化。権威ある推測でごまかさない。
+- **意図的にヘッジ。** 証拠が間接的なら言語がそれを示す（"appears to"、"likely"、"suggests"）。信頼度に合わせた言い回しは出力の機能であり、統合者が上書きするスタイル選択ではない。
+- **コード読みでの近道禁止。** コードは何をするかは語るが、なぜ存在するかはめったに語らない。コード形状から意図を推論する誘惑に抗する。
 
-This posture is the working method, not a disclaimer.
+この姿勢は作業方法であり免責ではない。
 
-## Core Epistemics
+## コア認識論
 
-This skill builds a **patchwork understanding** from fragmented historical evidence. Tickets go stale. Chat threads get deleted. Commit messages lie. People change their minds between the PR description and the implementation. The original author may have left the company.
+このスキルは断片的歴史証拠から**継ぎ接ぎ理解**を構築する。チケットは古くなる。チャットは削除される。コミットメッセージは嘘をつく。PR 説明と実装の間で人は考えを変える。原作者は去ったかもしれない。
 
-Be ruthlessly honest about what you know versus what you're inferring. The goal is not a satisfying story; it is to surface evidence, calibrate confidence, and let the user decide.
+知っていることと推論していることを容赦なく正直に。目標は満足のいく物語ではなく、証拠を表面化し信頼度を較正し、ユーザーが決めること。
 
-Principles:
+原則:
 
-- **Cite everything.** Every claim about intent should reference a specific commit hash, PR number, ticket ID, doc URL, chat permalink, or code comment. If you can't cite it, it's inference, not fact, and must be labeled as such.
-- **Prefer "appears to" over "because".** Hedge when evidence is indirect. Reserve confident language for direct, explicit evidence.
-- **Surface contradictions.** If two sources disagree, show both. Don't quietly pick the one that fits your narrative.
-- **Acknowledge gaps.** If a question has no answer in any source you searched, say so. An honest "we couldn't find out why" beats a confident guess.
-- **Multiple hypotheses are valid.** When the evidence fits several stories, present them all with the evidence for each. Let the user triangulate.
-- **Beware rationalization.** Code that makes sense today may have been written for reasons that no longer apply, or for no good reason at all. Don't retrofit intent.
+- **すべて引用。** 意図に関する主張は特定のコミット hash、PR 番号、チケット ID、doc URL、チャット permalink、コードコメントを参照。引用できなければ推論であり事実ではなく、そうラベルする。
+- **"because" より "appears to" を優先。** 証拠が間接的ならヘッジ。自信ある言語は直接明示的証拠に留保。
+- **矛盾を表面化。** 2 ソースが disagree なら両方示す。物語に合う方を静かに選ばない。
+- **ギャップを認める。** 検索したどのソースにも答えがなければそう言う。自信ある推測より正直な「なぜか分からなかった」。
+- **複数仮説は有効。** 証拠が複数物語に合うならすべて提示し各の証拠を示す。ユーザーに三角測量させる。
+- **合理化に注意。** 今日理にかなうコードは、もはや当てはまらない理由、または良い理由なく書かれたことがある。意図を後付けしない。
 
-Read `references/epistemics.md` for the full confidence framework and phrasing guide. The synthesizer must follow it.
+`references/epistemics.md` でフル信頼度フレームワークと言い回しガイド。統合者は従うこと。
 
-## Step 1. Understand the Target and the Question
+## ステップ 1. 対象と質問を理解する
 
-Parse what the user is asking. The **target** is usually a chunk of code, a pattern, a feature, or a named design decision. The **question** is usually one of:
+ユーザーが聞いていることを解析。**対象**は通常コードの塊、パターン、機能、名前付き設計判断。**質問**は通常次のいずれか:
 
-- "Why was X designed this way?" Design rationale.
-- "Why do we do X instead of Y?" Tradeoff or alternatives.
-- "What edge cases motivated this?" Defensive reasoning.
-- "What business or product constraint led to this?" External forcing function.
-- "Why does this code still exist?" Dead-code territory.
-- "What's the history of X?" Broad archaeological sweep.
+- "Why was X designed this way?" 設計根拠。
+- "Why do we do X instead of Y?" トレードオフまたは代替。
+- "What edge cases motivated this?" 防御的理由。
+- "What business or product constraint led to this?" 外部の強制力。
+- "Why does this code still exist?" デッドコード領域。
+- "What's the history of X?" 広い考古学スイープ。
 
-If the target is vague ("why do we do it this way?" with no clear referent), make your best guess from conversation context (open files, recent edits, cursor location, what was just discussed). State your interpretation briefly so the user can redirect if you're off, then proceed.
+対象が曖昧（明確な指示対象のない "why do we do it this way?"）なら会話コンテキスト（開いているファイル、最近の編集、カーソル位置、直前の議論）から最善推測。解釈を短く述べユーザーがリダイレクトできるようにし、進む。
 
-## Step 2. Establish the Code Anchor
+## ステップ 2. コードアンカーを確立する
 
-Before spawning investigators, anchor the investigation in concrete code. You need:
+調査員を起動する前に、調査を具体コードに固定。必要:
 
-- The relevant file path(s) and line range(s)
-- The key symbols (function names, class names, constants)
-- An initial commit list. The last few commits touching the target.
-- PR numbers from merge commits (pattern `(#1234)` in the subject line)
+- 関連ファイルパスと行範囲
+- 主要シンボル（関数名、クラス名、定数）
+- 初期コミットリスト。対象に触れた直近のコミット。
+- マージコミットの PR 番号（件名の `(#1234)` パターン）
 
-Build this inline. It's cheap, and every investigator needs it.
+インラインで構築。安価。全調査員が必要とする。
 
 ```bash
 # Blame target lines for last-touch commits
@@ -83,123 +83,121 @@ git log --oneline -20 -- <file>
 git log -1 --format=%B <commit>
 ```
 
-Pull PR bodies and discussion via `gh` for any substantive commits:
+実質的コミットについて `gh` で PR 本文と議論を引く:
 
 ```bash
 gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIssuesReferences,comments,reviews
 ```
 
-Capture this as seed context (file paths, symbols, commits, PR numbers, linked ticket IDs). Pass it to the investigators so they don't rediscover it.
+シードコンテキスト（ファイルパス、シンボル、コミット、PR 番号、リンクチケット ID）として捕捉。調査員に渡し再発見させない。
 
-## Step 3. Spawn Parallel Investigators (default posture)
+## ステップ 3. 並列調査員を起動（デフォルト姿勢）
 
-**Default to the full parallel investigation.** Each evidence category lives in a different kind of system, and you cannot tell from the question alone which one holds the answer without looking. So look across every available category, in parallel, by default.
+**フル並列調査をデフォルトに。** 各証拠カテゴリは異なる種類のシステムに住み、見る前には質問だけではどれに答えがあるか分からない。だから利用可能なすべてのカテゴリを並列に見る。
 
-### Discovery
+### 発見
 
-Before spawning investigators, list the available MCPs from the Cursor environment. Use the available-tools map when present. Otherwise inspect the `mcps/` directory Cursor exposes for enabled MCP servers.
+調査員起動前に Cursor 環境の利用可能 MCP を列挙。available-tools マップがあれば使用。なければ Cursor が公開する `mcps/` ディレクトリを検査。
 
-Map each available MCP to one evidence category:
+各利用可能 MCP を 1 証拠カテゴリにマップ:
 
-1. Source control history
-2. Issue / ticket tracker
-3. Long-form documents
-4. Real-time team chat
-5. Infrastructure observability
-6. Error / exception tracking
-7. Product analytics warehouse
+1. ソース管理履歴
+2. 課題 / チケットトラッカー
+3. 長文ドキュメント
+4. リアルタイムチームチャット
+5. インフラ可観測性
+6. エラー / 例外トラッキング
+7. プロダクト分析ウェアハウス
 
-Source control is always available through git and `gh`. For the other six, classify using the MCP name, server instructions, tool names, and resource descriptors. If an MCP could fit more than one category, choose the one matching its primary evidence. Record ambiguous cases in the coverage map.
+ソース管理は git と `gh` で常に利用可能。他 6 つは MCP 名、サーバー指示、ツール名、リソース記述で分類。複数カテゴリに合いうる MCP は主要証拠に合う方を選ぶ。曖昧なケースはカバレッジマップに記録。
 
-Aim for a complete **coverage map**, not a minimal one. A null result from an issue tracker is evidence the decision was not ticketed, a useful fact in itself. Document the null, don't skip the search.
+**カバレッジマップ**を最小ではなく完全に目指す。課題トラッカーの null はチケット化されなかった決定の証拠。null を文書化し検索をスキップしない。
 
-Launch all matching investigators in a single message so they run concurrently. One investigator per category lets each specialize in one tool's query vocabulary and result shape. Don't ask one agent to cover multiple MCPs.
+一致する全調査員を 1 メッセージで起動し並行実行。カテゴリごとに 1 調査員で各ツールのクエリ語彙と結果形状に特化。1 エージェントに複数 MCP を任せない。
 
-Subagent config (each):
+サブエージェント設定（各）:
 - `subagent_type`: `generalPurpose`
-- `model`: your configured why-investigators model (default `composer-2.5-fast`)
-- `readonly`: `false` (agent mode). **Do not use readonly/Ask mode.** It strips MCP access, which disables MCP-backed investigators entirely. The source control investigator would be safe in readonly, but keep modes uniform. Investigators still shouldn't write anything. That's a posture, not a sandbox.
+- `model`: 設定済み why-investigators モデル（デフォルト `composer-2.5-fast`）
+- `readonly`: `false`（エージェントモード）。**readonly/Ask モードを使わない。** MCP アクセスを剥がし MCP 調査員を無効化する。ソース管理調査員だけ readonly でも安全だが、モードは統一。調査員は依然書き込まない。姿勢でありサンドボックスではない。
 
-Each investigator gets:
-1. The base prompt from `references/investigator-prompt.md`
-2. The category playbook `references/sources/<source>.md` for the selected MCP, adapted from the examples in `references/source-playbook.md`
-3. The cross-cutting `references/sources/incident-postmortem.md` **if the target code looks defensive** (null checks, retry logic, timeout handling, rate limiting, feature flags, egress guards, OOM handlers)
-4. The code anchor from Step 2 (file paths, symbols, commit hashes, PR numbers, ticket IDs)
-5. The user's original question
+各調査員は受け取る:
+1. `references/investigator-prompt.md` のベースプロンプト
+2. 選択 MCP 用カテゴリプレイブック `references/sources/<source>.md`（`references/source-playbook.md` の例を適応）
+3. 対象コードが防御的に見えるとき（null チェック、リトライ、タイムアウト、レート制限、feature flag、egress ガード、OOM ハンドラ）横断的 `references/sources/incident-postmortem.md`
+4. ステップ 2 のコードアンカー
+5. ユーザーの元の質問
 
-### Investigator roster. One per available evidence category
+### 調査員ロスター。利用可能証拠カテゴリごとに 1 人
 
-Spawn one investigator per category that has a matching MCP. Each owns exactly one tool or MCP.
+一致 MCP があるカテゴリごとに 1 人起動。各は正確に 1 ツールまたは MCP を所有。
 
-Each entry lists what the category physically contains and the kind of "why" it uniquely surfaces. Use it to know what to expect back, how to name a gap when a category returns empty, and (only in the rare provably-irrelevant case) to justify a skip. Every category overlaps, but each owns a kind of evidence the others cannot recover.
+各項目はカテゴリが物理的に含むものと、独自に表面化する「why」の種類を列挙。戻りの期待、空のときのギャップの名付け、（稀な証明的に無関係な場合のみ）スキップ正当化に使う。カテゴリは重なるが、各は他が回収できない証拠の種類を所有。
 
-1. **Source control investigator**. Git history, `gh` for PRs, code comments, tests. Always spawn; the only guaranteed source. Best at surfacing *implementation-time rationale captured during review*. PR descriptions stating the problem, review threads debating alternatives, inline comments encoding non-obvious constraints, test names that encode motivating edge cases, and commit messages linking tickets or incidents. Most trustworthy because it ties directly to the diff that shipped.
+1. **ソース管理調査員**。Git 履歴、`gh` で PR、コードコメント、テスト。常に起動。唯一保証されたソース。*レビュー中に捕捉された実装時根拠*の表面化に最適。問題を述べる PR 説明、代替を議論するレビュースレッド、非自明制約をエンコードするインラインコメント、動機づけエッジケースをエンコードするテスト名、チケットやインシデントをリンクするコミットメッセージ。出荷 diff に直接結びつくため最も信頼できる。
 
-2. **Issue / ticket tracker investigator** (e.g. Linear, Jira, GitHub Issues, Plane, Shortcut MCP). Tickets, project docs, status updates, spec attachments. Best at surfacing *the product or business forcing function*. Customer requests ("Acme needs X for their SOC2 audit"), compliance deadlines, parent-initiative framing ("Q3 enterprise readiness"), ticket-level scope changes, and labels that categorize the motivation (`customer:*`, `incident-followup`, `compliance`, `perf-regression`). Strongest when the why is external to engineering.
+2. **課題 / チケットトラッカー調査員**（例 Linear、Jira、GitHub Issues、Plane、Shortcut MCP）。チケット、プロジェクト doc、ステータス更新、仕様添付。*プロダクトまたはビジネスの強制力*の表面化に最適。顧客要望、コンプライアンス期限、親イニシアチブの枠組み、チケットレベルのスコープ変更、動機を分類するラベル。
 
-3. **Long-form documents investigator** (e.g. Notion, Confluence, Google Docs, Coda MCP). PRDs, specs, RFCs, design docs, ADRs, postmortems, team pages, meeting notes. Best at surfacing *long-form design rationale*. Problem statements, explicit "alternatives considered" and "rejected approaches" sections, strategy documents that set priorities, ADRs with finalized decisions, and postmortem action items that tie directly to code. Where the why is written out before it becomes code.
+3. **長文ドキュメント調査員**（例 Notion、Confluence、Google Docs、Coda MCP）。PRD、仕様、RFC、設計 doc、ADR、ポストモーテム、チームページ、会議メモ。*長文設計根拠*の表面化に最適。問題提起、明示的「検討した代替」「却下アプローチ」、優先を定める戦略 doc、確定判断の ADR、コードに結びつくポストモーテムアクション項目。
 
-4. **Real-time team chat investigator** (e.g. Slack, Discord, Microsoft Teams, Mattermost MCP). Feature-name and symbol searches, PR URL mentions, incident channels (`#sev-*`, `#incident-*`), author-handle activity around the ship date. Best at surfacing *real-time deliberation that never reached a doc*. Fire-drill decisions during incidents, Q&A between the PR author and reviewers, casual "we decided X because Y" threads, and rationale for small changes that didn't warrant a PRD. Especially important when the source control, ticket, and doc paper trail is thin.
+4. **リアルタイムチームチャット調査員**（例 Slack、Discord、Microsoft Teams、Mattermost MCP）。機能名・シンボル検索、PR URL 言及、インシデントチャンネル、出荷日付前後の著者ハンドル活動。*doc に至らなかったリアルタイム熟議*の表面化に最適。インシデント中の火事消し決定、著者とレビュアーの Q&A、PRD に値しない小変更の根拠。ソース管理・チケット・doc の紙の証跡が薄いとき特に重要。
 
-5. **Infrastructure observability investigator** (e.g. Datadog, New Relic, Honeycomb, Grafana, Splunk MCP). Metrics, monitors, dashboards, logs, APM traces, formal incidents. Infra/runtime view. Best at surfacing *infrastructure and runtime reality that motivated the code*. Monitor thresholds whose numbers match code constants, metric spikes in the window right before a PR merge, dashboards created as postmortem action items, incident timelines that reference the target. Strongest when the target reacts to an infra signal (timeouts, retries, rate limits, circuit breakers).
+5. **インフラ可観測性調査員**（例 Datadog、New Relic、Honeycomb、Grafana、Splunk MCP）。メトリクス、モニター、ダッシュボード、ログ、APM トレース、正式インシデント。インフラ/ランタイム視点。*コードを動機づけたインフラとランタイム現実*の表面化に最適。コード定数と一致するモニター閾値、PR マージ直前のメトリクススパイク、ポストモーテムアクションとして作られたダッシュボード、対象を参照するインシデントタイムライン。インフラシグナルに反応するコード（タイムアウト、リトライ、レート制限、サーキットブレーカー）に最強。
 
-6. **Error / exception tracking investigator** (e.g. Sentry, Rollbar, Bugsnag, Airbrake MCP). Issues, events, stack traces, releases. Best at surfacing *the specific exceptions and error trajectories that motivated defensive or corrective code*. Stack traces that pass through the target function, issues whose first-seen/last-seen windows bracket the PR ship date, release correlations that show an error stopping at a specific version. Strongest for catch blocks, null guards, type checks, retries, and other defenses.
+6. **エラー / 例外トラッキング調査員**（例 Sentry、Rollbar、Bugsnag、Airbrake MCP）。Issue、イベント、スタックトレース、リリース。*防御的または修正コードを動機づけた特定例外とエラー軌道*の表面化に最適。対象関数を通るスタックトレース、PR 出荷日付を挟む first-seen/last-seen、特定バージョンで止まるエラーのリリース相関。catch、null ガード、型チェック、リトライなどの防御に最強。
 
-7. **Product analytics warehouse investigator** (e.g. Databricks, Snowflake, BigQuery, ClickHouse, dbt, Redshift MCP). Product-analytics events, experiment and feature-flag exposure tables, usage and billing events, query history, warehouse telemetry. Product/data view. Complements infrastructure observability by covering *user behavior and data reality* around the ship date rather than infra metrics. Best at surfacing *product and data reality that shaped the code*. Feature-usage trajectories (a step-function ramp from zero is strong evidence that this PR launched it), experiment/flag exposure data tied to ship decisions, pre-ship distributions that reveal where a threshold constant came from (e.g., `limit = 128 * 1024` matching the p99 of an upload-size column), and data-pipeline scale evidence for migrations/backfills. Strongest for flag-gated code, experiment-driven ships, data migrations, and "where did this number come from" questions.
+7. **プロダクト分析ウェアハウス調査員**（例 Databricks、Snowflake、BigQuery、ClickHouse、dbt、Redshift MCP）。プロダクト分析イベント、実験/feature flag 露出テーブル、利用・課金イベント、クエリ履歴、ウェアハウステレメトリ。インフラ可観測性を補完し、出荷日付周辺の*ユーザー行動とデータ現実*をカバー。*プロダクトとデータ現実がコードを形作った*ことの表面化に最適。機能利用軌道、実験/flag 露出、閾値定数の出所（例 `limit = 128 * 1024` がアップロードサイズ列の p99 と一致）、マイグレーション/バックフィルのスケール証拠。flag ゲートコード、実験駆動出荷、データマイグレーション、「この数値はどこから」質問に最強。
 
-### When to skip an investigator
+### 調査員をスキップするとき
 
-Only skip with an **explicit, written justification** that goes in the final "Sources Consulted" section. Two valid reasons:
+**明示的書面正当化**が最終「Sources Consulted」節に入る場合のみスキップ。2 つの有効理由:
 
-- **No MCP is available for that category** in this environment. Flag this as a gap, not a choice. Example: "Real-time team chat skipped. No matching MCP available, so the conversational record was not searchable."
-- **The source is provably irrelevant**, not just "probably irrelevant." A high bar. Example: "Error / exception tracking skipped. Target is a build-time script with no runtime code path." Not "probably not in error tracking, it's a feature not an error."
+- **そのカテゴリ用 MCP がこの環境にない。** ギャップとして旗立て、選択ではない。例:「Real-time team chat skipped. No matching MCP available」
+- **ソースが証明的に無関係**。「おそらく無関係」ではない。高いバー。例:「Error tracking skipped. Target is build-time script with no runtime path.」「おそらく feature だから error tracking にない」は**不十分**。「長文 doc にないだろう」も同様。検索を走らせ、null に語らせる。空で戻るコストはサブエージェント 1 つ。存在する設計 doc を見逃すコストは誤答。
 
-"It's pure feature code, error tracking won't have anything" is **not** sufficient, and neither is "I doubt long-form docs would have this." Run the search; let the null result speak. The cost of an investigator returning empty is one subagent. The cost of missing a design doc that actually exists is a wrong answer.
+単一コミット自明対象で PR 説明に完全な答えがあり、7 カテゴリすべての検索が冗長だと確認できたときだけインライン回答可。明示的にそう言う。稀であるべき。
 
-If your scope assessment suggests a single-commit trivial target where the PR description already contains the complete answer, you may answer inline **only after** confirming all seven available category searches would be redundant. Say so explicitly. This should be rare.
+## ステップ 4. 統合
 
-## Step 4. Synthesize
-
-Spawn one synthesizer subagent:
+統合者サブエージェントを 1 つ起動:
 
 - `subagent_type`: `generalPurpose`
-- `model`: your configured why-synthesizer model (default `claude-opus-4-8-thinking-xhigh`)
-- `readonly`: `false` (agent mode). The synthesizer's quality check spot-verifies citations, which can require MCP access. Readonly/Ask mode strips MCPs and defeats that.
+- `model`: 設定済み why-synthesizer モデル（デフォルト `claude-opus-4-8-thinking-xhigh`）
+- `readonly`: `false`（エージェントモード）。統合者の品質チェックが引用スポット検証を含み MCP が要ることがある。readonly/Ask は MCP を剥がしそれを無効化。
 
-The synthesizer gets:
-1. The investigator findings, including any null results and any categories skipped with justification
-2. The code anchor from Step 2 (file paths, symbols, commit hashes, PR numbers, ticket IDs)
-3. The user's original question
-4. The epistemics framework from `references/epistemics.md`
-5. The synthesizer prompt template from `references/synthesizer-prompt.md`
+統合者は受け取る:
+1. null 結果と正当化付きスキップを含む調査員所見
+2. ステップ 2 のコードアンカー
+3. ユーザーの元の質問
+4. `references/epistemics.md` の認識論フレームワーク
+5. `references/synthesizer-prompt.md` の統合者プロンプトテンプレート
 
-Its job is the final output: a confidence-weighted, evidence-cited narrative with clearly separated "what we know" and "what we're inferring" sections, plus honest acknowledgment of gaps and null-result sources.
+最終出力の仕事: 信頼度加重・証拠引用の叙述。「分かっていること」と「推論していること」の明確分離、ギャップと null 結果ソースの正直な認識。
 
-## Step 5. Present
+## ステップ 5. 提示
 
-Take the synthesizer's output and present it to the user. You may lightly edit for clarity or add context from the conversation, but **do not rewrite the confidence language**. The epistemic framing is the product. Dropping the hedges to sound more authoritative is the exact failure mode this skill exists to prevent.
+統合者出力をユーザーに提示。明瞭化の軽い編集や会話コンテキスト追加は可。**信頼度言語は書き換えない。** 認識論的枠組みが成果物。権威的に聞こえるようヘッジを落とすのがこのスキルが防ぐ失敗モードそのもの。
 
-## Output Format
+## 出力形式
 
-The final output uses this structure. Adapt as needed, but keep the confidence separation intact.
+この構造を使う。必要に応じて適応するが、信頼度分離は維持。
 
-**The Question**. Restate what the user asked, concisely.
+**The Question**. ユーザーが聞いたことを簡潔に言い換え。
 
-**The Code in Question**. File paths, line ranges, and key symbols. One or two lines so the reader is anchored.
+**The Code in Question**. ファイルパス、行範囲、主要シンボル。読者を固定する 1〜2 行。
 
-**What We Found (direct evidence)**. Claims with explicit citations (PR #, ticket ID, doc URL, chat permalink, commit hash, code comment with file:line). Each bullet is a thing we have textual evidence for. Use present tense and quote or paraphrase the source.
+**What We Found (direct evidence)**. 明示的引用付き主張。各 bullet はテキスト証拠があること。現在形。ソースを引用または言い換え。
 
-**What We Can Reasonably Infer**. Claims well-supported by indirect evidence or combinations of signals, but not explicitly stated anywhere. Each bullet must explain the inference chain: "Given A and B, it's likely that C." Use hedged language ("appears to", "likely", "suggests").
+**What We Can Reasonably Infer**. どこにも明示されていないが間接証拠でよく支えられた主張。各 bullet は推論連鎖を説明。「A と B から C が likely」。ヘッジ言語。
 
-**Competing Hypotheses**. If the evidence fits multiple stories, list them. For each, give the hypothesis, the evidence for it, and the evidence against it. Don't force a winner when the record doesn't support one. (Skip this section if there's a clear answer.)
+**Competing Hypotheses**. 証拠が複数物語に合うなら列挙。各に仮説、賛成証拠、反対または欠如証拠。記録が勝者を支えないとき勝者を強制しない。（明確な答えなら節スキップ。）
 
-**What We Don't Know**. Explicit gaps. Questions the user asked that the evidence didn't answer. Sources we searched and came up empty. Be specific. "We searched the issue tracker for 'rate limit' and found no ticket discussing this specific threshold" is more useful than "we don't know why."
+**What We Don't Know**. 明示的ギャップ。証拠が答えなかった質問。空だった検索ソース。具体に。「issue tracker で 'rate limit' を検索しこの閾値を議論するチケットなし」は「なぜか分からない」より有用。
 
-**Sources Consulted**. One line per investigator, including the ones that returned nothing. The reader should see at a glance (a) which MCPs were queried, (b) which came back empty, and (c) which were skipped and why. This coverage map lets the user judge breadth and redirect if something obvious was missed.
+**Sources Consulted**. 調査員ごとに 1 行。何も返さなかったものも含む。読者は (a) 照会した MCP、(b) 空だったもの、(c) スキップと理由を一目で判断。見落としリダイレクト用カバレッジマップ。
 
-Format each line as: `- <Source>: <what was searched>. <what was found, or "no relevant results," or "skipped. reason">.`
+各行形式: `- <Source>: <what was searched>. <what was found, or "no relevant results," or "skipped. reason">.`
 
-Example:
+例:
 - Source control (git/gh): `git log --follow backend/retry.ts`, PRs #49074, #47812. Found PR #49074 introduced exponential backoff and linked ENG-4421.
 - Issue tracker (Linear): searched for "retry" and ENG-4421. Found ENG-4421 parent issue but no discussion of backoff parameters.
 - Long-form docs (Notion): searched for "retry policy," "backend retries," "ENG-4421." No relevant results.
@@ -208,22 +206,22 @@ Example:
 - Error / exception tracking (Sentry): searched for issues first-seen in Aug 2024 with stack through `retry.ts`. Found issue SENTRY-3821 spiking in the week before the PR.
 - Product analytics warehouse (Databricks): queried `<your_analytics_db>.<schema>.stg_backend_upstream_retry` for the 30-day window around 2024-08-14. Daily failure-classified event count fell from ~1.2k/day pre-PR to <50/day post-PR. Also checked `system.query.history` for relevant migration queries. None found.
 
-After the Sources Consulted block, if the user's `why` question is a precursor to actually changing this code, convert the lineage findings into a Preserve / Change / Avoid / Risk constraint set suitable for planning the change.
+Sources Consulted の後、ユーザーの `why` 質問がこのコード変更の前提なら、系譜所見を変更計画向け Preserve / Change / Avoid / Risk 制約セットに変換。
 
-## Common Failure Modes to Avoid
+## 避けるべき一般的失敗モード
 
-- **Confident storytelling**. A plausible narrative built from thin evidence. A bullet with no citation goes in "inferred" or "hypotheses," not "what we found."
-- **Citing the code as evidence for its own intent**. "Handles the null case because it checks for null" is mechanics, not motivation. Motivation comes from an external source (PR discussion, ticket, comment, conversation) or is labeled as inference.
-- **Recency bias**. Assuming the most recent commit is authoritative. The current shape is often the accretion of many earlier decisions. Trace back.
-- **Sycophantic agreement**. If the user suggests a reason ("I assume this is for performance?"), treat it as a hypothesis and check the evidence independently, don't just confirm it.
-- **Skipping the gaps section**. An honest accounting of what you couldn't find out is part of the value.
-- **Skipping investigators by anticipation**. Deciding up front that "long-form docs probably don't have this" or "this isn't an error tracking thing" without searching. The default-to-all-seven posture prevents this. A null result is a data point; a skipped search is a blind spot.
-- **Collapsing investigators into one agent**. Each MCP has its own query vocabulary, result shape, and pitfalls; pooling them dilutes specialization and makes coverage harder to reason about. Always one investigator per category.
+- **自信ある物語作り。** 薄い証拠のもっともらしい叙述。引用なし bullet は「inferred」か「hypotheses」へ。「what we found」に入れない。
+- **意図の証拠としてコード自身を引用。** 「null をチェックするから null 対応」は力学であり動機ではない。動機は外部ソースか推論ラベル。
+- **近時バイアス。** 最新コミットが権威的と仮定。現在の形は多くの以前の決定の堆積。遡る。
+- **おべっか同意。** ユーザーが理由を提案（「パフォーマンスだと思う」）したら仮説として扱い独立に証拠確認。確認しない。
+- **ギャップ節のスキップ。** 分からなかったことの正直な会計が価値の一部。
+- **先読みによる調査員スキップ。** 検索せず「長文 doc にないだろう」。デフォルト全 7 姿勢が防ぐ。null はデータ点。スキップは盲点。
+- **調査員を 1 エージェントに統合。** 各 MCP は独自クエリ語彙・結果形状・落とし穴。プールは専門性とカバレッジ推論を薄める。常にカテゴリごとに 1 調査員。
 
-## Reference Files
+## 参照ファイル
 
-- `references/epistemics.md`. Confidence tiers and phrasing guide. The synthesizer must follow it.
-- `references/investigator-prompt.md`. Base prompt template for investigator subagents.
-- `references/source-playbook.md`. Index pointing at the category playbooks below.
-- `references/sources/*.md`. One self-contained example playbook per category, plus cross-cutting `incident-postmortem.md`. Give an investigator the single file that matches its category and adapt it to the available MCP.
-- `references/synthesizer-prompt.md`. Prompt template for the synthesizer subagent, including the output format.
+- `references/epistemics.md`. 信頼度ティアと言い回しガイド。統合者は従う。
+- `references/investigator-prompt.md`. 調査員サブエージェントのベースプロンプト。
+- `references/source-playbook.md`. 下記カテゴリプレイブックへの索引。
+- `references/sources/*.md`. カテゴリごとに 1 つの自己完結例プレイブックと横断 `incident-postmortem.md`。調査員にはカテゴリに一致する 1 ファイルを渡し利用可能 MCP に適応。
+- `references/synthesizer-prompt.md`. 統合者サブエージェントのプロンプトテンプレートと出力形式。

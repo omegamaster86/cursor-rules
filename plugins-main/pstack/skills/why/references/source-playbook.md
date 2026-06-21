@@ -1,17 +1,17 @@
-# Source playbooks
+# ソースプレイブック
 
-The why skill spawns one investigator per available evidence category, each reading a single source-specific playbook below. The playbooks are concrete examples for common MCPs; adapt them for a different MCP in the same category.
+why スキルは利用可能証拠カテゴリごとに調査員を 1 人起動し、各は下記の単一ソース固有プレイブックを読む。プレイブックは一般的 MCP の具体例。同カテゴリの別 MCP に適応。
 
-| Category | Playbook | Example MCP it documents |
+| カテゴリ | プレイブック | 記述例 MCP |
 |---|---|---|
-| Source control history | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` |
-| Issue / ticket tracker | [`linear.md`](./sources/linear.md) | Linear (adapt for Jira, GitHub Issues, Plane, Shortcut) |
-| Long-form documents | [`notion.md`](./sources/notion.md) | Notion (adapt for Confluence, Google Docs, Coda) |
-| Real-time team chat | [`slack.md`](./sources/slack.md) | Slack (adapt for Discord, Microsoft Teams, Mattermost) |
-| Infrastructure observability | [`datadog.md`](./sources/datadog.md) | Datadog (adapt for New Relic, Honeycomb, Grafana, Splunk) |
-| Error / exception tracking | [`sentry.md`](./sources/sentry.md) | Sentry (adapt for Rollbar, Bugsnag, Airbrake) |
-| Product analytics warehouse | [`databricks.md`](./sources/databricks.md) | Databricks SQL (adapt for Snowflake, BigQuery, ClickHouse, dbt) |
+| ソース管理履歴 | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` |
+| 課題 / チケットトラッカー | [`linear.md`](./sources/linear.md) | Linear（Jira、GitHub Issues、Plane、Shortcut に適応） |
+| 長文ドキュメント | [`notion.md`](./sources/notion.md) | Notion（Confluence、Google Docs、Coda に適応） |
+| リアルタイムチームチャット | [`slack.md`](./sources/slack.md) | Slack（Discord、Microsoft Teams、Mattermost に適応） |
+| インフラ可観測性 | [`datadog.md`](./sources/datadog.md) | Datadog（New Relic、Honeycomb、Grafana、Splunk に適応） |
+| エラー / 例外トラッキング | [`sentry.md`](./sources/sentry.md) | Sentry（Rollbar、Bugsnag、Airbrake に適応） |
+| プロダクト分析ウェアハウス | [`databricks.md`](./sources/databricks.md) | Databricks SQL（Snowflake、BigQuery、ClickHouse、dbt に適応） |
 
-Cross-cutting:
+横断:
 
-- [`incident-postmortem.md`](./sources/incident-postmortem.md). Add this if the target code looks defensive (null checks, retry, timeout, rate limit, feature flag, egress guard, OOM handler).
+- [`incident-postmortem.md`](./sources/incident-postmortem.md)。対象コードが防御的に見えるとき追加（null チェック、リトライ、タイムアウト、レート制限、feature flag、egress ガード、OOM ハンドラ）。

@@ -1,70 +1,70 @@
-# Databricks Analytics & System Tables
+# Databricks 分析とシステムテーブル
 
-## What this source contains
+## このソースが含むもの
 
-Databricks is the product-analytics, data-pipeline, and warehouse-telemetry layer. It complements Datadog: Datadog is the *infra/runtime* view, Databricks is the *product/data* view (what users did, which experiments ran, how feature usage evolved, where a threshold constant came from).
+Databricks はプロダクト分析、データパイプライン、ウェアハウステレメトリ層。Datadog を補完: Datadog は*インフラ/ランタイム*視点、Databricks は*プロダクト/データ*視点（ユーザーが何をしたか、どの実験が走ったか、機能利用の進化、閾値定数の出所）。
 
-- **Product analytics events.** `your_warehouse.events.analytics_track_event` (raw) and typed, deduplicated per-event dbt models in `<your_analytics_db>.<schema>.<table>`. User behavior: feature invocations, clicks, accepts/rejects, submissions, client-reported errors.
-- **Usage & billing events.** `your_warehouse.events.usage_event` / `<your_analytics_db>.<schema>.stg_usage_events`; `your_warehouse.events.raw_model_event` / `<your_analytics_db>.<schema>.stg_raw_model_events`. For cost- or volume-driven decisions.
-- **Experiment / feature-flag data.** Exposure and outcome tables. **Schema is company-specific.** Probe with `SHOW TABLES` before assuming names.
-- **System tables.** `system.query.history`, `system.compute.warehouses`, `system.billing.*`, `system.access.audit`. Answer "was this query expensive?", "how often did anyone run this?", "when did warehouse load spike?"
-- **dbt lineage.** Models in `<your_analytics_db>.<schema>` reveal what pipelines depend on a table/field; upstream changes frequently motivate consumer-code changes.
-- **Databricks notebooks.** Exploratory analyses engineers wrote before code changes. **Not queryable via the SQL MCP.** If you suspect the rationale lives in a notebook, name it as a gap.
+- **Product analytics events.** `your_warehouse.events.analytics_track_event`（raw）と `<your_analytics_db>.<schema>.<table>` の typed、dedup 済み per-event dbt モデル。ユーザー行動: 機能呼び出し、クリック、accept/reject、submit、クライアント報告エラー。
+- **Usage & billing events.** `your_warehouse.events.usage_event` / `<your_analytics_db>.<schema>.stg_usage_events`; `your_warehouse.events.raw_model_event` / `<your_analytics_db>.<schema>.stg_raw_model_events`。コスト/ボリューム駆動決定向け。
+- **Experiment / feature-flag data.** 露出と outcome テーブル。**スキーマは会社固有。** 名前を仮定する前に `SHOW TABLES` で probe。
+- **System tables.** `system.query.history`、`system.compute.warehouses`、`system.billing.*`、`system.access.audit`。「このクエリは高コスト？」「誰がどれだけ実行？」「ウェアハウス負荷はいつスパイク？」
+- **dbt lineage.** `<your_analytics_db>.<schema>` モデルは table/field に依存するパイプラインを示す。上流変更が consumer コード変更を often 動機づける。
+- **Databricks notebooks.** コード変更前にエンジニアが書いた探索分析。**SQL MCP では query 不可。** 根拠が notebook にありそうならギャップとして名指す。
 
-## How to search it
+## 検索方法
 
-Use the Databricks SQL MCP. Primary tool: `execute_sql_read_only`. If it returns a `statement_id`, poll with `poll_sql_result` rather than re-running.
+Databricks SQL MCP を使用。主要ツール: `execute_sql_read_only`。`statement_id` 返却なら再実行せず `poll_sql_result` で poll。
 
-**Orient before querying.** Schemas are company-specific; probe before trusting a table name:
+**query 前に向き合い。** スキーマは会社固有。テーブル名を信じる前に probe:
 
 ```sql
 SHOW TABLES IN <your_analytics_db>.<schema> LIKE '*<keyword>*';
 DESCRIBE TABLE <your_analytics_db>.<schema>.stg_<event>;
 ```
 
-**Time-bound every query.** These tables are huge and unconstrained scans time out. Filter on `_timestamp` (events) or `start_time` (`system.query.history`) with a window bracketing the ship date, typically ~30 days before and after, wider only for strong reason.
+**すべての query に時間境界。** テーブルは巨大。無制約 scan はタイムアウト。出荷日を挟むウィンドウで `_timestamp`（events）または `start_time`（`system.query.history`）を filter。通常 ±30 日。強い理由があるときのみ広げる。
 
-**Prefer typed dbt models over the raw table.** `<your_analytics_db>.<schema>.<table>` is deduplicated, typed, and liquid-clustered; `your_warehouse.events.analytics_track_event` has duplicates and untyped `properties_json`. Model-name pattern: `stg_<source>_<event_name_with_underscores>`, where `<source>` is `app`, `backend`, `website`, or `cli`. See the `databricks-use-dbt-models` skill for the full mapping. Drop to the raw table only when there's no dbt model yet, or you need events from inside the dbt refresh lag.
+**raw テーブルより typed dbt モデルを優先。** `<your_analytics_db>.<schema>.<table>` は dedup、typed、liquid-clustered。`your_warehouse.events.analytics_track_event` は duplicate と untyped `properties_json`。モデル名パターン: `stg_<source>_<event_name_with_underscores>`、`<source>` は `app`、`backend`、`website`、`cli`。完全 mapping は `databricks-use-dbt-models` スキル。dbt モデルがまだない、または dbt refresh lag 内イベントが要るときだけ raw に落とす。
 
-**Column conventions on the typed dbt models** (knowing these avoids a `DESCRIBE` round-trip):
+**typed dbt モデルの列慣習**（`DESCRIBE` 往復を避ける）:
 
-- `_timestamp`, `_id`, `_auth_id`, `_request_id`, `event_name`. Standard on every model
-- `properties_<name>`. Typed, underscore-cased event properties (`properties_entrypoint`, `properties_size_bytes`, …)
-- `context_team_id`, `context_client_version`, `context_country`, `context_client_os`. Pre-extracted client context
+- `_timestamp`、`_id`、`_auth_id`、`_request_id`、`event_name`。全モデル標準
+- `properties_<name>`。typed、アンダースコア event プロパティ
+- `context_team_id`、`context_client_version`、`context_country`、`context_client_os`。抽出済みクライアントコンテキスト
 
-### Investigation patterns that tend to pay off
+### 報われやすい調査パターン
 
-Pick the table + column combination that matches the target:
+対象に合う table + column 組み合わせを選ぶ:
 
-1. **Event usage trajectory.** Daily counts on the relevant `stg_*` model across a ±30d window around the PR merge. A step function from zero to steady volume within a day or two of the merge is strong circumstantial evidence the PR launched the feature. A decay to zero suggests a deprecation or deletion.
-2. **Guard-rail / defensive-check origin.** Distribution (median / p99 / max) of the relevant `properties_<name>` column in the 14 days *before* the PR. A p99 that matches the target's threshold constant suggests the number was chosen from data.
-3. **Experiment / feature-flag lookup.** `SHOW TABLES ... LIKE '*experiment*'` to find the exposure table, then pull exposure counts by variant for the relevant flag key near the PR date.
-4. **Query-history evidence for migrations, backfills, or perf rewrites.** `system.query.history` filtered by `statement_text ILIKE '%<table_or_symbol>%'` with a tight `start_time` window surfaces the expensive queries that likely motivated the change (sort by `total_duration_ms` or aggregate `SUM(read_bytes)`, `COUNT(*)`).
-5. **dbt lineage.** If the target reads from or writes into a `<your_analytics_db>.<schema>` model, the model's own git history (in this repo) often carries the rationale. Hand that lead back to the git investigator rather than chasing it yourself.
+1. **Event usage trajectory.** PR マージ ±30d で relevant `stg_*` モデルの日次カウント。マージ 1〜2 日以内のゼロから定常への step function は PR が機能を launch した強い circumstantial 証拠。ゼロへの decay は deprecation/deletion 示唆。
+2. **Guard-rail / defensive-check origin.** PR *前* 14 日の relevant `properties_<name>` 分布（median / p99 / max）。p99 が対象閾値定数と一致すれば数値がデータから選ばれた示唆。
+3. **Experiment / feature-flag lookup.** `SHOW TABLES ... LIKE '*experiment*'` で exposure テーブル見つけ、PR 日付近の relevant flag key で variant 別 exposure count。
+4. **Migration、backfill、perf rewrite の query-history 証拠。** `statement_text ILIKE '%<table_or_symbol>%'` と tight `start_time` で filter した `system.query.history` が変更を動機づけた高コスト query を surface（`total_duration_ms` で sort または `SUM(read_bytes)`、`COUNT(*)` 集約）。
+5. **dbt lineage.** 対象が `<your_analytics_db>.<schema>` モデルを読む/書くなら、モデル自身の git 履歴（この repo）に often 根拠。git 調査員へ lead を返し自分では追わない。
 
-## What good evidence looks like here
+## 良い証拠
 
-Beyond the pattern shapes above:
+上記パターン形状を超えて:
 
-- An error-classifying event's count drops to near zero in the days after a defensive-code PR. Suggests the PR resolved that error class
-- An exposure table row names the target's feature-flag key with a "shipped" / "concluded" decision around the PR ship date
+- 防御コード PR の数日後に error 分類 event count が near zero に。PR がその error class を解決した示唆
+- 対象 feature-flag key を名指し、PR 出荷日付近に "shipped" / "concluded" 決定の exposure テーブル行
 
-## Common pitfalls
+## 一般的落とし穴
 
-- **Instrumented ≠ caused.** An event's existence means someone cared enough to log it, not that the target code exists *because* of it. Pair with a PR/commit citation from the git investigator before claiming causation.
-- **Silent instrumentation changes.** A step function in event volume may mean a new event started being logged, not that user behavior changed. Check for instrumentation PRs in the same window before reading the ramp as a feature-launch signal.
-- **Schema drift.** Event properties evolve; a column on the typed dbt model today may not have existed when the target was written. Older data may carry the property only inside raw `properties_json`.
-- **dbt refresh lag.** `<your_analytics_db>.<schema>.*` is rebuilt on a schedule (often hourly/daily). For events from the last few hours, fall back to `your_warehouse.events.*` and deduplicate by `_id`.
-- **Company-specific tables.** Experiment, feature-flag, billing, and usage tables vary. Reporting a result from a table whose existence you never confirmed is a classic failure mode. Probe with `SHOW TABLES` / `DESCRIBE TABLE` first.
-- **Retention cliff.** If the relevant window predates the table's retention or the dbt model's creation date, that's a *gap*, not a null result. Name it explicitly so the synthesizer doesn't read "no results" as "no activity."
-- **Notebooks aren't queryable.** The SQL MCP can't see Databricks notebooks. If you suspect the rationale lives in one, return a gap.
+- **計装 != 原因。** event 存在は誰かが log する価値があった証拠であり、対象コードが*そのため*存在する証明ではない。git 調査員の PR/commit 引用と pair してから causation を主張。
+- **Silent instrumentation changes.** event volume の step function はユーザー行動変化ではなく新 event が log 始めただけかも。同ウィンドウの instrumentation PR を確認してから ramp を feature-launch シグナルとして読む。
+- **Schema drift.** event プロパティは進化。typed dbt モデルの列は対象書かれた時存在しなかったかも。古いデータは raw `properties_json` のみ。
+- **dbt refresh lag.** `<your_analytics_db>.<schema>.*` はスケジュール rebuild（often hourly/daily）。直近数時間 event は `your_warehouse.events.*` にフォールバックし `_id` で dedup。
+- **Company-specific tables.** experiment、feature-flag、billing、usage テーブルは異なる。存在未確認テーブルの結果報告は典型失敗モード。先に `SHOW TABLES` / `DESCRIBE TABLE`。
+- **Retention cliff.** 関連ウィンドウがテーブル保持または dbt モデル作成日より前なら*ギャップ*であり null 結果ではない。統合者が「no results」を「no activity」と読まないよう明示。
+- **Notebooks は query 不可。** SQL MCP は Databricks notebook を見えない。根拠が notebook にありそうならギャップを返す。
 
-## What to return
+## 返すもの
 
-For each relevant finding:
-- Type (product event / experiment exposure / usage or billing event / system-table row / dbt model)
-- Fully-qualified table name and the exact query you ran
-- Time window queried
-- Compact numeric summary (counts, percentiles, first/last-seen timestamps). **Don't dump raw rows.**
-- Temporal correlation with the target's ship date (e.g., "first row 2024-08-15; PR #49074 merged 2024-08-14")
-- Relevance + strength: direct / circumstantial / weak
+各関連所見について:
+- タイプ（product event / experiment exposure / usage or billing event / system-table row / dbt model）
+- 完全修飾テーブル名と実行した正確 query
+- query した時間ウィンドウ
+- コンパクト数値要約（counts、percentiles、first/last-seen）。**生行をダンプしない。**
+- 対象出荷日との時間相関（例「first row 2024-08-15; PR #49074 merged 2024-08-14」）
+- 関連性 + 強さ: direct / circumstantial / weak

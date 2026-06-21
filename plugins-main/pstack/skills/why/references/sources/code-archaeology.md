@@ -1,21 +1,21 @@
-# Code Archaeology (git + in-repo)
+# コード考古学（git + リポジトリ内）
 
-## What this source contains
+## このソースが含むもの
 
-- Commit history (messages, dates, authors, diffs)
-- PR descriptions, review comments, and discussion threads (via `gh`)
-- Inline code comments, TODOs, FIXMEs, deprecation notes
-- ADRs (architectural decision records) if the repo keeps them
-- Tests. Names and assertions often encode the edge cases that motivated a change
-- Related files modified in the same commits (co-change signal)
-- CHANGELOG entries, release notes in the repo
-- Issue/ticket IDs mentioned in commit messages and PR bodies
+- コミット履歴（メッセージ、日付、著者、diff）
+- PR 説明、レビューコメント、議論スレッド（`gh` 経由）
+- インラインコードコメント、TODO、FIXME、非推奨注記
+- ADR（リポジトリが保持する場合）
+- テスト。名前とアサーションは変更を動機づけたエッジケースをしばしばエンコード
+- 同じコミットで変更された関連ファイル（共変シグナル）
+- CHANGELOG エントリ、リポジトリ内リリースノート
+- コミットメッセージと PR 本文の issue/チケット ID
 
-The most trustworthy source, tied directly to the code, and the most complete. Everything that went through the repo should be here.
+最も信頼できるソース。コードに直接結びつき、最も完全。リポジトリを通ったものはここにあるべき。
 
-## How to search it
+## 検索方法
 
-Expand the seed commit list:
+シードコミットリストを拡張:
 
 ```bash
 # Full history of the file through renames
@@ -37,7 +37,7 @@ git show <hash>
 git log <old>..<new> -p -- <file>
 ```
 
-For each substantive commit, pull the PR context:
+各実質的コミットについて PR コンテキストを引く:
 
 ```bash
 # Find the PR number from the merge commit or branch
@@ -49,7 +49,7 @@ gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIs
 # The --json reviews and comments fields are where the real signal is
 ```
 
-Look for out-of-band docs:
+帯外 doc を探す:
 
 ```bash
 # ADRs often live in docs/adr/ or similar
@@ -62,27 +62,27 @@ rg -n -C2 '(TODO|FIXME|HACK|XXX|NOTE)' <target_file>
 rg -l '<symbol>' --glob '*test*'
 ```
 
-## What good evidence looks like here
+## ここでの良い証拠
 
-- A PR description that explains the problem being solved, not just the change ("This fixes the pagination bug that caused X")
-- A long review thread where alternatives were debated
-- An inline comment near the target line that explains a non-obvious constraint
-- A test named `test_handles_edge_case_when_X` that reveals an edge case motivating the code
-- A commit message that references a ticket or incident ID
-- A CHANGELOG entry that summarizes the user-visible rationale
+- 変更だけでなく解決する問題を説明する PR 説明（「X を引き起こすページネーションバグを修正」）
+- 代替が議論された長いレビュースレッド
+- 対象行近くの非自明制約を説明するインラインコメント
+- コードを動機づけたエッジケースを示す `test_handles_edge_case_when_X` 名テスト
+- チケットやインシデント ID を参照するコミットメッセージ
+- ユーザー可視根拠を要約する CHANGELOG エントリ
 
-## Common pitfalls
+## 一般的落とし穴
 
-- **Squash-merge flatlands.** If the repo squashes PRs, individual commits in the branch history are lost. Fall back to PR body and comments.
-- **Misleading commit messages.** "Small refactor" sometimes hides an intentional behavior change. Look at the diff, not the message.
-- **Cargo-culted patterns.** The author may have copied a pattern without understanding why. Check if the pattern originated earlier in the codebase and investigate *that* commit.
-- **Bot commits and auto-merges.** Dependabot, Renovate, and automated backports usually don't carry motivation. Skip them when trying to find intent.
-- **Treating code as evidence of intent.** The code itself isn't evidence for why it exists. Evidence comes from commit messages, PRs, comments, tests, docs. Don't cite "the function is named X" as evidence of intent.
+- **Squash-merge 平坦化。** squash リポジトリではブランチ履歴の個別コミットが失われる。PR 本文とコメントにフォールバック。
+- **誤解を招くコミットメッセージ。** 「Small refactor」が意図的振る舞い変更を隠すことがある。メッセージではなく diff を見る。
+- **cargo-cult パターン。** 著者が理由を理解せずパターンをコピーした可能性。パターンがコードベースでより早く始まったコミットを調べ*その*コミットを調査。
+- **Bot コミットと自動マージ。** Dependabot、Renovate、自動 backport は通常動機を運ばない。意図探しではスキップ。
+- **コードを意図の証拠として扱う。** コード自体は存在理由の証拠ではない。証拠は commit message、PR、コメント、テスト、doc。「関数が X と名付けられている」を意図の証拠として引用しない。
 
-## What to return
+## 返すもの
 
-Every commit/PR/comment that bears on the question, with:
-- The exact text (quoted)
-- The hash / PR number / file:line
-- Author and date
-- Whether it's direct (explicitly addresses the question) or circumstantial
+質問に関係する各 commit/PR/comment について:
+- 正確なテキスト（引用）
+- hash / PR 番号 / file:line
+- 著者と日付
+- direct（質問に明示的）か circumstantial か
