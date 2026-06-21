@@ -15,10 +15,6 @@ description: Codex 5.3向け deep_review。現在ブランチのコミット差�
 - `structural_audit_summary`: 親が実施した構造チェック要約（任意）
 - `coding_guidelines`: 任意
 
-## 実行環境
-
-- 対象 PJ 内のみ。Fallow MCP / CLI は**呼ばない**。
-
 ## 必須ルール
 1. 未コミット差分はレビュー対象外。
 2. 指摘は `changed_files` 内のファイルに限定。

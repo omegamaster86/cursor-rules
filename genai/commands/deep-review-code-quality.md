@@ -18,10 +18,6 @@ description: 保守性・構造専用 deep_review。差分の500行超え・ス�
 - `reuse_hints`: 親の構造チェックにおけるクローン候補（任意）
 - `coding_guidelines`: 任意
 
-## 実行環境
-
-- 対象 PJ 内のみ。Fallow MCP / CLI は**呼ばない**。
-
 ## 必須ルール
 
 1. 未コミット差分はレビュー対象外。
