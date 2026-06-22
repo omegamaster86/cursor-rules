@@ -1,6 +1,6 @@
 ---
 name: how
-description: "「how does X work」、変更前のコードウォークスルー、配置/所有/レイヤリングの質問（「where should this live」「which package owns this」「is this the right layer」）に使用。サブシステムアーキテクチャ、ランタイムフロー、オンボーディングのメンタルモデルを説明。アーキテクチャ批判可。動機は why を使用。"
+description: "「how does X work」、変更前のコードウォークスルー、配置/所有/レイヤリングの質問（「where should this live」「which package owns this」「is this the right layer」）に使用。サブシステムアーキテクチャ、ランタイムフロー、オンボーディングのメンタルモデルを説明。アーキテクチャ批判可。"
 ---
 
 # How

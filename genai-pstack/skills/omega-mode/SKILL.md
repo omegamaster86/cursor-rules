@@ -93,7 +93,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Subagents
 
-**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "omega-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/omega-mode` と `omega-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`why`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`omega-agent` で上書きしない。
+**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "omega-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/omega-mode` と `omega-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`omega-agent` で上書きしない。
 
 **すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`omega-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
 

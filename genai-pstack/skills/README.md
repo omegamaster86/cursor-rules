@@ -34,7 +34,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | スキル | 用途 |
 |--------|------|
 | `how` | サブシステムの仕組み説明 |
-| `why` | なぜこう作られたか（MCP 証拠収集） |
 | `architect` | 関数境界を越える設計 |
 | `arena` | 並列案の比較 |
 | `interrogate` | → `review-orchestrator-triple-hybrid` へ委譲 |

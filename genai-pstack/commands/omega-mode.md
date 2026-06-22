@@ -31,7 +31,7 @@ description: 非自明な実装・調査のエントリ。omega-mode スキル�
 ## サブエージェント
 
 - コード実装 delegate・プレイブック内ヘルパー: `subagent_type: "omega-agent"`
-- `how` / `why` / `reflect` は各スキルが規定する `subagent_type` を尊重する
+- `how` / `reflect` は各スキルが規定する `subagent_type` を尊重する
 - デフォルト: `run_in_background: true`
 
 ## 実行環境
