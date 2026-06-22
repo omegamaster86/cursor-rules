@@ -15,25 +15,25 @@ how explainer: composer-2.5
 how critics: composer-2.5, composer-2.5, composer-2.5
 reflect tooling: composer-2.5
 reflect judgment, divergent, synthesizer: composer-2.5
-arena runners: composer-2.5, composer-2.5, composer-2.5
+arena runners: claude-opus-4-8, gpt-5.5, composer-2.5
 architect runners: composer-2.5, composer-2.5, composer-2.5
 review orchestrator codex: composer-2.5
 review orchestrator sonnet correctness: composer-2.5
 review orchestrator sonnet quality: composer-2.5
 
 
-<!-- feature, refactoring: composer-2.5
-bug-fix: composer-2.5
-perf-issue: composer-2.5
-hillclimb: composer-2.5
-judgment and prose: composer-2.5
-how explorer: composer-2.5
-how explainer: composer-2.5
-how critics: composer-2.5, composer-2.5, composer-2.5
-reflect tooling: composer-2.5
-reflect judgment, divergent, synthesizer: composer-2.5
-arena runners: composer-2.5, composer-2.5, composer-2.5
-architect runners: composer-2.5, composer-2.5, composer-2.5
-review orchestrator codex: composer-2.5
-review orchestrator sonnet correctness: composer-2.5
-review orchestrator sonnet quality: composer-2.5 -->
+<!-- feature, refactoring: composer-2.5-fast
+bug-fix: gpt-5.5-high-fast
+perf-issue: gpt-5.5-high-fast
+hillclimb: gpt-5.5-high-fast
+judgment and prose: claude-opus-4-8-thinking-xhigh
+how explorer: composer-2.5-fast
+how explainer: claude-opus-4-8-thinking-xhigh
+how critics: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
+why investigators: composer-2.5-fast
+why synthesizer: claude-opus-4-8-thinking-xhigh
+reflect tooling: composer-2.5-fast
+reflect judgment, divergent, synthesizer: claude-opus-4-8-thinking-xhigh
+arena runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
+architect runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
+interrogate reviewers: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast -->
