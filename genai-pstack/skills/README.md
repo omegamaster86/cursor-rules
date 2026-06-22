@@ -76,13 +76,4 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
 
----
 
-## 採用しなかった pstack スキル
-
-| スキル | 理由 |
-|--------|------|
-| `typescript-best-practices` | `web-coding-standards` と重複 |
-| `setup-pstack` | `omega-models.mdc` を手編集で十分 |
-| `automate-me` | `omega-mode` を直接カスタマイズするため不要 |
-| `unslop` | 文体の細かい制御は不要 |
