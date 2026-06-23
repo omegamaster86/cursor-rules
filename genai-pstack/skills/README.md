@@ -36,7 +36,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `how` | サブシステムの仕組み説明 |
 | `architect` | 関数境界を越える設計 |
 | `arena` | 並列案の比較 |
-| `interrogate` | → `review-orchestrator-triple-hybrid` へ委譲 |
 | `blast-radius` | 変更の影響範囲 |
 | `tdd` | 失敗テスト先行のバグ修正 |
 | `recall` | チャット履歴からコンテキスト再構築 |

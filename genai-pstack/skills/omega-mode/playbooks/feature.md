@@ -13,7 +13,7 @@
 5. matching surface で verify。Inconclusive または wrong-surface は pass ではない。flag。
 6. small ordered commit に rebase。follow-up stack。
    **sequence-verifiable-units** 原則スキル。各 small unit を build、verify、commit してから next。
-7. design contested なら ship 前 `review-orchestrator-triple-hybrid` コマンド（`interrogate` スキル経由でも可）。
+7. design contested なら ship 前 `review-orchestrator-triple-hybrid` コマンド。
 8. **Opening a PR** を実行。
 
 code-coupled work（1 feature、1 migration）は checkpoint inline の single owner。blocking phase 後 internal fan-out。parent-level fan-out は independent artifact を produce する slice 用（audit、cross-subsystem investigation、competing experiment）。phase boundary で checkpoint rewrite。interrupt chain より fresh owner spawn。

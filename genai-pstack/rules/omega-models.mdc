@@ -35,5 +35,4 @@ why synthesizer: claude-opus-4-8-thinking-xhigh
 reflect tooling: composer-2.5-fast
 reflect judgment, divergent, synthesizer: claude-opus-4-8-thinking-xhigh
 arena runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
-architect runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
-interrogate reviewers: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast -->
+architect runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast -->

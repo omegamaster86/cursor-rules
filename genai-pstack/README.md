@@ -53,7 +53,7 @@ cp /path/to/cursor-rules/genai-pstack/rules/omega-models.mdc .cursor/rules/
 | 衝突 | 解決 |
 |------|------|
 | `typescript-best-practices` | 採用せず **`web-coding-standards`** を使用 |
-| `interrogate` | **`review-orchestrator-triple-hybrid`** コマンドへ委譲 |
+| pstack `interrogate` | 未採用。**`/review-orchestrator-triple-hybrid`** コマンドを使用 |
 | `poteto-agent` | **`omega-agent`** にリネーム |
 | `cursor-team-kit`（deslop, control-*） | 未導入時は skip、手動 verify で代替 |
 
