@@ -41,7 +41,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `recall` | チャット履歴からコンテキスト再構築 |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
 | `reflect` | 長タスクの教訓をスキル化 |
-| `show-me-your-work` | 意思決定 TSV ログ |
+| `decision-log` | 意思決定 マークダウン ログ |
 
 ### 設定（rules/）
 
