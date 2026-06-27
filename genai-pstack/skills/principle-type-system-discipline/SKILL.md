@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 - **不正な状態を表現不能にする。** バリアントを和型としてモデル化する: TypeScript の判別共用体、Rust/Swift/Kotlin のペイロード付き enum、Scala の sealed class、Haskell/OCaml の ADT。矛盾する組み合わせがコンパイルするオプショナルフィールドの袋として状態をモデル化しない。名前を付ける価値のある微妙なアンチパターン: `{ completed: boolean; completedAt?: Date }` は `completed: true; completedAt: undefined` を許容し、無意味である。`completedAt !== null` のような単一のソースから boolean を導出するか、`{ kind: 'open' } | { kind: 'done'; at: Date }` のようにバリアントを明示的にモデル化する。バグが「待って、この組み合わせは実際に起こりうるのか？」と問いかけるなら、型が緩すぎる。
 - **意味的プリミティブにブランドを付ける。** `UserId` と `OrderId` は下層では文字列だが、交換可能であってはならない。Rust の newtype、Swift の opaque type、Kotlin の value class、Haskell の phantom type、TypeScript の branded intersection。作成時に一度検証し、下流では型を信頼する。
-- **外部データはパースするまで型なし。** RPC ペイロード、JSON、IPC メッセージ、CLI 引数、設定ファイル、環境変数、データベース行。すべての境界に、非構造化入力を型付きモデルに変えるパース関数を置く。検証をどこに置くかは **boundary-discipline** 原則スキルを参照。
+- **外部データはパースするまで型なし。** RPC ペイロード、JSON、IPC メッセージ、CLI 引数、設定ファイル、環境変数、データベース行。すべての境界に、非構造化入力を型付きモデルに変えるパース関数を置く。検証の所在は **`web-coding-standards`** の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` を参照。
 - **型システムに嘘をつかない。** キャスト、unsafe な強制変換、コンパイラをバイパスするアサーション関数は、待機中のランタイムクラッシュである。コンパイラが事実を証明できないなら、証明する（検証、絞り込み、モデルの洗練）か、キャストが危険であることを受け入れる。今日埋めたキャストは、来週書くポストモーテムである。
 - **網羅的マッチングはコンパイラの仕事。** 和型にマッチする際、新しいバリアントが処理なしで追加されたらコンパイルが失敗しなければならない。言語が提供するイディオムを使う: TypeScript の `never` 型バインディング、Rust の注釈なし `match`、Haskell の `-Wincomplete-patterns`、Kotlin の sealed class マッチ網羅性。
 - **権威あるスキーマから型を導出する。** protocol buffer、OpenAPI spec、GraphQL スキーマ、データベースマイグレーション、デザインシステムトークンファイルが形状を定義している場合、並行の型を手作りするのではなくそこから導出する。手動の重複はドリフトする。**encode-lessons-in-structure** 原則スキルを参照。

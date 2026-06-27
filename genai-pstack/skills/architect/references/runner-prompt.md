@@ -11,7 +11,7 @@ architect の並列探索で 1 つの候補設計を産出する。まず **arch
 - 共有状態: 2 _actor が書きうるなら「何が起きる？」と問う。答えが「何もない」でなければ、デフォルトは読み取り境界でマージする actor ごとの状態（**separate-before-serializing-shared-state** 原則スキル）。
 - 境界を見えるように。本体は `not implemented` エラー、難しいロジックは `// TODO` 疑似コード、意図と不変条件を述べる doc コメント。読者は型とシグネチャだけで入力から出力まで辿れるべき。
 - 不変条件を型にエンコード: 誤用しにくい型 > 実行時チェック > 文章コメント（**encode-lessons-in-structure** 原則スキル）。
-- 境界で検証し、内部では型を信頼（**boundary-discipline** 原則スキル）。ビジネスロジックは純関数。シェルは薄く。
+- 境界で検証し、内部では型を信頼（**web-coding-standards** の `form-validation`、`nextjs-directory-structure` の `practice-bff`）。ビジネスロジックは純関数。シェルは薄く。
 - 不変条件ごとに単一の真実の源。同期ではなく導出。
 - 該当すれば冪等な状態遷移（**make-operations-idempotent** 原則スキル）。操作が 2 回走るか途中で落ちたらどうなるか問う。
 - 呼び出しチェーンは短く。流れの追跡に 3 ファイル超が要るなら階層をフラットに（**laziness-protocol** と **minimize-reader-load** 原則スキル）。

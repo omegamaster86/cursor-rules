@@ -19,6 +19,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 | 単ファイル調査 | `/.cursor/commands/file-brief.md` |
 | 流用・重複チェック | `/.cursor/commands/reuse-check.md` |
 | Next.js / Supabase 実装 | `nextjs-directory-structure`, `web-coding-standards`, `supabase-implementation` の `rules/` |
+| 検証・層配線・BFF | `web-coding-standards` の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
 
 エントリーポイント: `/.cursor/commands/omega-mode.md`
@@ -60,8 +61,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 **Architecture**
 
-- **Boundary Discipline**（**principle-boundary-discipline**）。validation、エラーハンドリング、フレームワークアダプタを配線するとき。システム境界にガード、内部型を信頼、ビジネスロジックを pure に保つ。
-- **Type System Discipline**（**principle-type-system-discipline**）。型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。
+- **Type System Discipline**（**principle-type-system-discipline**）。型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。
 - **Make Operations Idempotent**（**principle-make-operations-idempotent**）。クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。
 - **Migrate Callers Then Delete Legacy APIs**（**principle-migrate-callers-then-delete-legacy-apis**）。旧 caller が存在する新内部 API を導入するとき。1 wave で migrate して delete。
 - **Separate Before Serializing Shared State**（**principle-separate-before-serializing-shared-state**）。並行アクターが同じファイル、ブランチ、キー、オブジェクトに書く可能性があるとき。まず共有を排除。
