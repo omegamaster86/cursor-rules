@@ -38,15 +38,15 @@ ls -t <agent-transcripts>/*.jsonl <agent-transcripts>/*/*.jsonl <agent-transcrip
 
 | レンズ | `model` | プロンプトテンプレート |
 |---|---|---|
-| Judgment | 設定済み reflect-judgment モデル（デフォルト `claude-opus-4-8-thinking-xhigh`） | `references/judgment-reviewer.md` |
-| Tooling | 設定済み reflect-tooling モデル（デフォルト `composer-2.5-fast`） | `references/tooling-reviewer.md` |
-| Divergent | 設定済み reflect-judgment モデル（デフォルト `claude-opus-4-8-thinking-xhigh`） | `references/divergent-reviewer.md` |
+| Judgment | 設定済み reflect-judgment モデル（デフォルト `composer-2.5`） | `references/judgment-reviewer.md` |
+| Tooling | 設定済み reflect-tooling モデル（デフォルト `composer-2.5`） | `references/tooling-reviewer.md` |
+| Divergent | 設定済み reflect-judgment モデル（デフォルト `composer-2.5`） | `references/divergent-reviewer.md` |
 
 各テンプレートをそのまま渡し、マーク箇所をトランスクリプトパスまたはダイジェストに置換。レビュアーは `Task` 応答本文で所見を返す。
 
 ### 3. 統合する
 
-`Task` 1 回、`subagent_type: generalPurpose`、設定済み reflect-judgment モデル（デフォルト `claude-opus-4-8-thinking-xhigh`）、エージェントモード（`readonly: false`）。統合者の品質チェックに引用のスポット検証が含まれ、MCP が要ることがある。readonly は MCP を剥がす。`references/synthesizer.md` をそのまま使い、マーク箇所に各レビュアーの全文出力をインライン。統合者は構造化された Accepted / Rejected / Backlog リストを返す。
+`Task` 1 回、`subagent_type: generalPurpose`、設定済み reflect-judgment モデル（デフォルト `ccomposer-2.5`）、エージェントモード（`readonly: false`）。統合者の品質チェックに引用のスポット検証が含まれ、MCP が要ることがある。readonly は MCP を剥がす。`references/synthesizer.md` をそのまま使い、マーク箇所に各レビュアーの全文出力をインライン。統合者は構造化された Accepted / Rejected / Backlog リストを返す。
 
 ### 4. 構造的強制チェック
 
