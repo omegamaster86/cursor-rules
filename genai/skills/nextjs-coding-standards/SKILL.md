@@ -1,9 +1,9 @@
 ---
-name: web-coding-standards
+name: nextjs-coding-standards
 description: Defines Next.js web app coding standards for TypeScript types, Tailwind CSS, Supabase auth/data, React Hooks, forms, and component structure. Use when implementing or reviewing types, styling, Supabase, hooks, forms, or naming in Next.js projects.
 ---
 
-# Web Coding Standards
+# Next.js Coding Standards
 
 Next.js Web アプリのコーディング規約。型定義・Tailwind・Supabase・Hooks・フォーム・コンポーネント・命名のルールを定義する。
 
@@ -41,6 +41,7 @@ Next.js Web アプリのコーディング規約。型定義・Tailwind・Supaba
 ### 2. Tailwind CSS (MEDIUM)
 
 - [tailwind-cn-function](rules/tailwind-cn-function.md) - cn() ユーティリティ
+- [tailwind-rem-units](rules/tailwind-rem-units.md) - スペーシング・サイジング系は rem 単位を使用
 
 ### 3. Supabase (CRITICAL)
 

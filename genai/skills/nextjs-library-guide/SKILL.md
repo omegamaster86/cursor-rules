@@ -1,9 +1,9 @@
 ---
-name: web-library-guide
+name: nextjs-library-guide
 description: Defines recommended libraries and packages for Next.js web apps (UI, forms, validation, testing, dev tools). Use when adding UI components, implementing forms/validation, writing tests, setting up tooling, or evaluating libraries for Next.js projects.
 ---
 
-# Web Library Guide
+# Next.js Library Guide
 
 Next.js Web アプリで推奨するライブラリ・パッケージのガイド。UI・フォーム・テスト・開発ツールの選定と使い方を定義する。
 
