@@ -39,6 +39,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `blast-radius` | 変更の影響範囲 |
 | `tdd` | 失敗テスト先行のバグ修正 |
 | `recall` | チャット履歴からコンテキスト再構築 |
+| `session-brief` | 長セッション状態をファイル化し新規チャットへ handoff |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
 | `reflect` | 長タスクの教訓をスキル化 |
 | `decision-log` | 意思決定 マークダウンでログとしてためる |
