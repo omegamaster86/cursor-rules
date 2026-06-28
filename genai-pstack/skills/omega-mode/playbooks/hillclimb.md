@@ -2,7 +2,7 @@
 
 **metric と experiment integrity を所有する。Supervise と review。attempt は delegate。** 1つの measurable なものを target に対して sustained iterative improvement（「hillclimb on X」「make startup 50% faster」「systematically drive down <metric>」「keep trying until <metric> improves by N%」）。1回限り fix は Bug fix または Perf issue。これは loop。
 
-Core discipline：1 change、1 measurement、keep または revert。untested change を stack しない。code inspection から win を claim しない。data が決める（**prove-it-works** 原則スキル）。
+Core discipline：1 change、1 measurement、keep または revert。untested change を stack しない。code inspection から win を claim しない。data が決める（**`/verify-done`**）。
 
 1. 最初の attempt 前に metric と stop predicate を fix。1 number、better と count する direction、target と attempt floor を pair する checkable predicate（例「baseline より少なくとも50% better かつ少なくとも10 iterations」がこの shape）。ユーザー number があれば使用。なければ agree。vague goal は spin。predicate が stop を可能にする。
 2. measurement harness を build し freeze（**build-the-lever** 原則スキル）。metric を emit する1 repeatable command。noise を clear するだけ sample（single run ではなく N の median）。ruler なので baseline を produce したら immutable。mid-run 変更は以前の number をすべて invalidate。change 前に baseline metric と regression gate（pass し続ける tests）の green run を record。

@@ -21,6 +21,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 | Next.js / Supabase 実装 | `nextjs-directory-structure`, `web-coding-standards`, `supabase-implementation` の `rules/` |
 | 検証・層配線・BFF | `web-coding-standards` の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` |
 | リファクタ・削減・簡素化（ユーザー指示時） | `/.cursor/commands/refactor-check.md` |
+| 完了宣言前の検証（omega-mode ゲート） | `/.cursor/commands/verify-done.md` |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
 
 エントリーポイント: `/.cursor/commands/omega-mode.md`
@@ -66,7 +67,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 **Verification**
 
-- **Prove It Works**（**principle-prove-it-works**）。タスク後、完了宣言前。プロキシや「コンパイル通った」ではなく実アーティファクトに対して検証。
+- **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は **principle-prove-it-works** leaf（任意）。
 - **Fix Root Causes**（**principle-fix-root-causes**）。デバッグ。各症状を根本原因までトレース、先に再現、到達するまで why を問う。
 - **Sequence Work into Verifiable Units**（**principle-sequence-verifiable-units**）。複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。
 

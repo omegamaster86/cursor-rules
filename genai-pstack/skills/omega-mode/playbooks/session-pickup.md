@@ -8,6 +8,6 @@ pickup は継承。以前のエージェントがコード読み、repro 実行�
 2. operational state を再構築。branch と worktree、すでに land したもの（`git log`、base 対 `git diff`）、open todos、下された決定。以前の trail が authoritative input。再導出 bias に抗う。
 3. done vs pending を diff。ship 済みと plan を比較、resume point を名指し、以前の repro を再実行せず完了作業をやり直さない。
 4. 残作業を matching playbook に route し verdict を選ぶ：execution 続行、完了 recommendation を ship、以前の結論を ratify または override、失敗 run の postmortem。pickup playbook はここで終わり。route 先 playbook が残りを所有。
-5. 実アーティファクト上で inherited claims を original goal に対して verify（**principle-prove-it-works** スキル）。pass した以前の self-report は proof ではない。
+5. 実アーティファクト上で inherited claims を original goal に対して verify（**`/verify-done`**）。pass した以前の self-report は proof ではない。
 
 **Reply:** 以前のエージェントが止まった場所、inherit したもの vs やり直したもの（ ideally やり直しなし）、resume point、outcome。

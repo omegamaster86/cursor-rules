@@ -1,6 +1,6 @@
 ### Opening a PR
 
-他のすべての playbook 末尾で呼び出し。
+他のすべての playbook 末尾で呼び出し。**直前に `/verify-done` を PASS してから** PR を開く（`commands/verify-done.md`）。
 
 **Worktree.** main から git worktree で作業。subagent は inherit。同 branch 上の複数 `Task` は各々 own worktree、または間に `git fetch && git reset --hard origin/<branch>`。unrelated work の dirty branch：patch out、fresh worktree、apply。snarled worktree：main から reset、minimal に redo。
 

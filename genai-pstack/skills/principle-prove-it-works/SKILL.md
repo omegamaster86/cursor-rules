@@ -1,10 +1,12 @@
 ---
 name: principle-prove-it-works
-description: "タスク完了後、完了宣言の前に適用する。代理指標、自己報告、「コンパイルできた」ではなく、実際の成果物に対して検証する（機能を実行し、実際の値を読み、diff を検査する）。"
+description: "完了前検証の哲学。実行手順の正本は /verify-done コマンド。代理指標・自己報告・コンパイルのみを proof にしない。"
 disable-model-invocation: true
 ---
 
 # 動作を証明する
+
+**実行手順の正本:** `/.cursor/commands/verify-done.md`（`/verify-done`）。omega-mode 完了ゲートおよびユーザー任意呼び出し。本スキルは **なぜ・何を proof にしてはいけないか** の背景。
 
 すべてのタスク出力を、実物を直接チェックして検証する。代理指標、自己報告、「コンパイルできた」から推論しない。
 

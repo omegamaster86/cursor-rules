@@ -7,6 +7,7 @@
 | スキル / コマンド | 用途 |
 |-------------------|------|
 | `/omega-mode`（command） | 非自明な実装・調査のメイン入口 |
+| `/verify-done`（command） | 完了前検証（omega-mode ゲート・任意呼び出し） |
 | `omega-mode`（skill） | 原則・プレイブックの本体（コマンドと同名） |
 
 ---
@@ -78,7 +79,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | スキル | 適用タイミング | 内容 |
 |--------|----------------|------|
-| `principle-prove-it-works` | 完了宣言の前 | コンパイル・自己報告・代理指標ではなく実アーティファクトで検証。実行・実値確認・E2E。可能ならチェックをスクリプト化 |
+| `principle-prove-it-works` | 完了宣言の前 | 背景・哲学。実行手順の正本は **`/verify-done`**。コンパイル・自己報告・代理指標ではなく実アーティファクトで検証 |
 | `principle-fix-root-causes` | デバッグ | 症状ではなく根本原因まで「なぜ」を追う。先に再現。nil ガード追加は症状修正。再起動バグはコードより永続状態を疑う |
 | `principle-sequence-verifiable-units` | マルチステップ作業・コミット/PR の積み方 | 各単位がチェックで終わるまで次に進まない。失敗テスト→修正の順など、シーケンス自体がレビュアーに証明する |
 
@@ -105,6 +106,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `file-brief` | 単ファイル調査 |
 | `reuse-check` | 既存コード流用チェック |
 | `refactor-check` | リファクタ・削減チェック（ユーザー指示時） |
+| `verify-done` | 完了前検証（omega-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
 

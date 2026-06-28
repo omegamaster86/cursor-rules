@@ -19,6 +19,14 @@ description: 非自明な実装・調査のエントリ。omega-mode スキル�
 3. ステップが発火するたびにスキルまたはコマンドへルーティングする。
 4. 返信は簡潔・検証済み・根拠付き（日本語可）。文体の細かい制約は設けない。
 
+## 完了ゲート（必須）
+
+実装・修正タスクで **完了宣言・Opening a PR の前** に **`/verify-done`**（`/.cursor/commands/verify-done.md`）を実行する。
+
+- テスト suite 全件はデフォルトにしない。変更に応じた proof を選ぶ（command 内 Tier 参照）。
+- **PASS** するまで「完了」「done」と言わない。FAIL / PARTIAL のまま PR を開かない（ユーザーが明示 proceed した場合を除く）。
+- ユーザーは `/omega-mode` 外でも `/verify-done` を単独呼び出しできる。
+
 ## 補足ルーティング
 
 `omega-mode` スキルの **ルーティング** に加え、次も参照する。

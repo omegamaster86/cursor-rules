@@ -88,7 +88,7 @@ NN-slug/
 - Native mobile：チームが持つ simulator-driving スキル。
 - 触った surface に control スキルがない：プランに flag。
 
-バグ fix のループは surface で再現、fix、同 surface で verify。ユニットテストは branch が特定の動きをすることを示す。バグが消えたことは証明しない（**prove-it-works** 原則スキル）。
+バグ fix のループは surface で再現、fix、同 surface で verify。ユニットテストは branch が特定の動きをすることを示す。バグが消えたことは証明しない（**`/verify-done`**）。
 
 ## 6. Implementation guidance
 

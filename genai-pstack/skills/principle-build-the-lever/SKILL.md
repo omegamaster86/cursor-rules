@@ -20,4 +20,4 @@ disable-model-invocation: true
 
 **バランス:** 基準は反復性ではなく自明性である。レバーが作業を検証可能にするものであれば、一度きりの作業でもレバーに値する。[refactor-check](../../commands/refactor-check.md) Step 2 に従い、作業を実行または証明する最小のスクリプトを構築し、フレームワークは作らない。
 
-[Encode Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md) とは異なる。そちらは繰り返しの指示を永続的なガードレールにする。こちらは目の前の作業のスループットとレビュー可能性である。検証自体をスクリプト化するには [Prove It Works](../principle-prove-it-works/SKILL.md) を参照。
+[Encode Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md) とは異なる。そちらは繰り返しの指示を永続的なガードレールにする。こちらは目の前の作業のスループットとレビュー可能性である。検証自体をスクリプト化するには **`/verify-done`** コマンド（`commands/verify-done.md`）および [Prove It Works](../principle-prove-it-works/SKILL.md) を参照。
