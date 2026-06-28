@@ -13,7 +13,7 @@ Next.js App Router のディレクトリ構成とファイル配置のガイド�
 - ページ・コンポーネントの追加時
 - Server Actions・API クライアントの配置を決める時
 - ファイル・ディレクトリの命名を確認する時
-- 構成のリファクタリング時
+- 構成のリファクタリング時はユーザー指示後に `/refactor-check` を実行
 - Supabase Edge Functions 連携の実装時
 
 ## Rule Categories by Priority

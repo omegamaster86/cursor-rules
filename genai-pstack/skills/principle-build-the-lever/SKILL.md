@@ -18,6 +18,6 @@ disable-model-invocation: true
 - この原則を適用するとファイルが生まれる。引用したのに diff に codemod、スクリプト、ジェネレーター、委譲スキルがなければ、適用していない。
 - 作業がセッションを超えて存続する場合はレバーをコミットし、次回はやり直すのではなく再実行する。
 
-**バランス:** 基準は反復性ではなく自明性である。レバーが作業を検証可能にするものであれば、一度きりの作業でもレバーに値する。[Laziness Protocol](../principle-laziness-protocol/SKILL.md) に従い、作業を実行または証明する最小のスクリプトを構築し、フレームワークは作らない。
+**バランス:** 基準は反復性ではなく自明性である。レバーが作業を検証可能にするものであれば、一度きりの作業でもレバーに値する。[refactor-check](../../commands/refactor-check.md) Step 2 に従い、作業を実行または証明する最小のスクリプトを構築し、フレームワークは作らない。
 
 [Encode Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md) とは異なる。そちらは繰り返しの指示を永続的なガードレールにする。こちらは目の前の作業のスループットとレビュー可能性である。検証自体をスクリプト化するには [Prove It Works](../principle-prove-it-works/SKILL.md) を参照。

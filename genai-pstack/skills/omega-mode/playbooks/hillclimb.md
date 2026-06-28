@@ -14,7 +14,7 @@ Core discipline：1 change、1 measurement、keep または revert。untested ch
    - metric が noise を past し gate が green のときだけ accept。そうでなければ full revert。「効くかも」 tweak は ride しない。
    - accepted fix ごとに1 commit。変更 file のみ stage（`git add <files>`、`-A` 禁止）。kept/reverted どちらも row log。
    各 iteration は次の前に check で終わる（**sequence-verifiable-units** 原則スキル）。unattended run なら Autonomous run playbook（`playbooks/autonomous-run.md`）から wake mechanism のみ borrow。stop rule ではない。この playbook の stop criteria が govern。plateau は pivot を意味し stop ではない。
-6. 最初の plateau を push past。stall（連続 reject）なら category pivot、near-miss combine、source re-read、より radical を try して hill climbed と conclude 前に。correctness と simplicity が number より優先。behavior を break する win は revert。number を hold する simplification は keep（**laziness-protocol** 原則スキル）。
+6. 最初の plateau を push past。stall（連続 reject）なら category pivot、near-miss combine、source re-read、より radical を try して hill climbed と conclude 前に。correctness と simplicity が number より優先。behavior を break する win は revert。number を hold する simplification は keep（**refactor-check**）。
 7. predicate met、または残 idea が genuinely marginal で cost に見合わないとき stop。victory のため predicate relax しない。cheap untried hypothesis が残るうち quit しない。stuck なら spin せず surface。
 8. accepted commit を land 順に stack して **Opening a PR**。metric climb が top to bottom で読めるように。
 

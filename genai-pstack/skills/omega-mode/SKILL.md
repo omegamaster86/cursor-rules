@@ -20,6 +20,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 | 流用・重複チェック | `/.cursor/commands/reuse-check.md` |
 | Next.js / Supabase 実装 | `nextjs-directory-structure`, `web-coding-standards`, `supabase-implementation` の `rules/` |
 | 検証・層配線・BFF | `web-coding-standards` の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` |
+| リファクタ・削減・簡素化（ユーザー指示時） | `/.cursor/commands/refactor-check.md` |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
 
 エントリーポイント: `/.cursor/commands/omega-mode.md`
@@ -49,11 +50,8 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 **Core**
 
-- **Laziness Protocol**（**principle-laziness-protocol**）。リファクタリング、diff のサイズ感、抽象化・レイヤー・シグナル配線を追加したくなったとき。削除と問題を解く最小変更にバイアス。
 - **Foundational Thinking**（**principle-foundational-thinking**）。ロジックを書く前：コア型とデータ構造、scaffold vs feature の順序、並行アクターが共有するもの。
 - **Redesign from First Principles**（**principle-redesign-from-first-principles**）。新要件を既存設計に統合するとき。初日から foundational だったかのように再設計。
-- **Subtract Before You Add**（**principle-subtract-before-you-add**）。追加、リファクタ、書き換えの順序付け。まず dead weight を除去し、より単純な基盤の上に構築。
-- **Minimize Reader Load**（**principle-minimize-reader-load**）。追いにくいコードをレビューまたは整形するとき。レイヤー数と hidden state を数え、1-caller ラッパーを潰し、mutable スコープを縮小。
 - **Outcome-Oriented Execution**（**principle-outcome-oriented-execution**）。明示的フェーズ境界のある計画された書き換えとマイグレーション。使い捨て互換状態を保つのではなく目標アーキテクチャに収束。
 - **Experience First**（**principle-experience-first**）。プロダクト、UX、機能スコープのトレードオフ。実装の都合よりユーザー delight を選ぶ。
 - **Exhaust the Design Space**（**principle-exhaust-the-design-space**）。先例のない新しいインタラクションまたはアーキテクチャ決定。コミット前に競合する2〜3プロトタイプを作って比較。
