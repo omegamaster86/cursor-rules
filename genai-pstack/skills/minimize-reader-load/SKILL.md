@@ -1,7 +1,6 @@
 ---
 name: principle-minimize-reader-load
 description: "追跡が困難なコードをレビューまたは整形するときに適用する。質問と答えの間のレイヤー数と、読者の頭の中の隠れた状態を数え、単一呼び出し元のラッパーを潰し、可変スコープを縮小する。"
-disable-model-invocation: true
 ---
 
 # 読者負荷を最小化する
