@@ -7,7 +7,7 @@ Laziness Protocol の「smallest change」と verification bar が invert する
 1. prototype が存在する decision を scope：layout、interaction、density、または empirical fork なら behavior、timing、approach。decision なし means no prototype。Feature に route。
 2. design space が open なら reference を gather。prior art を search、moodboard（themes、palettes、layouts）を summarize、build 前にユーザーに direction を pick させる。direction が set なら skip。
 3. isolated scratch dir に throwaway build。production source から separate。visual decision なら vanilla HTML/CSS/JS または idea を render する lightest stack、CDN deps、hot reload dev server。behavioral または timing decision なら question を exercise する smallest script。production framework、tests、abstractions なし。
-4. alternative を compare するとき、1 switcher（buttons または keypress）の背後に build。各 variant に label で user が名指しできるように。これが安くなった **exhaust-the-design-space** 原則スキル。
+4. alternative を compare するとき、1 switcher（buttons または keypress）の背後に build。各 variant に label で user が名指しできるように。
 5. matching surface で verify。visual decision なら control スキル経由で各 variant を screenshot、interaction を drive。eye が test。behavioral または timing decision なら decide しているものを logging timing、output print、render watch で observe。ここ observation が test。assertion ではない。
 6. alternative、tradeoff、recommendation を present。output は decision ＋ throwaway artifact。shippable code ではない。chosen direction を **Feature**（または shape なら `architect`）に real build へ hand。
 

@@ -32,7 +32,7 @@ disable-model-invocation: true
 
 設定済み architect runner を使う（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。
 
-**exhaust-the-design-space** 原則スキルの具体化。1 つの形の中の点修正ではなく、形全体の代替案。
+1 つの形の中の点修正ではなく、形全体の代替案を探索する。
 
 arena は 1 つの統合設計パッケージを返す。統合判断が根拠の「Synthesis decision」節を埋める。
 

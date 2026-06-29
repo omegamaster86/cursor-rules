@@ -55,7 +55,7 @@ NN-slug/
 - **Context.** 問題となぜ今か。
 - **Scope.** 含む。明示的除外。
 - **Constraints.** 技術、プラットフォーム、dependency、パターン。
-- **Alternatives.** 2〜3アプローチをスケッチ、選択と rationale（**exhaust-the-design-space** 原則スキル）。制約が1つに dictate するとき skip。
+- **Alternatives.** 2〜3アプローチをスケッチ、選択と rationale。制約が1つに dictate するとき skip。
 - **Applicable skills.** 実装者が invoke すべきドメインスキルを名前で。
 - **Phases.** phase ファイルへの順序付き standard-markdown リンク。
 - **Verification.** プロジェクトレベルコマンド。
