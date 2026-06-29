@@ -47,7 +47,7 @@ NN-slug/
 
 - 1関数または型＋テスト、または1バグ fix。「1ファイル」ではない。
 - 触るファイル2〜3、最大。
-- option value を保つため8〜10の小フェーズを3〜4の大フェーズより優先（**foundational-thinking** 原則スキル）。
+- option value を保つため8〜10の小フェーズを3〜4の大フェーズより優先（**principle-foundational-thinking** 原則スキル）。
 - フェーズに5テストケース超または3関数超なら split。
 
 ### Overview file
@@ -66,10 +66,10 @@ NN-slug/
 - overview へ back-link。
 - **Goal.** フェーズが達成すること。
 - **Changes.** 影響ファイルと high level の変更。what と why、how ではない。コード snippet なし。
-- **Data structures.** 主要型または schema を名指し。1行スケッチのみ（**foundational-thinking** 原則スキル）。
+- **Data structures.** 主要型または schema を名指し。1行スケッチのみ（**principle-foundational-thinking** 原則スキル）。
 - **Verification.** セクション6参照。
 
-インフラと共有型が先に land するようフェーズを順序（**foundational-thinking** 原則スキル）。各フェーズは独立して shippable。
+lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（**principle-foundational-thinking** 原則スキル）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
 
 既存コードに触れる変更では **redesign-from-first-principles** 原則スキルを適用：新要件を初日から持っていたらどう見えるか？ holistic に再設計。incremental に deliver。
 

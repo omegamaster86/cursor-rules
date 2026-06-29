@@ -11,9 +11,11 @@ tags: typescript, types, organization
 
 **基本方針：**
 
-1. **共通型**: `src/types/index.ts` に集約
-2. **ページ固有型**: 各 `page.tsx` ファイル内に定義
+1. **契約型（ドメイン / API）**: `src/types/index.ts` に早めに集約（**principle-foundational-thinking**）
+2. **画面専用 ViewModel**: そのページでのみ使う表示用の型のみ、各 `page.tsx` 内に定義
 3. **DB型**: `src/types/database.types.ts` をベースに再定義
+
+`Todo` や `CreateTodoInput` など **フロント・バックが共有する契約型** をページ内に閉じない。画面専用の集計・表示状態だけがページ固有型の対象。
 
 **database.types.ts の活用：**
 
@@ -34,11 +36,12 @@ export type ApiResponse<T> = {
 };
 ```
 
-**ページ固有の型：**
+**ページ固有の型（ViewModel のみ）：**
 
 ```typescript
 // app/dashboard/page.tsx
-// そのページでのみ使用する型は、ページファイル内に定義
+// そのページの表示・集計にだけ使う ViewModel はページ内に定義
+// ドメイン契約型（User, Todo 等）は src/types へ
 
 type DashboardStats = {
   totalUsers: number;
@@ -78,7 +81,7 @@ interface Window {
 
 **チェックリスト：**
 
-- [ ] 共通型は `src/types/index.ts` に配置
+- [ ] 契約型（ドメイン / API）は `src/types/index.ts` に配置
 - [ ] DB から取得するデータは `database.types.ts` から再定義
-- [ ] ページ固有の型は各ページファイル内に定義
+- [ ] 画面専用 ViewModel のみ各ページファイル内に定義
 - [ ] `type` を優先使用（`interface` は必要な場合のみ）

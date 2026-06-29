@@ -24,7 +24,7 @@ Database Function (PostgreSQL)
 **なぜ3層か？**
 
 1. **セキュリティ**: ビジネスロジックをサーバーサイドに閉じ込める
-2. **型安全性**: 各層で型を定義して検証
+2. **型安全性**: 各層で **同じ契約型** を import して検証（層ごとに別名 DTO を手書きしない — **principle-foundational-thinking**）
 3. **再利用性**: Edge Function は Web/Mobile で共有可能
 4. **テスタビリティ**: 各層を独立してテスト可能
 

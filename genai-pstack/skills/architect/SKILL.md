@@ -42,7 +42,7 @@ arena は 1 つの統合設計パッケージを返す。統合判断が根拠�
 
 呼び出し側が明示的に求めたときだけチェックポイント: 「/architect with checkpoint」「実装前に止めて見せて」など。統合設計を提示し、承認待ち。
 
-どちらでも統合は単独コミットとして出荷できる。**foundational-thinking** 原則スキルの「scaffold first」モード。以降のコミットは安定契約に対する本体の充填として読める。充填中の計画・スコープ内の破壊は **outcome-oriented-execution** 原則スキルに従い問題ない。実装前に設計へ敵対的圧力をかけるなら、統合スケッチに **`review-orchestrator-triple-hybrid` コマンド**を実行。
+どちらでも統合は単独コミットとして出荷できる。**principle-foundational-thinking** 原則スキルの「scaffold first」モード。以降のコミットは安定契約に対する本体の充填として読める。充填中の計画・スコープ内の破壊は **outcome-oriented-execution** 原則スキルに従い問題ない。実装前に設計へ敵対的圧力をかけるなら、統合スケッチに **`review-orchestrator-triple-hybrid` コマンド**を実行。
 
 人が形に押し返したら（チェックポイント中または事後）、フェーズ A の証拠として扱う。さらにコードを書く前に再土台固めしフェーズ B を再実行。
 

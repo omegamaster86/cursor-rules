@@ -34,7 +34,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 - 非自明な変更、アーキテクチャ決定、または「本当に確かか？」→ **how** スキル。
 - 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → 質問する前に分類する。何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断だけに質問を留める。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
-- コードがある → まずデータ形状を名指しする。
+- コードがある → まず契約（データ形状）を名指しする（**principle-foundational-thinking**）。
 - 関数境界を越えるコード → **architect** スキル、実装前に並列設計探索。
 - 争点のある設計 → 出荷前に **`review-orchestrator-triple-hybrid` コマンド**（3モデル並列レビュー）。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
@@ -51,7 +51,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 **Core**
 
-- **Foundational Thinking**（**principle-foundational-thinking**）。ロジックを書く前：コア型とデータ構造、scaffold vs feature の順序、並行アクターが共有するもの。
+- **Foundational Thinking**（**principle-foundational-thinking**）。ロジックを書く前（omega 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。
 - **Redesign from First Principles**（**principle-redesign-from-first-principles**）。新要件を既存設計に統合するとき。初日から foundational だったかのように再設計。
 - **Outcome-Oriented Execution**（**principle-outcome-oriented-execution**）。明示的フェーズ境界のある計画された書き換えとマイグレーション。使い捨て互換状態を保つのではなく目標アーキテクチャに収束。
 - **Experience First**（**principle-experience-first**）。プロダクト、UX、機能スコープのトレードオフ。実装の都合よりユーザー delight を選ぶ。
