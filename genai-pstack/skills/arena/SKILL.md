@@ -26,7 +26,7 @@ N 候補は同じプロンプトを受ける。プロンプトが契約。何か
 1. 各候補が産出する成果物を述べる。
 2. ルーブリックを導く。*この*タスクの成功の姿を述べ、3〜6 の具体的に採点可能な基準にする。具体: `--dry-run` フラグを追加し書き込みをスキップ。曖昧: `code is correct`。ルーブリックはフェーズ D の picker の道具。候補はタスクだけ見る。
 3. runner を選ぶ。デフォルトは設定済み arena リスト（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。複数設計方向をカバーするときは増やす。判断より生成に縛られる作業では同じモデルを N 回。
-4. 出力パスを割り当てる。各候補は独自の場所に書く（可能なら git worktree、そうでなければ `/tmp/arena-<slug>/candidate-<n>/`）。同じパスに N 候補が書くのは共有可変状態で、**separate-before-serializing-shared-state** 原則スキルのテストに失敗する。
+4. 出力パスを割り当てる。各候補は独自の場所に書く（可能なら git worktree、そうでなければ `/tmp/arena-<slug>/candidate-<n>/`）。同じパスに N 候補が書くと共有可変状態で競合する。
 
 ## フェーズ B: 扇状展開
 

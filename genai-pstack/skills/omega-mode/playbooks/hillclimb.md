@@ -9,7 +9,7 @@ Core discipline：1 change、1 measurement、keep または revert。untested ch
 3. **show-me-your-work** スキルで decision log を open。`decision.tsv`、attempt ごとに1 row：id、hypothesis、change、before、after、delta、tests、verdict（kept または reverted）、note。run の memory。各 attempt 前に read し search が accumulate し circle しない。tree 外（gitignored）に keep し revert を survive。
 4. guess 前に real architecture で hypothesis を ground。**how** スキルを target に1回 up front。各 attempt が specific mechanism を名指す（「first paint を block するので boot path から X を defer」）。「something を memoize してみる」ではない。
 5. Loop、iteration ごとに1 hypothesis：
-   - tight scope で設定 hillclimb model（デフォルト `gpt-5.5-high-fast`）の subagent に change を hand。type せず supervise と diff review（**guard-the-context-window** 原則スキル）。複数 independent hypothesis が live なら parallel subagent に fan。各 own worktree で collide 不可（**separate-before-serializing-shared-state** 原則スキル）。
+   - tight scope で設定 hillclimb model（デフォルト `gpt-5.5-high-fast`）の subagent に change を hand。type せず supervise と diff review（**guard-the-context-window** 原則スキル）。複数 independent hypothesis が live なら parallel subagent に fan。各 own worktree で collide 不可。
    - frozen harness で before/after measure。regression gate 実行。
    - metric が noise を past し gate が green のときだけ accept。そうでなければ full revert。「効くかも」 tweak は ride しない。
    - accepted fix ごとに1 commit。変更 file のみ stage（`git add <files>`、`-A` 禁止）。kept/reverted どちらも row log。

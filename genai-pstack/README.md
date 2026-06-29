@@ -46,7 +46,7 @@ cp /path/to/cursor-rules/genai-pstack/rules/omega-models.mdc .cursor/rules/
 ## モードの関係
 
 - **通常モード**: `global.mdc` が適用。タスク分析・実行結果報告フォーマットあり。
-- **omega-mode**: `/omega-mode` コマンド起動時、`commands/omega-mode.md` と `skills/omega-mode/` が `global.mdc` より優先。原則9本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
+- **omega-mode**: `/omega-mode` コマンド起動時、`commands/omega-mode.md` と `skills/omega-mode/` が `global.mdc` より優先。原則8本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
 
 コマンド（入口）とスキル（原則・プレイブック本体）はどちらも **omega-mode** という名前で統一しています。
 

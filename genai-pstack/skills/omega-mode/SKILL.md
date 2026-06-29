@@ -57,7 +57,6 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 - **Type System Discipline**（**principle-type-system-discipline**）。型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。
 - **Make Operations Idempotent**（**principle-make-operations-idempotent**）。クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。
-- **Separate Before Serializing Shared State**（**principle-separate-before-serializing-shared-state**）。並行アクターが同じファイル、ブランチ、キー、オブジェクトに書く可能性があるとき。まず共有を排除。
 
 **Verification**
 
