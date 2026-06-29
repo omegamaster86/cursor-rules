@@ -50,7 +50,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |----------|------|
 | `omega-models.mdc` | omega-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
 
-### 原則（principle-*）11本
+### 原則（principle-*）10本
 
 `omega-mode` の Principles インデックスから **on-demand** で読む（`disable-model-invocation: true` のため自動ロードされない）。`/omega-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `principle-*/SKILL.md` を全文読む。
 
@@ -60,7 +60,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | スキル | 適用タイミング | 内容 |
 |--------|----------------|------|
 | `principle-foundational-thinking` | ロジックを書く前（omega 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先。型収束とコンポーネント抽象化の切り分け。並行編集の隔離 |
-| `principle-build-the-lever` | 非自明な作業全般 | 手作業より codemod・スクリプト・ジェネレーター・再実行可能チェックを構築。レビュアーが再実行できる成果物にする。委譲時はスキルとしてレシピを固定 |
 
 #### Architecture
 

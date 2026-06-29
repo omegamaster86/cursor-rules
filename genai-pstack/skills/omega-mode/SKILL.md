@@ -52,7 +52,6 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 **Core**
 
 - **Foundational Thinking**（**principle-foundational-thinking**）。ロジックを書く前（omega 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。
-- **Build the Lever**（**principle-build-the-lever**）。非自明な作業すべて。手作業ではなく、それを実行または証明するツール（codemod、script、generator）を構築。ツールがレビュアーが再実行する成果物。
 
 **Architecture**
 

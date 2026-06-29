@@ -53,7 +53,7 @@ description: タスク完了宣言の前に、変更に応じた proof を選び
 - 「ビルドが通った」「lint が通った」は **Tier B 以下では proof にならない**。
 - 「テスト suite 全件 green」は **デフォルトにしない**。変更に関係するテスト・パスだけ実行する。
 - リファクタで behavior 不変を claim する場合: equivalence harness / old-vs-new diff script / recorded baseline replay（**compiles だけは pin にならない**）。
-- 可能なら **再実行可能なスクリプト**（決定論的 compare）を残す（`principle-build-the-lever` 参照）。
+- 可能なら **再実行可能なスクリプト**（決定論的 compare）を残す。
 
 ## Step 2: 実行しないもの（proxy 禁止）
 
@@ -117,5 +117,4 @@ PJ にテストがある場合の参照（任意）:
 
 - 哲学: `principle-prove-it-works`
 - 単位ごとの積み方: `principle-sequence-verifiable-units`
-- 検証のスクリプト化: `principle-build-the-lever`
 - omega-mode 入口: `commands/omega-mode.md`
