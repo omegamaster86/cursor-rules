@@ -71,7 +71,7 @@ NN-slug/
 
 lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（**principle-foundational-thinking** 原則スキル）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
 
-既存コードに触れる変更では **redesign-from-first-principles** 原則スキルを適用：新要件を初日から持っていたらどう見えるか？ holistic に再設計。incremental に deliver。
+既存コードに触れる変更では、新要件を初日から持っていたらどう見えるかを問い、holistic に再設計する。incremental に deliver。
 
 フェーズがスキルを create/edit する場合、実装者に **create-skill** スキル（SKILL.md 作成用 Cursor 組み込み）を使うよう phase で指示。
 

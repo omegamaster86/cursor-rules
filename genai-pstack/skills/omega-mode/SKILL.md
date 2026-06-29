@@ -52,9 +52,6 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 **Core**
 
 - **Foundational Thinking**（**principle-foundational-thinking**）。ロジックを書く前（omega 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。
-- **Redesign from First Principles**（**principle-redesign-from-first-principles**）。新要件を既存設計に統合するとき。初日から foundational だったかのように再設計。
-- **Outcome-Oriented Execution**（**principle-outcome-oriented-execution**）。明示的フェーズ境界のある計画された書き換えとマイグレーション。使い捨て互換状態を保つのではなく目標アーキテクチャに収束。
-- **Experience First**（**principle-experience-first**）。プロダクト、UX、機能スコープのトレードオフ。実装の都合よりユーザー delight を選ぶ。
 - **Exhaust the Design Space**（**principle-exhaust-the-design-space**）。先例のない新しいインタラクションまたはアーキテクチャ決定。コミット前に競合する2〜3プロトタイプを作って比較。
 - **Build the Lever**（**principle-build-the-lever**）。非自明な作業すべて。手作業ではなく、それを実行または証明するツール（codemod、script、generator）を構築。ツールがレビュアーが再実行する成果物。
 
