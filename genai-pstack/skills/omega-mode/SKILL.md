@@ -68,7 +68,6 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 **Verification**
 
 - **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は **principle-prove-it-works** leaf（任意）。
-- **Fix Root Causes**（**principle-fix-root-causes**）。デバッグ。各症状を根本原因までトレース、先に再現、到達するまで why を問う。
 - **Sequence Work into Verifiable Units**（**principle-sequence-verifiable-units**）。複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。
 
 **Delegation**

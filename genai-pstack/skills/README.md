@@ -50,7 +50,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |----------|------|
 | `omega-models.mdc` | omega-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
 
-### 原則（principle-*）16本
+### 原則（principle-*）15本
 
 `omega-mode` の Principles インデックスから **on-demand** で読む（`disable-model-invocation: true` のため自動ロードされない）。`/omega-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `principle-*/SKILL.md` を全文読む。
 
@@ -80,7 +80,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | スキル | 適用タイミング | 内容 |
 |--------|----------------|------|
 | `principle-prove-it-works` | 完了宣言の前 | 背景・哲学。実行手順の正本は **`/verify-done`**。コンパイル・自己報告・代理指標ではなく実アーティファクトで検証 |
-| `principle-fix-root-causes` | デバッグ | 症状ではなく根本原因まで「なぜ」を追う。先に再現。nil ガード追加は症状修正。再起動バグはコードより永続状態を疑う |
 | `principle-sequence-verifiable-units` | マルチステップ作業・コミット/PR の積み方 | 各単位がチェックで終わるまで次に進まない。失敗テスト→修正の順など、シーケンス自体がレビュアーに証明する |
 
 #### Delegation
