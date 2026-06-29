@@ -50,7 +50,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |----------|------|
 | `omega-models.mdc` | omega-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
 
-### 原則（principle-*）10本
+### 原則（principle-*）9本
 
 `omega-mode` の Principles インデックスから **on-demand** で読む（`disable-model-invocation: true` のため自動ロードされない）。`/omega-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `principle-*/SKILL.md` を全文読む。
 
@@ -67,7 +67,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |--------|----------------|------|
 | `principle-type-system-discipline` | 型・シグネチャ設計 | 不正状態を表現不能に、意味的プリミティブに brand、外部データは境界で parse。網羅的 match、権威スキーマから導出。検証の所在は genai ドメイン規約（`form-validation`、`practice-bff` 等）を参照 |
 | `principle-make-operations-idempotent` | クラッシュ・リトライ下のコマンド・ループ | 「2回実行」「途中クラッシュ」で同じ最終状態に収束するよう設計。自己修復ロック・冪等スケジューリング |
-| `principle-migrate-callers-then-delete-legacy-apis` | 新内部 API 導入時 | 互換レイヤーを残さず同一 wave で caller 移行→旧 API 削除。外部互換が不要な協調的変更向け |
 | `principle-separate-before-serializing-shared-state` | 並行アクターが同一リソースに書くとき | まず共有書き込みを排除（専用ファイル・ブランチ・キー）。真の不変条件だけロック・逐次フェーズでシリアライズ |
 
 #### Verification
