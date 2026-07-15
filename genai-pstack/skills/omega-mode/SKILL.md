@@ -111,5 +111,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 - **Autonomous run.** 止まらず完了まで推進する長いタスク（「完了まで走れ」「/loop until X」）。`playbooks/autonomous-run.md`。
 - **Session pickup.** トランスクリプト、cloud-agent URL、push 済みブランチから以前エージェントの進行中作業を再開または引き継ぎ。`playbooks/session-pickup.md`。
 - **Pause safely.** 明示 pause、オフライン、Cursor 再起動、差し迫った context compaction で、後で再開できるよう進行中作業をきれいに中断。Session pickup の補完。完全ステップ：`playbooks/pause-safely.md`。
-- **Multi-phase or multi-PR plan.** フェーズまたはスタック PR にまたがる作業。`playbooks/multi-phase-plan.md`。
+- **Multi-phase or multi-PR plan.** フェーズまたはスタック PR にまたがる作業。`playbooks/multi-phase-plan.md`（図は `references/plan-diagrams.md`）。
 - **Opening a PR.** 他のすべてのプレイブック末尾で呼び出し。`playbooks/opening-a-pr.md`。
+
+実装系プレイブック（Feature / Bug fix / Refactoring）と Multi-phase plan は、実装前に **File change map** と **Data flow** の Mermaid を出す（Cursor Plan モード互換。詳細は `references/plan-diagrams.md`）。

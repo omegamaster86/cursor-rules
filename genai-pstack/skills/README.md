@@ -36,7 +36,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |--------|------|
 | `how` | サブシステムの仕組み説明 |
 | `architect` | 関数境界を越える設計 |
-| `arena` | 並列案の比較 |
+| `multi-agent-candidates` | 並列案の比較・最良統合 |
 | `blast-radius` | 変更の影響範囲 |
 | `tdd` | 失敗テスト先行のバグ修正 |
 | `recall` | チャット履歴からコンテキスト再構築 |
@@ -101,5 +101,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `verify-done` | 完了前検証（omega-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+
 
 

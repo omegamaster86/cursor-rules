@@ -28,13 +28,13 @@ disable-model-invocation: true
 
 ## フェーズ B: スケッチ
 
-設計スケッチタスクとフェーズ A の土台固め成果物で **arena** スキルを実行する。各 runner に `references/runner-prompt.md` を渡す。各候補は `references/rationale-template.md` の形の設計パッケージを出す: 呼び出し側の使い方を先に書き、型スケッチ、関数シグネチャ、モジュールマップ、そこから導いた文章の根拠。
+設計スケッチタスクとフェーズ A の土台固め成果物で **multi-agent-candidates** スキルを実行する。各 runner に `references/runner-prompt.md` を渡す。各候補は `references/rationale-template.md` の形の設計パッケージを出す: 呼び出し側の使い方を先に書き、型スケッチ、関数シグネチャ、モジュールマップ、そこから導いた文章の根拠。
 
 設定済み architect runner を使う（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。
 
 1 つの形の中の点修正ではなく、形全体の代替案を探索する。
 
-arena は 1 つの統合設計パッケージを返す。統合判断が根拠の「Synthesis decision」節を埋める。
+multi-agent-candidates は 1 つの統合設計パッケージを返す。統合判断が根拠の「Synthesis decision」節を埋める。
 
 ## フェーズ C: 合意（オプトイン）
 
@@ -72,7 +72,7 @@ arena は 1 つの統合設計パッケージを返す。統合判断が根拠�
 1. 構築済みに **how** スキルを再実行。実装の教訓は雰囲気ではなく新設計への入力。
 2. 新制約が初日からあったかのように再設計する。
 3. 追加の前に削る（**refactor-check**）。新スケッチは成長する前に旧より小さく。
-4. フェーズ B に戻り arena を再実行。
+4. フェーズ B に戻り multi-agent-candidates を再実行。
 
 ## 成果物
 

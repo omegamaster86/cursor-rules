@@ -31,9 +31,18 @@ in scope vs 明示的 out、技術またはプラットフォーム制約、pres
 
 ## 4. Write the plan
 
-ユーザーがプランの置き場所を指定する。
+ユーザーがプランの置き場所を指定する。未指定なら Cursor Plan 形式を優先（下記）。
 
-小さいプランは単一ファイル `NN-slug.md`。3フェーズ以上は `overview.md` ＋ phase ファイルのディレクトリ：
+### Cursor Plan 形式（確認用・推奨）
+
+変更ファイルとデータ流れを **Plan モードと同じ Mermaid** で確認できるようにする。詳細テンプレは [`plan-diagrams.md`](plan-diagrams.md)。
+
+優先順:
+
+1. CreatePlan が使える → CreatePlan（YAML: `name` / `overview` / `todos`）で書き、本文に必須図を含める。
+2. 使えない → 返信に必須図を出し、可能なら `~/.cursor/plans/<slug>.plan.md` にも同内容を書く。
+
+小さい文書プランは単一ファイル `NN-slug.md`。3フェーズ以上は `overview.md` ＋ phase ファイルのディレクトリ：
 
 ```
 NN-slug/
@@ -42,6 +51,8 @@ NN-slug/
 ├── phase-2-...md
 └── testing.md
 ```
+
+文書プランと Cursor Plan を両方出す必要はない。どちらか一方で、必須図が含まれていればよい。
 
 ### Phase sizing
 
@@ -56,10 +67,14 @@ NN-slug/
 - **Scope.** 含む。明示的除外。
 - **Constraints.** 技術、プラットフォーム、dependency、パターン。
 - **Alternatives.** 2〜3アプローチをスケッチ、選択と rationale。制約が1つに dictate するとき skip。
+- **File change map（必須）.** Mermaid。触るファイルと依存。[`plan-diagrams.md`](plan-diagrams.md)。
+- **Data flow（必須）.** Mermaid。入力→変換→出力、または UI→hook→API。契約名を載せる。
 - **Applicable skills.** 実装者が invoke すべきドメインスキルを名前で。
 - **Phases.** phase ファイルへの順序付き standard-markdown リンク。
 - **Verification.** プロジェクトレベルコマンド。
 - **Implementation guidance.** セクション6参照。
+
+1〜2ファイルで自明なら両図を `diagrams skipped: <reason>` で skip 可。
 
 ### Phase files
 
@@ -68,6 +83,7 @@ NN-slug/
 - **Changes.** 影響ファイルと high level の変更。what と why、how ではない。コード snippet なし。
 - **Data structures.** 主要型または schema を名指し。1行スケッチのみ（**principle-foundational-thinking** 原則スキル）。
 - **Verification.** セクション6参照。
+- フェーズが overview の図と大きくずれるときだけ、phase 内に差分 Mermaid を追加。
 
 lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（**principle-foundational-thinking** 原則スキル）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
 
@@ -101,4 +117,5 @@ overview で、実装者が名前で適用すべき omega-mode non-negotiables �
 
 ## 7. Hand back
 
-フェーズ、スコープ境界、applicable skills、verification を要約。stop。実装開始タイミングはユーザーが決める。
+フェーズ、スコープ境界、applicable skills、verification を要約。**File change map** と **Data flow** の Mermaid を返信に含める（skip 理由がある場合を除く）。stop。実装開始タイミングはユーザーが決める。
+

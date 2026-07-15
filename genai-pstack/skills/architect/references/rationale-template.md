@@ -16,7 +16,7 @@
 
 ## Synthesis decision
 
-*[arena](../../arena/SKILL.md) が埋める。どの候補がベースになりなぜか、他から何を取り込んだか、何を却下しなぜかを記録する。*
+*[multi-agent-candidates](../../multi-agent-candidates/SKILL.md) が埋める。どの候補がベースになりなぜか、他から何を取り込んだか、何を却下しなぜかを記録する。*
 
 ## Tradeoffs accepted
 
@@ -33,3 +33,4 @@
 ## Next implementation step
 
 *スケッチに対して最初に組み立てるもの。1 文。統合後（またはチェックポイントを選んだ場合はフェーズ D の承認後）すぐ書き始めるもの。*
+

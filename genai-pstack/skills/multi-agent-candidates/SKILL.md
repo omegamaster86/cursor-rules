@@ -1,16 +1,16 @@
 ---
-name: arena
-description: "同じタスクに N 個の並列候補を起動し、ベースを選び、敗者の最強部分をグラフトする。/arena、「arena this」「throw it in the arena」、非自明な成果物の 1 回試行が間違った形にロックインしうるときに使用。"
+name: multi-agent-candidates
+description: "同じタスクに N 個の並列候補を起動し、ベースを選び、敗者の最強部分をグラフトする。/multi-agent-candidates、「multi-agent-candidates this」「並列候補で比較」、非自明な成果物の 1 回試行が間違った形にロックインしうるときに使用。"
 disable-model-invocation: true
 ---
 
-# Arena
+# Multi-agent candidates
 
 同じタスクに N 個の並列試行を扇状展開する。各候補を端から端まで読む。最強をベースに選ぶ。他の最良アイデアをグラフトする。統合結果を検証する。
 
 ## 開始
 
-何かを起動する前にフェーズごとに 1 項目の todolist を開く。arena は自律実行し、リストがフェーズの静かな消失を防ぐ。
+何かを起動する前にフェーズごとに 1 項目の todolist を開く。multi-agent-candidates は自律実行し、リストがフェーズの静かな消失を防ぐ。
 
 1. Frame
 2. Fan out
@@ -25,8 +25,8 @@ N 候補は同じプロンプトを受ける。プロンプトが契約。何か
 
 1. 各候補が産出する成果物を述べる。
 2. ルーブリックを導く。*この*タスクの成功の姿を述べ、3〜6 の具体的に採点可能な基準にする。具体: `--dry-run` フラグを追加し書き込みをスキップ。曖昧: `code is correct`。ルーブリックはフェーズ D の picker の道具。候補はタスクだけ見る。
-3. runner を選ぶ。デフォルトは設定済み arena リスト（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。複数設計方向をカバーするときは増やす。判断より生成に縛られる作業では同じモデルを N 回。
-4. 出力パスを割り当てる。各候補は独自の場所に書く（可能なら git worktree、そうでなければ `/tmp/arena-<slug>/candidate-<n>/`）。同じパスに N 候補が書くと共有可変状態で競合する。
+3. runner を選ぶ。デフォルトは設定済み multi-agent-candidates リスト（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。複数設計方向をカバーするときは増やす。判断より生成に縛られる作業では同じモデルを N 回。
+4. 出力パスを割り当てる。各候補は独自の場所に書く（可能なら git worktree、そうでなければ `/tmp/multi-agent-candidates-<slug>/candidate-<n>/`）。同じパスに N 候補が書くと共有可変状態で競合する。
 
 ## フェーズ B: 扇状展開
 
@@ -62,9 +62,9 @@ N 候補が同じ形に収束するのは強い合意シグナル。記録に収
 
 ## フェーズ F: 検証
 
-統合成果物は他の出力と同じ厳密さで耐えなければならない（**`/verify-done`**）。arena は合格券にならない。
+統合成果物は他の出力と同じ厳密さで耐えなければならない（**`/verify-done`**）。multi-agent-candidates は合格券にならない。
 
-検証が arena が捕まえなかった問題を表面化したら、フェーズ A が間違い（再枠組みして再実行）か、候補の 1 つが捕まえていてグラフトを見逃した（フェーズ E に戻る）。ごまかさない。
+検証が multi-agent-candidates が捕まえなかった問題を表面化したら、フェーズ A が間違い（再枠組みして再実行）か、候補の 1 つが捕まえていてグラフトを見逃した（フェーズ E に戻る）。ごまかさない。
 
 ## 成果物
 
