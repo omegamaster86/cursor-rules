@@ -12,7 +12,7 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 | 状況 | 使うもの |
 |------|----------|
-| TypeScript / フロント実装 | `web-coding-standards` + `principle-type-system-discipline` |
+| TypeScript / フロント実装 | `web-coding-standards` + `principles/type-system-discipline.md` |
 | 争点のある設計レビュー | `/.cursor/commands/review-orchestrator-triple-hybrid.md` |
 | UI / IDE / CLI の検証 | ブラウザ MCP または手動 verify |
 | コード実装のサブエージェント | `subagent_type: "omega-agent"` |
@@ -28,13 +28,13 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## 譲れないルール
 
-**複数ステップのタスクはすべて、最初の項目が下の Principles セクションを全文読むことである todo リストから始める。** 原則がここにあるすべてのトリガーの基盤となる。返信では、意思決定を形作った各原則と、それが変えた具体的な選択を名指しする。意思決定の裏がない引用は leaf スキルをスキップしたことを意味する。leaf のルールが駆動した実際の選択にたどり着かなければならない。
+**複数ステップのタスクはすべて、最初の項目が下の Principles セクションを全文読むことである todo リストから始める。** 原則がここにあるすべてのトリガーの基盤となる。返信では、意思決定を形作った各原則と、それが変えた具体的な選択を名指しする。意思決定の裏がない引用は `principles/` の leaf をスキップしたことを意味する。leaf のルールが駆動した実際の選択にたどり着かなければならない。
 
 残りのトリガー：
 
 - 非自明な変更、アーキテクチャ決定、または「本当に確かか？」→ **how** スキル。
 - 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → 質問する前に分類する。何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断だけに質問を留める。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
-- コードがある → まず契約（データ形状）を名指しする（**principle-foundational-thinking**）。
+- コードがある → まず契約（データ形状）を名指しする（`principles/foundational-thinking.md`）。
 - 関数境界を越えるコード → **architect** スキル、実装前に並列設計探索。
 - 争点のある設計 → 出荷前に **`review-orchestrator-triple-hybrid` コマンド**（3モデル並列レビュー）。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
@@ -47,30 +47,30 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Principles
 
-適用する原則ごとに leaf スキルを全文読む。各エントリは適用タイミングを名指しする。
+適用する原則ごとに `principles/` の leaf を全文読む。各エントリは適用タイミングを名指しする。
 
 **Core**
 
-- **Foundational Thinking**（**principle-foundational-thinking**）。ロジックを書く前（omega 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。
+- **Foundational Thinking.** ロジックを書く前（omega 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。`principles/foundational-thinking.md`。
 
 **Architecture**
 
-- **Type System Discipline**（**principle-type-system-discipline**）。型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。
-- **Make Operations Idempotent**（**principle-make-operations-idempotent**）。クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。
+- **Type System Discipline.** 型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。`principles/type-system-discipline.md`。
+- **Make Operations Idempotent.** クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。`principles/make-operations-idempotent.md`。
 
 **Verification**
 
-- **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は **principle-prove-it-works** leaf（任意）。
-- **Sequence Work into Verifiable Units**（**principle-sequence-verifiable-units**）。複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。
+- **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は `principles/prove-it-works.md`（任意）。
+- **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。`principles/sequence-verifiable-units.md`。
 
 **Delegation**
 
-- **Guard the Context Window**（**principle-guard-the-context-window**）。コンテキストが埋まる：大きな出力、長いファイル、繰り返し読み取り、fan-out プランニング。 bulk はサブエージェントへ、メインスレッドには要約を保持。
-- **Never Block on the Human**（**principle-never-block-on-the-human**）。可逆作業で「X すべきか？」と聞きたくなったとき。進め、結果を提示し、人間に course-correct させる。
+- **Guard the Context Window.** コンテキストが埋まる：大きな出力、長いファイル、繰り返し読み取り、fan-out プランニング。 bulk はサブエージェントへ、メインスレッドには要約を保持。`principles/guard-the-context-window.md`。
+- **Never Block on the Human.** 可逆作業で「X すべきか？」と聞きたくなったとき。進め、結果を提示し、人間に course-correct させる。`principles/never-block-on-the-human.md`。
 
 **Meta**
 
-- **Encode Lessons in Structure**（**principle-encode-lessons-in-structure**）。同じ指示を2回目書こうとしている自分に気づいたとき。テキストを増やす代わりに lint、metadata フラグ、runtime check、script としてエンコード。
+- **Encode Lessons in Structure.** 同じ指示を2回目書こうとしている自分に気づいたとき。テキストを増やす代わりに lint、metadata フラグ、runtime check、script としてエンコード。`principles/encode-lessons-in-structure.md`。
 
 ## Autonomy
 

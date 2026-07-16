@@ -18,7 +18,7 @@ alwaysApply: true
 
 - タスク分析の詳細フォーマット（セクション1）→ omega-mode の Principles + プレイブックに置き換え
 - 「実行結果報告」固定フォーマット（セクション5）→ プレイブックの返答形式に従い、固定フォーマットは不要
-- 「不明点は必ず確認」→ 可逆作業は **principle-never-block-on-the-human** に従い進めてよい
+- 「不明点は必ず確認」→ 可逆作業は `omega-mode/principles/never-block-on-the-human.md` に従い進めてよい
 - 「明示的指示以外変更しない」→ プレイブックスコープ内の実装変更は可
 
 **通常チャット**（omega-mode 未起動）では、以下の標準フローを適用します。
@@ -107,3 +107,4 @@ alwaysApply: true
 ---
 
 以上の指示に従い、確実で質の高い実装を行います。
+

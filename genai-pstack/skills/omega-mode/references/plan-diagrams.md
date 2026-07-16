@@ -73,7 +73,7 @@ flowchart TB
 
 ## 必須図 2: Data flow
 
-入力 → 変換 → 出力（または UI → hook → API → 表示）を示す。契約（データ形状）の名前をノード／エッジに載せる（**principle-foundational-thinking**）。
+入力 → 変換 → 出力（または UI → hook → API → 表示）を示す。契約（データ形状）の名前をノード／エッジに載せる（[`foundational-thinking`](../principles/foundational-thinking.md)）。
 
 ```mermaid
 flowchart TD
@@ -117,3 +117,4 @@ CreatePlan / `.plan.md` 本文でも同じ2見出しを使うと、Plan パネ�
 - 図なしの「変更ファイル: a, b, c」だけのプラン（2ファイル以上のとき）
 - 実ファイルに紐づかない箱だけのアーキテクチャ図
 - 実装後に初めて図を出す（確認用は **実装前**）
+

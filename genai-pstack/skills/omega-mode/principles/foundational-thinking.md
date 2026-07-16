@@ -1,9 +1,3 @@
----
-name: principle-foundational-thinking
-description: "ロジックを書く前に適用する（omega-mode 有無で共通）: 契約先行のデータ形状、フロント/バック並行トラック、スキャフォールド対機能の順序、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方・配置はドメインスキルが正。"
-disable-model-invocation: true
----
-
 # 基礎的思考
 
 **いつ・何を先に決めるか** の正本。omega-mode の有無で思考を変えない。実装の書き方・ファイル配置・層の配線は **`web-coding-standards`**、**`nextjs-directory-structure`**、**`supabase-implementation`** 等のドメインスキルが正。

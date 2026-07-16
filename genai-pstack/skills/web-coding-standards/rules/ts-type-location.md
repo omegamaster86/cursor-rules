@@ -11,7 +11,7 @@ tags: typescript, types, organization
 
 **基本方針：**
 
-1. **契約型（ドメイン / API）**: `src/types/index.ts` に早めに集約（**principle-foundational-thinking**）
+1. **契約型（ドメイン / API）**: `src/types/index.ts` に早めに集約（`omega-mode/principles/foundational-thinking.md`）
 2. **画面専用 ViewModel**: そのページでのみ使う表示用の型のみ、各 `page.tsx` 内に定義
 3. **DB型**: `src/types/database.types.ts` をベースに再定義
 
@@ -85,3 +85,4 @@ interface Window {
 - [ ] DB から取得するデータは `database.types.ts` から再定義
 - [ ] 画面専用 ViewModel のみ各ページファイル内に定義
 - [ ] `type` を優先使用（`interface` は必要な場合のみ）
+

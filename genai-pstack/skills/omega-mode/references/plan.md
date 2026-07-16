@@ -12,17 +12,17 @@
 
 ## 1. Re-read principles
 
-`omega-mode` スキルの **Principles** セクションを最初から最後まで読み、インデックスする leaf `principle-*` スキルも読む。原則がすべてのプラン決定を統治。cross-link する。
+`omega-mode` スキルの **Principles** セクションを最初から最後まで読み、インデックスする `principles/` の leaf も読む。原則がすべてのプラン決定を統治。cross-link する。
 
 ## 2. Scope and constraints
 
-スコープと制約の読み取りを1段落で述べる。genuinely ambiguous な intent だけ `AskQuestion`（**never-block-on-the-human** 原則スキル）。各 open question に concrete オプション。
+スコープと制約の読み取りを1段落で述べる。genuinely ambiguous な intent だけ `AskQuestion`（[`never-block-on-the-human`](../principles/never-block-on-the-human.md)）。各 open question に concrete オプション。
 
 in scope vs 明示的 out、技術またはプラットフォーム制約、preserve するパターン、done の定義を resolve。
 
 ## 3. Explore in subagents
 
-コードベース探索を delegate（**guard-the-context-window** 原則スキル）。
+コードベース探索を delegate（[`guard-the-context-window`](../principles/guard-the-context-window.md)）。
 
 - `subagent_type: "omega-agent"` を優先。`generalPurpose` は fallback。組み込み `plan` subagent_type は使わない。
 - 設定ロールに従い `model:` を明示（デフォルト code は `composer-2.5-fast`、judgment は `claude-opus-4-8-thinking-xhigh`）。
@@ -58,7 +58,7 @@ NN-slug/
 
 - 1関数または型＋テスト、または1バグ fix。「1ファイル」ではない。
 - 触るファイル2〜3、最大。
-- option value を保つため8〜10の小フェーズを3〜4の大フェーズより優先（**principle-foundational-thinking** 原則スキル）。
+- option value を保つため8〜10の小フェーズを3〜4の大フェーズより優先（[`foundational-thinking`](../principles/foundational-thinking.md)）。
 - フェーズに5テストケース超または3関数超なら split。
 
 ### Overview file
@@ -81,11 +81,11 @@ NN-slug/
 - overview へ back-link。
 - **Goal.** フェーズが達成すること。
 - **Changes.** 影響ファイルと high level の変更。what と why、how ではない。コード snippet なし。
-- **Data structures.** 主要型または schema を名指し。1行スケッチのみ（**principle-foundational-thinking** 原則スキル）。
+- **Data structures.** 主要型または schema を名指し。1行スケッチのみ（[`foundational-thinking`](../principles/foundational-thinking.md)）。
 - **Verification.** セクション6参照。
 - フェーズが overview の図と大きくずれるときだけ、phase 内に差分 Mermaid を追加。
 
-lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（**principle-foundational-thinking** 原則スキル）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
+lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（[`foundational-thinking`](../principles/foundational-thinking.md)）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
 
 既存コードに触れる変更では、新要件を初日から持っていたらどう見えるかを問い、holistic に再設計する。incremental に deliver。
 
@@ -118,4 +118,5 @@ overview で、実装者が名前で適用すべき omega-mode non-negotiables �
 ## 7. Hand back
 
 フェーズ、スコープ境界、applicable skills、verification を要約。**File change map** と **Data flow** の Mermaid を返信に含める（skip 理由がある場合を除く）。stop。実装開始タイミングはユーザーが決める。
+
 

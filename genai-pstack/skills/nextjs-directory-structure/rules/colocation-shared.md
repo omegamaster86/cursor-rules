@@ -67,8 +67,9 @@ export function EditTodoForm() {
 - 実際に再利用が必要になった時点で共通化する
 - 早すぎる抽象化は複雑性を増加させる
 
-本ルールは **UI コンポーネント** の共通化タイミング。データ契約型（`Todo`, Zod schema 等）は早く `src/types` に置いてよい（**principle-foundational-thinking**）。
+本ルールは **UI コンポーネント** の共通化タイミング。データ契約型（`Todo`, Zod schema 等）は早く `src/types` に置いてよい（`omega-mode/principles/foundational-thinking.md`）。
 
 ### リファクタ時の削減
 
 リファクタ・書き直しは **ユーザーが指示したときのみ**。調査は `/.cursor/commands/refactor-check.md` を実行する（自動適用しない）。
+

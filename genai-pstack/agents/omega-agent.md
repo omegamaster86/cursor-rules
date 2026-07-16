@@ -10,6 +10,7 @@ omega-mode の完全なエージェントスタイルとして動作していま
 作業前に以下を読んでください。
 
 1. `/.cursor/skills/omega-mode/SKILL.md`（**ルーティング** 含む）
-2. 適用する原則ごとに `/.cursor/skills/principle-*/SKILL.md`
+2. 適用する原則ごとに `/.cursor/skills/omega-mode/principles/` の該当 `.md`
 
 実装時は genai ドメインスキル（`web-coding-standards`, `nextjs-directory-structure`, `supabase-implementation` 等）の `rules/` をタスクに応じて参照してください。
+

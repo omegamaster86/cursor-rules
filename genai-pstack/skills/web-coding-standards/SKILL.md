@@ -9,7 +9,7 @@ Next.js Web アプリのコーディング規約。型定義・Tailwind・Supaba
 
 ## When to Apply
 
-- 新機能・画面・API を着手する前（**principle-foundational-thinking** を参照）
+- 新機能・画面・API を着手する前（`omega-mode/principles/foundational-thinking.md` を参照）
 - TypeScript の型定義を作成・確認する時
 - Tailwind CSS でスタイリングする時
 - Supabase の認証・データアクセスを実装する時

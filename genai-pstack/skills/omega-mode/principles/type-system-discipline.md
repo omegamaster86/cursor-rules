@@ -1,9 +1,3 @@
----
-name: principle-type-system-discipline
-description: "型の設計、関数シグネチャのレビュー、静的型付け言語でのコード記述時に適用する。不正な状態を表現不能にし、意味的プリミティブにブランドを付け、境界で外部データをパースし、コンパイラに嘘をつかない、バリアントを網羅し、権威あるスキーマから導出する。"
-disable-model-invocation: true
----
-
 # 型システムの規律
 
 型チェッカーは証明アシスタントである。コンパイル時に不可能な状態、不一致のプリミティブ、未処理のバリアントを排除するために使う。ランタイムデータとして通したものは、コンパイラが止められたランタイム障害になる。
@@ -17,7 +11,7 @@ disable-model-invocation: true
 - **外部データはパースするまで型なし。** RPC ペイロード、JSON、IPC メッセージ、CLI 引数、設定ファイル、環境変数、データベース行。すべての境界に、非構造化入力を型付きモデルに変えるパース関数を置く。検証の所在は **`web-coding-standards`** の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` を参照。
 - **型システムに嘘をつかない。** キャスト、unsafe な強制変換、コンパイラをバイパスするアサーション関数は、待機中のランタイムクラッシュである。コンパイラが事実を証明できないなら、証明する（検証、絞り込み、モデルの洗練）か、キャストが危険であることを受け入れる。今日埋めたキャストは、来週書くポストモーテムである。
 - **網羅的マッチングはコンパイラの仕事。** 和型にマッチする際、新しいバリアントが処理なしで追加されたらコンパイルが失敗しなければならない。言語が提供するイディオムを使う: TypeScript の `never` 型バインディング、Rust の注釈なし `match`、Haskell の `-Wincomplete-patterns`、Kotlin の sealed class マッチ網羅性。
-- **権威あるスキーマから型を導出する。** protocol buffer、OpenAPI spec、GraphQL スキーマ、データベースマイグレーション、デザインシステムトークンファイルが形状を定義している場合、並行の型を手作りするのではなくそこから導出する。手動の重複はドリフトする。**encode-lessons-in-structure** 原則スキルを参照。
+- **権威あるスキーマから型を導出する。** protocol buffer、OpenAPI spec、GraphQL スキーマ、データベースマイグレーション、デザインシステムトークンファイルが形状を定義している場合、並行の型を手作りするのではなくそこから導出する。手動の重複はドリフトする。**encode-lessons-in-structure**（`principles/encode-lessons-in-structure.md`）を参照。
 - **ランタイムよりコンパイル時を優先する。** すべてのランタイムアサーション、null チェック、`instanceof` は、型システムが重みを担っていないことを認めている。チェックを型に押し上げる。
 
 **テスト:**

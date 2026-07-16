@@ -12,7 +12,7 @@ description: タスク完了宣言の前に、変更に応じた proof を選び
 
 **テストは手段の一つ。** 毎回 `npm test` 全件は不要。変更種別に応じて **1〜3 個の proof** を選び実行する。
 
-哲学・背景は `principle-prove-it-works` スキル。本コマンドが **実行手順の正本**。
+哲学・背景は `omega-mode/principles/prove-it-works.md`。本コマンドが **実行手順の正本**。
 
 ## いつ使う
 
@@ -115,6 +115,7 @@ PJ にテストがある場合の参照（任意）:
 
 ## 関連
 
-- 哲学: `principle-prove-it-works`
-- 単位ごとの積み方: `principle-sequence-verifiable-units`
+- 哲学: `omega-mode/principles/prove-it-works.md`
+- 単位ごとの積み方: `omega-mode/principles/sequence-verifiable-units.md`
 - omega-mode 入口: `commands/omega-mode.md`
+

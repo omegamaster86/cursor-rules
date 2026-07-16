@@ -10,7 +10,7 @@ description: 非自明な実装・調査のエントリ。omega-mode スキル�
 
 1. `/.cursor/skills/omega-mode/SKILL.md`（**Principles** セクション含む全文）
 2. `/.cursor/skills/omega-mode/SKILL.md` の **ルーティング** セクション
-3. 適用する原則ごとに `/.cursor/skills/principle-*/SKILL.md` を leaf として全文読む
+3. 適用する原則ごとに `/.cursor/skills/omega-mode/principles/` の該当 `.md` を leaf として全文読む
 
 ## 起動時の必須フロー
 
@@ -50,3 +50,4 @@ description: 非自明な実装・調査のエントリ。omega-mode スキル�
 ## 軽い作業向けではない
 
 typo 修正・1行変更・単純な質問には本コマンドを使わない。通常の Agent チャット（`global.mdc` のみ）で足りる。
+
