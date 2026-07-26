@@ -1,7 +1,7 @@
 ---
 name: decision-log
 model: composer-2.5
-description: "長時間または無人作業の監査可能な決定証跡を残す: 決定ごとに .log/ 配下の Markdown ログ（決定詳細・決定理由）。デフォルトはローカル。クロスモデルレビューはユーザー依頼時のみ。/decision-log、自律・多フェーズ実行、人が離席後にレビューする作業に使用。"
+description: "長時間または無人作業の監査可能な決定証跡を残す: 決定ごとに .cursor/decision-log/ 配下の Markdown ログ（決定詳細・決定理由）。デフォルトはローカル。クロスモデルレビューはユーザー依頼時のみ。/decision-log、自律・多フェーズ実行、人が離席後にレビューする作業に使用。"
 disable-model-invocation: true
 ---
 
@@ -24,7 +24,7 @@ Markdown ファイル 1 つ、決定ごとに 1 ブロック。各ブロック�
 | 決定詳細 | 実施した変更・選んだ方針 | なぜそうしたかの説明 |
 | 決定理由 | 困っていたこと、起きていた現象、制約、トレードオフ、なぜそうしたかの説明 | 「ユーザーが依頼したため」だけ |
 
-初回は `.log/<task-slug>.md` を次のテンプレートで作成する。
+初回は `.cursor/decision-log/<task-slug>.md` を次のテンプレートで作成する。
 
 ```markdown
 # 決定ログ
@@ -68,7 +68,14 @@ UI 変更後に見た目の差分を目視で確認する手段がなく、リ�
 
 ## 置き場所
 
-デフォルトではログは作業成果物でありコミットしない。作業 dir の `.log/` フォルダを作成し、そこに `<task-slug>.md` を置く。複数同時なら `.log/<task-slug>.md`。git から外す（`.log/` を `.gitignore` に含める）。大半の作業はコミット証跡不要。ローカルログでも実行を正直に保ち、後で捨てられる。
+| 条件 | パス |
+|------|------|
+| デフォルト | `.cursor/decision-log/<task-slug>.md` |
+| 複数同時タスク | `.cursor/decision-log/<task-slug>.md`（タスクごとに 1 ファイル） |
+
+`.cursor/decision-log/` は決定監査用。**commit しない**（`.gitignore` 推奨をユーザーに一言）。session-log の `.cursor/session-log/` とは別物（decision-log = 監査用、session-log = 再開用）。
+
+デフォルトではログは作業成果物でありコミットしない。作業 dir に `.cursor/decision-log/` フォルダを新規作成し、そこに `<task-slug>.md` を置く。git から外す（`.cursor/decision-log/` を `.gitignore` に含める）。大半の作業はコミット証跡不要。ローカルログでも実行を正直に保ち、後で捨てられる。
 
 レビュアーが結果を信頼するために証跡が要る野心的作業だけコミット: 大規模クロス言語移植、数週マイグレーション、信頼を示さねばならないもの。
 
