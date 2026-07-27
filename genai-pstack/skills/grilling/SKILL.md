@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: "計画・意思決定・アイデアについてユーザーに容赦なくインタビューし、決定木の各分岐を1つずつ解決して共有理解に到達する。grill 系のトリガー文言、プランのストレステスト、設計レビュー前の穴洗い出しに使用。"
+description: "計画・意思決定・アイデアについてユーザーに容赦なくインタビューし、決定木の各分岐を1つずつ解決して共有理解に到達する。plan-interview からの委譲、プランのストレステスト、設計レビュー前の穴洗い出しに使用。"
 ---
 
 # Grilling
@@ -26,7 +26,7 @@ description: "計画・意思決定・アイデアについてユーザーに容
 
 ## 他スキルとの関係
 
-- **grill-me** — 本スキルのユーザー向けエントリーポイント（`disable-model-invocation: true`）
+- **plan-interview** — 本スキルのユーザー向けエントリーポイント（`disable-model-invocation: true`）
 - **architect** — 技術設計（型・モジュール境界）。grilling の後段
 - **omega-mode** — 実装・検証・出荷。grilling で「何を」が固まった後
 

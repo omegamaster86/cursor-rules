@@ -34,8 +34,8 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | スキル | 用途 |
 |--------|------|
-| `grill-me` | 計画・設計のストレステスト（ユーザー向けエントリ。`/grill-me`） |
-| `grilling` | 上記のインタビュー技法本体（grill-me から委譲、他スキルも参照可） |
+| `plan-interview` | 計画・設計のストレステスト（ユーザー向けエントリ。`/plan-interview`） |
+| `grilling` | 上記のインタビュー技法本体（plan-interview から委譲、他スキルも参照可） |
 | `how` | サブシステムの仕組み説明 |
 | `architect` | 関数境界を越える設計 |
 | `multi-agent-candidates` | 並列案の比較・最良統合 |
@@ -102,8 +102,3 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `verify-done` | 完了前検証（omega-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
-
-
-
-
-
