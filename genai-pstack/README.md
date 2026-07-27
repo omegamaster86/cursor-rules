@@ -70,3 +70,5 @@ cp /path/to/cursor-rules/genai-pstack/rules/omega-models.mdc .cursor/rules/
 - `genai/` — Next.js / Supabase コーディング規約
 - `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（日本語訳済み）
 
+参考
+https://github.com/mattpocock/skills/tree/main/skills
