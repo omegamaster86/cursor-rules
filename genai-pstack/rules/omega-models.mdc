@@ -1,8 +1,8 @@
 ---
-description: omega-mode ロールごとのモデル選択（スキルデフォルトの上書き）
+description: forge-mode ロールごとのモデル選択（スキルデフォルトの上書き）
 alwaysApply: true
 ---
-# omega-mode model configuration
+# forge-mode model configuration
 # 1行1ロール。行を削除するとスキル内デフォルトにフォールバック。
 
 feature, refactoring: composer-2.5

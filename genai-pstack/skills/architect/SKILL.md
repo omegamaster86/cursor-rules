@@ -42,7 +42,7 @@ multi-agent-candidates は 1 つの統合設計パッケージを返す。統合
 
 呼び出し側が明示的に求めたときだけチェックポイント: 「/architect with checkpoint」「実装前に止めて見せて」など。統合設計を提示し、承認待ち。
 
-どちらでも統合は単独コミットとして出荷できる。**foundational-thinking**（`omega-mode/principles/foundational-thinking.md`）の「scaffold first」モード。以降のコミットは安定契約に対する本体の充填として読める。充填は計画・スコープ内で進め、完了前に **`/verify-done`** で検証する。実装前に設計へ敵対的圧力をかけるなら、統合スケッチに **`review-orchestrator-triple-hybrid` コマンド**を実行。
+どちらでも統合は単独コミットとして出荷できる。**foundational-thinking**（`forge-mode/principles/foundational-thinking.md`）の「scaffold first」モード。以降のコミットは安定契約に対する本体の充填として読める。充填は計画・スコープ内で進め、完了前に **`/verify-done`** で検証する。実装前に設計へ敵対的圧力をかけるなら、統合スケッチに **`review-orchestrator-triple-hybrid` コマンド**を実行。
 
 人が形に押し返したら（チェックポイント中または事後）、フェーズ A の証拠として扱う。さらにコードを書く前に再土台固めしフェーズ B を再実行。
 

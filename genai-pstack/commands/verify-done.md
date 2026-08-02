@@ -1,25 +1,25 @@
 ---
 name: verify-done
 model: inherit
-description: タスク完了宣言の前に、変更に応じた proof を選び実行する。テストは手段の一つ。毎回フルテストは不要。omega-mode 完了ゲートおよびユーザー任意呼び出し用。
+description: タスク完了宣言の前に、変更に応じた proof を選び実行する。テストは手段の一つ。毎回フルテストは不要。forge-mode 完了ゲートおよびユーザー任意呼び出し用。
 ---
 
 # 完了前検証（verify-done）
 
-**タスク完了を宣言する前**、または **omega-mode プレイブックの最終ゲート**として実行する。
+**タスク完了を宣言する前**、または **forge-mode プレイブックの最終ゲート**として実行する。
 
 代理指標・自己報告・「コンパイルできた」だけでは完了と言わない。**実アーティファクト**（実行結果、実値、diff、再実行可能スクリプト）で証明する。
 
 **テストは手段の一つ。** 毎回 `npm test` 全件は不要。変更種別に応じて **1〜3 個の proof** を選び実行する。
 
-哲学・背景は `omega-mode/principles/prove-it-works.md`。本コマンドが **実行手順の正本**。
+哲学・背景は `forge-mode/principles/prove-it-works.md`。本コマンドが **実行手順の正本**。
 
 ## いつ使う
 
 | 入口 | タイミング |
 |------|------------|
 | `/verify-done` | ユーザーが任意で「本当に動いてる？」を確認したいとき |
-| `omega-mode` | 実装・修正タスクの**完了宣言前**（Opening a PR の直前） |
+| `forge-mode` | 実装・修正タスクの**完了宣言前**（Opening a PR の直前） |
 | プレイブック | Refactoring step 5、Session pickup step 5 など、proof が必要なステップ |
 
 **読み取り専用 Investigation**（コード変更なし）では Step 2 の Tier A のみで足りる場合がある。
@@ -107,7 +107,7 @@ PJ にテストがある場合の参照（任意）:
 [実行できなかった項目、follow-up で必要な確認]
 ```
 
-## Step 5: omega-mode との接続
+## Step 5: forge-mode との接続
 
 - **Opening a PR** の前に本コマンドを通し、**PASS** であること。
 - FAIL / PARTIAL のまま PR を開かない（ユーザーが明示的に proceed を指示した場合を除く）。
@@ -115,7 +115,7 @@ PJ にテストがある場合の参照（任意）:
 
 ## 関連
 
-- 哲学: `omega-mode/principles/prove-it-works.md`
-- 単位ごとの積み方: `omega-mode/principles/sequence-verifiable-units.md`
-- omega-mode 入口: `commands/omega-mode.md`
+- 哲学: `forge-mode/principles/prove-it-works.md`
+- 単位ごとの積み方: `forge-mode/principles/sequence-verifiable-units.md`
+- forge-mode 入口: `commands/forge-mode.md`
 

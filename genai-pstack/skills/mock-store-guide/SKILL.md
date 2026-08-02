@@ -11,7 +11,7 @@ description: Defines mock store patterns for Next.js demo apps without a databas
 
 - デモアプリを作成する時
 - プレゼン用プロトタイプを作る時
-- DB 設定前に画面開発を進める時（`omega-mode/principles/foundational-thinking.md` のフロントトラック）
+- DB 設定前に画面開発を進める時（`forge-mode/principles/foundational-thinking.md` のフロントトラック）
 - E2E テスト用モックデータを準備する時
 
 ## Rule Categories by Priority

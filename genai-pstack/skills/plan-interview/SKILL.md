@@ -13,17 +13,17 @@ disable-model-invocation: true
 ## いつ使う
 
 - PRD や仕様を書く前
-- **omega-mode** / **architect** に入る前（何を・なぜの意思決定）
+- **forge-mode** / **architect** に入る前（何を・なぜの意思決定）
 - データモデルや API 形状を確定する前
 - 複数の設計選択が相互依存しているとき
 - エージェントに同意ではなく反論が欲しいとき
 
-コードベースとの整合や ADR・用語集の作成が主目的なら **architect** や **omega-mode** を優先する。本スキルはコードベース不要の汎用インタビュー。
+コードベースとの整合や ADR・用語集の作成が主目的なら **architect** や **forge-mode** を優先する。本スキルはコードベース不要の汎用インタビュー。
 
 ## 終了後
 
 共有理解が得られたら、必要に応じて次へ:
 
 - 技術設計 → **architect**
-- 実装 → **omega-mode**（Feature 等）
+- 実装 → **forge-mode**（Feature 等）
 - 決定の記録 → **decision-log**

@@ -1,6 +1,6 @@
 # Plan diagrams（Cursor Plan モード互換）
 
-omega-mode がプランを出すときは、Cursor Plan モードの `.plan.md` と同じく **Mermaid を必須**にする。目的は変更ファイルとデータ流れを、チャット／Plan パネルで目視確認できるようにすること。
+forge-mode がプランを出すときは、Cursor Plan モードの `.plan.md` と同じく **Mermaid を必須**にする。目的は変更ファイルとデータ流れを、チャット／Plan パネルで目視確認できるようにすること。
 
 ## いつ出すか
 

@@ -13,7 +13,7 @@ Supabase を使ったバックエンド実装ガイド。Database Functions・Ed
 - Edge Functions を実装する時
 - 認証・認可を実装する時
 - RLS ポリシーを設定する時
-- 型定義（database.types.ts）の生成時（`omega-mode/principles/foundational-thinking.md` のバックトラック）
+- 型定義（database.types.ts）の生成時（`forge-mode/principles/foundational-thinking.md` のバックトラック）
 - ログ出力を実装する時
 - ディレクトリ構成を確認する時
 

@@ -1,6 +1,6 @@
 # Plan
 
-`omega-mode` スキルの **Principles** セクションに接地したフェーズ実装プランを produce する。プランが成果物。実装しない。
+`forge-mode` スキルの **Principles** セクションに接地したフェーズ実装プランを produce する。プランが成果物。実装しない。
 
 下の各ステップを1項目とする todolist を開く。
 
@@ -12,7 +12,7 @@
 
 ## 1. Re-read principles
 
-`omega-mode` スキルの **Principles** セクションを最初から最後まで読み、インデックスする `principles/` の leaf も読む。原則がすべてのプラン決定を統治。cross-link する。
+`forge-mode` スキルの **Principles** セクションを最初から最後まで読み、インデックスする `principles/` の leaf も読む。原則がすべてのプラン決定を統治。cross-link する。
 
 ## 2. Scope and constraints
 
@@ -108,7 +108,7 @@ lint / CI / テスト骨格と契約型を機能フェーズより先に land �
 
 ## 6. Implementation guidance
 
-overview で、実装者が名前で適用すべき omega-mode non-negotiables を名指し：
+overview で、実装者が名前で適用すべき forge-mode non-negotiables を名指し：
 
 - 変更前に unfamiliar な各サブシステムで **how** スキル。
 - 出荷前に contested design で **`review-orchestrator-triple-hybrid` コマンド**による敵対的レビュー。

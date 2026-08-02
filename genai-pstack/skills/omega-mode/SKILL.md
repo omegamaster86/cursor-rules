@@ -1,6 +1,6 @@
 ---
-name: omega-mode
-description: 簡潔で詳細な返信、意図的なサブエージェント、検証済みの作業のためのエンジニアリングスタイル。/omega-mode または厳密な実装・調査リクエストに使用。
+name: forge-mode
+description: 簡潔で詳細な返信、意図的なサブエージェント、検証済みの作業のためのエンジニアリングスタイル。/forge-mode または厳密な実装・調査リクエストに使用。
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## ルーティング
 
-omega-mode から他スキル・コマンドへ委譲するときの参照。
+forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 | 状況 | 使うもの |
 |------|----------|
@@ -21,10 +21,10 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 | Next.js / Supabase 実装 | `nextjs-directory-structure`, `web-coding-standards`, `supabase-implementation` の `rules/` |
 | 検証・層配線・BFF | `web-coding-standards` の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` |
 | リファクタ・削減・簡素化（ユーザー指示時） | `/.cursor/commands/refactor-check.md` |
-| 完了宣言前の検証（omega-mode ゲート） | `/.cursor/commands/verify-done.md` |
+| 完了宣言前の検証（forge-mode ゲート） | `/.cursor/commands/verify-done.md` |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
 
-エントリーポイント: `/.cursor/commands/omega-mode.md`
+エントリーポイント: `/.cursor/commands/forge-mode.md`
 
 ## 譲れないルール
 
@@ -84,9 +84,9 @@ omega-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Subagents
 
-**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "omega-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/omega-mode` と `omega-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`omega-agent` で上書きしない。
+**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "omega-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/forge-mode` と `omega-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`omega-agent` で上書きしない。
 
-**すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`omega-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
+**すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`forge-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
 
 サブエージェントの作業はすべて自分が所有する。diff をレビューし自分の要約を書く。言ったことをそのまま通さない。interrupt 連鎖 resume は directive を黙って drop するので、「完了」要約を信じるより consolidated scope で fresh サブエージェントを起動。セカンドオピニオンは別モデルに同じプロンプト。一致は high-signal。
 

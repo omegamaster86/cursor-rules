@@ -1,6 +1,6 @@
 # 動作を証明する
 
-**実行手順の正本:** `/.cursor/commands/verify-done.md`（`/verify-done`）。omega-mode 完了ゲートおよびユーザー任意呼び出し。本ファイルは **なぜ・何を proof にしてはいけないか** の背景。
+**実行手順の正本:** `/.cursor/commands/verify-done.md`（`/verify-done`）。forge-mode 完了ゲートおよびユーザー任意呼び出し。本ファイルは **なぜ・何を proof にしてはいけないか** の背景。
 
 すべてのタスク出力を、実物を直接チェックして検証する。代理指標、自己報告、「コンパイルできた」から推論しない。
 

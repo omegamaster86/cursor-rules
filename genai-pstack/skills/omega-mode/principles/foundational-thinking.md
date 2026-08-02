@@ -1,6 +1,6 @@
 # 基礎的思考
 
-**いつ・何を先に決めるか** の正本。omega-mode の有無で思考を変えない。実装の書き方・ファイル配置・層の配線は **`web-coding-standards`**、**`nextjs-directory-structure`**、**`supabase-implementation`** 等のドメインスキルが正。
+**いつ・何を先に決めるか** の正本。forge-mode の有無で思考を変えない。実装の書き方・ファイル配置・層の配線は **`web-coding-standards`**、**`nextjs-directory-structure`**、**`supabase-implementation`** 等のドメインスキルが正。
 
 ## 構造決定 vs コード決定
 

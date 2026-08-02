@@ -7,7 +7,7 @@ tags: supabase, typescript, types
 
 ## Type Generation
 
-`database.types.ts` は Supabase のスキーマから自動生成される型定義ファイルです。バックエンドトラックの契約合流は `omega-mode/principles/foundational-thinking.md` を参照。
+`database.types.ts` は Supabase のスキーマから自動生成される型定義ファイルです。バックエンドトラックの契約合流は `forge-mode/principles/foundational-thinking.md` を参照。
 
 **生成コマンド：**
 

@@ -1,21 +1,21 @@
 ---
-name: omega-mode
+name: forge-mode
 model: inherit
-description: 非自明な実装・調査のエントリ。omega-mode スキルのプレイブックと原則を適用し、genai のドメイン規約とレビューコマンドと連携する。
+description: 非自明な実装・調査のエントリ。forge-mode スキルのプレイブックと原則を適用し、genai のドメイン規約とレビューコマンドと連携する。
 ---
 
-あなたは **omega-mode** のオーケストレータです。`/omega-mode` 起動時は `global.mdc` の通常フローより **本コマンドと omega-mode スキルが優先**します。
+あなたは **forge-mode** のオーケストレータです。`/forge-mode` 起動時は `global.mdc` の通常フローより **本コマンドと forge-mode スキルが優先**します。
 
 ## 最初に必ず読む
 
-1. `/.cursor/skills/omega-mode/SKILL.md`（**Principles** セクション含む全文）
-2. `/.cursor/skills/omega-mode/SKILL.md` の **ルーティング** セクション
-3. 適用する原則ごとに `/.cursor/skills/omega-mode/principles/` の該当 `.md` を leaf として全文読む
+1. `/.cursor/skills/forge-mode/SKILL.md`（**Principles** セクション含む全文）
+2. `/.cursor/skills/forge-mode/SKILL.md` の **ルーティング** セクション
+3. 適用する原則ごとに `/.cursor/skills/forge-mode/principles/` の該当 `.md` を leaf として全文読む
 
 ## 起動時の必須フロー
 
 1. todo リストを開く。最初の項目は Principles インデックスを読むこと。
-2. ユーザー依頼をプレイブックにマッチさせ、`/.cursor/skills/omega-mode/playbooks/` の該当ファイルのステップを verbatim でコピーする。
+2. ユーザー依頼をプレイブックにマッチさせ、`/.cursor/skills/forge-mode/playbooks/` の該当ファイルのステップを verbatim でコピーする。
 3. ステップが発火するたびにスキルまたはコマンドへルーティングする。
 4. 返信は簡潔・検証済み・根拠付き（日本語可）。文体の細かい制約は設けない。
 
@@ -25,16 +25,16 @@ description: 非自明な実装・調査のエントリ。omega-mode スキル�
 
 - テスト suite 全件はデフォルトにしない。変更に応じた proof を選ぶ（command 内 Tier 参照）。
 - **PASS** するまで「完了」「done」と言わない。FAIL / PARTIAL のまま PR を開かない（ユーザーが明示 proceed した場合を除く）。
-- ユーザーは `/omega-mode` 外でも `/verify-done` を単独呼び出しできる。
+- ユーザーは `/forge-mode` 外でも `/verify-done` を単独呼び出しできる。
 
 ## 補足ルーティング
 
-`omega-mode` スキルの **ルーティング** に加え、次も参照する。
+`forge-mode` スキルの **ルーティング** に加え、次も参照する。
 
 | 状況 | 使うもの |
 |------|----------|
 | 変更の影響範囲 | `blast-radius` スキル |
-| モデル設定 | `.cursor/rules/omega-models.mdc` を編集（行を削除するとスキル内デフォルトにフォールバック） |
+| モデル設定 | `.cursor/rules/forge-models.mdc` を編集（行を削除するとスキル内デフォルトにフォールバック） |
 
 ## サブエージェント
 

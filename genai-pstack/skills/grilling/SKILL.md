@@ -28,6 +28,6 @@ description: "計画・意思決定・アイデアについてユーザーに容
 
 - **plan-interview** — 本スキルのユーザー向けエントリーポイント（`disable-model-invocation: true`）
 - **architect** — 技術設計（型・モジュール境界）。grilling の後段
-- **omega-mode** — 実装・検証・出荷。grilling で「何を」が固まった後
+- **forge-mode** — 実装・検証・出荷。grilling で「何を」が固まった後
 
 出典: [mattpocock/skills — grill-me](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me)

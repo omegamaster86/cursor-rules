@@ -12,7 +12,7 @@ disable-model-invocation: true
 
 ## 開始
 
-todolist を開き、最初の項目は **omega-mode** スキルの Principles 節を読むこと。続けて下記フェーズを todo に追加する。
+todolist を開き、最初の項目は **forge-mode** スキルの Principles 節を読むこと。続けて下記フェーズを todo に追加する。
 
 ## フェーズ A: 枠組み
 
@@ -26,7 +26,7 @@ todolist を開き、最初の項目は **omega-mode** スキルの Principles �
 
 ## フェーズ B: ワークフローを設計する
 
-原子的で独立して着地できるユニットに分解する。リスクの高い未知を先に並べ、オプション価値を高く保つ。足場と検証を機能の前に（`omega-mode/principles/foundational-thinking.md`）。
+原子的で独立して着地できるユニットに分解する。リスクの高い未知を先に並べ、オプション価値を高く保つ。足場と検証を機能の前に（`forge-mode/principles/foundational-thinking.md`）。
 
 - 作業の前に検証ハーネスを組み、変更前状態からベースラインを取得し、チェックが「旧値 vs 新値」として読めるようにする。
 - 一方通行の設計判断には **architect** スキル（内部で **multi-agent-candidates** を実行）を、多様で隔離され意見の強い候補と、別モデルファミリの読み取り専用ジャッジで走らせる。形が既に具体な機械的作業ではスキップ。固まった設計への 2 回目の multi-agent-candidates は過剰設計（**refactor-check** の簡素化観点）。

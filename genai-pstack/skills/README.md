@@ -6,9 +6,9 @@
 
 | スキル / コマンド | 用途 |
 |-------------------|------|
-| `/omega-mode`（command） | 非自明な実装・調査のメイン入口 |
-| `/verify-done`（command） | 完了前検証（omega-mode ゲート・任意呼び出し） |
-| `omega-mode`（skill） | 原則・プレイブックの本体（コマンドと同名） |
+| `/forge-mode`（command） | 非自明な実装・調査のメイン入口 |
+| `/verify-done`（command） | 完了前検証（forge-mode ゲート・任意呼び出し） |
+| `forge-mode`（skill） | 原則・プレイブックの本体（コマンドと同名） |
 
 ---
 
@@ -50,11 +50,11 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | ファイル | 用途 |
 |----------|------|
-| `omega-models.mdc` | omega-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
+| `forge-models.mdc` | forge-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
 
-### 原則（`omega-mode/principles/`）8本
+### 原則（`forge-mode/principles/`）8本
 
-`omega-mode` の Principles インデックスから **on-demand** で読む。`/omega-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `omega-mode/principles/*.md` を全文読む。
+`forge-mode` の Principles インデックスから **on-demand** で読む。`/forge-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `forge-mode/principles/*.md` を全文読む。
 
 #### Core
 
@@ -95,10 +95,10 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | コマンド | 用途 |
 |----------|------|
-| `omega-mode` | 本スタックのメイン入口 |
+| `forge-mode` | 本スタックのメイン入口 |
 | `file-brief` | 単ファイル調査 |
 | `reuse-check` | 既存コード流用チェック |
 | `refactor-check` | リファクタ・削減チェック（ユーザー指示時） |
-| `verify-done` | 完了前検証（omega-mode ゲート・任意呼び出し） |
+| `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
