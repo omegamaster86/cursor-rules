@@ -24,7 +24,7 @@ in scope vs 明示的 out、技術またはプラットフォーム制約、pres
 
 コードベース探索を delegate（[`guard-the-context-window`](../principles/guard-the-context-window.md)）。
 
-- `subagent_type: "omega-agent"` を優先。`generalPurpose` は fallback。組み込み `plan` subagent_type は使わない。
+- `subagent_type: "forge-agent"` を優先。`generalPurpose` は fallback。組み込み `plan` subagent_type は使わない。
 - 設定ロールに従い `model:` を明示（デフォルト code は `composer-2.5-fast`、judgment は `claude-opus-4-8-thinking-xhigh`）。
 
 各 explorer は file pointer、convention、dependency、test インフラ、entry point を返す。インラインダンプなし。
@@ -118,5 +118,6 @@ overview で、実装者が名前で適用すべき forge-mode non-negotiables �
 ## 7. Hand back
 
 フェーズ、スコープ境界、applicable skills、verification を要約。**File change map** と **Data flow** の Mermaid を返信に含める（skip 理由がある場合を除く）。stop。実装開始タイミングはユーザーが決める。
+
 
 

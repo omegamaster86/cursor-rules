@@ -38,7 +38,7 @@ description: 非自明な実装・調査のエントリ。forge-mode スキル�
 
 ## サブエージェント
 
-- コード実装 delegate・プレイブック内ヘルパー: `subagent_type: "omega-agent"`
+- コード実装 delegate・プレイブック内ヘルパー: `subagent_type: "forge-agent"`
 - `how` / `reflect` は各スキルが規定する `subagent_type` を尊重する
 - デフォルト: `run_in_background: true`
 
@@ -50,4 +50,5 @@ description: 非自明な実装・調査のエントリ。forge-mode スキル�
 ## 軽い作業向けではない
 
 typo 修正・1行変更・単純な質問には本コマンドを使わない。通常の Agent チャット（`global.mdc` のみ）で足りる。
+
 

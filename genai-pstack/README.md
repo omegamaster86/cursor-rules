@@ -8,7 +8,7 @@ genai（Next.js / Supabase ドメイン規約）と pstack（厳密エンジニ�
 genai-pstack/
 ├── commands/          # ユーザーが叩く入口
 ├── skills/            # ドメイン規約 + ワークフロー（フラット配置）
-├── agents/            # omega-agent サブエージェント
+├── agents/            # forge-agent サブエージェント
 └── rules/
     ├── global.mdc           # 通常モード（常時適用）
     └── forge-models.mdc # モデル設定テンプレート
@@ -28,7 +28,7 @@ cp /path/to/cursor-rules/genai-pstack/rules/global.mdc .cursor/rules/
 cp /path/to/cursor-rules/genai-pstack/rules/forge-models.mdc .cursor/rules/
 ```
 
-`omega-agent` を Cursor が認識するには `agents/` を `.cursor/agents/` に置くか、プロジェクトの agents 設定に合わせてください。
+`forge-agent` を Cursor が認識するには `agents/` を `.cursor/agents/` に置くか、プロジェクトの agents 設定に合わせてください。
 
 ## 使い方
 
@@ -56,7 +56,7 @@ cp /path/to/cursor-rules/genai-pstack/rules/forge-models.mdc .cursor/rules/
 |------|------|
 | `typescript-best-practices` | 採用せず **`web-coding-standards`** を使用 |
 | pstack `interrogate` | 未採用。**`/review-orchestrator-triple-hybrid`** コマンドを使用 |
-| `poteto-agent` | **`omega-agent`** にリネーム |
+| `poteto-agent` | **`forge-agent`** にリネーム |
 | `cursor-team-kit`（deslop, control-*） | 未導入時は skip、手動 verify で代替 |
 
 詳細は `skills/forge-mode/SKILL.md` の **ルーティング** セクションを参照。

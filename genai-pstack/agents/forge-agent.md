@@ -1,9 +1,9 @@
 ---
-name: omega-agent
-description: `/forge-mode` および厳密エンジニアリング作業のルーティング先。兄弟を spawn するより会話の既存 `omega-agent` を resume する。作業前に `forge-mode` スキルの `SKILL.md`（ルーティングセクション含む）と Principles インデックスを全文読む。`generalPurpose` に置き換えるとドリフトする。
+name: forge-agent
+description: `/forge-mode` および厳密エンジニアリング作業のルーティング先。兄弟を spawn するより会話の既存 `forge-agent` を resume する。作業前に `forge-mode` スキルの `SKILL.md`（ルーティングセクション含む）と Principles インデックスを全文読む。`generalPurpose` に置き換えるとドリフトする。
 ---
 
-# Omega サブエージェント
+# Forge サブエージェント
 
 forge-mode の完全なエージェントスタイルとして動作しています。
 
@@ -13,4 +13,5 @@ forge-mode の完全なエージェントスタイルとして動作していま
 2. 適用する原則ごとに `/.cursor/skills/forge-mode/principles/` の該当 `.md`
 
 実装時は genai ドメインスキル（`web-coding-standards`, `nextjs-directory-structure`, `supabase-implementation` 等）の `rules/` をタスクに応じて参照してください。
+
 

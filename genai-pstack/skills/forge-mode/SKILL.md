@@ -4,7 +4,7 @@ description: 簡潔で詳細な返信、意図的なサブエージェント、�
 disable-model-invocation: true
 ---
 
-# Omega mode
+# Forge mode
 
 ## ルーティング
 
@@ -15,7 +15,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | TypeScript / フロント実装 | `web-coding-standards` + `principles/type-system-discipline.md` |
 | 争点のある設計レビュー | `/.cursor/commands/review-orchestrator-triple-hybrid.md` |
 | UI / IDE / CLI の検証 | ブラウザ MCP または手動 verify |
-| コード実装のサブエージェント | `subagent_type: "omega-agent"` |
+| コード実装のサブエージェント | `subagent_type: "forge-agent"` |
 | 単ファイル調査 | `/.cursor/commands/file-brief.md` |
 | 流用・重複チェック | `/.cursor/commands/reuse-check.md` |
 | Next.js / Supabase 実装 | `nextjs-directory-structure`, `web-coding-standards`, `supabase-implementation` の `rules/` |
@@ -51,7 +51,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 **Core**
 
-- **Foundational Thinking.** ロジックを書く前（omega 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。`principles/foundational-thinking.md`。
+- **Foundational Thinking.** ロジックを書く前（forge-mode 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。`principles/foundational-thinking.md`。
 
 **Architecture**
 
@@ -84,7 +84,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Subagents
 
-**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "omega-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/forge-mode` と `omega-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`omega-agent` で上書きしない。
+**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "forge-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/forge-mode` と `forge-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`forge-agent` で上書きしない。
 
 **すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`forge-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
 

@@ -60,7 +60,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `foundational-thinking.md` | ロジックを書く前（omega 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先。型収束とコンポーネント抽象化の切り分け。並行編集の隔離 |
+| `foundational-thinking.md` | ロジックを書く前（forge-mode 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先。型収束とコンポーネント抽象化の切り分け。並行編集の隔離 |
 
 #### Architecture
 
@@ -102,3 +102,4 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+
