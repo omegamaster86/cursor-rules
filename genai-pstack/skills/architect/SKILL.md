@@ -28,15 +28,29 @@ disable-model-invocation: true
 
 ## フェーズ B: スケッチ
 
-設計スケッチタスクとフェーズ A の土台固め成果物で **multi-agent-candidates** スキルを実行する。**`.cursor/rules/multi-agent-task-enforcement.mdc` を遵守** — 1メッセージで3つの Task を `forge-models.mdc` の `architect runners` slug で並列起動。親が候補1/2/3を単独執筆しない。
+設計スケッチタスクとフェーズ A の土台固め成果物で **multi-agent-candidates** スキルを実行する。各 runner に `references/runner-prompt.md` を渡す。各候補は `references/rationale-template.md` の形の設計パッケージを出す。
 
-各 runner に `references/runner-prompt.md` を渡す。各候補は `references/rationale-template.md` の形の設計パッケージを出す: 呼び出し側の使い方を先に書き、型スケッチ、関数シグネチャ、モジュールマップ、そこから導いた文章の根拠。
+**`.cursor/rules/multi-agent-task-enforcement.mdc` を厳守。** 親が単一応答で 3 案を書くのは禁止 — **同一メッセージで Task を 3 回** `run_in_background: true` で起動する。
 
-設定済み architect runner を使う（**正は `forge-models.mdc` の `architect runners` 行** — デフォルト `composer-2.5`、`cursor-grok-4.5-medium`、`claude-opus-5-thinking-medium`）。
+**扇状展開ターンでは統合設計を出さない。** Task 起動 → Runners 下書き（`in_progress`）→ ターン終了。subagent 完了後の収集ターンで各 runner の `<model-slug>.md` を読み、**チャット統合出力**（multi-agent-candidates スキル参照）と **Synthesis decision** を出す。
 
-1 つの形の中の点修正ではなく、形全体の代替案を探索する。
+### multi-agent-candidates のモード選択（Frame で必須）
 
-multi-agent-candidates は 1 つの統合設計パッケージを返す。統合判断が根拠の「Synthesis decision」節を埋める。
+| 状況 | モード | 親の仕事 |
+|------|--------|----------|
+| 単一判断（フィールド要否、命名、1 契約の詰め） | **`compare-models`** | フェーズ A で **採用立場を 1 つ確定** → [`compare-models-brief-template.md`](../multi-agent-candidates/references/compare-models-brief-template.md) を埋める → 3 **異なるモデル**に **同一 brief** |
+| 根本的に異なる形の比較（配列 vs Map 等） | **`explore-shapes`** | 候補 1/2/3 に **異なる Assigned shape** を書く → **同一モデル** を 3 回 |
+
+**ルーティング例:**
+
+- 「`source_key` は要るか？」→ `compare-models`
+- 「API レスポンスをどう簡略化するか（形の選択肢）」→ まず Ground で候補形を列挙 → `explore-shapes`
+
+**禁止:** `compare-models` で runner にバラバラの立場を割り当てる（立場×モデルの交絡）。
+
+**`explore-shapes` のみ:** 1 つの形の中の点修正ではなく、形全体の代替案を探索する。
+
+multi-agent-candidates は 1 つの統合設計パッケージを返す。統合メモの **Runners** 表と **Dropout** 節も必須。**Runners の Status が確定する前に Synthesis decision を書かない。**
 
 ## フェーズ C: 合意（オプトイン）
 
@@ -65,17 +79,17 @@ multi-agent-candidates は 1 つの統合設計パッケージを返す。統合
 - コンパイルのため `any`、キャスト、実際は常に設定される optional が要る型。
 - スケッチが状態は共有されないと言ったのに「ロックが要る」反射。
 - 呼び出し側が抽象の内部ルールを知らないと使えない。
-- 実装横断で同じ形のフェーズ D 逸脱が 2 つ以上独立して起きる。逸脱の表面化はフェーズ D の仕事。同形の繰り返しパターンがフェーズ E のトリガー。
+- 実装横断で同じ形のフェーズ D 逸脱が 2 つ以上独立して起きる。
 
-判断を使う。エッジケース数個でアーキテクチャを断罪しない。問題が本当に複雑なこともある。データの複雑さは設計の複雑さではない。書き直しシグナルは同形の繰り返し摩擦であり、単発の難ケースではない。
+判断を使う。書き直しシグナルは同形の繰り返し摩擦であり、単発の難ケースではない。
 
 捨てるとき:
 
-1. 構築済みに **how** スキルを再実行。実装の教訓は雰囲気ではなく新設計への入力。
+1. 構築済みに **how** スキルを再実行。
 2. 新制約が初日からあったかのように再設計する。
-3. 追加の前に削る（**refactor-check**）。新スケッチは成長する前に旧より小さく。
-4. フェーズ B に戻り multi-agent-candidates を再実行。
+3. 追加の前に削る（**refactor-check**）。
+4. フェーズ B に戻り multi-agent-candidates を再実行（モードを見直す）。
 
 ## 成果物
 
-呼び出し側の使い方を先に書き、型スケッチはそこから導く。小変更は新型とシグネチャの 1 ファイル。大きめはモジュールマップと型定義。根拠は `references/rationale-template.md` の形で併せて出荷。使い方スケッチと統合判断を含む。
+呼び出し側の使い方を先に書き、型スケッチはそこから導く。根拠は `references/rationale-template.md` の形で併せて出荷。収集ターンでは **チャット統合出力**（multi-agent-candidates 必須節）を含む。
