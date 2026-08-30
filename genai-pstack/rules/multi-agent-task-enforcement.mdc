@@ -1,0 +1,27 @@
+---
+description: multi-agent-candidates / architect で Task サブエージェントを必ず3並列起動する
+alwaysApply: true
+---
+# Multi-agent Task enforcement
+
+`/multi-agent-candidates` および `/architect`（フェーズ B）実行時、親エージェントが候補設計を1応答で書くことは禁止。**必ず Task ツールで runner を並列起動する。**
+
+## 必須
+
+1. **1メッセージで3つの Task を同時起動**（`run_in_background: true`）。順次起動・1応答でのシミュレーションは不可。
+2. **model は `forge-models.mdc` の runner 行からのみ**選択。Task API 有効 slug 以外は `inherit` にフォールバックし、Usage に親モデルのみ出る。
+3. **統合メモに Runners 表と Dropout 節を必須**（`architect/references/rationale-template.md` の Synthesis decision 参照）。
+
+## 禁止
+
+- 親が「候補1/2/3」「multi-agent 統合判断」見出しで3案を単独執筆
+- Task 0回で multi-agent と称する
+- Usage ログだけで3モデル起動を証明（親 `composer-2.5` のみ計上されうる）
+
+## Task API 有効 slug
+
+`inherit`, `claude-opus-5-thinking-medium`, `claude-sonnet-5-thinking-medium`, `composer-2.5`, `composer-2.5-fast`, `cursor-grok-4.5-medium`, `cursor-grok-4.6-medium`, `gpt-5.6-sol-medium`
+
+## Runner 設定の正
+
+`forge-models.mdc` の `multi-agent-candidates runners` / `architect runners` 行。スキル内の旧デフォルト slug は参照しない。

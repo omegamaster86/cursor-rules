@@ -11,7 +11,8 @@ genai-pstack/
 ├── agents/            # forge-agent サブエージェント
 └── rules/
     ├── global.mdc           # 通常モード（常時適用）
-    └── forge-models.mdc # モデル設定テンプレート
+    ├── forge-models.mdc              # モデル設定テンプレート（Task runner の正）
+    └── multi-agent-task-enforcement.mdc  # multi-agent の Task 3並列必須
 ```
 
 ## インストール（PJ へコピー）
@@ -26,6 +27,7 @@ cp -R /path/to/cursor-rules/genai-pstack/skills .cursor/
 cp -R /path/to/cursor-rules/genai-pstack/agents .cursor/
 cp /path/to/cursor-rules/genai-pstack/rules/global.mdc .cursor/rules/
 cp /path/to/cursor-rules/genai-pstack/rules/forge-models.mdc .cursor/rules/
+cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cursor/rules/
 ```
 
 `forge-agent` を Cursor が認識するには `agents/` を `.cursor/agents/` に置くか、プロジェクトの agents 設定に合わせてください。

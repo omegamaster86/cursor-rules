@@ -15,11 +15,12 @@ how explainer: composer-2.5
 how critics: composer-2.5, composer-2.5, composer-2.5
 reflect tooling: composer-2.5
 reflect judgment, divergent, synthesizer: composer-2.5
-arena runners: claude-opus-4-8, gpt-5.5, composer-2.5
-architect runners: composer-2.5, composer-2.5, composer-2.5
-review orchestrator codex: composer-2.5
-review orchestrator sonnet correctness: composer-2.5
-review orchestrator sonnet quality: composer-2.5
+# Task API 有効 slug のみ。旧名（gpt-5.5, grok-4.5, claude-sonnet-5-medium 等）は inherit 落ちする。
+multi-agent-candidates runners: claude-sonnet-5-thinking-medium, gpt-5.6-sol-medium, cursor-grok-4.5-medium
+architect runners: composer-2.5, cursor-grok-4.5-medium, claude-opus-5-thinking-medium
+review orchestrator grok: grok-4.5
+review orchestrator sonnet correctness: claude-sonnet-5-medium
+review orchestrator sonnet quality: claude-sonnet-5-medium
 
 
 <!-- feature, refactoring: composer-2.5-fast
@@ -36,3 +37,4 @@ reflect tooling: composer-2.5-fast
 reflect judgment, divergent, synthesizer: claude-opus-4-8-thinking-xhigh
 arena runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
 architect runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast -->
+
