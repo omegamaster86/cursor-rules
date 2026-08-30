@@ -50,8 +50,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | ファイル | 用途 |
 |----------|------|
-| `forge-models.mdc` | forge-mode のロール別モデル・Task runner slug の正（`.cursor/rules/` に配置して手編集） |
-| `multi-agent-task-enforcement.mdc` | multi-agent-candidates / architect の Task 3並列必須（`.cursor/rules/` に配置） |
+| `forge-models.mdc` | forge-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
 
 ### 原則（`forge-mode/principles/`）8本
 
@@ -103,5 +102,3 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
-
-
