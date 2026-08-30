@@ -120,4 +120,3 @@ overview で、実装者が名前で適用すべき forge-mode non-negotiables �
 フェーズ、スコープ境界、applicable skills、verification を要約。**File change map** と **Data flow** の Mermaid を返信に含める（skip 理由がある場合を除く）。stop。実装開始タイミングはユーザーが決める。
 
 
-
