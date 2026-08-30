@@ -1,22 +1,39 @@
 # Architect runner プロンプト
 
-オーケストレータはフェーズ B で **1メッセージ内に3つの Task を同時起動**する（`run_in_background: true`）。各 Task の `model` は `.cursor/rules/forge-models.mdc` の `architect runners` 行の slug を使う。`.cursor/rules/multi-agent-task-enforcement.mdc` を遵守 — 親が候補案を単独執筆しない。
+オーケストレータはフェーズ B で **Task を 3 並列**（`run_in_background: true`）起動する。各並列候補 runner にこのファイルを渡し、周辺の可変入力を埋める: **モード**、タスク、フェーズ A の土台固め成果物、**出力先ファイル**（`.cursor/multi-agent-candidates/<task-slug>/<model-slug>.md`。`explore-shapes` では `<model-slug>.<shape-slug>.md`）。
 
-各並列候補 runner にこのファイルを渡し、周辺の可変入力を埋める: タスク、フェーズ A の土台固め成果物、隔離作業ディレクトリ、出力先パス。作業ディレクトリは可能なら git worktree、そうでなければスケッチ dir 下の runner ごとのサブディレクトリ。重要なのは候補間の独立性。
+**オーケストレータ向け:** Task 起動ターンでは統合結論を書かない。全 runner の成果物を読んだ収集ターンで初めて比較・統合し、**チャット統合出力**（multi-agent-candidates スキル）を書く。
 
-architect の並列探索で 1 つの候補設計を産出する。まず **architect** スキルを全文読む。それが内側のワークフロー。候補設計パッケージを出力: 型スケッチ、関数シグネチャ、モジュールマップ、[`rationale-template.md`](rationale-template.md) の形の文章根拠。
+候補設計パッケージを **指定 output path にファイルとして** 出力: 型スケッチ、関数シグネチャ、モジュールマップ、[`rationale-template.md`](rationale-template.md) の形（**Chat summary 必須**）。
 
-次の規律を適用する。オーケストレータはこれらの軸で候補を比較しベースを選ぶ。
+## モード別指示（オーケストレータが prompt に明記）
 
-- 呼び出し側の usage を先に。型の前に README 風の usage と現実的な呼び出しサイト 2〜3 を書き、そこから型スケッチを導く。usage が仕様。両者は一致。ずれたらスケッチを usage に合わせる。逆ではない。
-- データ構造を先に。コア型を正しくすればコードは自明になる。主要なアクセスパターンを提案構造で辿る。答えが「後で map / index / cache を足す」なら構造が間違い。
-- 共有状態: 2 _actor が書きうるなら「何が起きる？」と問う。答えが「何もない」でなければ、デフォルトは読み取り境界でマージする actor ごとの状態。
-- 境界を見えるように。本体は `not implemented` エラー、難しいロジックは `// TODO` 疑似コード、意図と不変条件を述べる doc コメント。読者は型とシグネチャだけで入力から出力まで辿れるべき。
-- 不変条件を型にエンコード: 誤用しにくい型 > 実行時チェック > 文章コメント（**encode-lessons-in-structure** 原則スキル）。
-- 境界で検証し、内部では型を信頼（**web-coding-standards** の `form-validation`、`nextjs-directory-structure` の `practice-bff`）。ビジネスロジックは純関数。シェルは薄く。
-- 不変条件ごとに単一の真実の源。同期ではなく導出。
-- 該当すれば冪等な状態遷移（**make-operations-idempotent** 原則スキル）。操作が 2 回走るか途中で落ちたらどうなるか問う。
-- 呼び出しチェーンは短く。流れの追跡に 3 ファイル超が要るなら階層をフラットに（**refactor-check**）。
+### `compare-models`（同一立場・異なるモデル）
 
-複数 runner の 1 つで、モデルはそれぞれ違う。自分のモデルで最良の設計を出す。他に対してヘッジしない。候補間の差がベース選択とグラフトのシグナル。安全そうな中間に収束すると探索を無効化する。
+- オーケストレータが渡す **Fixed brief**（[`compare-models-brief-template.md`](../../multi-agent-candidates/references/compare-models-brief-template.md)）に従う。
+- **自分で立場を変えない。** `Your assigned stance: ...` は受け取らない。
+- 他 runner との差は **表現・swagger 具体性・漏れ・リスク指摘** で出す。
+- 同じ結論に収束してよい — 最も具体化された成果物を競う。
+
+### `explore-shapes`（異なる立場・同一モデル推奨）
+
+- オーケストレータが渡す **Assigned shape**（1 段落）のみ守る。他候補の立場に寄せない。
+- モデルは他 runner と同一のことが多い — **立場の差**で勝負する。
+- 安全な中間案に全員が収束すると探索が無効化される — 割当られた形を最後まで押す。
+
+## 設計規律（両モード共通）
+
+- 呼び出し側の usage を先に。型の前に README 風の usage と現実的な呼び出しサイト 2〜3 を書く。
+- データ構造を先に。答えが「後で map / index / cache を足す」なら構造が間違い。
+- 境界で検証し、内部では型を信頼（`per form-validation`、`per practice-bff`）。
+- 不変条件ごとに単一の真実の源。
+
+## モデルと立場の関係（交絡防止）
+
+| モード | モデル | 立場 |
+|--------|--------|------|
+| `compare-models` | **それぞれ違う**（forge-models runner 行） | **全員同じ** |
+| `explore-shapes` | **全員同じ**（推奨） | **それぞれ違う** |
+
+**禁止:** 立場もモデルも候補ごとに変えること（今回の `source_key` 調査で起きた交絡）。
 
