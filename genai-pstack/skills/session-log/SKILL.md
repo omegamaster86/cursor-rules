@@ -25,7 +25,7 @@ disable-model-invocation: true
 | デフォルト | `.cursor/session-log/YYYY-MM-DD-session.md` |
 | 名前付きタスク | `.cursor/session-log/YYYY-MM-DD-<task-slug>.md`（ユーザーまたはブランチ名から slug） |
 
-`.cursor/session-log/` はセッション再開用。**commit しない**（`.gitignore` 推奨をユーザーに一言）。decision-log の `.cursor/decision-log/*.md` とは別物（session-log = 再開用、decision-log = 監査用）。
+`.cursor/session-log/` はセッション再開用。**commit しない**（`.gitignore` 推奨をユーザーに一言）。decision-log の `.log/*.md` とは別物（session-log = 再開用、decision-log = 監査用）。
 
 ## ファイルテンプレート
 
