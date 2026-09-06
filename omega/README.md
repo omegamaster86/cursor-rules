@@ -5,32 +5,68 @@ genai（Next.js / Supabase ドメイン規約）と pstack（厳密エンジニ�
 ## 構成
 
 ```
-genai-pstack/
+omega/
 ├── commands/          # ユーザーが叩く入口
 ├── skills/            # ドメイン規約 + ワークフロー（フラット配置）
 ├── agents/            # forge-agent サブエージェント
-└── rules/
-    ├── global.mdc           # 通常モード（常時適用）
-    ├── forge-models.mdc              # モデル設定テンプレート（Task runner の正）
-    └── multi-agent-task-enforcement.mdc  # multi-agent の Task 3並列必須
+├── rules/
+│   ├── global.mdc           # 通常モード（常時適用）
+│   ├── forge-models.mdc              # モデル設定テンプレート（Task runner の正）
+│   └── multi-agent-task-enforcement.mdc  # multi-agent の Task 3並列必須
+└── scripts/
+    ├── omega-link       # PJ へ symlink インストール
+    ├── omega-link-all   # projects.txt の全 PJ を一括リンク
+    └── projects.txt     # リンク対象 PJ の一覧
 ```
 
-## インストール（PJ へコピー）
+## インストール（PJ へ symlink）
 
-対象プロジェクトの `.cursor/` にコピーします。
+正本は `cursor-rules/omega` です。各 PJ では **コピーせず symlink** で参照します。omega を更新するとリンク済み PJ に即反映されます。
+
+### 1. スクリプトに実行権限を付ける（初回のみ）
 
 ```bash
-# 例: プロジェクトルートで
-mkdir -p .cursor
-cp -R /path/to/cursor-rules/genai-pstack/commands .cursor/
-cp -R /path/to/cursor-rules/genai-pstack/skills .cursor/
-cp -R /path/to/cursor-rules/genai-pstack/agents .cursor/
-cp /path/to/cursor-rules/genai-pstack/rules/global.mdc .cursor/rules/
-cp /path/to/cursor-rules/genai-pstack/rules/forge-models.mdc .cursor/rules/
-cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cursor/rules/
+chmod +x /path/to/cursor-rules/omega/scripts/omega-link
+chmod +x /path/to/cursor-rules/omega/scripts/omega-link-all
 ```
 
-`forge-agent` を Cursor が認識するには `agents/` を `.cursor/agents/` に置くか、プロジェクトの agents 設定に合わせてください。
+### 2. PJ へリンク
+
+```bash
+/path/to/cursor-rules/omega/scripts/omega-link /path/to/your-project
+```
+
+PJ ルートから実行する場合:
+
+```bash
+/path/to/cursor-rules/omega/scripts/omega-link .
+```
+
+### 3. 複数 PJ を一括リンク（任意）
+
+`scripts/projects.txt` に PJ パスを1行ずつ書いて:
+
+```bash
+/path/to/cursor-rules/omega/scripts/omega-link-all
+```
+
+### リンク後の `.cursor/` の形
+
+| パス | 種類 |
+|------|------|
+| `.cursor/commands/` | omega への symlink |
+| `.cursor/agents/` | omega への symlink |
+| `.cursor/rules/global.mdc` 等 | omega への symlink |
+| `.cursor/rules/forge-models.mdc` | 初回のみコピー（PJ ごとに編集可） |
+| `.cursor/skills/<共有 skill>/` | omega への symlink |
+| `.cursor/skills/verify-*/` | PJ 固有（リンクしない） |
+| omega に無いローカル skill | そのまま残る |
+
+omega に skill を追加したら、既存 PJ で `omega-link` を再実行してください。
+
+### 旧 cp 方式から移行する場合
+
+`.cursor/commands` や `.cursor/agents` が **実ディレクトリ**（旧コピー）のままだと symlink がネストする可能性があります。共有分を退避または削除してから `omega-link` を実行してください。`verify-*` と omega に無いローカル skill は残して問題ありません。
 
 ## 使い方
 

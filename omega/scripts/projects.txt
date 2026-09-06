@@ -1,0 +1,3 @@
+# One project path per line. Lines starting with # are ignored.
+# Example:
+# /Users/you/projects/my-app

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+OMEGA="${OMEGA:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+
+usage() {
+  echo "usage: omega-link /path/to/project" >&2
+  echo "       OMEGA=/path/to/omega omega-link /path/to/project" >&2
+}
+
+if [[ $# -lt 1 ]]; then
+  usage
+  exit 1
+fi
+
+PJ="$(cd "$1" && pwd)"
+
+if [[ ! -d "$OMEGA/commands" || ! -d "$OMEGA/skills" || ! -d "$OMEGA/rules" ]]; then
+  echo "omega not found: $OMEGA" >&2
+  exit 1
+fi
+
+mkdir -p "$PJ/.cursor/rules" "$PJ/.cursor/skills"
+
+link_path() {
+  local source="$1"
+  local target="$2"
+
+  if [[ -e "$target" && ! -L "$target" ]]; then
+    echo "skip (exists as real path): $target" >&2
+    return 0
+  fi
+
+  ln -sfn "$source" "$target"
+}
+
+link_path "$OMEGA/commands" "$PJ/.cursor/commands"
+link_path "$OMEGA/agents" "$PJ/.cursor/agents"
+
+for rule in global.mdc multi-agent-task-enforcement.mdc; do
+  link_path "$OMEGA/rules/$rule" "$PJ/.cursor/rules/$rule"
+done
+
+if [[ ! -e "$PJ/.cursor/rules/forge-models.mdc" ]]; then
+  cp "$OMEGA/rules/forge-models.mdc" "$PJ/.cursor/rules/forge-models.mdc"
+fi
+
+for skill in "$OMEGA/skills"/*/; do
+  name="$(basename "$skill")"
+  [[ "$name" == verify-* ]] && continue
+  link_path "$skill" "$PJ/.cursor/skills/$name"
+done
+
+echo "linked omega -> $PJ/.cursor"
