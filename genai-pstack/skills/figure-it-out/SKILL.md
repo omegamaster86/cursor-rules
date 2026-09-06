@@ -12,7 +12,7 @@ disable-model-invocation: true
 
 ## 開始
 
-todolist を開き、最初の項目は **forge-mode** スキルの Principles 節を読むこと。続けて下記フェーズを todo に追加する。
+todolist を開き、最初の項目は **forge-mode** スキルの Principles 節を読むこと。次は **Intent gate**。`blocked` ならフェーズ A に入らず `/plan-interview` を案内して終了する。gate 通過後、下記フェーズを todo に追加する。
 
 ## フェーズ A: 枠組み
 
@@ -22,7 +22,7 @@ todolist を開き、最初の項目は **forge-mode** スキルの Principles �
 - スコープを定量化: おおよそのユニット数と工数、土台固めで出たブロッカー。何時間もかけたあとではなく、始める前に挙げる。
 - 厳密さのレベル。高めに偏る。一方通行の扉と blast radius が大きいほど多く、可逆で低リスクなステップは少なく。厳密さはゲートと成果物であり、「もっと頑張る」ではない。
 
-長時間の実行にコミットする前に枠組みとトレードオフを提示する。可逆作業は進める（**never-block-on-the-human** 原則スキル）。ただし数時間の実行にはチェックポイント 1 つに値する。
+長時間の実行にコミットする前に枠組みとトレードオフを提示する。Intent gate 通過後の可逆作業は進める（**never-block-on-the-human** 原則スキル）。ただし数時間の実行にはチェックポイント 1 つに値する。プロダクト方向が空なら never-block より gate が勝つ。
 
 ## フェーズ B: ワークフローを設計する
 

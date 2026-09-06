@@ -2,6 +2,7 @@
 
 **design を所有する。Plan、review、verify。** implementation を delegate。リードに留まる。
 
+0. Intent gate。`alignment: blocked` なら本プレイブックを `skip: awaiting alignment` で止め、`/plan-interview` へ。`alignment:` 1文または skip 理由を todo に残してから step 1。
 1. affected subsystem に `how`。
 2. parallel design exploration のため `architect`。skip は `architect skipped: <reason>` のまま。design decision を silently implementation に fold しない。
 3. throughput checkpoint を4 todo item として書く。genuinely apply しない dimension（single file、no fan-out）は item を `n/a: <reason>` で keep。drop しない：
@@ -20,4 +21,5 @@
 code-coupled work（1 feature、1 migration）は checkpoint inline の single owner。blocking phase 後 internal fan-out。parent-level fan-out は independent artifact を produce する slice 用（audit、cross-subsystem investigation、competing experiment）。phase boundary で checkpoint rewrite。interrupt chain より fresh owner spawn。
 
 **Reply:** build したもの、選んだものと why、open decisions。design alternative は tables。プラン提示時は Mermaid 2種（または skip 理由）。
+
 

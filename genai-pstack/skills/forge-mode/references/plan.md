@@ -16,7 +16,7 @@
 
 ## 2. Scope and constraints
 
-スコープと制約の読み取りを1段落で述べる。genuinely ambiguous な intent だけ `AskQuestion`（[`never-block-on-the-human`](../principles/never-block-on-the-human.md)）。各 open question に concrete オプション。
+スコープと制約の読み取りを1段落で述べる。プロダクト方向が空ならプランを続けず Intent gate `blocked`（`/plan-interview`）。gate 通過後、実行の分岐で genuinely ambiguous な intent だけ `AskQuestion`（[`never-block-on-the-human`](../principles/never-block-on-the-human.md)）。各 open question に concrete オプション。
 
 in scope vs 明示的 out、技術またはプラットフォーム制約、preserve するパターン、done の定義を resolve。
 
@@ -118,5 +118,6 @@ overview で、実装者が名前で適用すべき forge-mode non-negotiables �
 ## 7. Hand back
 
 フェーズ、スコープ境界、applicable skills、verification を要約。**File change map** と **Data flow** の Mermaid を返信に含める（skip 理由がある場合を除く）。stop。実装開始タイミングはユーザーが決める。
+
 
 

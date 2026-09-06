@@ -37,7 +37,8 @@ cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cu
 | シーン | 使うもの |
 |--------|----------|
 | 軽い修正・質問 | 通常チャット（`global.mdc` のみ） |
-| 本格的な実装・調査 | `/forge-mode` |
+| 本格的な実装・調査 | `/forge-mode`（プロダクト方向が未確定なら先に `/plan-interview`） |
+| 計画・用語のすり合わせ | `/plan-interview` |
 | ファイル調査 | `/file-brief` |
 | 流用チェック | `/reuse-check` |
 | リファクタ・削減チェック | `/refactor-check` |
@@ -48,7 +49,7 @@ cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cu
 ## モードの関係
 
 - **通常モード**: `global.mdc` が適用。タスク分析・実行結果報告フォーマットあり。
-- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。原則8本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
+- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則8本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
 
 コマンド（入口）とスキル（原則・プレイブック本体）はどちらも **forge-mode** という名前で統一しています。
 
@@ -60,8 +61,9 @@ cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cu
 | pstack `interrogate` | 未採用。**`/review-orchestrator-triple-hybrid`** コマンドを使用 |
 | `poteto-agent` | **`forge-agent`** にリネーム |
 | `cursor-team-kit`（deslop, control-*） | 未導入時は skip、手動 verify で代替 |
+| grilling vs never-block | **Intent gate。** Align は `/plan-interview`、Ship は `/forge-mode`。同じターンで両方オンにしない |
 
-詳細は `skills/forge-mode/SKILL.md` の **ルーティング** セクションを参照。
+詳細は `skills/forge-mode/SKILL.md` の **ルーティング** と **Intent gate** を参照。
 
 ## スキル一覧
 
@@ -74,3 +76,4 @@ cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cu
 
 参考
 https://github.com/mattpocock/skills/tree/main/skills
+

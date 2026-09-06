@@ -6,9 +6,10 @@
 
 | スキル / コマンド | 用途 |
 |-------------------|------|
-| `/forge-mode`（command） | 非自明な実装・調査のメイン入口 |
+| `/forge-mode`（command） | 非自明な実装・調査のメイン入口（Ship。Intent gate 通過後） |
+| `/plan-interview`（skill） | 何を・なぜ・用語（Align）。forge より先。モデル自動起動しない |
 | `/verify-done`（command） | 完了前検証（forge-mode ゲート・任意呼び出し） |
-| `forge-mode`（skill） | 原則・プレイブックの本体（コマンドと同名） |
+| `forge-mode`（skill） | 原則・プレイブック・Intent gate の本体（コマンドと同名） |
 
 ---
 
@@ -34,8 +35,8 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | スキル | 用途 |
 |--------|------|
-| `plan-interview` | 計画・設計のストレステスト（ユーザー向けエントリ。`/plan-interview`） |
-| `grilling` | 上記のインタビュー技法本体（plan-interview から委譲、他スキルも参照可） |
+| `plan-interview` | 計画・設計のストレステスト（Align 入口。`/plan-interview`。終了時に `alignment:` を返す） |
+| `grilling` | 上記のインタビュー技法本体（plan-interview から委譲。forge 中は使わない） |
 | `how` | サブシステムの仕組み説明 |
 | `architect` | 関数境界を越える設計 |
 | `multi-agent-candidates` | 並列案の比較・最良統合 |
@@ -81,7 +82,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
 | `guard-the-context-window.md` | コンテキスト逼迫時 | 大きな出力・長いファイルはサブエージェントへ。メインには要約のみ。不要ファイルは読まない。フェーズにサイズ上限 |
-| `never-block-on-the-human.md` | 可逆作業で確認したくなったとき | 進めて結果を提示し事後修正。不可逆（force-push、本番削除、外部送信）のみ確認。プロダクト方向は人間、実行はブロックしない |
+| `never-block-on-the-human.md` | Intent gate 通過後の可逆作業で確認したくなったとき | 進めて結果を提示し事後修正。`blocked` では無効。不可逆のみ確認。プロダクト方向は人間、実行はブロックしない |
 
 #### Meta
 
@@ -95,10 +96,11 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | コマンド | 用途 |
 |----------|------|
-| `forge-mode` | 本スタックのメイン入口 |
+| `forge-mode` | Ship のメイン入口。起動時 Intent gate。`blocked` なら `/plan-interview` |
 | `file-brief` | 単ファイル調査 |
 | `reuse-check` | 既存コード流用チェック |
 | `refactor-check` | リファクタ・削減チェック（ユーザー指示時） |
 | `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+

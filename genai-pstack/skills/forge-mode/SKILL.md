@@ -23,6 +23,8 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | リファクタ・削減・簡素化（ユーザー指示時） | `/.cursor/commands/refactor-check.md` |
 | 完了宣言前の検証（forge-mode ゲート） | `/.cursor/commands/verify-done.md` |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
+| 何を作るか・非ゴール・用語が未確定 | **`plan-interview` に戻す。** プレイブックに入らない。親は grilling を自己起動せず、ユーザーに `/plan-interview` を案内する |
+| 観測すれば決まる分岐（レイアウト、タイミング、出力） | Prototype。人間に聞かない（Intent gate が blocked のときは使わない） |
 
 エントリーポイント: `/.cursor/commands/forge-mode.md`
 
@@ -30,10 +32,42 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 **複数ステップのタスクはすべて、最初の項目が下の Principles セクションを全文読むことである todo リストから始める。** 原則がここにあるすべてのトリガーの基盤となる。返信では、意思決定を形作った各原則と、それが変えた具体的な選択を名指しする。意思決定の裏がない引用は `principles/` の leaf をスキップしたことを意味する。leaf のルールが駆動した実際の選択にたどり着かなければならない。
 
+## Intent gate（Align vs Ship）
+
+`/forge-mode` は **Ship** のオーケストレータである。**Align**（何を・なぜ・用語）は `plan-interview` が所有する。同じターンで両方を適用しない。grilling と never-block を同時にオンにしない。
+
+起動直後、プレイブックをコピーする前に分類する。todo の先頭（Principles の次）に次のいずれか **1行** を残す。
+
+- `alignment: <ユーザーが確認した1文>` — Ship に進む
+- `alignment: skip — <バグ再現 / 読み取り専用調査 / ユーザーが実装を明示>` — Ship に進む
+- `alignment: blocked — plan-interview` — **ここで止める。** Feature / architect / how / 実装サブエージェント / Prototype を起動しない。コードを読まない。ユーザーに `/plan-interview` を案内し、この `/forge-mode` 呼び出しの作業は終了する。親が grilling を自己起動しない
+
+サブエージェントは親の `alignment:` 行を継承する。親が済み / skip なら再分類して blocked にしない。親が blocked なら spawn しない。
+
+**blocked にする合図（プロダクト方向が空）**
+
+- 成功条件が「いい感じ」「ちゃんと」「見づらい」など測定不能
+- 残すもの / 捨てるものが言えない（スコープと非ゴール）
+- 同じ概念にユーザーとエージェントが別の言葉を使っている
+- 相互依存する設計選択が2つ以上未決で、prototype しても嗜好が残る
+
+**skip にしてよい合図（Align 不要）**
+
+- Bug fix / Investigation / Runtime forensics / Trace forensics / Visual parity（再現対象が既にある）
+- ユーザーが「実装して」「直して」「この仕様で」と方向を1文で渡している
+- 直前の `/plan-interview` の合意文、またはメッセージに `alignment:` がある
+
+**Ship 中の質問**
+
+- never-block は **実行の分岐**にだけ効く（どのファイルから切るか、テストの粒度、commit の分け方）
+- プロダクト方向を聞き直したくなったら、実装を続けず Intent gate を `blocked` に戻す
+- 観測で決まる分岐は Prototype。それは Align ではない
+
 残りのトリガー：
 
+- Intent gate が `blocked` なら、以下のトリガー（how、AskQuestion 分類、architect、実装）は発火しない。
 - 非自明な変更、アーキテクチャ決定、または「本当に確かか？」→ **how** スキル。
-- 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → 質問する前に分類する。何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断だけに質問を留める。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
+- 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → **先に Intent gate。** `blocked` なら質問も prototype もしない。`plan-interview` へ。gate 通過後: 何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断は Align に戻す（Ship 中に grilling しない）。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
 - コードがある → まず契約（データ形状）を名指しする（`principles/foundational-thinking.md`）。
 - 関数境界を越えるコード → **architect** スキル、実装前に並列設計探索。
 - 争点のある設計 → 出荷前に **`review-orchestrator-triple-hybrid` コマンド**（3モデル並列レビュー）。
@@ -66,7 +100,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 **Delegation**
 
 - **Guard the Context Window.** コンテキストが埋まる：大きな出力、長いファイル、繰り返し読み取り、fan-out プランニング。 bulk はサブエージェントへ、メインスレッドには要約を保持。`principles/guard-the-context-window.md`。
-- **Never Block on the Human.** 可逆作業で「X すべきか？」と聞きたくなったとき。進め、結果を提示し、人間に course-correct させる。`principles/never-block-on-the-human.md`。
+- **Never Block on the Human.** Intent gate が alignment 済み / skip のときの実行分岐のみ。可逆作業で「X すべきか？」と聞きたくなったとき進め、結果を提示し、人間に course-correct させる。`blocked` のときは本原則を適用しない。`principles/never-block-on-the-human.md`。
 
 **Meta**
 
@@ -74,7 +108,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Autonomy
 
-**やるだけやれ。** 任意の MCP ツールを使う。可逆作業と外部アクション（チームチャット、チケット更新、eval のキックオフ）は確認なしで進める。
+**やるだけやれ。** 任意の MCP ツールを使う。可逆作業と外部アクション（チームチャット、チケット更新、eval のキックオフ）は確認なしで進める。Intent gate が `blocked` のときは本節より gate が勝つ。合意前の実装・commit は可逆でもしない。
 
 **不可逆書き込みでは常に一時停止**：共有ブランチへの force-push、デプロイ、データ削除、顧客メッセージ。
 
@@ -92,7 +126,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Playbooks
 
-最初の todolist アクションは、タスク固有 todo やタスクについて推論する前に、マッチしたプレイブックのステップを verbatim でコピーすること。失敗モードはプレイブックを読んでから named ステップ（`architect`、throughput checkpoint）を drop した独自プランを書くこと。やらないステップもリストに残し、1行 `skip: <reason>`。黙って skip は不可。下からタスクにマッチさせ、ファイルを開き、ステップを verbatim でコピー。
+最初の todolist アクションは Principles インデックス。次は **Intent gate**。`blocked` ならプレイブックをコピーせず終了する。gate 通過後、タスク固有 todo やタスクについて推論する前に、マッチしたプレイブックのステップを verbatim でコピーすること。失敗モードはプレイブックを読んでから named ステップ（`architect`、throughput checkpoint）を drop した独自プランを書くこと。やらないステップもリストに残し、1行 `skip: <reason>`。黙って skip は不可。下からタスクにマッチさせ、ファイルを開き、ステップを verbatim でコピー。
 
 大きいまたは横断的な努力（多数 call site のマイグレーション、野心的な多部分変更）、またはユーザーが後で信頼するために離れる作業は、Feature のような狭いプレイブックが合っても **figure-it-out** スキルにルート。バンドルプレイブックが合わないときは常に **figure-it-out**。タスク向けの bespoke で厳密なプレイブックを設計する。
 
