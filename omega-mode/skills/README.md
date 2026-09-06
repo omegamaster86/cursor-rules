@@ -9,6 +9,8 @@
 | `/forge-mode`（command） | 非自明な実装・調査のメイン入口（Ship。Intent gate 通過後） |
 | `/plan-interview`（skill） | 何を・なぜ・用語（Align）。forge より先。モデル自動起動しない |
 | `/verify-done`（command） | 完了前検証（forge-mode ゲート・任意呼び出し） |
+| `/create-verification-skill`（command） | 対象 PJ にユーザー操作の証明レシピ（`verify-<app>`）を生成 |
+| `/maintain-verification-skill`（command） | 上記 feature map の監査・更新（プロダクトコードは触らない） |
 | `forge-mode`（skill） | 原則・プレイブック・Intent gate の本体（コマンドと同名） |
 
 ---
@@ -46,6 +48,8 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `session-log` | 長セッション状態をファイル化し新規チャットへ handoff |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
 | `decision-log` | 意思決定 マークダウンでログとしてためる |
+| `create-verification-skill` | PJ 固有の動作確認スキルと feature map を生成 |
+| `maintain-verification-skill` | 上記のソース読み + ライブ drive によるメンテ |
 
 ### 設定（rules/）
 
@@ -53,7 +57,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |----------|------|
 | `forge-models.mdc` | forge-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
 
-### 原則（`forge-mode/principles/`）8本
+### 原則（`forge-mode/principles/`）14本
 
 `forge-mode` の Principles インデックスから **on-demand** で読む。`/forge-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `forge-mode/principles/*.md` を全文読む。
 
@@ -62,13 +66,18 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
 | `foundational-thinking.md` | ロジックを書く前（forge-mode 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先。型収束とコンポーネント抽象化の切り分け。並行編集の隔離 |
+| `redesign-from-first-principles.md` | 既存設計に要件を足すとき | ボルトオンせず、最初からその要件があった形に再設計する |
+| `experience-first.md` | Intent gate 通過後の UX・スコープのトレードオフ | 実装都合より体験。方向が空なら `/plan-interview` |
+| `outcome-oriented-execution.md` | フェーズ付き rewrite / 移行 | 中間互換より最終形。橋を恒久化しない。小さな PR では読まない |
 
 #### Architecture
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
+| `model-the-domain.md` | 状態ロジック・分岐の増殖 | ドメインを構造（状態機械、判別共用体、lookup）に載せる。boolean / if の散在を止める |
 | `type-system-discipline.md` | 型・シグネチャ設計 | 不正状態を表現不能に、意味的プリミティブに brand、外部データは境界で parse。網羅的 match、権威スキーマから導出。検証の所在は genai ドメイン規約（`form-validation`、`practice-bff` 等）を参照 |
 | `make-operations-idempotent.md` | クラッシュ・リトライ下のコマンド・ループ | 「2回実行」「途中クラッシュ」で同じ最終状態に収束するよう設計。自己修復ロック・冪等スケジューリング |
+| `separate-before-serializing-shared-state.md` | 並行アクターが同じ状態を書きそうなとき | 共有を先に消す。ロック・逐次化は最後 |
 
 #### Verification
 
@@ -76,6 +85,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |----------|----------------|------|
 | `prove-it-works.md` | 完了宣言の前 | 背景・哲学。実行手順の正本は **`/verify-done`**。コンパイル・自己報告・代理指標ではなく実アーティファクトで検証 |
 | `sequence-verifiable-units.md` | マルチステップ作業・コミット/PR の積み方 | 各単位がチェックで終わるまで次に進まない。失敗テスト→修正の順など、シーケンス自体がレビュアーに証明する |
+| `fix-root-causes.md` | デバッグ中 | 症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない |
 
 #### Delegation
 
@@ -101,6 +111,9 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `reuse-check` | 既存コード流用チェック |
 | `refactor-check` | リファクタ・削減チェック（ユーザー指示時） |
 | `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
+| `create-verification-skill` | 対象 PJ に `verify-<app>` を生成 |
+| `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+
 

@@ -29,7 +29,7 @@ description: タスク完了宣言の前に、変更に応じた proof を選び
 - 本コマンドは **コマンドを配置した対象リポジトリ（PJ）** 内で完結させる。
 - **proof は実際に実行する**（`Read` / diff 確認だけで終わらせない — Tier に応じてコマンド実行・値の読み取り・smoke を行う）。
 - サブエージェントや delegate の要約は **proof にしない**。`git diff`、実行出力、DB/API の実値を自分で確認する。
-- UI / CLI 検証はブラウザ MCP または手動 smoke（PJ に Playwright 等があればそれを使う）。
+- UI / CLI 検証は、対象 PJ に `.cursor/skills/verify-*/` があればその Launch / Doctor / Drive を使う。無ければブラウザ MCP または手動 smoke（Playwright 等があればそれを使う）。証明レシピ自体が無い PJ では `/create-verification-skill` を案内してよい（本コマンドの完了判定は今回の変更の proof で行う）。
 
 ## Step 0: スコープ確定
 
@@ -117,5 +117,7 @@ PJ にテストがある場合の参照（任意）:
 
 - 哲学: `forge-mode/principles/prove-it-works.md`
 - 単位ごとの積み方: `forge-mode/principles/sequence-verifiable-units.md`
+- ユーザー操作レシピの生成 / メンテ: `commands/create-verification-skill.md`、`commands/maintain-verification-skill.md`
 - forge-mode 入口: `commands/forge-mode.md`
+
 

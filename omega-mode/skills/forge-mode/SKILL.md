@@ -14,7 +14,9 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 |------|----------|
 | TypeScript / フロント実装 | `web-coding-standards` + `principles/type-system-discipline.md` |
 | 争点のある設計レビュー | `/.cursor/commands/review-orchestrator-triple-hybrid.md` |
-| UI / IDE / CLI の検証 | ブラウザ MCP または手動 verify |
+| UI / IDE / CLI の検証 | 対象 PJ に `verify-*` があればそれを Drive。無ければ `/create-verification-skill`。完了ゲートは `/verify-done`（ブラウザ MCP または手動可） |
+| 状態フルなロジック・分岐の増殖 | `principles/model-the-domain.md` |
+| verify スキルの feature map が古い | `/.cursor/commands/maintain-verification-skill.md` |
 | コード実装のサブエージェント | `subagent_type: "forge-agent"` |
 | 単ファイル調査 | `/.cursor/commands/file-brief.md` |
 | 流用・重複チェック | `/.cursor/commands/reuse-check.md` |
@@ -68,12 +70,17 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - Intent gate が `blocked` なら、以下のトリガー（how、AskQuestion 分類、architect、実装）は発火しない。
 - 非自明な変更、アーキテクチャ決定、または「本当に確かか？」→ **how** スキル。
 - 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → **先に Intent gate。** `blocked` なら質問も prototype もしない。`plan-interview` へ。gate 通過後: 何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断は Align に戻す（Ship 中に grilling しない）。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
-- コードがある → まず契約（データ形状）を名指しする（`principles/foundational-thinking.md`）。
+- コードがある → まず契約（データ形状）を名指しする（`principles/foundational-thinking.md`）。状態・ライフサイクル・散在する if なら **model-the-domain**（`principles/model-the-domain.md`）。
+- 既存設計に要件を足す → **redesign-from-first-principles**。ボルトオンしない。`principles/redesign-from-first-principles.md`。
+- デバッグ・症状の沈黙（nil-check、ガード追加）→ **fix-root-causes**。`principles/fix-root-causes.md`。
+- プロダクト / UX / スコープのトレードオフ（gate 通過後）→ **experience-first**。`principles/experience-first.md`。
+- 並行アクターが同じファイル・ブランチ・キーを書きそう → **separate-before-serializing-shared-state**。`principles/separate-before-serializing-shared-state.md`。
+- フェーズ付き rewrite / 移行 → **outcome-oriented-execution**。橋を恒久化しない。`principles/outcome-oriented-execution.md`。
 - 関数境界を越えるコード → **architect** スキル、実装前に並列設計探索。
 - 争点のある設計 → 出荷前に **`review-orchestrator-triple-hybrid` コマンド**（3モデル並列レビュー）。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
 - SKILL.md を作成または編集 → **create-skill** スキル（SKILL.md 作成用の Cursor 組み込み）。
-- UI / IDE / CLI を出荷 → ブラウザ MCP または手動 verify。バグ修正では同じ表面で先に自分で再現。
+- UI / IDE / CLI を出荷 → 対象 PJ の `verify-*` があればその Drive。無ければブラウザ MCP または手動 verify。PJ に証明レシピが無いなら `/create-verification-skill`。バグ修正では同じ表面で先に自分で再現。
 - PR を開いた後 → Cursor 組み込みの **babysit** スキル。
 - Bugbot または agentic security review がコメント → 懐疑的な姿勢。本物のバグも拾うが、非問題や nitpick も出すので、各項目をメリットで評価し、ノイズは具体的理由で却下してコードを churn させない。**babysit** 組み込みで fix / dismiss / ask をトリアージ。
 - タスク途中でスキルが壊れた → 専用 PR で修正。ブロックしない。黙って回避しない。
@@ -86,16 +93,22 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 **Core**
 
 - **Foundational Thinking.** ロジックを書く前（forge-mode 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。`principles/foundational-thinking.md`。
+- **Redesign From First Principles.** 既存設計に新しい要件を統合するとき。ボルトオンせず、最初からその要件があったかのように再設計する。`principles/redesign-from-first-principles.md`。
+- **Experience First.** Intent gate 通過後のプロダクト・UX・スコープのトレードオフ。実装都合より体験。方向が空なら `/plan-interview`。`principles/experience-first.md`。
+- **Outcome-Oriented Execution.** フェーズ境界が明示された rewrite / 移行。中間互換より最終形。日常の小さな PR では読まない。`principles/outcome-oriented-execution.md`。
 
 **Architecture**
 
+- **Model the Domain.** 状態のあるロジック、分岐や shape 仮定がファイルをまたぐとき。ドメインを構造にエンコードし、boolean と if の増殖を止める。`principles/model-the-domain.md`。
 - **Type System Discipline.** 型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。`principles/type-system-discipline.md`。
 - **Make Operations Idempotent.** クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。`principles/make-operations-idempotent.md`。
+- **Separate Before Serializing Shared State.** 並行アクターが同じミュータブルを書きそうなとき。共有を先に消す。ロックは最後。`principles/separate-before-serializing-shared-state.md`。
 
 **Verification**
 
 - **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は `principles/prove-it-works.md`（任意）。
 - **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。`principles/sequence-verifiable-units.md`。
+- **Fix Root Causes.** デバッグ中。症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない。`principles/fix-root-causes.md`。
 
 **Delegation**
 

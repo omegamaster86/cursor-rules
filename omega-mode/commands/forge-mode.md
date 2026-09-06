@@ -38,6 +38,8 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 |------|----------|
 | 変更の影響範囲 | `blast-radius` スキル |
 | モデル設定 | `.cursor/rules/forge-models.mdc` を編集（行を削除するとスキル内デフォルトにフォールバック） |
+| PJ にユーザー操作の証明レシピが無い | `/.cursor/commands/create-verification-skill.md` |
+| verify スキルの map が古い | `/.cursor/commands/maintain-verification-skill.md` |
 
 ## サブエージェント
 
@@ -53,6 +55,7 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 ## 軽い作業向けではない
 
 typo 修正・1行変更・単純な質問には本コマンドを使わない。通常の Agent チャット（`global.mdc` のみ）で足りる。
+
 
 
 

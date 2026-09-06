@@ -43,17 +43,18 @@ cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cu
 | 流用チェック | `/reuse-check` |
 | リファクタ・削減チェック | `/refactor-check` |
 | 完了前検証 | `/verify-done` |
+| PJ の動作確認レシピ | `/create-verification-skill`（初回） / `/maintain-verification-skill`（更新） |
 | PR レビュー | `/review-orchestrator-triple-hybrid` |
 | モデル設定 | `rules/forge-models.mdc` を編集 |
 
 ## モードの関係
 
 - **通常モード**: `global.mdc` が適用。タスク分析・実行結果報告フォーマットあり。
-- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則8本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
+- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則14本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。ユーザー操作の証明レシピは **`/create-verification-skill`**。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
 
 コマンド（入口）とスキル（原則・プレイブック本体）はどちらも **forge-mode** という名前で統一しています。
 
-## genai と pstack の統合方針
+## genai と pstack、mattpocock の統合方針
 
 | 衝突 | 解決 |
 |------|------|
@@ -75,5 +76,5 @@ cp /path/to/cursor-rules/genai-pstack/rules/multi-agent-task-enforcement.mdc .cu
 - `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（日本語訳済み）
 
 参考
-https://github.com/mattpocock/skills/tree/main/skills
-
+https://github.com/mattpocock/skills/tree/main/skills 
+https://github.com/cursor/plugins/tree/main/pstack 
