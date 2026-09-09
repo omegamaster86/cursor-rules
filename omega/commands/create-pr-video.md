@@ -66,6 +66,14 @@ PR本文に載せる検証用メディアは、**PR作成前に**動作確認の
 
 リポジトリ直下の `pr-artifacts/` に保存する（**gitにはコミットしない**。`gh pr create --attach` でGitHubにアップロードする）。
 
+**`pr-artifacts/` が無ければ作成する**（録画・撮影の前に必ず実行）:
+
+```bash
+mkdir -p pr-artifacts
+```
+
+`.gitignore` に `pr-artifacts/` が無ければ追記する（既にあれば何もしない）。
+
 ```
 pr-artifacts/
   verification_demo.mp4      # 動作確認の録画（推奨）
@@ -130,7 +138,8 @@ pr-artifacts/
 3. `gh` が存在するか確認: `gh --version`（**v2.99.0 以上**であること）
 4. `gh` にログイン済みか確認: `gh auth status`
 5. 既存PR有無を確認: `gh pr list --head <current-branch> --state all`
-6. 検証用メディアの確認: `pr-artifacts/` 内の `.mp4`, `.mov`, `.webm`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` を列挙し、UI変更がある場合は録画またはスクリーンショットが1件以上あること
+6. `pr-artifacts/` が無ければ `mkdir -p pr-artifacts` で作成する
+7. 検証用メディアの確認: `pr-artifacts/` 内の `.mp4`, `.mov`, `.webm`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` を列挙し、UI変更がある場合は録画またはスクリーンショットが1件以上あること
 
 # PR作成（非対話で完走させる）
 
@@ -192,7 +201,10 @@ if [ -n "$EXISTING_URL" ]; then
   exit 0
 fi
 
-# 4) 検証用メディアを収集（pr-artifacts/ があれば）
+# 4) pr-artifacts/ を用意（無ければ作成）
+mkdir -p pr-artifacts
+
+# 5) 検証用メディアを収集
 ATTACH_ARGS=()
 if [ -d pr-artifacts ]; then
   while IFS= read -r -d '' f; do
@@ -204,14 +216,14 @@ if [ -d pr-artifacts ]; then
   \) -print0 | sort -z)
 fi
 
-# 5) ここであなたがテンプレを埋めた本文を生成して BODY に入れる（例: heredoc）
+# 6) ここであなたがテンプレを埋めた本文を生成して BODY に入れる（例: heredoc）
 #    UI変更がある場合は「動作確認の録画・スクリーンショット」に ![](pr-artifacts/xxx.mp4) 等を書く
 BODY="$(cat <<'EOF'
 （ここにテンプレ本文を出力）
 EOF
 )"
 
-# 6) PR作成（非対話）。メディアがあれば --attach でGitHubにアップロード
+# 7) PR作成（非対話）。メディアがあれば --attach でGitHubにアップロード
 if [ "${#ATTACH_ARGS[@]}" -gt 0 ]; then
   printf "%s" "$BODY" | gh pr create \
     --base "$BASE_BRANCH" \
@@ -227,7 +239,7 @@ else
     --body-file -
 fi
 
-# 7) 作成後、PR URL を必ず出力（最終出力に含める）
+# 8) 作成後、PR URL を必ず出力（最終出力に含める）
 gh pr view --head "$CURRENT_BRANCH" --json url --jq '.url'
 ```
 
