@@ -1,42 +1,70 @@
----
-name: create-pr-video
-model: inherit
-description: 検証用録画・スクリーンショットを用意し、gh pr create --attach で PR 本文に埋め込んで PR を作成する。UI 変更の完了ゲート兼 PR 作成コマンド。
----
+# 依頼内容
 
-# PR 作成（検証録画付き）
+- 今作業しているブランチのPRを作成します（**本文込みで自動作成**）。
+- **検証用の録画またはスクリーンショットを PR 本文に添付**して作成する（`create-pr` の動画版）。
+- プッシュ済みなので、リモートの履歴から情報を取得してください。
+- 変更履歴や変更コードを確認し、下記のテンプレートを埋めてください。
+- **最後に `gh pr create` を実行してPRを作成**してください（対話プロンプトは禁止）。
+- PR作成済みの場合は **既存PRのURLを出力**してください（重複PRを作らない）。
+- 作成できたら **PRのURLを出力**してください（最終出力に必ず含める）。
 
-**動作確認の録画またはスクリーンショットを PR に載せて** PR を作成する。
+## 前提・制約
 
-- 本文の生成・`gh pr create` の実行手順は `現在使用中のルール/.cursor/commands/create-pr.md`（または対象 PJ の `.cursor/commands/create-pr.md`）を正本とする。
-- 本コマンドは **検証メディアの作成 → `pr-artifacts/` への保存 → `--attach` でアップロード** の追加要件を定義する。
-- **直前に `/verify-done` を PASS してから** 実行する（`commands/verify-done.md`）。UI 変更がある場合、verify-done の proof に録画作成を含めてもよい。
+- 依頼範囲外の実装や、UI/UX（レイアウト、色、フォント、間隔など）の変更はしない。
+- `gh` 未ログインの場合は、権限なしで実行してください。
+- 「プッシュ済み」が前提。未push（upstream未設定）なら、pushが必要と明示して終了する（勝手にpushしない）。
 
-## いつ使う
-
-| 入口 | タイミング |
-|------|------------|
-| `/create-pr-video` | UI 変更ありで、レビュアーに動作を見せたい PR を開くとき |
-| `forge-mode` | `opening-a-pr.md` の代わりに検証録画付き PR が必要なとき |
-| `create-pr` の前段 | 録画が無い状態で create-pr が中断されたとき |
-
-UI 変更がない PR は通常の `create-pr` で足りる（録画不要）。
-
-## 実行環境（重要）
-
-- **対象 PJ 内**で完結する。proof は実際に実行・録画する（説明だけで終わらせない）。
-- `pr-artifacts/` のメディアは **git にコミットしない**（`.gitignore` に追加）。
-- `gh` **v2.99.0 以上**（`--attach` 必須）。`gh auth status` が NG なら権限なしで実行。
+# テンプレート（この形でPR本文を生成）
 
 ---
 
-# 検証用録画・スクリーンショットの作成（PR 作成前）
+## やったこと
 
-PR 本文に載せる検証用メディアは、**PR 作成前に**動作確認の最中で用意する。`pr-artifacts/` が空で UI 変更がある場合は、先に録画・撮影してから PR を作成する。
+- このプルリクで何をしたのか？
+
+## やらないこと
+
+- このプルリクでやらないことは何か？（あれば。無いなら「無し」でOK）（やらない場合は、いつやるのかを明記する。）
+
+## 課題
+
+- 悩んでいること
+- とくにレビューしてほしいところ
+
+## できるようになること（ユーザ目線）
+
+- 何ができるようになるのか？（あれば。無いなら「無し」でOK）
+
+## できなくなること（ユーザ目線）
+
+- 何ができなくなるのか？（あれば。無いなら「無し」でOK）
+
+## 動作確認
+
+- どのような動作確認を行ったのか？　結果はどうか？
+
+## 本番反映手順
+
+- 本番反映時の手順を記載してください。（.env追記、php artisan migrate、composer installなど）
+
+## その他
+
+- レビュワーへの参考情報（実装上の懸念点や注意点などあれば記載）
+
+## 動作確認の録画・スクリーンショット
+
+- （UI変更がある場合は必須。動画またはスクリーンショットを添付する）
+- 録画: `![](pr-artifacts/verification_demo.mp4)` のように本文に参照を書き、`--attach` でアップロードする（下記手順）
+
+---
+
+# 検証用録画・スクリーンショットの作成（PR作成前に行う）
+
+PR本文に載せる検証用メディアは、**PR作成前に**動作確認の最中で用意する。PR作成コマンド実行時点で `pr-artifacts/` にファイルが無い場合は、先に録画・撮影を行ってからPRを作成する。
 
 ## 保存場所
 
-リポジトリ直下の `pr-artifacts/`:
+リポジトリ直下の `pr-artifacts/` に保存する（**gitにはコミットしない**。`gh pr create --attach` でGitHubにアップロードする）。
 
 ```
 pr-artifacts/
@@ -45,44 +73,40 @@ pr-artifacts/
   after_login.png
 ```
 
-ファイル名は `snake_case` で内容が分かる名前（例: `verification_profile_upload.mp4`）。
+ファイル名は `snake_case` で内容が分かる名前にする（例: `verification_profile_upload.mp4`）。
 
 ## 録画の作成方法
 
-### UI 変更がある場合（推奨: 画面録画）
+### UI変更がある場合（推奨: 画面録画）
 
 1. 動作確認用にアプリを起動し、変更箇所の画面を開く
-2. **録画開始** → 変更が動くところを実際に操作 → **録画終了**
+2. **録画開始** → 変更が動くところを実際に操作して見せる → **録画終了**
 3. 保存先: `pr-artifacts/verification_<機能名>.mp4`
 
 **Cursor Cloud Agent / computer use 利用時:**
 
-1. `computerUse` サブエージェントで UI を操作し、検証対象の画面を開く
+1. `computerUse` サブエージェントでUIを操作し、検証対象の画面を開く
 2. `RecordScreen` で `START_RECORDING` → 操作・検証 → `SAVE_RECORDING`（`save_as_filename` で `verification_<機能名>` など）
-3. 保存された録画を `pr-artifacts/` にコピー（Cloud Agent の artifacts ディレクトリから）
+3. 保存された録画を `pr-artifacts/` にコピーする（Cloud Agent の artifacts ディレクトリから）
 
 **ローカル（Mac）で手動録画する場合:**
 
 - QuickTime Player: ファイル → 新規画面録画
 - または `screencapture` / OBS 等で `.mp4` / `.mov` を保存
 
-**PJ に verify スキルがある場合:**
+### UI変更がない場合
 
-- `.cursor/skills/verify-*/` の Launch / Doctor / Drive で操作し、その最中に録画する（`commands/create-verification-skill.md`）
-
-### UI 変更がない場合
-
-- 「動作確認」セクションにテキスト（コマンド出力・ログ・テスト結果）のみ。録画不要。通常の `create-pr` を使う。
+- コマンド出力・ログ・テスト結果を「動作確認」セクションにテキストで記載すればよい（録画は不要）
 
 ### スクリーンショットのみで十分な場合
 
-- 変更前後の 1〜2 枚に絞る（冗長な枚数は避ける）
+- 変更前後の1〜2枚に絞る（冗長な枚数は避ける）
 
 ## 録画の内容（良い例 / 悪い例）
 
 **良い録画:**
 
-- 変更した機能が end-to-end で動くところだけ（30 秒〜2 分程度）
+- 変更した機能が end-to-end で動くところだけ（30秒〜2分程度）
 - 操作の結果（成功・表示変化）がはっきり見える
 
 **悪い録画（載せない）:**
@@ -93,14 +117,39 @@ pr-artifacts/
 
 ## 技術要件
 
+- `gh` **v2.99.0 以上**（`--attach` フラグが必要）
 - 対応形式: 画像（PNG, JPEG, GIF, WebP, SVG）、動画（MP4, MOV, WebM）
-- サイズ上限: 画像 10MB、動画は Free 10MB / 有料プラン 100MB（GitHub Web UI と同じ）
+- サイズ上限: 画像 10MB、動画は Free 10MB / 有料プラン 100MB（GitHubのWeb UIと同じ）
 
 ---
 
-# PR 本文への埋め込みと作成
+# 実行要件（必ず満たす）
 
-`create-pr.md` のテンプレートを使い、**「動作確認の録画・スクリーンショット」** セクションにローカルパス参照を書く。`--attach` がアップロード URL に置換する。
+1. 現在ブランチ名を取得: `git branch --show-current`
+2. upstream が設定済みか確認: `git rev-parse --abbrev-ref --symbolic-full-name @{u}`
+3. `gh` が存在するか確認: `gh --version`（**v2.99.0 以上**であること）
+4. `gh` にログイン済みか確認: `gh auth status`
+5. 既存PR有無を確認: `gh pr list --head <current-branch> --state all`
+6. 検証用メディアの確認: `pr-artifacts/` 内の `.mp4`, `.mov`, `.webm`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` を列挙し、UI変更がある場合は録画またはスクリーンショットが1件以上あること
+
+# PR作成（非対話で完走させる）
+
+以下の方針で **実際にコマンドを実行**してPRを作成すること：
+
+## baseブランチの決め方
+
+- 原則 `develop`
+- `origin/develop` が無い場合は `origin` のデフォルトブランチ（`git remote show origin` の `HEAD branch`）を使う
+
+## title
+
+- タイトルは原則「現在ブランチ名」（例: `feature/create/login`）
+
+## body
+
+- 上のテンプレを埋めたMarkdown本文を生成して、それを `gh pr create --body-file -` で stdin から渡す
+- 本文は必ず「取得した差分」を根拠に具体的に埋める（例: `git log origin/<base>..HEAD` / `git diff origin/<base>...HEAD`）
+- UI変更がある場合、「動作確認の録画・スクリーンショット」セクションにローカルパス参照を書く（`--attach` がアップロードURLに置換する）
 
 ### メディアの本文への埋め込み方
 
@@ -110,31 +159,40 @@ pr-artifacts/
 ![](pr-artifacts/verification_demo.mp4)
 ```
 
-**画像**（alt テキスト付き）:
+**画像**（altテキスト付き）:
 
 ```markdown
 ![ログイン画面の変更後](pr-artifacts/after_login.png)
 ```
 
-### attach ルール
+## attach（検証用メディアの添付）
 
 - `pr-artifacts/` にファイルがある場合、本文で参照しているファイルと同じパスを `--attach` で渡す
-- 本文に参照が無いファイルは本文末尾に自動追記される（参照を書く方が望ましい）
+- 本文に参照が無いファイルは、本文末尾に自動追記される（参照を書く方が望ましい）
 - 複数ファイルは `--attach` を繰り返す
+- `pr-artifacts/` が空、またはUI変更がない場合は `--attach` を付けない
 
-## 実行要件（必ず満たす）
-
-1. `/verify-done` が **PASS**（UI 変更時）
-2. `gh --version` が **v2.99.0 以上**
-3. `pr-artifacts/` 内のメディアを列挙し、UI 変更がある場合は 1 件以上あること
-4. 以降は `create-pr.md` の実行要件（ブランチ、upstream、`gh auth status`、既存 PR 確認）に従う
-
-## 実行例（`gh pr create` 部分）
-
-`create-pr.md` のシェル例に以下が含まれること（要約）:
+## 実行例（この形で実行する）
 
 ```bash
-# 検証用メディアを収集
+# 1) base判定
+BASE_BRANCH="develop"
+if ! git show-ref --verify --quiet "refs/remotes/origin/${BASE_BRANCH}"; then
+  BASE_BRANCH="$(git remote show origin | sed -n 's/.*HEAD branch: //p')"
+fi
+
+# 2) 現在ブランチとタイトル
+CURRENT_BRANCH="$(git branch --show-current)"
+TITLE="${CURRENT_BRANCH}"
+
+# 3) 既存PRがあるならURLを出して終了（重複PRを作らない）
+EXISTING_URL="$(gh pr list --head "$CURRENT_BRANCH" --state all --json url --jq '.[0].url' 2>/dev/null || true)"
+if [ -n "$EXISTING_URL" ]; then
+  echo "$EXISTING_URL"
+  exit 0
+fi
+
+# 4) 検証用メディアを収集（pr-artifacts/ があれば）
 ATTACH_ARGS=()
 if [ -d pr-artifacts ]; then
   while IFS= read -r -d '' f; do
@@ -146,7 +204,14 @@ if [ -d pr-artifacts ]; then
   \) -print0 | sort -z)
 fi
 
-# PR 作成（メディアがあれば --attach）
+# 5) ここであなたがテンプレを埋めた本文を生成して BODY に入れる（例: heredoc）
+#    UI変更がある場合は「動作確認の録画・スクリーンショット」に ![](pr-artifacts/xxx.mp4) 等を書く
+BODY="$(cat <<'EOF'
+（ここにテンプレ本文を出力）
+EOF
+)"
+
+# 6) PR作成（非対話）。メディアがあれば --attach でGitHubにアップロード
 if [ "${#ATTACH_ARGS[@]}" -gt 0 ]; then
   printf "%s" "$BODY" | gh pr create \
     --base "$BASE_BRANCH" \
@@ -155,23 +220,22 @@ if [ "${#ATTACH_ARGS[@]}" -gt 0 ]; then
     --body-file - \
     "${ATTACH_ARGS[@]}"
 else
-  # UI 変更があるのにここに来たら中断（録画未作成）
-  echo "ERROR: pr-artifacts/ is empty but UI changes require verification media." >&2
-  exit 1
+  printf "%s" "$BODY" | gh pr create \
+    --base "$BASE_BRANCH" \
+    --head "$CURRENT_BRANCH" \
+    --title "$TITLE" \
+    --body-file -
 fi
-```
 
-完全な base 判定・既存 PR チェック・本文生成は **`create-pr.md` の実行例をそのまま使う**。
+# 7) 作成後、PR URL を必ず出力（最終出力に含める）
+gh pr view --head "$CURRENT_BRANCH" --json url --jq '.url'
+```
 
 ## 注意
 
-- UI 変更があるのに `pr-artifacts/` が空の場合は **PR 作成を中断**し、先に検証録画を作成してから再実行する。
-- 既存 PR に後からメディアを追加: `gh pr edit <番号> --body-file <file> --attach pr-artifacts/xxx.mp4`
-- 録画はリポジトリにコミットしない（`pr-artifacts/` を `.gitignore` に追加）。
-
-## 関連
-
-- PR 本文テンプレ・完全な `gh pr create` 手順: `現在使用中のルール/.cursor/commands/create-pr.md`
-- 完了前検証: `commands/verify-done.md`
-- forge-mode PR フロー: `skills/forge-mode/playbooks/opening-a-pr.md`
-- ユーザー操作レシピ: `commands/create-verification-skill.md`
+- `gh pr create` の対話プロンプトが出ないように、必ず `--title` と `--body-file -` を指定すること。
+- `gh auth status` がNGなら、権限無しで実行すること。
+- `gh` がネットワーク/TLS等で失敗する場合は、実行環境の制約の可能性があるため、**同じコマンドを権限制限なしで再実行して切り分け**すること（勝手な設定変更はしない）。
+- `pr-artifacts/` は `.gitignore` に追加すること（動画はリポジトリにコミットしない）。
+- UI変更があるのに `pr-artifacts/` が空の場合は、PR作成を中断し、先に検証録画を作成してから再実行すること。
+- 既存PRに後からメディアを追加する場合: `gh pr edit <番号> --body-file <file> --attach pr-artifacts/xxx.mp4`
