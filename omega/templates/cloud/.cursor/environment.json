@@ -1,0 +1,4 @@
+{
+  "user": "ubuntu",
+  "install": "sh .cursor/install-omega.sh"
+}

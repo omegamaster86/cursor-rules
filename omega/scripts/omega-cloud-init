@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+TEMPLATE_DIR="$(cd "$SCRIPT_DIR/../templates/cloud/.cursor" && pwd)"
+
+usage() {
+  echo "usage: omega-cloud-init /path/to/project" >&2
+  echo "       copies Cloud Agent templates (.cursor/environment.json + install-omega.sh)" >&2
+}
+
+if [[ $# -lt 1 ]]; then
+  usage
+  exit 1
+fi
+
+PJ="$(cd "$1" && pwd)"
+TARGET="$PJ/.cursor"
+
+mkdir -p "$TARGET"
+
+copy_if_missing() {
+  local name="$1"
+  if [[ -e "$TARGET/$name" && ! -f "$TARGET/$name" ]]; then
+    echo "skip (exists): $TARGET/$name" >&2
+    return 0
+  fi
+  if [[ -f "$TARGET/$name" ]]; then
+    echo "skip (exists): $TARGET/$name" >&2
+    return 0
+  fi
+  cp "$TEMPLATE_DIR/$name" "$TARGET/$name"
+  echo "copied: $TARGET/$name"
+}
+
+copy_if_missing environment.json
+copy_if_missing install-omega.sh
+chmod +x "$TARGET/install-omega.sh"
+
+echo "cloud templates installed under $TARGET"
+echo "commit .cursor/environment.json and .cursor/install-omega.sh, then rebuild the Cloud Agent environment."
