@@ -1,17 +1,31 @@
 ---
 name: engineer-retrospective
 description: >-
-  daily-chat-digest が出力した daily-chat.md を読み、エンジニアとしての聞き方・
-  アーキテクト視点・指示の質を批評し、
+  指定日のチャット digest（daily-chat-digest）を自動実行したうえで、
+  エンジニアとしての聞き方・アーキテクト視点・指示の質を批評し、
   .cursor/chat-digest/<YYYY-MM-DD>/engineer-retrospective.md に書く。
   「今日の振り返り」「エンジニアとして批評」「engineer-retrospective」
-  「指示の質を見て」など明示依頼時に使用。digest が無ければ daily-chat-digest を先に実行。
+  「指示の質を見て」など明示依頼時に使用。1 回の依頼で digest → 批評まで完結。
+  daily-chat.md が無いときは同一ターン内で daily-chat-digest を先に実行する。
 disable-model-invocation: true
 ---
 
 # Engineer Retrospective
 
+**1 回の依頼で digest → 批評まで完結する。** `daily-chat.md` が無ければ **同一ターン内** で **daily-chat-digest** を実行してから、続けて批評を書く。ユーザーに digest の別起動を求めない。
+
 **`daily-chat.md` を材料に、その日のエージェントへの聞き方・指示を批評し、翌日試す改善を 1 つ残す。** 出力は同じ日付フォルダの `engineer-retrospective.md`。
+
+## 起動モデル（重要）
+
+| ユーザーの依頼 | エージェントの動き |
+|----------------|-------------------|
+| 「今日の振り返り」など | **このスキルだけ** 起動。2 スキル別々に叩く必要はない |
+| `daily-chat.md` **無し** | **daily-chat-digest** の手順を実行 → `daily-chat.md` Write → **止まらず** 本スキルの批評へ |
+| `daily-chat.md` **有り** | Read して批評のみ（digest は再実行しない） |
+| 「digest から作り直して振り返り」 | **daily-chat-digest** で上書き → 続けて批評 |
+
+**plan-interview → grilling** と同様、下流スキルが上流を **同一ターンで** 委譲実行する。digest 完了後にユーザーへ「次は retrospective を」と返して終了しない。
 
 ## いつ使う
 
@@ -26,14 +40,15 @@ disable-model-invocation: true
 |------|------|
 | 入力 | `.cursor/chat-digest/<YYYY-MM-DD>/daily-chat.md` |
 | 日付 | 引数なし = **今日（日本時間 `Asia/Tokyo`）** |
-| 依存 | `daily-chat.md` が **無ければ先に daily-chat-digest スキルを実行** してから本スキルを続行 |
+| 依存 | `daily-chat.md` が無ければ **同一ターン内で daily-chat-digest を実行** し、Write 後に **中断せず** 本スキルを続行 |
 | 出力 | `.cursor/chat-digest/<YYYY-MM-DD>/engineer-retrospective.md`（**上書き**） |
 
 ## 手順
 
 1. **日付と入力ファイルを確定**
    - パス: `.cursor/chat-digest/<YYYY-MM-DD>/daily-chat.md`
-   - 存在しなければ **daily-chat-digest** を実行し、生成を待つ
+   - **無ければ:** **daily-chat-digest** スキル全文に従い digest を生成（Write まで）。**ユーザーへの中間報告で止めない**
+   - **有れば:** そのまま Read へ（digest 再実行はしない。作り直し依頼時のみ digest を再実行）
 
 2. **`daily-chat.md` を Read**
    - ユーザー発言原文とチャット文脈（エージェント要約）を把握
@@ -138,7 +153,8 @@ Generated: YYYY-MM-DDTHH:mm:ss+09:00
 
 ## やらないこと
 
-- `daily-chat.md` の再生成（必要なら **daily-chat-digest** に委譲）
+- `daily-chat.md` を本スキル内で独自ロジックで書く（digest が必要なら **daily-chat-digest** 手順に委譲）
+- digest 生成後に **終了して** ユーザーへ retrospective の別起動を促す
 - コード変更・PR 作成
 - スコアリング（1〜5 点）— 定性批評のみ
 - `.cursor/study-log/` への自動転記（ユーザーが別途依頼した場合のみ study-log）
@@ -147,6 +163,7 @@ Generated: YYYY-MM-DDTHH:mm:ss+09:00
 
 ```markdown
 `.cursor/chat-digest/YYYY-MM-DD/engineer-retrospective.md` に書きました。
+（daily-chat.md が無かった場合は、同一実行内で digest も生成済み）
 
 **明日試す 1 つ:** （1 文）
 

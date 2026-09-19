@@ -14,8 +14,8 @@ disable-model-invocation: true
 
 ## いつ使う
 
-- 「今日のチャットを出力」「daily-chat-digest」「9/19 の digest」などと明示されたとき
-- **engineer-retrospective** の入力を用意するとき（retrospective 側から委譲されてもよい）
+- 「今日のチャットを出力」「daily-chat-digest」「9/19 の digest」などと **digest だけ** 明示されたとき
+- **engineer-retrospective** から同一ターン内で委譲されたとき（単独完了報告で止めず、呼び出し元に返す）
 - 作業再開用の短いブリーフ → **recall**
 - 特定トピックの学習記事 → **study-log**
 - セッション handoff → **session-log**
@@ -61,8 +61,8 @@ disable-model-invocation: true
    - 全体は読みやすさ優先。極端に長い場合はチャット単位で要約を強める
 
 5. **完了報告**
-   - 書き込んだパスを返す
-   - 対象日・チャット数・ユーザーメッセージ数を 1 行で示す
+   - **単独起動時:** 書き込んだパスと対象日・チャット数・ユーザーメッセージ数を返す
+   - **engineer-retrospective から委譲時:** 完了報告は省略し、呼び出し元の批評手順へ **そのまま続行**（このスキル単体として終了しない）
 
 ## ファイルテンプレート
 
@@ -112,7 +112,7 @@ User messages: M
 - `.cursor/study-log/` / `.cursor/session-log/` への書き込み
 - git commit（`.cursor/chat-digest/` はローカル専用。`.gitignore` 推奨）
 
-## 返答契約
+## 返答契約（単独起動時のみ）
 
 ```markdown
 `.cursor/chat-digest/YYYY-MM-DD/daily-chat.md` に書きました。
@@ -120,5 +120,5 @@ User messages: M
 - 対象日: YYYY-MM-DD (JST)
 - チャット: N 件 / ユーザーメッセージ: M 件
 
-振り返り → `@.cursor/chat-digest/YYYY-MM-DD/daily-chat.md` で **engineer-retrospective** を実行
+批評まで一括 → **engineer-retrospective**（「今日の振り返り」で digest も自動生成）
 ```
