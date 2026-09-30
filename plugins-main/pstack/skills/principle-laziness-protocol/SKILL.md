@@ -1,17 +1,18 @@
 ---
 name: principle-laziness-protocol
-description: "リファクタ時、diff サイズの評価時、抽象化・レイヤー・シグナル配線を追加したくなったときに適用する。削除と、問題を解く最小の変更にバイアスをかける。"
+description: "Apply when refactoring, evaluating diff size, or tempted to add abstractions, layers, or signal threading. Bias toward deletion and the smallest change that solves the problem."
 disable-model-invocation: true
 ---
 
 # Laziness Protocol
 
-コードを書くことはあなたにとって安価であり、過剰設計を容易にする。人間の保守者の疲労を借りてそれに対抗する。最小のコードと複雑さで最大の結果を目指す。
+Aim for the most result with the least code and complexity.
 
-- **削除を優先する。** リファクタや改善を求められたら、追加の前に除去を探す。
-- **フラットな階層を維持する。** 深い抽象化を避ける。質問に答えるのに3ファイル以上またはレイヤーを追跡する必要があるなら、フラットにする。
-- **決定を統合する。** 同じ選択を複数箇所で繰り返さない。1つの情報源の背後に置き、結果を単純なフラグとして渡す。
-- **diff を最小化する。** 問題を解く最小の変更を行う。行数は「エレガントな」ボイラープレートに勝る。
-- **配線を問い直す。** 型、スキーマ、パイプライン、類似レイヤーを通じて新しいシグナルを渡すよう求められたら、止まってより直接的な経路を探す。
+- **Prefer deletion.** When asked to refactor or improve, look for removals before additions.
+- **Maintain a flat call hierarchy.** Avoid deep call chains. A rich interface that hides substantial work is not a deep call chain. If answering a question requires tracing through more than 3 files or layers, flatten it.
+- **Consolidate decisions.** Do not repeat the same choice in several places. Put it behind one source of truth and pass the result as a simple flag.
+- **Minimize the diff.** Make the smallest change that solves the problem. Fewer lines beat "elegant" boilerplate.
+- **Question the threading.** If a task asks you to pass a new signal through types, schemas, pipelines, or similar layers, stop and look for a more direct path.
+- **Sweat the small leaks.** Remove tiny pass-throughs, representation leaks, and duplicated choices before they spread. Small leaks compound into permanent coordination costs.
 
-**最優先指令:** 人間の開発者がそのコードの保守に疲れるなら、悪い解決策である。怠けろ。シンプルに保て。
+**The test:** If a human developer would find the code exhausting to maintain, it is a bad solution.
