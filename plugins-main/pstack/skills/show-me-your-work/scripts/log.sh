@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# show-me-your-work の意思決定ログ（TSV）に整形済みの行を追記する。
-# 使い方: log.sh <logfile> <phase> <decision> <why> <evidence> <result>
+# Append a well-formed row to a show-me-your-work decision log (TSV).
+# Usage: log.sh <logfile> <phase> <decision> <why> <evidence> <result>
 set -euo pipefail
 
 if [ "$#" -ne 6 ]; then
@@ -16,16 +16,19 @@ if [ -n "$logdir" ] && [ "$logdir" != "." ] && [ ! -d "$logdir" ]; then
 	mkdir -p "$logdir"
 fi
 
-if [ ! -f "$logfile" ]; then
-	printf 'ts\tphase\tdecision\twhy\tevidence\tresult\n' > "$logfile"
+# Use `>>` here, never `>`. A network mount can fail this test for a log
+# that exists. Then the cost is one stray header line, not the rows.
+if [ ! -s "$logfile" ]; then
+	printf 'ts\tphase\tdecision\twhy\tevidence\tresult\n' >> "$logfile"
 fi
 
 ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-# タブ・改行・CR を除去してセルを1行に保ち、スプレッドシートが数式として
-# 解釈する先頭文字（=, +, -, @）のセルには先頭にシングルクォートを付ける。
-# このスキルはログをスプレッドシートで読むことを想定しているため、
-# 攻撃者制御の evidence（PR タイトル、ファイル名、生成テキスト）が
-# レビュアーがファイルを開いたときに数式実行にならないようにする。
+# Strip tabs/newlines/CR so cells stay on one line, and prefix any cell
+# whose first char a spreadsheet would parse as a formula (=, +, -, @)
+# with a single quote. The skill expects this log to be read in
+# spreadsheets, so attacker-controlled evidence (PR titles, filenames,
+# generated text) must not become formula execution when a reviewer
+# opens the file.
 clean() {
 	local v
 	v=$(printf '%s' "$1" | tr '\t\n\r' '   ')
