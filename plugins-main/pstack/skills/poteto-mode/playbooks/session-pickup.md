@@ -1,13 +1,11 @@
 ### Session pickup
 
-**resume point を所有する。以前の trail を読み、やり直さない。** 「take over this」「resume this conversation」「continue from <transcript path>」「you're taking over」「pick up where X left off」、cloud-agent URL handoff、続行すべき push 済みブランチ向け。
+**You own the resume point. Read the prior trail, don't redo it.**
 
-pickup は継承。以前のエージェントがコード読み、repro 実行、設計選択のコストをすでに払った。やり直すと bias check を失い context を burn。再導出の衝動に抗い、読む。
+1. Locate the prior trail. A local transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path. Do not glob across `~/.cursor/projects/*/`, that crosses workspace boundaries and reads private chats from unrelated projects), a cloud-agent URL, or a pushed branch. Read the metadata overview and last messages first, then scan back for the decision points. Parse a long transcript in a subagent and keep the reduced timeline in the main thread (the **principle-guard-the-context-window** skill).
+2. Reconstruct operational state. The branch and worktree, what already landed (`git log`, `git diff` against the base), the open todos, the decisions made. The prior trail is authoritative input. Resist the bias to re-derive it.
+3. Diff done vs pending. Compare what shipped against what was planned, name the resume point, do not re-run the prior repro or redo completed work. A "let me verify from scratch" pass means you're treating the trail as untrustworthy when it's authoritative.
+4. Route the remaining work to the matching playbook and pick the verdict: continue the execution, ship a finished recommendation, ratify or override a prior conclusion, or postmortem a failed run. The pickup playbook ends here. The routed playbook owns the rest.
+5. Verify the inherited claims against the original goal on the real artifact (the **principle-prove-it-works** skill). A passing prior self-report is not the proof.
 
-1. 以前の trail を特定。アクティブ workspace の `agent-transcripts/` 下のローカルトランスクリプト（system prompt が path を名指し。`~/.cursor/projects/*/` を glob しない。workspace 境界を越え unrelated プロジェクトの private chat を読む）、cloud-agent URL、または push 済みブランチ。metadata overview と最後のメッセージを先に読み、decision point まで scan back。長い transcript は subagent で parse し、reduced timeline をメインスレッドに保持（**principle-guard-the-context-window** スキル）。
-2. operational state を再構築。branch と worktree、すでに land したもの（`git log`、base 対 `git diff`）、open todos、下された決定。以前の trail が authoritative input。再導出 bias に抗う。
-3. done vs pending を diff。ship 済みと plan を比較、resume point を名指し、以前の repro を再実行せず完了作業をやり直さない。
-4. 残作業を matching playbook に route し verdict を選ぶ：execution 続行、完了 recommendation を ship、以前の結論を ratify または override、失敗 run の postmortem。pickup playbook はここで終わり。route 先 playbook が残りを所有。
-5. 実アーティファクト上で inherited claims を original goal に対して verify（**principle-prove-it-works** スキル）。pass した以前の self-report は proof ではない。
-
-**Reply:** 以前のエージェントが止まった場所、inherit したもの vs やり直したもの（ ideally やり直しなし）、resume point、outcome。
+**Reply:** where the prior agent stopped, what you inherited vs redid (ideally nothing redone), the resume point, and the outcome.

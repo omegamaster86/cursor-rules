@@ -1,27 +1,25 @@
 ### Eval
 
-**experiment design を所有する。Plan、blind、run、synthesize。**
+**You own the experiment design. Plan, blind, run, synthesize.**
 
-Eval は promote 前に change が agent behavior に与える影響を test：新 skill variant、structural change、prompt tweak。失敗モードは observer effect。eval されていると知る agent は differently behave。candidate は blind で run 必須。
+**Non-negotiables for blinding:**
 
-**blinding の non-negotiables：**
-
-- candidate が見る directory、file、prompt に `eval`、`test`、`judge`、`experiment`、`rubric`、`score`、`compare`、`benchmark`、`candidate`、`arena` を入れない。
-- candidate prompt は organic user request に見える。meta ではなく goal を述べる。「build me a small todo cli」であって「show me how you follow the principles chain」ではない。
-- chain-eliciting cue なし。適用した skills、principles、files の list を candidate に求めない。meta-prompt が citation behavior を inflate。design notes を一般に求め、self-report ではなく code shape から chain-following を grade。
-- directory と slug name を sanitize。`candidate-1` や `agent-a` ではなく user が pick しうる project-shaped name。
-- 他 candidate が存在することを candidate に言わない。
-- judge は judging していると知ってよいが sanitized label の output のみ。model name 禁止。
-- 2 variant compare：1 judge が1 scale で both sets を single pass score。どちら set か blind。異なる prompt の2 judge run は compare 不可。calibration drift。
+- No `eval`, `test`, `judge`, `experiment`, `rubric`, `score`, `compare`, `benchmark`, `candidate`, or `arena` in any directory, file, or prompt the candidate sees.
+- The candidate prompt looks like an organic user request. State the goal, not the meta.
+- No chain-eliciting cues. Don't ask the candidate to list which skills, principles, or files they applied. Ask for design notes generally and grade chain-following from code shape, not self-report.
+- Sanitize directory and slug names. Use project-shaped names a user might pick.
+- Don't tell the candidate other candidates exist.
+- The judge can know it's judging but sees outputs by sanitized label only, never by model name.
+- Comparing two variants: one judge scores both sets in a single pass on one scale, blind to which set each came from.
 
 **Steps:**
 
-1. **Frame.** test 中 variant と success behavior を述べる。judge のみ rubric（3-6 concrete criteria）を書く。candidate から hold back。
-2. **Set up sanitized environments.** variant 配置済み per-candidate working dir。organic task が持つ context を plant：project skeleton、candidate が naturally read する skills。
-3. **Author one organic prompt.** user が type する内容。measure 対象の leakage なし。
-4. **arena** スキル Phase B に従い N parallel candidate を different models で spawn。各 sanitized dir で work。各に same prompt。
-5. **arena** スキル Phase C に従い different model family で1 blinded judge spawn。judge は sanitized label と rubric の output を見る。model name 禁止。
-6. **transcript から chain を verify。self-report ではない。** 各 candidate の local transcript を active workspace の `agent-transcripts/` 下で read（system prompt が path を名指し）。`~/.cursor/projects/*/` を glob しない。workspace 境界を越え unrelated プロジェクトの private chat を読む。各 candidate が actually open した file を見る。principle cite は leaf skill read ではない。read も apply ではない。actually read した files ＋ code shape から chain-following を grade。candidate 自身の claim から never。
-7. **すべての candidate output を end to end で自分で read。** judge verdict と compare。disagreement は model bias または rubric ambiguous。synthesize。
+1. **Frame.** State what variant is under test and what behavior counts as success. Write the rubric (3-6 concrete criteria) for the judge only. Hold it back from candidates.
+2. **Set up sanitized environments.** Per-candidate working dir with the variant in place. Plant any context an organic task would have: a project skeleton, the skills the candidate would naturally read.
+3. **Author one organic prompt.** What a user would type. No leakage of what's being measured.
+4. **Spawn N parallel candidates** on different models per the **arena** skill's Phase B. Each works in its own sanitized dir. Same prompt to each.
+5. **Spawn one blinded judge** on a different model family per the **arena** skill's Phase C. Judge sees outputs by sanitized label and the rubric, never a model name.
+6. **Verify the chain from transcripts, not self-report.** Read each candidate's local transcript under the active workspace's `agent-transcripts/` directory (the system prompt names this path). Do not glob across `~/.cursor/projects/*/`. That crosses workspace boundaries and reads private chats from unrelated projects. Look at which files each candidate actually opened. Grade chain-following from the files it really read plus the shape of the code, never from the candidate's own claims.
+7. **Read every candidate output yourself** end to end. Compare to the judge's verdict. Disagreement means a model is biased or the rubric is ambiguous. Synthesize.
 
-**Reply:** test 中 variant、rubric、per-candidate notes、judge verdict、synthesis、variant promote 可否 recommendation。
+**Reply:** variant under test, rubric, per-candidate notes, judge's verdict, your synthesis, and a recommendation for whether to promote the variant.

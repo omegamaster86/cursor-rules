@@ -1,21 +1,21 @@
 ### Hillclimb
 
-**metric と experiment integrity を所有する。Supervise と review。attempt は delegate。** 1つの measurable なものを target に対して sustained iterative improvement（「hillclimb on X」「make startup 50% faster」「systematically drive down <metric>」「keep trying until <metric> improves by N%」）。1回限り fix は Bug fix または Perf issue。これは loop。
+**You own the metric and the experiment's integrity. Supervise and review. Delegate the attempts.** For sustained, iterative improvement of one measurable thing against a target. A one-off fix is Bug fix or Perf issue. This is the loop.
 
-Core discipline：1 change、1 measurement、keep または revert。untested change を stack しない。code inspection から win を claim しない。data が決める（**prove-it-works** 原則スキル）。
+Core discipline: one change, one measurement, keep or revert. Never stack untested changes, and never claim a win from code inspection (the **prove-it-works** principle skill).
 
-1. 最初の attempt 前に metric と stop predicate を fix。1 number、better と count する direction、target と attempt floor を pair する checkable predicate（例「baseline より少なくとも50% better かつ少なくとも10 iterations」がこの shape）。ユーザー number があれば使用。なければ agree。vague goal は spin。predicate が stop を可能にする。
-2. measurement harness を build し freeze（**build-the-lever** 原則スキル）。metric を emit する1 repeatable command。noise を clear するだけ sample（single run ではなく N の median）。ruler なので baseline を produce したら immutable。mid-run 変更は以前の number をすべて invalidate。change 前に baseline metric と regression gate（pass し続ける tests）の green run を record。
-3. **show-me-your-work** スキルで decision log を open。`decision.tsv`、attempt ごとに1 row：id、hypothesis、change、before、after、delta、tests、verdict（kept または reverted）、note。run の memory。各 attempt 前に read し search が accumulate し circle しない。tree 外（gitignored）に keep し revert を survive。
-4. guess 前に real architecture で hypothesis を ground。**how** スキルを target に1回 up front。各 attempt が specific mechanism を名指す（「first paint を block するので boot path から X を defer」）。「something を memoize してみる」ではない。
-5. Loop、iteration ごとに1 hypothesis：
-   - tight scope で設定 hillclimb model（デフォルト `gpt-5.5-high-fast`）の subagent に change を hand。type せず supervise と diff review（**guard-the-context-window** 原則スキル）。複数 independent hypothesis が live なら parallel subagent に fan。各 own worktree で collide 不可（**separate-before-serializing-shared-state** 原則スキル）。
-   - frozen harness で before/after measure。regression gate 実行。
-   - metric が noise を past し gate が green のときだけ accept。そうでなければ full revert。「効くかも」 tweak は ride しない。
-   - accepted fix ごとに1 commit。変更 file のみ stage（`git add <files>`、`-A` 禁止）。kept/reverted どちらも row log。
-   各 iteration は次の前に check で終わる（**sequence-verifiable-units** 原則スキル）。unattended run なら Autonomous run playbook（`playbooks/autonomous-run.md`）から wake mechanism のみ borrow。stop rule ではない。この playbook の stop criteria が govern。plateau は pivot を意味し stop ではない。
-6. 最初の plateau を push past。stall（連続 reject）なら category pivot、near-miss combine、source re-read、より radical を try して hill climbed と conclude 前に。correctness と simplicity が number より優先。behavior を break する win は revert。number を hold する simplification は keep（**laziness-protocol** 原則スキル）。
-7. predicate met、または残 idea が genuinely marginal で cost に見合わないとき stop。victory のため predicate relax しない。cheap untried hypothesis が残るうち quit しない。stuck なら spin せず surface。
-8. accepted commit を land 順に stack して **Opening a PR**。metric climb が top to bottom で読めるように。
+1. Ground the workload and architecture before choosing the metric. Run the **how** skill over the target, name the realistic workload dimensions that can move the result (data size, history, state, concurrency), and select a case that reproduces the user's complaint. If no case reproduces it, fix the repro instead of hillclimbing. Then fix one metric, the direction that counts as better, and a checkable stop predicate that pairs a target with a floor on attempts so a lucky early win can't end the run (the example "at least 50% better than baseline and at least 10 iterations" is this shape). Use the user's numbers when given, otherwise agree them.
+2. Build the measurement harness, prove its sensitivity, then freeze it (the **build-the-lever** principle skill). Run contrasting realistic workloads and confirm the target case reproduces the symptom while easier cases separate as expected. If the harness cannot distinguish them, revise the workload or metric. Once frozen, one repeatable command emits the metric, sampled enough to clear the noise (median of N, not a single run). Record the baseline metric and a green run of the regression gate (the tests that must keep passing) before any change.
+3. Open the decision log via the **show-me-your-work** skill. A `decision.tsv`, one row per attempt: id, hypothesis, change, before, after, delta, tests, verdict (kept or reverted), note. Read it before each attempt. Keep it out of the tree (gitignored).
+4. Ground each hypothesis in the architecture model from step 1, so it names a specific mechanism ("defer X off the boot path because it blocks first paint"), not "try memoizing something".
+5. Loop, one hypothesis per iteration:
+   - Hand the change to a subagent using your configured hillclimb model (default `grok-4.7-xhigh-fast`) with a tight scope. Supervise and review the diff rather than typing it (the **guard-the-context-window** principle skill). When several independent hypotheses are live, fan them to parallel subagents, each in its own worktree (the **separate-before-serializing-shared-state** principle skill).
+   - Measure before and after with the frozen harness, and run the regression gate.
+   - Accept only when the metric moves past noise and the gate stays green. Otherwise revert the change in full. A tweak that "might help" is not kept.
+   - One commit per accepted fix, staging only the files you changed (`git add <files>`, never `-A`). Log the row either way, kept or reverted.
+   Each iteration ends in a check before the next begins (the **sequence-verifiable-units** principle skill). If the run is unattended, borrow only the wake mechanism from the Autonomous run playbook (`playbooks/autonomous-run.md`), not its stop rule.
+6. Push past the first plateau. On a stall, several rejects in a row, pivot category, combine near-misses, re-read the source, or try something more radical before concluding the hill is climbed. Correctness and simplicity outrank the number. Revert a win that breaks behavior, and keep a simplification that holds the number (the **laziness-protocol** principle skill).
+7. Stop when the predicate is met, or when the remaining ideas are marginal and not worth their cost. Don't relax the predicate to meet it, and don't quit while cheap untried hypotheses remain. If you are stuck, surface it instead of spinning.
+8. Run **Opening a PR** with the accepted commits stacked in the order they landed.
 
-**Reply:** metric と target、baseline から final と percent delta、iterations run（kept vs reverted）、accepted fix 各1行、`decision.tsv` path、さらに push するなら try する best idea。
+**Reply:** the metric and target, baseline to final with the percent delta, iterations run (kept vs reverted), each accepted fix on one line, the `decision.tsv` path, and the best idea you would try next if pushed further.

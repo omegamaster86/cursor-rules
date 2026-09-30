@@ -1,10 +1,10 @@
 ### Pause safely
 
-**きれいな stop を所有する。cold-start エージェントが resume できる checkpoint を残す。** 「pause safely」「I need to go offline」「restart Cursor」「board my flight」向け。context が compact または summarize されそうなとき。これは explicit のみ。「keep going」「going to bed, keep going」「don't stop」では pause しない。それらは continue。Autonomous run が iteration ごとに checkpoint 済み。
+**You own a clean stop. Leave a checkpoint a cold-start agent can resume from.** This is explicit only. On "keep going", "going to bed, keep going", or "don't stop", do not pause.
 
-1. safe boundary で stop。現在の atomic step を finish または back out。known-broken state で mid-edit stop しない。新しいものは開始しない。nested subagent は cancel。
-2. pause のために irreversible line を越えない。すでに out していた PR と push 以外はなし。
-3. 作業を durable に。uncommitted edit を current branch 上で1つの明確な `wip:` commit として commit。失われないように。tree が broken なら commit body に1行で述べる。
-4. off-context で resume note を書く。intent、何をしていたか、progress と verify 済み、current state、next steps、key files、gotchas を capture。compaction trigger では `/tmp/<slug>-resume.md` のようなファイルに書く。in-context plan は summarization を survive しない。show-me-your-work trail があるなら duplicate せず指す。
+1. Stop at a safe boundary. Finish the current atomic step or back out of it. Start nothing new, and cancel any nested subagents.
+2. Take no irreversible action to pause. No PR and no push unless you already had one out.
+3. Make the work durable. Commit uncommitted edits as one clear `wip:` commit on the current branch so nothing is lost. If the tree is broken, say so in the commit body in one line.
+4. Write the resume note off-context. Capture intent, what you were doing, progress and what's verified, current state, next steps, key files, and gotchas. For the compaction trigger write it to a file like `/tmp/<slug>-resume.md`. If a show-me-your-work trail exists, point at it instead of duplicating it.
 
-**Reply:** loop のどこにいるか、disk 上 vs まだ head 内（paths、diff dump なし）、作った commit と tree が clean か、resume 時の first action。これは pause で final report ではない。resume は Session pickup playbook がこの note を読む。
+**Reply:** where you are in the loop, what's on disk versus still in your head (paths, no diff dumps), the commits you made and whether the tree is clean, and the first action on resume. This is a pause, not a final report.
