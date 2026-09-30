@@ -52,6 +52,8 @@ disable-model-invocation: true
 
 multi-agent-candidates は 1 つの統合設計パッケージを返す。統合メモの **Runners** 表と **Dropout** 節も必須。**Runners の Status が確定する前に Synthesis decision を書かない。**
 
+Synthesis の前に各候補を `references/design-red-flags.md` でスクリーニング（shallow module、情報漏洩、時間分解、パススルー）。red flag がある形は修正または棄却してから統合する。
+
 ## フェーズ C: 合意（オプトイン）
 
 デフォルト: 統合設計のまま実装へ直行。人のチェックポイントなし。
