@@ -35,6 +35,18 @@ link_path() {
   ln -sfn "$source" "$target"
 }
 
+# Canonical omega index; replace stale copies so re-link picks up updates.
+link_path_canonical() {
+  local source="$1"
+  local target="$2"
+
+  if [[ -e "$target" && ! -L "$target" ]]; then
+    rm "$target"
+  fi
+
+  ln -sfn "$source" "$target"
+}
+
 link_path "$OMEGA/commands" "$PJ/.cursor/commands"
 link_path "$OMEGA/agents" "$PJ/.cursor/agents"
 
@@ -46,6 +58,8 @@ if [[ ! -e "$PJ/.cursor/rules/forge-models.mdc" ]]; then
   cp "$OMEGA/rules/forge-models.mdc" "$PJ/.cursor/rules/forge-models.mdc"
 fi
 
+link_path_canonical "$OMEGA/skills/README.md" "$PJ/.cursor/skills/README.md"
+
 for skill in "$OMEGA/skills"/*/; do
   name="$(basename "$skill")"
   [[ "$name" == verify-* ]] && continue
@@ -53,3 +67,4 @@ for skill in "$OMEGA/skills"/*/; do
 done
 
 echo "linked omega -> $PJ/.cursor"
+
