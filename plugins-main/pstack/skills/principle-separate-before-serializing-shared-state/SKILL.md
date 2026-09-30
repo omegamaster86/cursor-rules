@@ -1,16 +1,16 @@
 ---
 name: principle-separate-before-serializing-shared-state
-description: "並行アクターが同じファイル、ブランチ、キー、または状態オブジェクトに書き込む可能性があるときに適用する。まず共有を排除する。1つの共有ライターが真の不変条件の場合のみ、構造的にシリアライズする。"
+description: "Apply when concurrent actors might write to the same file, branch, key, or state object. Eliminate the sharing first; serialize structurally only when one shared writer is a real invariant."
 disable-model-invocation: true
 ---
 
-# 共有状態をシリアライズする前に分離する
+# Separate Before Serializing Shared State
 
-並行アクターが可変状態を共有する可能性がある場合、まず本当に同じ可変オブジェクトが必要かを問う。不要なら共有を排除する。共有が実在する場合、構造的にシリアライズを強制する: ロックファイル、逐次フェーズ、排他的所有権。指示や慣習は並行性制御ではない。
+When concurrent actors might share mutable state, first ask whether they need the same mutable object. If not, eliminate the sharing. When sharing is real, enforce serialization structurally: lockfiles, sequential phases, exclusive ownership. Instructions and conventions are not concurrency control.
 
-**理由:** 共有状態への並行書き込みは、断続的で再現困難、デバッグコストの高い競合状態を生む。エージェントや goroutine に「順番に」と伝えても機能しない。
+**Why:** Concurrent writes to shared state create race conditions that are intermittent, hard to reproduce, and expensive to debug.
 
-**パターン:**
-1. **共有可変状態を特定する**（両方が読み書きするファイル、両方がプッシュするブランチ、両方が定義・消費する API）。
-2. **デフォルト: 共有書き込みターゲットを排除する。** 問う: これらのアクターは1つの正規オブジェクトが必要か、それとも独立した事実を公開しているか？ 各アクターに独自の所有ファイル、キー、ブランチ、状態ディレクトリを与え、読み取り/レポート境界でのみマージする。2つのワーカーが1つの `state.json` に独自の `lastX` フィールドを書くのは依然として共有ミューテーションである。`indexer-state.json` + `metrics-state.json` はそうではない。
-3. **1つの共有書き込みターゲットが真の不変条件の場合のみ、構造的にアクセスをシリアライズする**（ロックファイル、逐次フェーズ、単一ライターアクター、またはアトミックな compare-and-swap）。「ロックが必要」は確認すべき設計の臭いとして扱い、デフォルトの答えではない。
+**Pattern:**
+1. **Identify shared mutable state** (files both read and write, branches both push to, APIs both define and consume).
+2. **Default: eliminate the shared write target.** Ask: do these actors need one canonical object, or are they publishing independent facts? Give each actor its own owned file, key, branch, or state directory, and merge only at the read/reporting boundary. Two workers writing their own `lastX` field into one `state.json` is still shared mutation. `indexer-state.json` + `metrics-state.json` is not.
+3. **Only when one shared write target is a real invariant, serialize access structurally** (lockfiles, sequential phases, single-writer actor, or atomic compare-and-swap). Treat "we need a lock" as a design smell to check, not as the default answer.
