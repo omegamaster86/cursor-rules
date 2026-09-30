@@ -11,7 +11,9 @@
 | `/verify-done`（command） | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `/create-verification-skill`（command） | 対象 PJ にユーザー操作の証明レシピ（`verify-<app>`）を生成 |
 | `/maintain-verification-skill`（command） | 上記 feature map の監査・更新（プロダクトコードは触らない） |
-| `forge-mode`（skill） | 原則・プレイブック・Intent gate の本体（コマンドと同名） |
+| `/setup-forge`（skill） | ロール別モデル・reasoning budget を `forge-models.mdc` に書く |
+| `forge-mode`（skill） | 原則・プレイブック（23）・Intent gate の本体（コマンドと同名） |
+| [omega ガイド](../docs/guide/README.md) | 初回オンボーディング（plan-interview → forge-mode → ship） |
 
 ---
 
@@ -39,9 +41,13 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 |--------|------|
 | `plan-interview` | 計画・設計のストレステスト（Align 入口。`/plan-interview`。終了時に `alignment:` を返す） |
 | `grilling` | 上記のインタビュー技法本体（plan-interview から委譲。forge 中は使わない） |
-| `how` | サブシステムの仕組み説明 |
-| `architect` | 関数境界を越える設計 |
-| `multi-agent-candidates` | 並列案の比較・最良統合 |
+| `how` | サブシステムの仕組み・フロー・配置（how does X work） |
+| `why` | 設計 rationale・経緯・トレードオフ（why was Y built。MCP 並列調査） |
+| `reflect` | 長タスク後にトランスクリプトから学びを既存スキル edits にルーティング |
+| `architect` | 関数境界を越える設計（内部で multi-agent-candidates） |
+| `multi-agent-candidates` | 並列設計案の比較・graft |
+| `swarm` | カバレッジ分割・レース・探索の N 並列ワーカー |
+| `setup-forge` | `forge-models.mdc` のインタラクティブ設定 |
 | `blast-radius` | 変更の影響範囲 |
 | `tdd` | 失敗テスト先行のバグ修正 |
 | `recall` | チャット履歴からコンテキスト再構築 |
@@ -50,7 +56,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `study-log` | チャットの学習内容をテックブログ形式で `.cursor/study-log/` に記録 |
 | `session-log` | 長セッション状態をファイル化し新規チャットへ handoff |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
-| `decision-log` | 意思決定 マークダウンでログとしてためる |
+| `decision-log` | 長時間 run の監査証跡（Notion DB 正本。forge プレイブック・figure-it-out からルーティング） |
 | `create-verification-skill` | PJ 固有の動作確認スキルと feature map を生成 |
 | `maintain-verification-skill` | 上記のソース読み + ライブ drive によるメンテ |
 
@@ -58,9 +64,13 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | ファイル | 用途 |
 |----------|------|
-| `forge-models.mdc` | forge-mode のロール別モデル（`.cursor/rules/` に配置して手編集） |
+| `forge-models.mdc` | forge-mode のロール別モデル（`/setup-forge` または `.cursor/rules/` で手編集） |
 
-### 原則（`forge-mode/principles/`）14本
+### forge-mode プレイブック（23）
+
+Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature / Refactoring / Prototype / Visual parity / Authoring a skill / Eval / **Babysit** / **Shipping** / Autonomous run / **Orchestrate** / **Autopilot-stack** / **Autopilot-full** / Session pickup / Pause safely / Multi-phase plan / **Worktree cleanup** / Opening a PR。太字は pstack から追加した PR・夜間運用系。Bugbot 参照: `forge-mode/references/bugbot-triage.md`。スクリプト: `forge-mode/scripts/watch-pr`、`orch`、`worktree-audit.sh`。
+
+### 原則（`forge-mode/principles/`）23本
 
 `forge-mode` の Principles インデックスから **on-demand** で読む。`/forge-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `forge-mode/principles/*.md` を全文読む。
 
@@ -68,40 +78,49 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `foundational-thinking.md` | ロジックを書く前（forge-mode 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先。型収束とコンポーネント抽象化の切り分け。並行編集の隔離 |
-| `redesign-from-first-principles.md` | 既存設計に要件を足すとき | ボルトオンせず、最初からその要件があった形に再設計する |
-| `experience-first.md` | Intent gate 通過後の UX・スコープのトレードオフ | 実装都合より体験。方向が空なら `/plan-interview` |
-| `outcome-oriented-execution.md` | フェーズ付き rewrite / 移行 | 中間互換より最終形。橋を恒久化しない。小さな PR では読まない |
+| `laziness-protocol.md` | リファクタ・diff・抽象/層の追加 | 削除と最小変更を優先 |
+| `foundational-thinking.md` | ロジックを書く前（forge-mode 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先 |
+| `redesign-from-first-principles.md` | 既存設計に要件を足すとき | ボルトオンせず、最初からその要件があった形に再設計 |
+| `attack-the-premise.md` | 同じ前提の fix が同じゲートで連続失敗 | census の後、前提を疑う |
+| `subtract-before-you-add.md` | 追加・refactor・rewrite の順序 | 先に dead weight を削る |
+| `minimize-reader-load.md` | 追いにくいコード | 辿る層数と読者が保持する状態を減らす |
+| `outcome-oriented-execution.md` | フェーズ付き rewrite / 移行 | 中間互換より最終形。小さな PR では読まない |
+| `experience-first.md` | Intent gate 通過後の UX・スコープ | 実装都合より体験。方向が空なら `/plan-interview` |
+| `exhaust-the-design-space.md` | 先例のない UI / アーキテクチャ | commit 前に 2–3 案（Prototype 等） |
+| `build-the-lever.md` | 非自明な編集・移行・分析 | codemod / script 等、reviewer が rerun できる tool |
 
 #### Architecture
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `model-the-domain.md` | 状態ロジック・分岐の増殖 | ドメインを構造（状態機械、判別共用体、lookup）に載せる。boolean / if の散在を止める |
-| `type-system-discipline.md` | 型・シグネチャ設計 | 不正状態を表現不能に、意味的プリミティブに brand、外部データは境界で parse。網羅的 match、権威スキーマから導出。検証の所在は genai ドメイン規約（`form-validation`、`practice-bff` 等）を参照 |
-| `make-operations-idempotent.md` | クラッシュ・リトライ下のコマンド・ループ | 「2回実行」「途中クラッシュ」で同じ最終状態に収束するよう設計。自己修復ロック・冪等スケジューリング |
-| `separate-before-serializing-shared-state.md` | 並行アクターが同じ状態を書きそうなとき | 共有を先に消す。ロック・逐次化は最後 |
+| `model-the-domain.md` | 状態ロジック・分岐の増殖 | ドメインを構造に載せる |
+| `boundary-discipline.md` | 検証・adapter・エラー配線 | 境界に guard、内部 pure（genai 規約と併読） |
+| `type-system-discipline.md` | 型・シグネチャ設計 | 非法状態を表現不能に、境界で parse |
+| `make-operations-idempotent.md` | リトライ下のコマンド・ループ | 同じ最終状態に収束 |
+| `migrate-callers-then-delete-legacy-apis.md` | 新旧 internal API 共存 | 同一 wave で migrate + delete |
+| `separate-before-serializing-shared-state.md` | 並行アクターが同じ状態を書く | 共有を先に消す。ロックは最後 |
 
 #### Verification
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `prove-it-works.md` | 完了宣言の前 | 背景・哲学。実行手順の正本は **`/verify-done`**。コンパイル・自己報告・代理指標ではなく実アーティファクトで検証 |
-| `sequence-verifiable-units.md` | マルチステップ作業・コミット/PR の積み方 | 各単位がチェックで終わるまで次に進まない。失敗テスト→修正の順など、シーケンス自体がレビュアーに証明する |
-| `fix-root-causes.md` | デバッグ中 | 症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない |
+| `prove-it-works.md` | 完了宣言の前 | 正本は **`/verify-done`** |
+| `fix-root-causes.md` | デバッグ中 | 再現→根本。nil-check で黙らせない |
+| `sequence-verifiable-units.md` | マルチステップ・PR の積み方 | 各単位が check で終わる |
+| `test-behavior-not-implementation.md` | テストの作成・変更 | リテラル expected、実装 pin を避ける |
 
 #### Delegation
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `guard-the-context-window.md` | コンテキスト逼迫時 | 大きな出力・長いファイルはサブエージェントへ。メインには要約のみ。不要ファイルは読まない。フェーズにサイズ上限 |
-| `never-block-on-the-human.md` | Intent gate 通過後の可逆作業で確認したくなったとき | 進めて結果を提示し事後修正。`blocked` では無効。不可逆のみ確認。プロダクト方向は人間、実行はブロックしない |
+| `guard-the-context-window.md` | コンテキスト逼迫時 | bulk はサブエージェントへ |
+| `never-block-on-the-human.md` | Intent gate 通過後の実行分岐 | 可逆作業は進めて事後修正 |
 
 #### Meta
 
 | ファイル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `encode-lessons-in-structure.md` | 同じ指示を2回目書こうとしたとき | テキスト増やさず lint・メタデータ・runtime check・スクリプトにエンコード。繰り返し修正は最強の機械的ガードへルーティング |
+| `encode-lessons-in-structure.md` | 同じ指示を2回目書こうとしたとき | lint・script 等にエンコード |
 
 ---
 
@@ -118,5 +137,6 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+
 
 
