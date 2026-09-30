@@ -1,24 +1,24 @@
 ---
 name: principle-make-operations-idempotent
-description: "クラッシュ、再起動、リトライの中で実行されるコマンド、ライフサイクルステップ、処理ループの設計時に適用する。部分実行の有無にかかわらず同じ最終状態に収束する。"
+description: "Apply when designing commands, lifecycle steps, or processing loops that run amid crashes, restarts, and retries. Converge to the same end state regardless of partial prior runs."
 disable-model-invocation: true
 ---
 
-# 操作を冪等にする
+# Make Operations Idempotent
 
-何回実行しても、どこから始めても、正しい状態に収束するよう操作を設計する。すべての状態変更操作は答えるべきである: 「これを2回実行したらどうなるか？前回の実行が途中でクラッシュしたらどうなるか？」
+Design operations so they converge to the correct state regardless of how many times they run or where they start from. Every state-mutating operation should answer: "What happens if this runs twice? What happens if the previous run crashed halfway?"
 
-**理由:** コマンド、ライフサイクル操作、処理ループはクラッシュ、再起動、リトライが普通の環境で動く。部分状態が次の実行結果を変えるなら、すべての再起動がデバッグセッションになる。
+**Why:** Commands, lifecycle operations, and processing loops run where crashes, restarts, and retries are normal. If partial state changes the next run's outcome, every restart becomes a debugging session.
 
-**パターン:**
-- 収束する起動: 既存状態をスキャンし、古いアーティファクトをクリーンアップし、ライブセッションを引き継ぐ
-- コンテンツベースのクリーンアップ: 作成順ではなくコンテンツ等価性で比較する
-- 自己修復ロック: PID ベースの古いロック検出を使う
-- 冪等なスケジューリング: 失敗した作業はきれいに再生成され、各サイクル後に新鮮な入力が再生成される
+**The pattern:**
+- Convergent startup: scan for existing state, clean stale artifacts, adopt live sessions
+- Content-based cleanup: compare by content equivalence, not creation order
+- Self-healing locks: use PID-based stale lock detection
+- Idempotent scheduling: failed work respawns cleanly, fresh input regenerated after each cycle
 
-**テスト:**
-1. これを連続で2回実行したらどうなるか？
-2. 前回の実行があらゆる可能な地点でクラッシュしたらどうなるか？
-3. 再実行は同じ最終状態に収束するか？
+**The test:**
+1. What happens if this runs twice in a row?
+2. What happens if the previous run crashed at every possible point?
+3. Does re-execution converge to the same end state?
 
-いずれかの答えが「残された状態次第」なら、操作には調整ステップが必要である。
+If any answer is "it depends on what state was left behind," the operation needs a reconciliation step.
