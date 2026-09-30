@@ -6,7 +6,7 @@ Core discipline：1 change、1 measurement、keep または revert。untested ch
 
 1. 最初の attempt 前に metric と stop predicate を fix。1 number、better と count する direction、target と attempt floor を pair する checkable predicate（例「baseline より少なくとも50% better かつ少なくとも10 iterations」がこの shape）。ユーザー number があれば使用。なければ agree。vague goal は spin。predicate が stop を可能にする。
 2. measurement harness を build し freeze。metric を emit する1 repeatable command。noise を clear するだけ sample（single run ではなく N の median）。ruler なので baseline を produce したら immutable。mid-run 変更は以前の number をすべて invalidate。change 前に baseline metric と regression gate（pass し続ける tests）の green run を record。
-3. **show-me-your-work** スキルで decision log を open。`decision.tsv`、attempt ごとに1 row：id、hypothesis、change、before、after、delta、tests、verdict（kept または reverted）、note。run の memory。各 attempt 前に read し search が accumulate し circle しない。tree 外（gitignored）に keep し revert を survive。
+3. **decision-log** スキルで attempt ごとに Notion ページを 1 件追加。Name に attempt id と hypothesis 要約。決定詳細に change、before、after、delta、tests、verdict（kept または reverted）、note。各 attempt 前に DB の直近エントリを確認し、同じ仮説を繰り返さない。
 4. guess 前に real architecture で hypothesis を ground。**how** スキルを target に1回 up front。各 attempt が specific mechanism を名指す（「first paint を block するので boot path から X を defer」）。「something を memoize してみる」ではない。
 5. Loop、iteration ごとに1 hypothesis：
    - tight scope で設定 hillclimb model（デフォルト `gpt-5.5-high-fast`）の subagent に change を hand。type せず supervise と diff review（**guard-the-context-window** 原則スキル）。複数 independent hypothesis が live なら parallel subagent に fan。各 own worktree で collide 不可。
@@ -18,4 +18,5 @@ Core discipline：1 change、1 measurement、keep または revert。untested ch
 7. predicate met、または残 idea が genuinely marginal で cost に見合わないとき stop。victory のため predicate relax しない。cheap untried hypothesis が残るうち quit しない。stuck なら spin せず surface。
 8. accepted commit を land 順に stack して **Opening a PR**。metric climb が top to bottom で読めるように。
 
-**Reply:** metric と target、baseline から final と percent delta、iterations run（kept vs reverted）、accepted fix 各1行、`decision.tsv` path、さらに push するなら try する best idea。
+**Reply:** metric と target、baseline から final と percent delta、iterations run（kept vs reverted）、accepted fix 各1行、当 run の主要 **decision-log** Notion ページ URL、さらに push するなら try する best idea。
+

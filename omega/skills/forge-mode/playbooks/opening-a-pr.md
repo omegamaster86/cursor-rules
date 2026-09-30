@@ -6,6 +6,7 @@
 
 **Commits.**  liberally commit。PR 前に small ordered commit に rebase。各 commit は future PR：landable、story を語る順序。fix が just-made commit に属すなら amend。separable なら new commit。
 
-**PRs.** small PR、1 fat より5 narrow。follow-up は stack。genuinely independent な work だけ main から branch。stacked PR ではチームの stacking tool。principle は small ordered slice と reviewer に見える stack。PR status 参照前に `gh pr view <number>`。substantial stack work 前に `main` で rebase。small PR に `## Summary` / `## Test plan` boilerplate なし。commit body は subject を restate しない。open 後 Cursor 組み込み **babysit** スキル。feedback が intent から drift したら push back。
+**PRs.** small PR、1 fat より5 narrow。follow-up は stack。genuinely independent な work だけ main から branch。stacked PR ではチームの stacking tool。principle は small ordered slice と reviewer に見える stack。PR status 参照前に `gh pr view <number>`。substantial stack work 前に `main` で rebase。small PR に `## Summary` / `## Test plan` boilerplate なし。commit body は subject を restate しない。ユーザーが PR 監視を求めたときだけ **Babysit** プレイブック（`babysit.md`）。feedback が intent から drift したら push back。
 
 PR を open する subagent は `review-orchestrator-triple-hybrid` を実行、URL を返し、babysit しない。parent に return。
+

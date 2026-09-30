@@ -24,6 +24,11 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | 検証・層配線・BFF | `web-coding-standards` の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` |
 | リファクタ・削減・簡素化（ユーザー指示時） | `/.cursor/commands/refactor-check.md` |
 | 完了宣言前の検証（forge-mode ゲート） | `/.cursor/commands/verify-done.md` |
+| 長時間・離席後レビュー・ループ実行の決定証跡 | **`decision-log`** スキル（Notion。TSV / show-me-your-work は使わない） |
+| 設計・経緯の「なぜ」（動機・トレードオフ・履歴） | **`why`** スキル（how はランタイム・構造） |
+| 争点のある設計の並列案 | **`multi-agent-candidates`** スキル（`/architect` からも） |
+| カバレッジ分割・レース・ガントレット | **`swarm`** スキル |
+| ロール別モデル・budget の初期設定 | **`setup-forge`** スキル |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
 | 何を作るか・非ゴール・用語が未確定 | **`plan-interview` に戻す。** プレイブックに入らない。親は grilling を自己起動せず、ユーザーに `/plan-interview` を案内する |
 | 観測すれば決まる分岐（レイアウト、タイミング、出力） | Prototype。人間に聞かない（Intent gate が blocked のときは使わない） |
@@ -75,16 +80,27 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - デバッグ・症状の沈黙（nil-check、ガード追加）→ **fix-root-causes**。`principles/fix-root-causes.md`。
 - プロダクト / UX / スコープのトレードオフ（gate 通過後）→ **experience-first**。`principles/experience-first.md`。
 - 並行アクターが同じファイル・ブランチ・キーを書きそう → **separate-before-serializing-shared-state**。`principles/separate-before-serializing-shared-state.md`。
-- フェーズ付き rewrite / 移行 → **outcome-oriented-execution**。橋を恒久化しない。`principles/outcome-oriented-execution.md`。
+- フェーズ付き rewrite / 移行 → **outcome-oriented-execution**。橋を恒久化しない。`principles/outcome-oriented-execution.md`。内部 API 刷新なら **migrate-callers-then-delete-legacy-apis**（`principles/migrate-callers-then-delete-legacy-apis.md`）。
+- リファクタ・削減・抽象を足す衝動 → **laziness-protocol**、**subtract-before-you-add**（`refactor-check` と併用）。追いにくいコード → **minimize-reader-load**。
+- 同じ前提の fix が同じゲートで 2 回以上失敗 → **attack-the-premise**（次の fix の前に census）。
+- 先例のない UI / アーキテクチャで正解が自明でない → **exhaust-the-design-space**（Prototype または multi-agent-candidates explore-shapes）。
+- 非自明な編集・移行・分析・検証で reviewer が rerun できる artifact が欲しい → **build-the-lever**。
+- 検証・adapter・エラー配線 → **boundary-discipline**（genai ドメイン規約と併読）。
+- テストを書く・直す・残す → **test-behavior-not-implementation**（`tdd` と併用）。
 - 関数境界を越えるコード → **architect** スキル、実装前に並列設計探索。
+- 並列 fan-out（カバレッジ分割・レース・探索）→ **swarm** スキル。設計 bakeoff → **multi-agent-candidates** / architect。
 - 争点のある設計 → 出荷前に **`review-orchestrator-triple-hybrid` コマンド**（3モデル並列レビュー）。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
 - SKILL.md を作成または編集 → **create-skill** スキル（SKILL.md 作成用の Cursor 組み込み）。
 - UI / IDE / CLI を出荷 → 対象 PJ の `verify-*` があればその Drive。無ければブラウザ MCP または手動 verify。PJ に証明レシピが無いなら `/create-verification-skill`。バグ修正では同じ表面で先に自分で再現。
-- PR を開いた後 → Cursor 組み込みの **babysit** スキル。
-- Bugbot または agentic security review がコメント → 懐疑的な姿勢。本物のバグも拾うが、非問題や nitpick も出すので、各項目をメリットで評価し、ノイズは具体的理由で却下してコードを churn させない。**babysit** 組み込みで fix / dismiss / ask をトリアージ。
+- PR 状態・CI・レビュー・Bugbot（「babysit」「get it green」「check on PR X」）→ **Babysit** プレイブック（`playbooks/babysit.md`）。Cursor 組み込み babysit には委譲しない。
+- merge / land / ship の明示依頼 → **Shipping** プレイブック（`playbooks/shipping.md`）。Babysit の後半。
+- 多日・多 PR の standing プログラム → **Orchestrate** プレイブック（`playbooks/orchestrate.md`）。
+- 自律スタック構築（landing 権限なし）→ **Autopilot-stack**（`playbooks/autopilot-stack.md`）。独立 PR の full autopilot → **Autopilot-full**（`playbooks/autopilot-full.md`）。
+- worktree / シミュレータのディスク回収 → **Worktree cleanup**（`playbooks/worktree-cleanup.md`）。
+- Bugbot または agentic security review がコメント → `references/bugbot-triage.md` で fix / dismiss / ask。Babysit ステップ 8 と併用。
 - タスク途中でスキルが壊れた → 専用 PR で修正。ブロックしない。黙って回避しない。
-- 長い、自律的、または複数フェーズの作業、またはユーザーが後でレビューするために離れるタスク（「寝る」「戻ったら信頼したい」「/loop until X」）→ **show-me-your-work** スキルで意思決定トレイル。監査可能な記録が必要な stakes ではコミット。それ以外はローカルに保持。
+- 長い、自律的、または複数フェーズの作業、またはユーザーが後でレビューするために離れるタスク（「寝る」「戻ったら信頼したい」「/loop until X」）→ **`decision-log`** スキルで Notion に決定証跡。形式はスキル正本（決定日・決定詳細・決定理由）。
 
 ## Principles
 
@@ -92,23 +108,32 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 **Core**
 
+- **Laziness Protocol.** リファクタ、diff サイズ、抽象・層・シグナル配線を足したくなったとき。削除と最小変更を優先。`principles/laziness-protocol.md`。
 - **Foundational Thinking.** ロジックを書く前（forge-mode 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。`principles/foundational-thinking.md`。
 - **Redesign From First Principles.** 既存設計に新しい要件を統合するとき。ボルトオンせず、最初からその要件があったかのように再設計する。`principles/redesign-from-first-principles.md`。
-- **Experience First.** Intent gate 通過後のプロダクト・UX・スコープのトレードオフ。実装都合より体験。方向が空なら `/plan-interview`。`principles/experience-first.md`。
+- **Attack the Premise.** 同じ前提を共有する fix が同じゲートで 2 回以上失敗。次の fix の前に census。`principles/attack-the-premise.md`。
+- **Subtract Before You Add.** 追加・refactor・rewrite の sequence。dead weight を先に削る。`principles/subtract-before-you-add.md`。
+- **Minimize Reader Load.** 追いにくいコードのレビュー・整形。層数と読者が保持する状態。`principles/minimize-reader-load.md`。
 - **Outcome-Oriented Execution.** フェーズ境界が明示された rewrite / 移行。中間互換より最終形。日常の小さな PR では読まない。`principles/outcome-oriented-execution.md`。
+- **Experience First.** Intent gate 通過後のプロダクト・UX・スコープのトレードオフ。実装都合より体験。方向が空なら `/plan-interview`。`principles/experience-first.md`。
+- **Exhaust the Design Space.** 先例のない UI / アーキテクチャで正解が自明でない。commit 前に 2–3 案。`principles/exhaust-the-design-space.md`。
+- **Build the Lever.** 非自明な作業（移行・分析・チェック含む）。手作業より rerun 可能な tool。`principles/build-the-lever.md`。
 
 **Architecture**
 
 - **Model the Domain.** 状態のあるロジック、分岐や shape 仮定がファイルをまたぐとき。ドメインを構造にエンコードし、boolean と if の増殖を止める。`principles/model-the-domain.md`。
+- **Boundary Discipline.** 検証・エラー・framework adapter の配線。境界に guard、内部は pure。`principles/boundary-discipline.md`。
 - **Type System Discipline.** 型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。`principles/type-system-discipline.md`。
 - **Make Operations Idempotent.** クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。`principles/make-operations-idempotent.md`。
+- **Migrate Callers Then Delete Legacy APIs.** 新 internal API と旧 caller が共存するとき。同一 wave で migrate + delete。`principles/migrate-callers-then-delete-legacy-apis.md`。
 - **Separate Before Serializing Shared State.** 並行アクターが同じミュータブルを書きそうなとき。共有を先に消す。ロックは最後。`principles/separate-before-serializing-shared-state.md`。
 
 **Verification**
 
 - **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は `principles/prove-it-works.md`（任意）。
-- **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。`principles/sequence-verifiable-units.md`。
 - **Fix Root Causes.** デバッグ中。症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない。`principles/fix-root-causes.md`。
+- **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。`principles/sequence-verifiable-units.md`。
+- **Test Behavior, Not Implementation.** テストの作成・変更・維持。ユーザー視点のリテラル assert。`principles/test-behavior-not-implementation.md`。
 
 **Delegation**
 
@@ -131,7 +156,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Subagents
 
-**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "forge-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/forge-mode` と `forge-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`forge-agent` で上書きしない。
+**プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "forge-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/forge-mode` と `forge-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`why`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`forge-agent` で上書きしない。
 
 **すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`forge-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
 
@@ -160,5 +185,13 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - **Pause safely.** 明示 pause、オフライン、Cursor 再起動、差し迫った context compaction で、後で再開できるよう進行中作業をきれいに中断。Session pickup の補完。完全ステップ：`playbooks/pause-safely.md`。
 - **Multi-phase or multi-PR plan.** フェーズまたはスタック PR にまたがる作業。`playbooks/multi-phase-plan.md`（図は `references/plan-diagrams.md`）。
 - **Opening a PR.** 他のすべてのプレイブック末尾で呼び出し。`playbooks/opening-a-pr.md`。
+- **Babysit.** PR を merge-ready まで（CI、レビュー、Bugbot）。`playbooks/babysit.md`。
+- **Shipping.** 独立検証済みスタックを root から land。`playbooks/shipping.md`。
+- **Orchestrate.** 多日・多 stacked PR のコーディネーター。`playbooks/orchestrate.md`。
+- **Autopilot-stack.** 検証済み linear stack を構築しオペレーターに渡す。`playbooks/autopilot-stack.md`。
+- **Autopilot-full.** PR ごと 1 owner、swarm 検証後 merge。`playbooks/autopilot-full.md`。
+- **Worktree cleanup.** マージ済み / 放棄 worktree とシミュレータの安全な削除。`playbooks/worktree-cleanup.md`。
 
 実装系プレイブック（Feature / Bug fix / Refactoring）と Multi-phase plan は、実装前に **File change map** と **Data flow** の Mermaid を出す（Cursor Plan モード互換。詳細は `references/plan-diagrams.md`）。
+
+PR 監視スクリプト: `.cursor/skills/forge-mode/scripts/watch-pr/watch-pr`。オーケストレーション CLI: `bun .cursor/skills/forge-mode/scripts/orch/orch.ts`。

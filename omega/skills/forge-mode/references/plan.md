@@ -112,12 +112,13 @@ overview で、実装者が名前で適用すべき forge-mode non-negotiables �
 
 - 変更前に unfamiliar な各サブシステムで **how** スキル。
 - 出荷前に contested design で **`review-orchestrator-triple-hybrid` コマンド**による敵対的レビュー。
-- プランが監査可能記録を要するほど大きいとき **show-me-your-work** スキルで decision trail を保持。
-- PR 開いた後 Cursor 組み込み **babysit** スキル。
+- プランが監査可能記録を要するほど大きいとき **decision-log** スキルで Notion に決定を記録。
+- ユーザーが PR 監視を求めたとき **Babysit** プレイブック（`playbooks/babysit.md`）。land は **Shipping**。
 
 ## 7. Hand back
 
 フェーズ、スコープ境界、applicable skills、verification を要約。**File change map** と **Data flow** の Mermaid を返信に含める（skip 理由がある場合を除く）。stop。実装開始タイミングはユーザーが決める。
+
 
 
 
