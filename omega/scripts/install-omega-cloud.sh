@@ -66,6 +66,14 @@ if [[ ! -e "$WS_CURSOR/rules/forge-models.mdc" ]]; then
   cp "$OMEGA/rules/forge-models.mdc" "$WS_CURSOR/rules/forge-models.mdc"
 fi
 
+# skills/README.md is omega-canonical; replace stale copies on re-install.
+for readme_target in "$WS_CURSOR/skills/README.md" "$HOME_CURSOR/skills/README.md"; do
+  if [[ -e "$readme_target" && ! -L "$readme_target" ]]; then
+    rm "$readme_target"
+  fi
+  link_path "$OMEGA/skills/README.md" "$readme_target"
+done
+
 for skill in "$OMEGA/skills"/*/; do
   name="$(basename "$skill")"
   [[ "$name" == verify-* ]] && continue
@@ -78,3 +86,4 @@ echo "  omega:     $OMEGA"
 echo "  workspace: $WORKSPACE"
 echo "  workspace .cursor: $WS_CURSOR"
 echo "  vm skills:         $HOME_CURSOR/skills"
+
