@@ -40,11 +40,13 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 | モデル設定 | `.cursor/rules/forge-models.mdc` を編集（行を削除するとスキル内デフォルトにフォールバック） |
 | PJ にユーザー操作の証明レシピが無い | `/.cursor/commands/create-verification-skill.md` |
 | verify スキルの map が古い | `/.cursor/commands/maintain-verification-skill.md` |
+| 長時間 run・離席後レビューの決定証跡 | `decision-log` スキル |
+| 設計の「なぜ」（履歴・トレードオフ） | `why` スキル |
 
 ## サブエージェント
 
 - コード実装 delegate・プレイブック内ヘルパー: `subagent_type: "forge-agent"`
-- `how` / `reflect` は各スキルが規定する `subagent_type` を尊重する
+- `how` / `why` / `reflect` は各スキルが規定する `subagent_type` を尊重する
 - デフォルト: `run_in_background: true`
 
 ## 実行環境
@@ -55,6 +57,7 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 ## 軽い作業向けではない
 
 typo 修正・1行変更・単純な質問には本コマンドを使わない。通常の Agent チャット（`global.mdc` のみ）で足りる。
+
 
 
 
