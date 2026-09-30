@@ -1,80 +1,67 @@
 ---
 name: unslop
-description: あらゆる文章から AI 臭を削る。常に適用すること。
+description: Cut AI tells from any writing. Must always apply.
+disable-model-invocation: true
 ---
 
 # Unslop
 
-AI パターンを除去し、人間の声を加えるよう文章を編集する。
+Edit text to remove AI patterns.
 
-## プロセス
+## Process
 
-1. 下記パターンをスキャン。
-2. 書き直す。意味を保ち、意図したトーンに合わせる。
-3. 魂を加える（次節）。
-4. 自己監査:「何がこれを明らかに AI 生成にしているか？」残りの tell を直す。
+1. Scan for the patterns below.
+2. Rewrite. Preserve meaning, match intended tone.
 
-## 魂を加える
+## Patterns to detect and fix
 
-パターン除去は半分の仕事。無味乾燥で声のない文章も同様に明らか。
+Rule numbers are stable ids that other skills cite. A removed rule leaves a gap.
 
-- **意見を持つ。** 事実を中立に列挙するより反応する。
-- **リズムを変える。** 短い文。次に時間をかける長い文。混ぜる。
-- **複雑さを認める。** 「印象的だが少し不安でもある」は「印象的」より良い。
-- **合うときは「私」を使う。** 一人称は非プロフェッショナルではない。
-- **少し乱れを入れる。** 完璧な構造は算法的に感じる。
-- **具体に。** 「これは心配」ではなく「エージェントが午前3時に回り続けるのは何か不安がある」。
+### Content
 
-## 検出して直すパターン
+3. **Superficial -ing phrases.** "highlighting...", "ensuring...", "reflecting...", "showcasing...", "fostering...". Delete or expand with real sources.
+5. **Vague attributions.** "Experts believe", "Industry reports suggest", "Some critics argue". Name the source or delete.
 
-### 内容
+### Language
 
-1. **重要性のインフレ。** "pivotal moment"、"testament to"、"evolving landscape"、"setting the stage for"、"indelible mark"、"deeply rooted"。大げささを削り、起きたことを述べる。
-2. **知名度の名前ドロップ。** 文脈なくメディアを列挙。1 つ選び、何と言ったか述べる。
-3. **表面的な -ing 句。** "highlighting..."、"ensuring..."、"reflecting..."、"showcasing..."、"fostering..."。削除するか実ソースで展開。
-4. **宣伝文句。** "nestled"、"vibrant"、"breathtaking"、"groundbreaking"、"renowned"、"stunning"、"must-visit"。中立な記述を使う。
-5. **曖昧な帰属。** "Experts believe"、"Industry reports suggest"、"Some critics argue"。出典を名指すか削除。
-6. **型にはまった課題。** "Despite challenges... continues to thrive." 具体的事実に置き換える。
+7. **AI vocabulary.** Additionally, crucial, delve, enduring, enhance, fostering, garner, interplay, intricate, landscape (abstract), pivotal, showcase, tapestry (abstract), testament, underscore, vibrant. Replace with plain words.
+8. **Fancy ways to say "is".** "serves as", "stands as", "boasts", "features". Just say "is" or "has".
+9. **"Not just X, but Y."** State the point directly instead.
+10. **Rule of three.** Forcing ideas into groups of three. Use the natural number.
+11. **Synonym cycling.** Protagonist, main character, central figure, hero all in one paragraph. Pick one, repeat it.
+12. **False ranges.** "from X to Y" where X and Y aren't on a meaningful scale. List topics directly.
 
-### 言語
+### Style
 
-7. **AI 語彙。** Additionally、crucial、delve、enduring、enhance、fostering、garner、interplay、intricate、landscape（抽象）、pivotal、showcase、tapestry（抽象）、testament、underscore、vibrant。平易な語に置き換える。
-8. **コピュラ回避。** "serves as"、"stands as"、"boasts"、"features"。"is" か "has" と言う。
-9. **否定的並列。** "It's not just X, it's Y." 直接要点を述べる。
-10. **三の法則。** 無理に三つ組にする。自然な数を使う。
-11. **同義語サイクル。** 1 段落で protagonist、main character、central figure、hero。1 つ選び繰り返す。
-12. **偽の範囲。** X と Y が意味ある尺度上にない "from X to Y"。直接列挙。
+13. **Em dash overuse.** Avoid em dashes entirely. Use periods or commas only (no parentheses, no en dashes, no hyphen-as-dash substitutes). If a thought needs separation, end the sentence or use a comma.
+14. **Colon overuse.** Colons are fine before a list or example. Not as mid-sentence connectors. "If you're coming from traditional automation: instead of registering event handlers, you describe conditions" adds nothing with the colon. Rewrite to let the point stand on its own without comparison framing. "Describing when the scheduler should fire works best as plain English." Same meaning, no crutch punctuation.
+15. **Boldface overuse.** Don't bold every proper noun or acronym.
+16. **Inline-header lists.** The tell is a bold label and colon that restates the line: "**Performance:** Performance improved...". Convert those to prose. A bold lead-in that ends in a period, names the item, and is followed by genuinely new detail ("**Schema in TypeScript.** Tables live in one file.") is fine, not a tell.
+17. **Title case headings.** Use sentence case.
+18. **Decorative emojis.** Remove from headings and bullets.
+19. **Curly quotes.** Replace with straight quotes.
 
-### スタイル
+### Communication artifacts
 
-13. **ダッシュの乱用。** ダッシュは避ける。ピリオドかカンマのみ（括弧、エンダッシュ、ハイフンダッシュ代替なし）。ダッシュは AI tell。括弧に替えても tell の入れ替えに過ぎない。分離が要るなら文を終えるかカンマ。
-14. **コロンの乱用。** リストや例の前のコロンは可。文中コネクタとしては不可。"If you're coming from traditional automation: instead of registering event handlers, you describe conditions" はコロンで何も足さない。比較枠なしで要点が立つよう書き換える。"Describing when the scheduler should fire works best as plain English." 同じ意味、拐杖の句読点なし。
-15. **太字の乱用。** すべての固有名詞や頭字語を太字にしない。
-16. **インラインヘッダリスト。** tell は太字ラベルとコロンが行を言い換えること:"**Performance:** Performance improved..."。散文に変換。太字のリードインがピリオドで終わり項目を名指し、その後に本当に新しい詳細が続く（"**Schema in TypeScript.** Tables live in one file."）は可、tell ではない。
-17. **タイトルケース見出し。** sentence case を使う。
-18. **装飾絵文字。** 見出しと箇条から除去。
-19. **曲線引用符。** 直線引用符に置き換える。
+20. **Chatbot phrases.** "I hope this helps!", "Let me know if...", "Of course!", "Certainly!", "Found the smoking gun!" Remove.
+22. **Sycophantic tone.** "Great question! You're absolutely right!" Respond directly.
 
-### コミュニケーションの痕跡
+### Filler
 
-20. **チャットボット句。** "I hope this helps!"、"Let me know if..."、"Of course!"、"Certainly!"、"Found the smoking gun!" 除去。
-21. **打ち切り免責。** "While specific details are limited..." ソースを探すか削除。
-22. **おべっかトーン。** "Great question! You're absolutely right!" 直接応答。
+23. **Filler phrases.** "In order to" becomes "To". "Due to the fact that" becomes "Because". "It is important to note that" gets deleted.
+24. **Excessive hedging.** "could potentially possibly be argued that it might" becomes "may".
+25. **Generic conclusions.** "The future looks bright." State specific plans or facts.
 
-### フィラー
+### Jargon
 
-23. **フィラー句。** "In order to" → "To"。"Due to the fact that" → "Because"。"It is important to note that" は削除。
-24. **過剰ヘッジ。** "could potentially possibly be argued that it might" → "may"。
-25. **汎用結論。** "The future looks bright." 具体的計画か事実を述べる。
+26. **Abstract metaphor nouns.** Substrate, wedge, vector, locus, vantage, nexus, primitive (as noun), harness (as metaphor), surface (as in "API surface"), bedrock, scaffolding (as metaphor), modality, paradigm, gold-plating, ratchet (as metaphor), evacuate (for moving code), endgame, north star, flywheel. These read as technical but usually have a plainer concrete word. "Substrate" becomes "base". "Wedge in" becomes "add". "Vector" becomes "way" or "method". "Gold-plating" becomes "more than the job needs". "Ratchet" becomes the mechanism's real name or "a limit that only tightens". "Evacuate" becomes "move out". "Endgame" becomes "the last phase". Pick the concrete word.
 
-### ジャーゴン
+### Plain speech
 
-26. **抽象比喩名詞。** Substrate、wedge、vector、locus、vantage、nexus、primitive（名詞）、harness（比喩）、surface（"API surface"）、bedrock、scaffolding（比喩）、modality、paradigm、gold-plating。技術的に読めても大抵もっと平易な具体語がある。"Substrate" → "base"。"Wedge in" → "add"。"Vector" → "way" か "method"。"Gold-plating" → "more than the job needs"。具体語を選ぶ。
-
-### 平易な言葉
-
-27. **具体を言う。** 単純な要点を抽象枠で包まない。何をするかではなくどう感じるかを述べない。"the database stays close at hand"、"SQL you can read"、"types that follow your schema" は感覚の名前。修正は仕組みか数値:"`.toSQL()` returns the exact string sent to the database"、"a column rename fails the build"。読者に何をする・知るべきかを問い、それを書く。具体指示・事実・数値に言い換えられなければ削る。
-28. **密な文を短くまたは分割。** 読者が解析のために戻るなら二つに割るか節を落とす。1 文 1 考え。
-29. **能動態。** 優先。"is/are/was/were + 過去分詞" を捕まえ actor を名指す:"queries are validated" → "the compiler validates queries"、"the file is parsed by the loader" → "the loader parses the file"。actor が不明か本当に重要でないときだけ受動態。
-30. **副詞を削るか、より強い動詞。** "runs quickly" → "is fast" か数値。"significantly improves" → 測定された差分。弱い動詞を支える副詞は動詞が間違いのサイン。
-31. **平易な語を優先。** "utilize" → "use"、"leverage" → "use"、"facilitate" → "help"、"numerous" → "many"、"in the event that" → "if"。派手な同義語はめったに明瞭ではない。
+27. **Say what it does, not how it feels.** "the database stays close at hand", "SQL you can read", "types that follow your schema" name a feeling. The fix names the mechanism or a number: "`.toSQL()` returns the exact string sent to the database", "a column rename fails the build". Ask what the sentence tells the reader to do or know, then write that. If you can't restate it as a concrete instruction, fact, or number, cut it. One more check: if the sentence could appear unchanged in another project's docs, it says nothing about this one. Cut it.
+28. **Shorten or split dense sentences.** If the reader has to backtrack to parse a sentence, break it in two or drop clauses. One idea per sentence.
+29. **Active voice.** Prefer it. Catch "is/are/was/were + past participle" and name the actor: "queries are validated" becomes "the compiler validates queries", "the file is parsed by the loader" becomes "the loader parses the file". Passive is fine only when the actor is unknown or genuinely doesn't matter.
+30. **Cut adverbs, or use a stronger verb.** "runs quickly" becomes "is fast" or the number. "significantly improves" becomes the measured delta. An adverb propping up a weak verb means the verb is wrong.
+31. **Prefer the plain word.** "utilize" becomes "use", "leverage" becomes "use", "facilitate" becomes "help", "numerous" becomes "many", "in the event that" becomes "if". The fancier synonym is rarely clearer.
+32. **Mannered prose.** Metaphor or flourish where a literal phrase exists: aphorisms ("wire it or delete it"), rhetorical fragments for effect, personified code ("the plan holds it"), figurative verbs ("rides along", "stands on"), stock framing phrases. "A dial worth turning" becomes "a parameter worth varying". Say what you mean. Rule 26 covers the metaphor nouns.
+33. **Over-compression.** Dropped articles, verbless fragments, symbol-speak, and abbreviations that make the reader decode instead of read. "Parser rejects bad date → exit 2, no write" becomes "The parser rejects a bad date, exits with code 2, and writes nothing." Write whole sentences with their articles and verbs, and spell out arrows and abbreviations.
