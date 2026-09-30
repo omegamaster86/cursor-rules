@@ -1,31 +1,31 @@
 ---
 name: principle-encode-lessons-in-structure
-description: "同じ指示を2回目に書こうとしているとき、または繰り返しの修正に気づいたときに適用する。さらにテキストを増やすのではなく、ルールをリント、メタデータフラグ、ランタイムチェック、またはスクリプトとしてエンコードする。"
+description: "Apply when you catch yourself writing the same instruction a second time, or notice a recurring correction. Encode the rule as a lint, metadata flag, runtime check, or script instead of more text."
 disable-model-invocation: true
 ---
 
-# 教訓を構造にエンコードする
+# Encode Lessons in Structure
 
-繰り返しの修正をメカニズム（ツール、コード、メタデータ、自動化）にエンコードし、テキスト指示にしない。すべてのエラー、人間の修正、予期しない結果は学習シグナルである。捕捉し、ルーティングし、ループを閉じる。
+Encode recurring fixes in mechanisms (tools, code, metadata, automation) instead of textual instructions. Every error, human correction, and unexpected outcome is a learning signal. Capture it, route it, and close the loop.
 
-**理由:** テキスト指示は見落としやすい。読者が気づき、覚え、従う必要がある。構造的メカニズム（リントルール、メタデータフラグ、ランタイムチェック、自動化スクリプト）は協力なしにルールを強制する。
+**Why:** Textual instructions are easy to miss. They require the reader to notice, remember, and comply. Structural mechanisms (lint rules, metadata flags, runtime checks, automation scripts) enforce the rule without cooperation.
 
-**パターン:**
-同じ指示を2回目に書こうとしたとき:
-1. 問う: これはリントルール、メタデータフラグ、ランタイムチェック、またはスクリプトにできるか？
-2. できるなら、エンコードする。指示を削除する
-3. できない（本当に判断が必要）なら、指示をより目立たせ、失敗モードの例を追加する
+**Pattern:**
+When you catch yourself writing the same instruction a second time:
+1. Ask: can this be a lint rule, a metadata flag, a runtime check, or a script?
+2. If yes, encode it. Delete the instruction
+3. If no (requires judgment), make the instruction more prominent and add an example of the failure mode
 
-**最強の段を選ぶ。** 複数のメカニズムが機能する場合、状況が許す最強のものを選ぶ（コンパイル不能な表現不能状態、次に CI で失敗するリントまたは禁止 API、次に正規ヘルパー、次にランタイムチェック）。エージェントは周囲のコードがすでにしていることをコピーし、弱いガードが次のテンプレートになるからである。
+**Pick the strongest mechanism.** When more than one mechanism would work, choose the strongest the situation allows (an unrepresentable state that cannot compile, then a lint or banned API that fails CI, then a canonical helper, then a runtime check), because agents copy whatever the surrounding code already does and a weaker guard becomes the next template.
 
-**系:** 症状に糊を塗らない。修正が構造的なら、構造的修正*のみ*を使う。指示こそが症状である。
+**Corollary:** If the fix is structural, only use the structural fix. The instruction is the symptom.
 
-**フィードバックループ:**
-- **すべての修正を捕捉する。** 人間が介入したりテストが失敗したら、一度きりかパターンかを判断する。
-- **正しいレイヤーにルーティングする。** 一度きり → brain note。繰り返し修正 → スキルまたはリントルール。体系的問題 → 原則。
-- **ループを閉じる。** 記録するだけでなく、今適用するか具体的な todo を作成する。
+**Feedback loop:**
+- **Capture every correction.** When the human intervenes or tests fail, decide if it's a one-off or a pattern.
+- **Route to the right layer.** One-off -> brain note. Recurring fix -> skill or lint rule. Systemic issue -> principle.
+- **Close the loop.** Don't just record. Apply now or create a concrete todo.
 
-**アンチパターン:**
-- 記録せずに認識するだけ（「覚えておきます」は永続しない）
-- ルーティングせずに記録する（存在すべきリントルールについての brain note は、リントルールが実装されない限り無駄である）
-- 一般化せずに修正する（繰り返しパターンを残したまま1インスタンスだけ修正する）
+**Anti-patterns:**
+- Acknowledging without recording ("I'll keep that in mind" does not persist)
+- Recording without routing (a brain note about a lint rule that should exist is wasted unless the lint rule gets implemented)
+- Fixing without generalizing (fixing one instance while leaving the recurring pattern intact)
