@@ -1,23 +1,20 @@
 ---
 name: principle-never-block-on-the-human
-description: "可逆的な作業で「X をすべきですか？」と尋ねたくなったときに適用する。進めて結果を提示し、事後に人間が軌道修正できるようにする。確認は不可逆的な行動にのみ留める。"
+description: "Apply when tempted to ask 'should I do X?' on reversible work. Proceed, present the result, let the human course-correct after the fact; reserve confirmation for irreversible actions."
 disable-model-invocation: true
 ---
 
-# 人間を待ってブロックしない
+# Never Block on the Human
 
-人間は非同期に監督する。エージェントはブロックされないままであるべき: 合理的な決定を下し、進め、事後に人間が軌道修正できるようにする。コードは安価である。待つことは高価である。
+The human supervises asynchronously. Agents must stay unblocked. Make reasonable decisions, proceed, and let the human course-correct after the fact.
 
-**理由:** 許可の一時停止はパイプラインを停滞させ、人間をボトルネックにする。コード変更は可逆でレビュー可能なので、誤った決定は通常ブロックするより安価である。
+**Why:** Every permission pause stalls the pipeline and makes the human the bottleneck. Since code changes are reversible and reviewable, a wrong decision usually costs less than blocking.
 
-**パターン:**
-- **進めてから提示する。** 作業を行い、結果を示す。「X をすべきですか？」と尋ねない。X を行い、理由を説明する。
-- **質問は真の曖昧さにのみ留める。** コンテキストから意図を本当に推論できないときだけ尋ねる。
-- **システムを自己修復的にする。** 問題に気づいたら、ログに記録し次のラウンドで修正する。
-- **監督は非同期である。** 人間は自分のスケジュールで計画、diff、変更をレビューする。事後レビュー向けにワークフローを設計する。
-- **コードは安価、注意は希少である。** 誤った実装の修正は数分かかる。ブロックされたエージェントは、ブロック解除のために人間の注意を消費する。
+**Pattern:**
+- **Proceed, then present.** Do the work, show the result. Don't ask "should I do X?" Do X, explain why.
+- **Make the system self-healing.** When you notice a problem, log it and fix it in the next round.
 
-**境界:**
-- **不可逆的な行動**（force-push、本番データの削除、外部メッセージの送信）は依然として確認が必要である。
-- **可逆的な行動**（コード記述、メモ編集、タスク分割）はブロックせずに進めるべきである。
-- **プロダクト方向**は人間から来る。*実行*はブロックすべきではない。
+**Boundaries:**
+- **Irreversible actions** (force-push, delete production data, send external messages) still require confirmation.
+- **Reversible actions** (write code, edit notes, split tasks) should proceed without blocking.
+- **Product direction** comes from the human. *Execution* should not block.
