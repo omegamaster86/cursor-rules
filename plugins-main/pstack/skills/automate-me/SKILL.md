@@ -1,109 +1,104 @@
 ---
 name: automate-me
-description: "「automate me」「-mode スキルの作成/更新/リフレッシュ」「好みや働き方をスキルに落とす」、エージェントに自分のやり方に従わせたいときに使用。create-skill + unslop で個人用 -mode スキルを起草/改訂し、必要なら最近のトランスクリプトから新しい根拠を取り込む。"
+description: "Use for \"automate me\", \"create/update/refresh my -mode skill\", \"turn/capture my preferences or working style into a skill\", or wanting agents to follow how the user works. Drafts or revises a personal -mode skill via create-skill + unslop, optionally pulling fresh evidence from recent transcripts."
 disable-model-invocation: true
 ---
 
 # Automate me
 
-ユーザーの作業上の慣習を、エージェントが従うスキルに変えるガイド付きフロー。成果物はその人向けの 1 つの `-mode` スキル（例: `jay-mode`、`priya-mode`）。
+A guided flow for turning the user's working conventions into a skill agents will follow. The output is one `-mode` skill tailored to them (e.g. `jay-mode`, `priya-mode`).
 
-このスキルは他 3 つを編成する: インラインのマイニング（ステップ 1）、Cursor 組み込みの `create-skill`（執筆）、**unslop** スキル（文章の規律）。順序づけるだけで、置き換えない。
+This skill orchestrates three others: an inline mining pass (see step 1), Cursor's built-in `create-skill` (authoring), and the **unslop** skill (prose discipline). It sequences them. It doesn't replace them.
 
-## フロー
+## Flow
 
-### 0. 既存スキルを確認する
+### 0. Check for an existing skill
 
-プロジェクトの `.cursor/skills/` または `~/.cursor/skills/` で、ユーザーのハンドルに一致する `*-mode/SKILL.md` を探す。あれば `AskQuestion` で意図を確認する（「スキルを更新」などと既に言われていない限り）:
+Look recursively for `.cursor/skills/**/*-mode/SKILL.md` and `~/.cursor/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`.cursor/skills/<handle>/`), not only at the top level. If one exists, confirm intent with `AskQuestion` (unless they already said "update my skill" or similar):
 
-- 既存スキルを更新する（再実行時のデフォルト）
-- ゼロから作り直す（稀。理由を聞いてから）
+- Update the existing skill (default for repeat runs)
+- Start fresh (rare, ask why before doing it)
 
-更新モードでは以降のフローが変わる:
-- ステップ 1 はスキル最終編集以降の履歴のみマイニング（`git log -1 --format=%cI <path>`）。
-- ステップ 2 はゼロから何を取り込むかではなく、何が変わったか・足りないかを聞く。
-- ステップ 4 は既存ファイルをその場で編集。ユーザーが矛盾させていない節は残し、新しい根拠のある節は改訂し、本当に新しいルールだけ新節を追加する。
+Update mode changes the rest of the flow:
+- Step 1 mines only history since the skill was last edited (`git log -1 --format=%cI <path>`).
+- Step 2 asks what's changed or missing, not what to capture from zero.
+- Step 4 edits the existing file in place. Preserve sections the user hasn't contradicted. Revise ones with new evidence. Add new sections only for genuinely new rules.
 
-### 1. 履歴をマイニングする
+### 1. Mine their history
 
-並列展開の前に、アクティブワークスペースのトランスクリプトを特定する。システムプロンプトにワークスペースの `agent-transcripts/` ディレクトリが書かれている。そのパスのみ使う。`~/.cursor/projects/*/` を横断して glob しない。ワークスペース境界を越え、無関係なプロジェクトの非公開チャットを読むことになる。
+Locate the active workspace's transcripts before fanning out. The system prompt names the workspace's `agent-transcripts/` directory. Use only that path. Don't glob across `~/.cursor/projects/*/`. That crosses workspace boundaries and reads private chats from unrelated projects.
 
-その範囲内の最近のエージェント会話を調査し、繰り返しパターンを探す。履歴をスライスに分け（例: 直近 2〜4 週間を 3 スライスに分割し、各スライスに十分な材料を確保）、複数の並列サブエージェントを走らせる。各スライスのマイニングサブエージェントは親が渡すワークスペーススコープのパスからトランスクリプトを読み、下記シグナルを探し、見つけたパターンの短い構造化リストと根拠ポインタを返す。デフォルトで探すシグナル:
+Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 
-- 応答の好み（長さ、トーン、形式、「もっと平易に」などの修正）
-- 委譲の習慣（サブエージェント、モデル、専用ワークフロー、並列化）
-- 検証の姿勢（「完了」の意味、ユニットテスト vs 実機再現、レビュアー）
-- コードと文章の規律（スタイル、引用する原則、lint/フォーマットツール）
-- プロセスの慣習（worktree、コミット、PR、レビュー/マージツール）
-- メタの好み（タスク途中でのスキル修正、新スキルの提案）
+- Response preferences (length, tone, format, "dumb it down" corrections)
+- Delegation habits (subagents, models, specialized workflows, parallelism)
+- Verification posture (what "done" means, unit tests vs live repro, reviewers)
+- Code and prose discipline (style, principles cited, lint/format tools)
+- Process conventions (worktrees, commits, PRs, review/merge tooling)
+- Meta preferences (fixing skills mid-task, proposing new ones)
 
-スライス間で突き合わせてからシグナルを昇格させる。2 つ以上のスライスで見えるパターンは高信頼。単発シグナルは弱く、通常は落とす。
+Cross-check across slices before elevating a signal. Patterns seen in 2+ slices are high-confidence. Lone signals are weak and usually get dropped.
 
-### 2. ユーザーに直接聞く
+### 2. Ask the user directly
 
-マイニングはまだ出てきていない意図を見逃す。`AskQuestion` ツール（構造化マルチチョイス）を使い、ゼロから入力させない。認知負荷を下げ、ヒット率を上げる。
+Mining misses intent that hasn't come up yet. Use the `AskQuestion` tool (structured multi-choice) rather than asking the user to type from scratch.
 
-形: 1〜2 問、各 4〜6 選択肢、カテゴリ質問は `allow_multiple: true`。まず広く（「どの領域が重要？」）、選ばれた領域で具体的な選択肢をフォローアップ。構造化ラウンドのあと、選択肢に載らなかったものを拾う自由形式のチャット質問を 1 つ。
+Shape: one or two questions with 4-6 options each, `allow_multiple: true` for category questions. Start broad ("Which areas matter most?"), then follow up on selected areas with specific options. After the structured rounds, one free-form chat question catches anything the options missed.
 
-20 問は投げない。構造化 2 ラウンド + オープン 1 問で通常十分。
+Don't dump 20 questions.
 
-### 3. 所見をクラスタリングする
+### 3. Cluster findings
 
-合わせたシグナルを節にまとめる。よくあるもの（当てはまるものだけ使う）:
+Group the combined signals into sections. Common ones (use only what applies):
 
-- **応答スタイル**: 長さ、トーン、形式。
-- **自律性**: どこまで聞かずに進めるか、MCP ツールの使用。
-- **まず理解する**: スコープや調査時に参照すべきスキル。
-- **サブエージェント**: デフォルト、並列、タスクとモデル、専用ワークフロー。
-- **文章/コードの規律**: 原則、lint ツール、スタイルガイド。
-- **レビューと検証**: 再現の姿勢、検証スキル、実機テストツール。
-- **プロセス**: git worktree、コミット、PR、レビュー/マージツール。
-- **スキル**: スキル執筆の習慣、スキルを先に直す、新スキルの提案。
+- **Response style**: length, tone, format.
+- **Autonomy**: how much to do without asking, MCP tool use.
+- **Understand first**: which skills to reach for when scoping or investigating a change.
+- **Subagents**: default, parallelism, model-to-task, specialized workflows.
+- **Prose / code discipline**: principles, lint tools, style guides.
+- **Review and verify**: repro posture, verification skills, live-testing tools.
+- **Process**: git worktrees, commits, PRs, review/merge tooling.
+- **Skills**: skill-authoring habits, fix-the-skill-first, proposing new skills.
 
-**poteto-mode** スキルが形の例。粒度の参考に読む。内容はコピーしない。ユーザーのルールは poteto-mode と同じではない。
+The **poteto-mode** skill shows the shape. Read it for granularity. Don't copy its content. The user's rules are not the same as poteto-mode's.
 
-### 4. スキルを起草する
+### 4. Draft the skill
 
-Cursor 組み込みの `create-skill` スキルで執筆する。配置:
+Use Cursor's built-in `create-skill` skill to author the skill. Placement:
 
-- パス: プロジェクトの `.cursor/skills/<handle>-mode/SKILL.md`（個人用なら `~/.cursor/skills/<handle>-mode/`）。
-- ハンドル: ユーザーの名または選んだ識別子。
-- frontmatter `description`: 名前 + `/<handle>-mode` +「その人のスタイルで働く」でトリガー。「コードを書く」「PR をレビュー」など汎用キーワードではない。
-- frontmatter の書式: `create-skill` の YAML ルールに従う。`description` は 1 つの YAML スカラー。句読点や折り返しが必要なら引用符か `description: >-` とインデント継続行。
-- frontmatter `disable-model-invocation: true` をデフォルト。モードスキルは重く意見が強い。明示的に呼ばれたときだけ適用（名前またはスラッシュコマンド）。description マッチで毎ターン自動適用しない。ユーザーが毎ターン適用を望む場合のみオプトアウト。
+- Path: preserve an existing mode skill's category. For a new mode, use `.cursor/skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle. Otherwise default to `.cursor/skills/<handle>-mode/SKILL.md` in the project (or `~/.cursor/skills/<handle>-mode/` if the user prefers a personal skill).
+- Handle: the user's first name or chosen identifier.
+- Frontmatter `description`: trigger on their name + `/<handle>-mode` + "work in their style", not on generic keywords like "write code" or "review PR".
+- Frontmatter formatting: follow `create-skill`'s YAML rules. Keep `description` as one YAML scalar. Quote it or use `description: >-` with indented continuation lines when punctuation or wrapping requires it.
+- Frontmatter `disable-model-invocation: true` by default. Opt out only if the user explicitly wants their mode to apply on every turn.
 
-### 5. 文章を反復する
+### 5. Iterate on prose
 
-**unslop** スキルと `create-skill` の執筆ガイドラインを各行に適用する。どちらもエージェントが読む文章全般に当てはまる。スキル専用ではない。
+Apply the **unslop** skill and `create-skill`'s writing guidelines to every line.
 
-草案を見せてフィードバックを取る。複数回の反復を想定する。容赦なく削る。モードスキルはマニュアルではない。
+Show the draft to the user and take feedback. Expect multiple iterations. Cut ruthlessly. A mode skill is not a manual.
 
-### 6. 着地する
+### 6. Land it
 
-main から分岐した worktree で作業する。コミットして PR を開き、ユーザーがレビューできるようにする。main に直接 push しない。
+Work in a worktree off main. Commit and open a PR. Don't push to main directly.
 
-## ガードレール
+## Guardrails
 
-- **1 会話に過適合しない。** 一度言って別の場で矛盾した好みはノイズ。コード化する前に複数回の出現を要求する。
-- **賢くしない。** 他スキルの内容の言い換え、比喩の発明、エージェント向けの「詩的」な文章はコストに見合わない。運用可能に保つ。
-- **参照し、インラインしない。** ユーザーが頼る他スキルはパス参照で示し、抜粋を貼らない。他所の原則ドキュメントも同様。
-- **節は最小限。** ユーザーに非デフォルトの具体的ルールがある場合だけ節を追加する。「明確に伝える」は節にならない。「短い段落。比較は表。項目が本当に並列のときだけ箇条書き。」は節になる。
-- **命名は汎用に。** 命令形では著者の名ではなく「the user」または「the human」。他の人が読んだり採用したりするかもしれない。
-- **対称性を強制しない。** 書き留める価値のあるプロセスルールがなければ Process 節ごとスキップ。スパースでよい。肥大はダメ。
+- **Don't overfit to one conversation.** A preference stated once and contradicted another time is noise. Require multiple instances before codifying it.
+- **Don't be clever.** Restating other skills' contents, inventing metaphors, or writing "poetic" prose for an agent reader is cost without benefit. Keep it operational.
+- **Reference, don't inline.** Other skills the user relies on should appear as path references, not pasted excerpts. Same for any principle docs they maintain elsewhere.
+- **Keep sections minimal.** Only add a section if the user has a specific, non-default rule there. "Communicate clearly" is not a section. "Short paragraphs. Tables when comparing options. Bullets only when items are genuinely parallel." is.
+- **Name conventions generic.** Use "the user" or "the human" in imperatives, not the author's first name.
+- **Don't force symmetry.** If a user has no process rules worth writing down, skip the Process section entirely.
 
-## 評価
+## Evaluation
 
-`-mode` スキルは主観的な成果物。`create-skill` 型のテスト/反復ベンチマークループはここでは有用でない。ユーザーと vibe チェック: 本人らしく読めるか、抜けはないか。そして出荷する。
+A `-mode` skill is subjective output. A `create-skill`-style test/iterate benchmark loop isn't useful here. Vibe-check with the user: does it read like them? Did it miss anything? Then ship.
 
-トリガー精度が実際に問題になったときだけ description 最適化ループを回す。
+Run a description-optimization loop only if the skill's trigger accuracy turns out to be a problem in practice.
 
-## 使わないとき
+## When not to use
 
-- ユーザーがタスク固有スキルを望む（作業慣習ではない）: `create-skill` のみ。マイニング不要。
-- 狭いワークフローだけ取り込みたい（例:「コミットメッセージの書き方」）: 通常スキルで、モードスキルではない。
+- User wants a task-specific skill (not working conventions): `create-skill` alone, no mining required.
+- User wants to capture one narrow workflow (e.g. "how I write commit messages"). That's a regular skill, not a mode skill.
 
-## 参照ファイル
-
-- **poteto-mode** スキル: 成果物の形の例。
-- **unslop** スキル: 各行の文章規律。
-- Cursor 組み込み `create-skill` スキル: スキル執筆プロセスと執筆ガイドライン。
