@@ -1,22 +1,23 @@
 ---
 name: principle-fix-root-causes
-description: "デバッグ時に適用する。各症状を根本原因まで追跡し、そこで修正する。まず再現し、根本原因に到達するまで「なぜ」を問い、クラッシュを黙らせる nil チェックガードに抵抗する。"
+description: "Apply when debugging. Trace each symptom to its root cause and fix it there; reproduce first, ask why until you reach it, resist nil-check guards that silence crashes."
 disable-model-invocation: true
 ---
 
-# 根本原因を修正する
+# Fix Root Causes
 
-デバッグするとき、症状に糊を塗らない。すべての問題を根本原因まで追跡し、そこで修正する。
+When debugging, do not fix symptoms. Trace every problem to its root cause and fix it there.
 
-**理由:** 症状修正は蓄積する。各回避策はシステムを推論しにくくし、本当のバグは残る。根本原因修正は当初は遅いが、総デバッグ時間を減らす。
+**Why:** Symptom fixes accumulate. Each workaround makes the system harder to reason about, and the real bug remains. Root-cause fixes are slower upfront but reduce total debugging time.
 
-**パターン:**
-- まず再現する（再現できなければ、修正を検証できない）
-- 根本原因に到達するまで「なぜ」を問う
-- ガードを追加する衝動に抵抗する（クラッシュを黙らせる nil チェック追加は症状修正である）
-- インスタンスだけでなくパターンをチェックする（同じパターンを grep し、すべてのインスタンスを修正する）
-- 行き詰まったら計測する。推測しない（ログを追加し、実際のエラーを読む）
+**Pattern:**
+- Reproduce first
+- Ask "why" until you hit the root cause
+- Do not add guards (adding a nil check to silence a crash is a symptom fix)
+- If a workaround needs a paragraph-long comment to justify it, the code is wrong (fix the code, not the comment)
+- Check for the pattern, not just the instance (grep for the same pattern, fix all instances)
+- When stuck, instrument. Don't guess (add logging, read the actual error)
 
-**再起動バグ: コードより先に状態を疑う**
+**Restart bugs: suspect state before code**
 
-実行間で変わるのはコードではなく状態である。「再起動後に失敗する」とき、まず古い永続状態を疑う: 設定ファイル、キャッシュ、ロックファイル、シリアライズされた状態。状態ファイルをクリアすると動作が戻るなら、修正として状態検証を優先する。
+When something "fails after restart," suspect stale persistent state first: config files, caches, lock files, serialized state. If clearing a state file restores behavior, prioritize state validation as the fix.
