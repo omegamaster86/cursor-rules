@@ -1,21 +1,21 @@
 ---
 name: principle-exhaust-the-design-space
-description: "コードベースに先例のない新しい UI インタラクションやアーキテクチャ判断に直面したときに適用する。コミットする前に2〜3の競合プロトタイプを構築し、並べて比較する。"
+description: "Apply when facing a novel UI interaction or architectural decision with no precedent in the codebase. Build 2-3 competing prototypes and compare side by side before committing."
 disable-model-invocation: true
 ---
 
-# 設計空間を尽くす
+# Exhaust the Design Space
 
-新しいインタラクションやアーキテクチャ判断に確立された先例がない場合、実装前にいくつかの具体的な代替案を探索する。間違ったものを構築するコストは、3つの選択肢を探索するコストより大きい。
+When a novel interaction or architectural decision has no established precedent, explore several concrete alternatives before implementation. Building the wrong thing costs more than exploring three options.
 
-**ルール:** 正解が明らかでないとき、2〜3の競合プロトタイプまたはスケッチを構築する。並べて比較する。その後にのみコミットする。
+**The rule.** When the right answer is not obvious, build 2-3 competing prototypes or sketches. Compare them side by side. Only then commit. Design it twice is this rule by another name. A second flavor of the first shape does not count.
 
-**適用条件:**
-- 新しい UI インタラクション（コードベースに先行事例がない）
-- 複数の実行可能なアプローチがあるアーキテクチャ選択
-- ユーザー体験がロジックではなく感触に依存するプロダクト設計判断
+**When it applies:**
+- Novel UI interactions (no prior art in the codebase)
+- Architectural choices with multiple viable approaches
+- Product design decisions where user experience depends on feel, not logic
 
-**適用しない条件:**
-- パターンが確立されている機械的実装
-- 明確な目標状態があるバグ修正やリファクタ
-- 制約が単一の実行可能なアプローチを規定する変更
+**When it doesn't:**
+- Mechanical implementation where the pattern is established
+- Bug fixes or refactors with a clear target state
+- Changes where constraints dictate a single viable approach
