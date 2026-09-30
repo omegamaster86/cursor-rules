@@ -1,12 +1,12 @@
-# コード品質レビュー
+# Code Quality Review
 
-各レビュアーはルーブリックに加え、このコード品質レンズを適用する。実装品質、保守性、抽象の質、コードベースの健全性に焦点を当てた厳格な基準。
+Each reviewer applies this code-quality lens in addition to the rubric. It is a strict standard focused on implementation quality, maintainability, abstraction quality, and codebase health.
 
-何より、コード構造に野心的であること。局所クリーンアップの特定にとどまらない。振る舞いを保ちつつ実装を劇的に単純・小さく・直接的・洗練にする「コード柔道」の動きを積極的に探す。
+Above all, be ambitious about code structure. Do not merely identify local cleanup. Actively search for "code judo" moves, restructurings that preserve behavior while making the implementation dramatically simpler, smaller, more direct, and more elegant.
 
-## コアプロンプト
+## Core Prompt
 
-このベースラインから始める:
+Start from this baseline:
 
 > Perform a deep code quality audit of the current branch's changes.
 > Rethink how to structure / implement the changes to meaningfully improve code quality without impacting behavior.
@@ -14,34 +14,34 @@
 > Be ambitious, if there is a clear path to improving the implementation that involves restructuring some of the codebase, go for it.
 > Be extremely thorough and rigorous. Measure twice, cut once.
 
-## 次元
+## Dimensions
 
-各次元は一度だけ述べる。関連するものを適用する。
+Each dimension is stated once. Apply the ones that are relevant.
 
-0. **構造的単純化に野心的であること。**「少しきれいにできる」で止まらない。枝、ヘルパー、モード、条件分岐、レイヤー全体が消える再枠組みを探す。「コード柔道」はしばしば利用可能で、変更を劇的に単純にする。複雑さを並べ替えるより削除できるなら、それを強く推す。
+0. **Be ambitious about structural simplification.** Do not stop at "this could be a bit cleaner." Look for reframings that make whole branches, helpers, modes, conditionals, or layers disappear. Assume a "code judo" move is often available. It uses the existing architecture more effectively and makes the change dramatically simpler. If you can delete complexity rather than rearrange it, push hard for that.
 
-1. **強い理由なく、PR がファイルを 1k 行未満から 1k 行超に押し上げないこと。** 強い臭いとして扱う。ヘルパー、サブコンポーネント、モジュールの抽出を優先。diff がその閾値を越えるなら、先に分解すべきか問う。結果ファイルが明確に整理されたままの説得力ある構造的理由があるときだけ免除。
+1. **Do not let a PR push a file from under 1k lines to over 1k lines without a very strong reason.** Treat this as a strong smell. Prefer extracting helpers, subcomponents, or modules. If the diff crosses that threshold, ask whether the code should be decomposed first. Waive only for a compelling structural reason where the resulting file stays clearly organized.
 
-2. **既存コードのスパゲッティ成長を許さない。** 新しい即席条件分岐、散在する特例、無関係なフローへの一回限り分岐に疑いを持つ。「変な if がランダムな所にある」はスタイルの細部ではなく設計問題。既存パスを絡めるより、専用ヘルパー、状態機械、モジュールに押し込むことを優先。
+2. **Do not allow spaghetti growth in existing code.** Be suspicious of new ad-hoc conditionals, scattered special cases, or one-off branches inserted into unrelated flows. Treat "weird if statements in random places" as a design problem, not a style nit. Prefer pushing the logic into a dedicated helper, state machine, or module instead of tangling an existing path.
 
-3. **動くコードを受け入れるだけでなく、設計をきれいにする方向に偏る。** 振る舞いを保ちつつ構造が意味的にきれいになれるなら、きれいな版を推す。同じ複雑さを広げるリファクタより、動く部品を減らす単純化を優先。
+3. **Bias toward cleaning the design, not just accepting working code.** If behavior can stay the same while the structure becomes meaningfully cleaner, push for the cleaner version. Prefer simplifications that remove moving pieces over refactors that spread the same complexity around.
 
-4. **ハックや魔法より直接的で退屈な保守可能コードを優先。** もろい即席や「魔法」の振る舞いを問題とする。単純なデータ形状の仮定を隠す汎用機構に懐疑的。明瞭さを買わない間接の薄い抽象、identity ラッパー、パススルーヘルパーに旗を立てる。
+4. **Prefer direct, boring, maintainable code over hacky or magical code.** Treat brittle, ad-hoc, or "magic" behavior as a problem. Be skeptical of generic mechanisms that hide simple data-shape assumptions. Flag thin abstractions, identity wrappers, or pass-through helpers that add indirection without buying clarity.
 
-5. **保守性に影響するとき型と境界のきれいさを押す。** より明確な型境界がありうるとき、不要な optionality、`unknown`、`any`、キャストだらけを問う。即席オブジェクトより明示的型モデルを優先。分岐が不明な不変条件をごまかす静かなフォールバックに頼るなら、境界を明示すべきか問う。
+5. **Push on type and boundary cleanliness when it affects maintainability.** Question unnecessary optionality, `unknown`, `any`, or cast-heavy code when a clearer type boundary could exist. Prefer explicit typed models over loosely-shaped ad-hoc objects. If a branch leans on a silent fallback to paper over an unclear invariant, ask whether the boundary should be made explicit.
 
-6. **ロジックを正規レイヤーに置き、既存ヘルパーを再利用。** 機能ロジックが共有パスに漏れる、実装詳細が API を通して漏れることを指摘。即席 one-off より既存の正規ユーティリティを優先。ドリフトを正規化するより、正しいパッケージ・サービス・モジュールへ押す。
+6. **Keep logic in the canonical layer and reuse existing helpers.** Call out feature logic leaking into shared paths or implementation details leaking through APIs. Prefer existing canonical utilities over bespoke one-offs. Push code toward the right package, service, or module instead of normalizing drift.
 
-7. **よりきれいな構造が自明なとき、不要な逐次オーケストレーションと非原子的更新を設計の臭いとして扱う。** 独立作業が理由なく直列化されているなら並列化を問う。関連更新が半端な状態を残しうるなら、より原子的構造を推す。マイクロ最適化に過剰に偏らないが、コードをもろくする回避可能なオーケストレーション複雑さは旗を立てる。
+7. **Treat unnecessary sequential orchestration and non-atomic updates as design smells when the cleaner structure is obvious.** If independent work is serialized for no reason, ask whether it should run in parallel. If related updates can leave state half-applied, push for a more atomic structure. Do not over-index on micro-optimizations, but do flag avoidable orchestration complexity that makes the code more brittle.
 
-## 出力期待
+## Output Expectations
 
-まず構造的コード品質の退行と見逃した単純化を優先し、次にスパゲッティと分岐複雑さ、境界・型・ファイルサイズ、最後により小さなモジュール性と可読性。大きな構造問題があるとき低価値な細部でレビューを溢れさせない。長い化粧メモより、確信の高い少数コメントを優先。
+Prioritize structural code-quality regressions and missed simplifications first, then spaghetti and branching complexity, then boundary, type, and file-size concerns, then smaller modularity and legibility issues.
 
-## 承認の基準
+## Approval Bar
 
-振る舞いが正しそうだからといって承認しない。次を推定的ブロッカーとして扱う（著者が正当化できない限り）: PR がコード柔道で削除できる付随複雑さを大量に残す。ファイルを 1000 行未満から 1000 行超に押す。既存フローを絡める即席分岐を追加。機能チェックを共有コードに散らす。不要な抽象・ラッパー・キャストだらけ契約を追加。明確な正規の居場所があるのに既存ヘルパーを重複または誤レイヤーに置く。これらに当てはまらなければ、明示的で actionable なフィードバックを残し、きれいな分解を推す。
+Do not approve merely because behavior seems correct. Treat these as presumptive blockers unless the author can justify them: the PR keeps a lot of incidental complexity when a code-judo move would delete it. Pushes a file from below 1000 lines to above 1000 lines. Adds ad-hoc branching that tangles an existing flow. Scatters feature checks across shared code. Adds an unnecessary abstraction, wrapper, or cast-heavy contract, or duplicates an existing helper or puts logic in the wrong layer when there is a clear canonical home. If those conditions are not met, leave explicit, actionable feedback and push for a cleaner decomposition.
 
-## レビューのトーン
+## Review Tone
 
-品質について直接的・真剣・厳格。無礼にならないが、大きな保守性問題を穏やかな提案に弱めない。コードベースを汚しているならそう言う。明らかな劇的単純化を見逃したならそれも言う。「名前を変えれば」で満足しない。本当の問題が構造的なとき。
+Be direct, serious, and demanding about quality. Do not be rude, but do not soften major maintainability issues into mild suggestions. If the code is making the codebase messier, say so. If the implementation missed an obvious dramatic simplification, say that too. Do not be satisfied with "maybe rename this" when the real issue is structural.

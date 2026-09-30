@@ -1,106 +1,110 @@
 ---
 name: interrogate
-description: "「interrogate」「adversarial review」「multi-model review」「challenge this」「stress test this code」「find blind spots」「tear this apart」に使用。複数 LLM レビュアーが独立した角度から変更に挑戦する。"
+description: "Use for \"interrogate\", \"adversarial review\", \"multi-model review\", \"challenge this\", \"stress test this code\", \"find blind spots\", or \"tear this apart\". Multiple LLM reviewers challenge changes from independent angles."
 disable-model-invocation: true
 ---
 
 # Interrogate
 
-設定済みモデルごとにレビュアーを 1 人起動し、コード変更を敵対的にレビューする。各モデルは同じプロンプトとルーブリック。敵対的シグナルは割り当てペルソナではなくモデル多様性から来る。モデルは盲点、事前分布、推論パターンが異なる。モデル間の一致は高信頼シグナル。単独モデルの所見は読む価値はあるが信頼は低い。
+Spawn one reviewer per configured model to adversarially review code changes. Each model gets the same prompt and rubric. The adversarial signal comes from model diversity, not assigned personas.
 
-成果物は統合判定。変更を自動適用しない。
+The deliverable is a synthesized verdict. Do NOT auto-apply changes.
 
-## ステップ 1: スコープを決める
+## Step 1, Determine Scope
 
-コンテキストからレビュー対象を特定:
+Identify what to review from context:
 
-- ユーザーが特定ファイルや diff を指していればそれを使う
-- 機能ブランチ上なら `git diff main...HEAD`（または適切なベースブランチ）で変更セット全体
-- ユーザーメッセージが最近の作業を参照していれば関連ファイルを集める
+- If the user points at specific files or a diff, use that
+- If on a feature branch, run `git diff main...HEAD` (or the appropriate base branch) for the full changeset
+- If the user's message references recent work, gather the relevant files
 
-diff（またはファイル内容）と、レビュアーがコードを理解するのに要る周辺コンテキストファイルをパッケージする。
+Package the diff (or file contents) plus any surrounding context files the reviewers need to understand the code.
 
-## ステップ 2: 意図を述べる
+## Step 2, State the Intent
 
-レビュアーを起動する前に意図を明示する。このコードは何を達成しようとしているか。次から導く:
+Before spawning reviewers, state the intent explicitly. Derive this from:
 
-- ユーザーメッセージ
-- コミットメッセージ
-- PR 説明（あれば）
-- コード自体
+- The user's message
+- Commit messages
+- PR description if one exists
+- The code itself
 
-1 段落で明確に書く。レビュアーは意図そのものが正しいかではなく、意図をうまく達成しているかに挑戦する。意図が不明なら進む前にユーザーに聞く。
+Write one clear paragraph. If you're unsure about the intent, ask the user before proceeding.
 
-## ステップ 3: レビュアーを起動する
+## Step 3, Spawn Reviewers
 
-設定済み interrogate リストのモデルごとに 1 人、1 メッセージで起動（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。
+Launch all reviewers in a single message using the Task tool. Use the `interrogate reviewers` line in `~/.cursor/rules/pstack-models.mdc`, one reviewer per entry, extending or shrinking the Reviewer A/B/C labels below to the configured entry count. If the rule or that line is missing, use the table defaults.
 
-各レビュアー:
+| Subagent | Default model |
+|----------|---------------|
+| Reviewer A | `claude-opus-5-5-max` |
+| Reviewer B | `gpt-5.6-sol-max` |
+| Reviewer C | `grok-4.7-xhigh-fast` |
+
+For each reviewer:
 - `subagent_type`: `generalPurpose`
-- `model`: 設定リストの 1 モデル
+- `model`: the configured `interrogate reviewers` entry, or the table default with no configured line. For an `auto` or `inherit-parent` entry, omit `model` so that reviewer runs on the parent model.
 - `readonly`: `true`
 
-設定 slug がサブエージェント起動時に解決不能と拒否されたら、Task ツールのエラーメッセージの有効 slug を確認し、最も近い同等物（同ファミリの最高推論ティアを優先）を選び、有効 slug で起動し、設定デフォルト更新用に別 PR を開く。slug 問題でレビューをブロックしない。
+If the Task tool rejects a configured entry, run that reviewer on the table default of its family and say so. Families go by prefix: `claude-*`, `gpt-*`, and `grok-*`. With no family match, use Reviewer A's default. If it rejects a table default, check the valid slugs in the Task tool's error message, pick the closest equivalent (prefer the highest-reasoning tier of the same family), spawn with it, and open a separate PR to update the default table. Do not block the review on the slug issue. Never treat an alias entry as a rejected slug or apply either fallback to it.
 
-`references/reviewer-prompt.md` を読み、テンプレートに次を埋める:
-1. 述べた意図
-2. diff またはファイル内容
-3. `references/rubric.md` のレビュールーブリック
-4. `references/code-quality-review.md` のコード品質レンズ
+Read `references/reviewer-prompt.md` and fill in the template with:
+1. The stated intent
+2. The diff or file contents
+3. The review rubric from `references/rubric.md`
+4. The code-quality lens from `references/code-quality-review.md`
 
-同じ埋めたテンプレートを全レビュアーに渡す。全モデルがコード品質レンズを適用する。
+The same filled template goes to all reviewers, so every model applies the code-quality lens.
 
-各レビュアーはプロンプトテンプレートで述べた構造化所見を産出する。
+## Step 4, Synthesize
 
-## ステップ 4: 統合する
+As results come back, build a unified picture:
 
-結果が戻るにつぎ、統一像を構築:
+1. **Parse all findings** from the reviewers
+2. **Identify consensus**. Findings raised by 2+ models independently are highest signal.
+3. **Identify lone-model findings**. Still worth reading, but weight accordingly.
+4. **Deduplicate**. Different models may describe the same issue differently. Merge these and note which models raised it.
+5. **Note disagreements**. If one model flags something and another explicitly says the opposite, that's useful context for the verdict.
 
-1. **全レビュアーの所見をパース**
-2. **合意を特定**。2 モデル以上が独立に挙げた所見は最高シグナル。
-3. **単独モデルの所見を特定**。読む価値はあるが重み付けする。
-4. **重複排除**。異なるモデルが同じ問題を違う言い方で述べることがある。マージし、どのモデルが挙げたか記す。
-5. **不一致を記す**。1 モデルが旗を立て、別が明示的に反対するのは判定に有用なコンテキスト。
+## Step 5, Lead Judgment
 
-## ステップ 5: リード判断
+You are the lead reviewer, a pragmatic senior engineer, not a neutral aggregator.
 
-あなたはリードレビュアー。実務的なシニアエンジニアであり、中立な集約器ではない。
+Read `references/lead-judgment.md` for the full framework.
 
-`references/lead-judgment.md` でフルフレームワークを読む。レビュアーはコードベースのスライスしか見ていない。あなたはフルコンテキスト（目標、制約、タイムライン、既に検討したトレードオフ）を持つ。それを積極的に使う。
+Categorize every finding using these buckets:
 
-各所見を次のバケットに分類:
+- **Act on**. Real issues affecting correctness, security, or maintainability given the actual goals. These would block a real PR.
+- **Consider**. Legitimate points, but you're not sure they outweigh the cost of addressing them right now. Worth the user's attention.
+- **Noted**. Technically valid but not actionable. Context-dependent, premature optimization, or low-impact given the current stage.
+- **Dismissed**. Wrong, nitpicky, or missing context. Brief explanation why.
 
-- **Act on**。実際の目標を踏まえ、正確性・セキュリティ・保守性に影響する本物の問題。実 PR ではブロックする。
-- **Consider**。正当な点だが、今対処するコストに見合うか不明。ユーザーの注意に値する。
-- **Noted**。技術的には正しいが actionable でない。文脈依存、時期尚早の最適化、現段階では影響小。
-- **Dismissed**。誤り、細かすぎる、コンテキスト欠如。分類理由を短く。
+For each finding, include:
+- Which model(s) raised it
+- The category (act on / consider / noted / dismissed)
+- A one-line rationale for the categorization
 
-各所見に含める:
-- 挙げたモデル
-- カテゴリ（act on / consider / noted / dismissed）
-- 分類の 1 行根拠
+## Output Format
 
-## 出力形式
-
-次の構造で判定を提示:
+Present the verdict in this structure:
 
 ### Intent
-> [ステップ 2 の意図段落]
+> [The stated intent paragraph from Step 2]
 
 ### Reviewers
-各行 `- <model name>: [N findings]` の形式
+- Reviewer [label]: [model name], [N findings] (one bullet per reviewer)
 
 ### Act On
-[対処すべき所見。各: 説明、挙げたモデル、なぜ重要か。]
+[Findings that should be addressed. For each: description, which models raised it, why it matters.]
 
 ### Consider
-[考える価値のある所見。各: 説明、挙げたモデル、関わるトレードオフ。]
+[Findings worth thinking about. For each: description, which models raised it, tradeoff involved.]
 
 ### Noted
-[正当だが優先度低。短いリスト。]
+[Valid but low-priority. Brief list.]
 
 ### Dismissed
-[却下した所見と短い根拠。ユーザーが判断を上書きできるよう、何をフィルタしたか示す。]
+[Rejected findings with brief rationale.]
 
 ### Agreement Map
-[モデルがどこで一致し、どこで分岐し、そのパターンが何を示すか]
+[Where did models agree, where did they diverge, and what does the pattern of agreement/disagreement tell us?]
