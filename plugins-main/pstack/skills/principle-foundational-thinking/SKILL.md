@@ -1,19 +1,21 @@
 ---
 name: principle-foundational-thinking
-description: "ロジックを書く前に適用する: コア型とデータ構造の選択、スキャフォールド対機能の作業順序、並行アクターが何を共有するかの問い。下流のコードが自明になるよう、まずデータ構造を正しくする。"
+description: "Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature work, asking what concurrent actors share. Get the data structures right so downstream code becomes obvious."
 disable-model-invocation: true
 ---
 
-# 基礎的思考
+# Foundational Thinking
 
-**構造的決定**はオプション価値を守る。**コードレベルの決定**はシンプルさを守る。過剰設計はしばしば扉を閉じる早すぎる決定である。正しい基礎的データ構造は扉を開いたままにする。
+**Structural decisions** protect option value. **Code-level decisions** protect simplicity.
 
-**データ構造を先に。** ロジックを書く前にデータ形状を正しくする。正しい形状は下流のコードを自明にする。コア型を早く定義し、すべてのアクセスパターンを追跡し、支配的なパスに合う構造を選ぶ。遅い段階でのデータ構造変更は書き直しである。早ければ、しばしば1行の diff である。
+**Data structures first.** Get the data shape right before writing logic. Define core types early, trace every access pattern, and choose structures that match the dominant paths.
 
-コードレベルでは、すべての行ではなく構造を DRY にする。型とデータモデルは収束すべきである。3つの類似文は、早すぎる抽象化よりまだ優れている。巧妙さより明示を優先する。行数ではなく、振る舞いとエッジケースをテストする。
+At code level, DRY the structure, not every line. Types and data models should converge. Three similar statements still beat a premature abstraction. Prefer explicit over clever. Test behavior and edge cases, not line counts.
 
-**並行性の系:** アクター間で状態を共有する前に、「別のアクターがこれを並行して変更したらどうなるか？」と問う。「何も起きない」でなければ、隔離する。
+**Concurrency corollary.** Before sharing state between actors, ask "what happens if another actor modifies this concurrently?" If not "nothing", isolate.
 
-**スキャフォールドを先に。** 後続のすべてのフェーズに役立つものは先に行う。「後続のすべてのフェーズがこれの存在から恩恵を受けるか？」と問う。CI、リンティング、テスト基盤、共有型はスキャフォールドである。オプション価値のために順序付ける: 機能の前にセットアップ、修正の前にテスト。コミットは小さく単一目的に保つ。
+**Scaffold first.** If something helps every later phase, do it first. Ask "does every subsequent phase benefit from this existing?" CI, linting, test infrastructure, and shared types are scaffold. Sequence for option value: setup before features, tests before fixes. Keep commits small and single-purpose.
 
-スキャフォールディングの前に削減が来る: 基盤を敷く前に死に重量を除去する。
+Each increment should land a coherent abstraction or deepen one that exists. Do not spread a new capability across callers as special-case coordination.
+
+Subtraction comes before scaffolding. Remove dead code first, then lay foundations.
