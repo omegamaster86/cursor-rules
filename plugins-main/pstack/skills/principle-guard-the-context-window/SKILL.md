@@ -1,17 +1,16 @@
 ---
 name: principle-guard-the-context-window
-description: "コンテキストが満杯になりつつあるときに適用する: 大きな出力、長いファイル、繰り返し読み取り、ファンアウト計画。大量データはサブエージェントに振り、メインスレッドには生ペイロードではなく要約を残す。"
+description: "Apply when context is filling up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents; keep summaries in the main thread, not raw payloads."
 disable-model-invocation: true
 ---
 
-# コンテキストウィンドウを守る
+# Guard the Context Window
 
-コンテキストウィンドウは有限であり、セッション内では再生できない。入るすべてのトークンはその場所に値するべきである。
+The context window is finite and non-renewable within a session. Every token should be worth its cost.
 
-**理由:** コンテキストオーバーフローは推論品質を低下させ、圧縮アーティファクトを生み、進捗を止める。計算や時間とは異なり、セッション内で使ったコンテキストは回収できない。
+**Why:** Context overflow degrades reasoning quality, creates compression artifacts, and halts progress.
 
-**パターン:**
-- **大きなペイロードを隔離する。** 冗長な出力、スクリーンショット、大きなドキュメントをサブエージェントに振る。メインコンテキストには生データではなく要約を入れる。
-- **使わないものは読まない。** 関連性に基づいて選択的に読む。現在のタスクに不要なファイルはスキップする。
-- **頻繁に使うコンテンツはインラインに保つ。** 毎回の呼び出しで使うテンプレートと参照は、毎回読み取りコストがかかる別ファイルではなくスキルファイルに置く。
-- **フェーズのサイズとスコープの上限を設ける。** フェーズごとのファイル数を制限し、ターン予算を設定し、メカニズムコストを見積もる。
+**Pattern:**
+- **Isolate large payloads.** Route verbose outputs, screenshots, and large documents to subagents. The main context gets summaries, not raw data.
+- **Keep frequently used content inline.** Templates and references used on every invocation belong in the skill file, not in separate files that cost a read each time.
+- **Size phases and cap scope.** Limit files per phase, set turn budgets, account for mechanism costs.
