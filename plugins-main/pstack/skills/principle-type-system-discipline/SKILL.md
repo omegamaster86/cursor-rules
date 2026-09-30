@@ -1,29 +1,31 @@
 ---
 name: principle-type-system-discipline
-description: "型の設計、関数シグネチャのレビュー、静的型付け言語でのコード記述時に適用する。不正な状態を表現不能にし、意味的プリミティブにブランドを付け、境界で外部データをパースし、コンパイラに嘘をつかない、バリアントを網羅し、権威あるスキーマから導出する。"
+description: "Apply when designing types, reviewing a function signature, or writing code in any statically-typed language. Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries, refuse to lie to the compiler, exhaust variants, derive from authoritative schemas."
 disable-model-invocation: true
 ---
 
-# 型システムの規律
+# Type System Discipline
 
-型チェッカーは証明アシスタントである。コンパイル時に不可能な状態、不一致のプリミティブ、未処理のバリアントを排除するために使う。ランタイムデータとして通したものは、コンパイラが止められたランタイム障害になる。
+The type checker is a proof assistant. Use it to eliminate impossible states, mismatched primitives, and unhandled variants at compile time. A case the types let you ignore becomes a runtime failure the compiler could have stopped. Prefer defining errors and special cases out of existence over proliferating handlers. Unrepresentable states, total functions, and interface redesign (the patterns below) are the tools.
 
-あらゆる型付き言語に適用する。`typescript-best-practices` のようなスキルが特定の構文に具体化する。
+Applies to any typed language. Skills like `typescript-best-practices` ground it in specific syntax.
 
-**パターン:**
+**The patterns:**
 
-- **不正な状態を表現不能にする。** バリアントを和型としてモデル化する: TypeScript の判別共用体、Rust/Swift/Kotlin のペイロード付き enum、Scala の sealed class、Haskell/OCaml の ADT。矛盾する組み合わせがコンパイルするオプショナルフィールドの袋として状態をモデル化しない。名前を付ける価値のある微妙なアンチパターン: `{ completed: boolean; completedAt?: Date }` は `completed: true; completedAt: undefined` を許容し、無意味である。`completedAt !== null` のような単一のソースから boolean を導出するか、`{ kind: 'open' } | { kind: 'done'; at: Date }` のようにバリアントを明示的にモデル化する。バグが「待って、この組み合わせは実際に起こりうるのか？」と問いかけるなら、型が緩すぎる。
-- **意味的プリミティブにブランドを付ける。** `UserId` と `OrderId` は下層では文字列だが、交換可能であってはならない。Rust の newtype、Swift の opaque type、Kotlin の value class、Haskell の phantom type、TypeScript の branded intersection。作成時に一度検証し、下流では型を信頼する。
-- **外部データはパースするまで型なし。** RPC ペイロード、JSON、IPC メッセージ、CLI 引数、設定ファイル、環境変数、データベース行。すべての境界に、非構造化入力を型付きモデルに変えるパース関数を置く。検証をどこに置くかは **boundary-discipline** 原則スキルを参照。
-- **型システムに嘘をつかない。** キャスト、unsafe な強制変換、コンパイラをバイパスするアサーション関数は、待機中のランタイムクラッシュである。コンパイラが事実を証明できないなら、証明する（検証、絞り込み、モデルの洗練）か、キャストが危険であることを受け入れる。今日埋めたキャストは、来週書くポストモーテムである。
-- **網羅的マッチングはコンパイラの仕事。** 和型にマッチする際、新しいバリアントが処理なしで追加されたらコンパイルが失敗しなければならない。言語が提供するイディオムを使う: TypeScript の `never` 型バインディング、Rust の注釈なし `match`、Haskell の `-Wincomplete-patterns`、Kotlin の sealed class マッチ網羅性。
-- **権威あるスキーマから型を導出する。** protocol buffer、OpenAPI spec、GraphQL スキーマ、データベースマイグレーション、デザインシステムトークンファイルが形状を定義している場合、並行の型を手作りするのではなくそこから導出する。手動の重複はドリフトする。**encode-lessons-in-structure** 原則スキルを参照。
-- **ランタイムよりコンパイル時を優先する。** すべてのランタイムアサーション、null チェック、`instanceof` は、型システムが重みを担っていないことを認めている。チェックを型に押し上げる。
+- **Make illegal states unrepresentable.** Model variants as sum types: discriminated unions in TypeScript, enums with payloads in Rust/Swift/Kotlin, sealed classes in Scala, ADTs in Haskell/OCaml. Don't model state as a bag of optional fields where contradictory combinations compile. A subtle anti-pattern: `{ completed: boolean; completedAt?: Date }` admits `completed: true; completedAt: undefined`, which is meaningless. Derive the boolean from a single source like `completedAt !== null`, or model the variants explicitly as `{ kind: 'open' } | { kind: 'done'; at: Date }`. If a bug forces the question "wait, can this combination actually happen?", the type is too loose.
+- **Types are constructions, not restrictions.** Build the type up from the values you want instead of carving them out of a looser type with checks. The invariant that seems to need a refinement type is usually a construction away. A non-empty list is a head plus a rest, not a list with a length check. A valid time range is a start plus a duration, not two timestamps you must keep ordered. No representation is privileged. A list of pairs is an even-length list if you interpret it that way, so choose the shape that cannot build the illegal value and expose the interface callers need on top.
+- **Brand semantic primitives.** `UserId` and `OrderId` are strings underneath but should not be interchangeable. Newtypes in Rust, opaque types in Swift, value classes in Kotlin, phantom types in Haskell, branded intersections in TypeScript. Validate once at creation, trust the type downstream.
+- **External data is untyped until parsed.** RPC payloads, JSON, IPC messages, CLI args, config files, environment variables, database rows. Have a parse function at every boundary that turns unstructured input into the typed model. See the **boundary-discipline** principle skill for where to put validation.
+- **Don't lie to the type system.** Casts, unsafe coercions, and assertion functions that bypass the compiler are latent runtime crashes. If the compiler can't prove a fact, prove it (validate, narrow, refine the model) or accept that the cast is a hazard.
+- **Exhaustive matching is the compiler's job.** When you match on a sum type, the compiler must fail compilation if a new variant is added without handling. Use the idiom your language provides: `never`-typed binding in TypeScript, unannotated `match` in Rust, `-Wincomplete-patterns` in Haskell, sealed-class match exhaustiveness in Kotlin.
+- **Derive types from authoritative schemas.** When a protocol buffer, OpenAPI spec, GraphQL schema, database migration, or design-system token file defines a shape, derive from it instead of hand-rolling a parallel type. See the **encode-lessons-in-structure** principle skill.
+- **Strengthen a type only where partiality appears.** A runtime assertion, null check, or "this should never happen" throw marks the place a type is too weak. Push that check up into the type. Then stop. The type system's job is to track the cases each use site must handle, not to describe the data as precisely as possible. Prefer total functions. `sum` of an empty list is 0, so it takes the plain list. `head` of an empty list has no answer, so it demands the non-empty one.
 
-**テスト:**
+**The tests:**
 
-- 「このフィールドの組み合わせがいつ有効か説明するコメントを書けるか？」書けるなら型が緩すぎる。和型に分割する。
-- 「2つの関数引数がプリミティブ型を共有しているが、意味が異なるか？」ブランドを付ける。
-- 「この `any`、この `as`、この `assertNotNull` はどこから来たか？」境界まで遡り、そこで検証する。
-- 「来月新しいバリアントが追加されたら、コンパイラは次のエージェントにケースを追加する場所を教えるか？」いいえなら、マッチが網羅的でない。
-- 「この型は他のファイルが所有する形状を重複しているか？」導出する。
+- "Can I write a comment explaining when this combination of fields is valid?" If yes, the type is too loose. Split it into a sum type.
+- "Do two of my function arguments share a primitive type but mean different things?" Brand them.
+- "Where did this `any`, this `as`, this `assertNotNull` come from?" Trace it to the boundary and validate there instead.
+- "If a new variant is added next month, will the compiler tell the next agent where to add a case?" If no, the match isn't exhaustive.
+- "Is this type duplicating a shape another file owns?" Derive instead.
+- "Am I strengthening this type to keep an operation total, or just to be more precise?" If nothing would otherwise panic, keep the plain type.
