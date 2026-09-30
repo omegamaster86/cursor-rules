@@ -8,7 +8,7 @@ alwaysApply: true
 ## Task `model` で使える model
 
 - `inherit`（親モデル継承 — runner には使わない）
-- `claude-opus-5-thinking-medium`
+- `claude-opus-5.5-thinking-medium`
 - `claude-sonnet-5-thinking-medium`
 - `composer-2.5`
 - `composer-2.5-fast`
@@ -25,6 +25,8 @@ judgment and prose: composer-2.5
 how explorer: composer-2.5
 how explainer: composer-2.5
 how critics: composer-2.5, composer-2.5, composer-2.5
+why investigators: composer-2.5
+why synthesizer: claude-opus-5.5-thinking-medium
 reflect tooling: composer-2.5
 reflect judgment, divergent, synthesizer: composer-2.5
 # Task API 有効 slug のみ。旧名（gpt-5.5, grok-4.5, claude-sonnet-5-medium 等）は inherit 落ちする。
@@ -33,20 +35,9 @@ architect runners: composer-2.5, cursor-grok-4.5-medium, claude-opus-5-thinking-
 review orchestrator grok: grok-4.5
 review orchestrator sonnet correctness: claude-sonnet-5-medium
 review orchestrator sonnet quality: claude-sonnet-5-medium
+swarm workers: composer-2.5
 
+# 並列設計 bakeoff: multi-agent-candidates / architect runners。カバレッジ・レース: swarm スキル。
+# モデル変更は /setup-forge スキルまたは本ファイルの手編集。
 
-<!-- feature, refactoring: composer-2.5-fast
-bug-fix: gpt-5.5-high-fast
-perf-issue: gpt-5.5-high-fast
-hillclimb: gpt-5.5-high-fast
-judgment and prose: claude-opus-4-8-thinking-xhigh
-how explorer: composer-2.5-fast
-how explainer: claude-opus-4-8-thinking-xhigh
-how critics: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
-why investigators: composer-2.5-fast
-why synthesizer: claude-opus-4-8-thinking-xhigh
-reflect tooling: composer-2.5-fast
-reflect judgment, divergent, synthesizer: claude-opus-4-8-thinking-xhigh
-arena runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast
-architect runners: claude-opus-4-8-thinking-xhigh, gpt-5.5-high-fast, composer-2.5-fast -->
 
