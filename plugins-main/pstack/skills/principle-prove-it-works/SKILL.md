@@ -1,33 +1,22 @@
 ---
 name: principle-prove-it-works
-description: "タスク完了後、完了宣言の前に適用する。代理指標、自己報告、「コンパイルできた」ではなく、実際の成果物に対して検証する（機能を実行し、実際の値を読み、diff を検査する）。"
+description: "Apply after completing a task, before declaring done. Verify against the real artifact (run the feature, read the actual value, inspect the diff), not a proxy, self-report, or 'it compiles.'"
 disable-model-invocation: true
 ---
 
-# 動作を証明する
+# Prove It Works
 
-すべてのタスク出力を、実物を直接チェックして検証する。代理指標、自己報告、「コンパイルできた」から推論しない。
+Verify every task output by checking the real thing directly. Do not infer from proxies, self-reports, or "it compiles."
 
-**理由:** 未検証の作業は正しさが不明である。間接的な検証（ファイルの mtime、出力の鮮度、エージェントの自己報告、キャッシュされたスクリーンショット）は直接観察より安く感じる。誤った推論に基づいて行動するコストは、ソースを確認するコストをはるかに上回る。
+**Why:** Unverified work has unknown correctness. Indirect verification (file mtimes, output freshness, agent self-reports, cached screenshots) feels cheaper than direct observation. Acting on a wrong inference costs far more than checking the source.
 
-**パターン:** 任意のタスク完了後、問う: 「これが実際に動くことをどう証明するか？」
+Check the real thing, not a proxy:
+- Check process liveness directly, not indirectly through derived state
+- Read the actual value, not a cached or derived representation
+- When verification fails, suspect the observation method before suspecting the system
 
-代理ではなく実物をチェックする:
-- 派生状態を間接的にではなく、プロセスの生存を直接チェックする
-- キャッシュや派生表現ではなく、実際の値を読む
-- 検証が失敗したら、システムを疑う前に観察方法を疑う
+## Script the check when you can
 
-コードと機能:
-1. ビルドする（必要だが十分ではない）
-2. 実行し、実際の機能パスを行使する
-3. チェーン全体を確認する: データは入力から出力まで流れるか？
-4. 統合では、通信パス全体をエンドツーエンドでテストする
+The strongest proof is a deterministic script that re-runs the same comparison, not a one-time eyeball. Write the script, run it, and keep its output as an artifact a reviewer can re-run instead of trusting your word.
 
-委譲: 自己報告ではなく成果物を信頼する。
-委譲された作業を検証するとき、委譲先の要約ではなく、実際の出力成果物（git diff、ファイル内容、ランタイム動作）を検査する。エージェントは意図したことを報告し、常に起きたことを報告するわけではない。
-
-## 可能ならチェックをスクリプト化する
-
-最強の証明は、同じ比較を再実行する決定論的スクリプトであり、一度きりの目視ではない。スクリプトを書き、実行し、レビュアーがあなたの言葉を信じる代わりに再実行できる成果物として出力を残す。新旧のコンパイル出力を比較するスクリプトは、一瞥では見逃すものを捉える。
-
-成果物を人間に見えるように保つ。大規模な移植やマイグレーションのように、後で監査可能な証跡が必要な大きく複雑な作業の場合のみコミットする（**show-me-your-work** スキル）。ほとんどの作業は見えることがあればよく、コミットは不要である。
+Keep the artifact visible for the human. Commit it only for large or complex work where the trail has to be auditable later, like a big port or migration (the **show-me-your-work** skill).
