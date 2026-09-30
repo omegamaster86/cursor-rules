@@ -1,16 +1,16 @@
 ---
 name: arena
-description: "同じタスクに N 個の並列候補を起動し、ベースを選び、敗者の最強部分をグラフトする。/arena、「arena this」「throw it in the arena」、非自明な成果物の 1 回試行が間違った形にロックインしうるときに使用。"
+description: "Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial artifact would lock in the wrong shape."
 disable-model-invocation: true
 ---
 
 # Arena
 
-同じタスクに N 個の並列試行を扇状展開する。各候補を端から端まで読む。最強をベースに選ぶ。他の最良アイデアをグラフトする。統合結果を検証する。
+Fan out N parallel attempts at the same task. Read every candidate end to end. Pick the strongest as the base. Graft the best ideas from the others into it. Verify the synthesized result.
 
-## 開始
+## Start
 
-何かを起動する前にフェーズごとに 1 項目の todolist を開く。arena は自律実行し、リストがフェーズの静かな消失を防ぐ。
+Open a todolist with one entry per phase before launching anything.
 
 1. Frame
 2. Fan out
@@ -19,53 +19,53 @@ disable-model-invocation: true
 5. Graft
 6. Verify
 
-## フェーズ A: 枠組み
+## Phase A: Frame
 
-N 候補は同じプロンプトを受ける。プロンプトが契約。何かを起動する前に正しくする。
+The N candidates will receive the same prompt, so the prompt is the contract.
 
-1. 各候補が産出する成果物を述べる。
-2. ルーブリックを導く。*この*タスクの成功の姿を述べ、3〜6 の具体的に採点可能な基準にする。具体: `--dry-run` フラグを追加し書き込みをスキップ。曖昧: `code is correct`。ルーブリックはフェーズ D の picker の道具。候補はタスクだけ見る。
-3. runner を選ぶ。デフォルトは設定済み arena リスト（デフォルト `claude-opus-4-8-thinking-xhigh`、`gpt-5.5-high-fast`、`composer-2.5-fast`）。複数設計方向をカバーするときは増やす。判断より生成に縛られる作業では同じモデルを N 回。
-4. 出力パスを割り当てる。各候補は独自の場所に書く（可能なら git worktree、そうでなければ `/tmp/arena-<slug>/candidate-<n>/`）。同じパスに N 候補が書くのは共有可変状態で、**separate-before-serializing-shared-state** 原則スキルのテストに失敗する。
+1. State the artifact each candidate is producing.
+2. Derive the rubric. State what success looks like for *this* task, then turn it into 3-6 concrete gradeable criteria. The rubric is the picker's tool in Phase D. Candidates only see the task.
+3. Pick the runners. Use the `arena runners` line in `~/.cursor/rules/pstack-models.mdc`. If the rule or that line is missing, default to one each on `claude-opus-5-5-max`, `gpt-5.6-sol-max`, `grok-4.7-xhigh-fast`. An `auto` or `inherit-parent` entry in this line or the cross-judge line means the parent model, so omit `model` for it. If the Task tool rejects a configured entry, run that seat on its family's default and say so. Families go by prefix: `claude-*`, `gpt-*`, and `grok-*`. With no family match, use `claude-opus-5-5-max`. If it rejects a default, use the closest valid slug of the same family from its error message. Spawn more when the arena covers multiple design directions. Same model N times when the work is generation-bound rather than judgment-sensitive.
+4. Assign output paths. Each candidate writes to its own location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`), per the **separate-before-serializing-shared-state** principle skill.
 
-## フェーズ B: 扇状展開
+## Phase B: Fan out
 
-1 メッセージで全 N サブエージェントを `run_in_background: true` で起動。各にタスク、共有土台へのパス、独自出力パス、成果物と短い根拠の両方を産出する指示。
+Spawn all N subagents in one message with `run_in_background: true`, each with the task, the path to the shared grounding, its own output path, and instructions to produce both the artifact and a short rationale.
 
-根拠は必須。なければ親は候補の構造が原理的か偶発か判別できず、フェーズ E のグラフトが信頼できない。各根拠は検討した代替と却下したものを名指す。
+Each rationale names the alternatives the candidate considered and what it rejected.
 
-候補が出力を産まないなら N-1 で進め、統合記録に dropout を記す。
+If a candidate fails to produce output, proceed with N-1 and note the dropout in the synthesis record.
 
-## フェーズ C: クロスジャッジ
+## Phase C: Cross-judge
 
-フェーズ B の全候補完了後、親と別モデルファミリで readonly ジャッジサブエージェントを 1 つ起動。ルーブリックとパスラベル付き候補を見せ、各基準を採点し、根拠付きでベースを推奨。候補自身とは並行せず、フェーズ D の親の読み取りと並行。候補がまだ書いている間に起動すると、ジャッジは部分または空の出力を見て dropout と報告する。
+After all Phase B candidates complete, choose one model from the `arena cross-judge pool` line in `~/.cursor/rules/pstack-models.mdc`. If the rule or that line is missing, choose from `claude-opus-5-5-max`, `gpt-5.6-sol-max`, `grok-4.7-xhigh-fast`. Prefer a different model family from the parent's. Spawn one readonly judge subagent on that model. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with the parent's reading in Phase D, not with the candidates themselves. Don't spawn the judge while candidates are still writing.
 
-## フェーズ D: ベースを選ぶ
+## Phase D: Pick a base
 
-選ぶ前に各候補を端から端まで読む。N 候補を流し読みすると、表面が最も馴染みに見える候補だけが浮かぶ。
+Read every candidate end to end before picking.
 
-ルーブリックの基準ごとに各候補を採点。全体の感触ではなく。クロスジャッジと比較。ベースで一致すれば選びの確認。不一致なら、どちらかが偏っているかルーブリックが曖昧。決める前に両方の根拠を読む。
+Score each candidate against the rubric criterion by criterion, not on holistic feel. Compare against the cross-judge. Agreement on the base confirms the pick. Disagreement means one of you is biased or the rubric was ambiguous. Read both rationales before deciding.
 
-将来のメンテナが不変条件を壊さず最も伸ばしやすい候補をベースに選ぶ。同点なら Laziness Protocol に従い、よりクリーンな境界かより小さい表面を優先。
+Pick the base on which candidate a future maintainer can extend most easily without breaking invariants. Prefer the cleaner boundary or smaller API when two feel tied, per the Laziness Protocol.
 
-選びと理由をベース成果物横の短い統合メモに記録。クロスジャッジの判定を含む。
+Record the pick and the reason in a short synthesis note alongside the base artifact, including the cross-judge's verdict.
 
-## フェーズ E: グラフト
+## Phase E: Graft
 
-各敗者候補をもう一度歩き、ベースに移植する価値があるものを特定。シグナルは通常候補あたり 1〜2 個であり、大部分ではない。
+Walk each losing candidate once more and identify what is worth porting into the base. The signal is usually one or two things per candidate, not most of it.
 
-各グラフトを手で折り込む（**redesign-from-first-principles** 原則スキル）。機械的に貼らない。結果は 1 つのメンタルモデルで一貫している必要がある。
+Fold each graft in by hand, per the **redesign-from-first-principles** principle skill. Don't paste mechanically. The result has to remain coherent under one mental model.
 
-何をグラフトし、どの候補から、何を却下しなぜかを記録。却下メモが記録の最高シグナル部分。読者は残したものだけでなく、検討して捨てたものから学ぶ。
+Record what was grafted, from which candidate, and what was rejected and why.
 
-N 候補が同じ形に収束するのは強い合意シグナル。記録に収束を書き、合意形を出荷。グラフト不要。N 候補が大きく分岐するならフェーズ A が仕様不足。平均化せず再枠組みして再実行。
+When N candidates converge on the same shape, that is a strong agreement signal. Note the convergence in the record and ship the consensus shape. No graft is needed. When N candidates wildly diverge, Phase A was under-specified. Reframe and re-run rather than averaging the divergence.
 
-## フェーズ F: 検証
+## Phase F: Verify
 
-統合成果物は他の出力と同じ厳密さで耐えなければならない（**prove-it-works** 原則スキル）。arena は合格券にならない。
+The synthesized artifact has to hold up under the same scrutiny as any other output, per the **prove-it-works** principle skill.
 
-検証が arena が捕まえなかった問題を表面化したら、フェーズ A が間違い（再枠組みして再実行）か、候補の 1 つが捕まえていてグラフトを見逃した（フェーズ E に戻る）。ごまかさない。
+If verification surfaces a problem the arena did not catch, either Phase A was wrong (re-frame and re-run) or one candidate caught it and you missed the graft (go back to Phase E). Don't paper over.
 
-## 成果物
+## Outputs
 
-統合成果物 1 つ。横に短い統合メモ。ベース、グラフト（元候補付き）、却下、dropout（あれば）、検証結果を名指す。
+One synthesized artifact. One short synthesis note alongside, naming the base, the grafts (with source candidate), the rejections, the dropouts if any, and the verification result.
