@@ -1,35 +1,35 @@
 ---
 name: recall
-description: "自分のチャット履歴・ライブ状態・共有記録（ユーザーレポート、過去の修正、インシデント）から最近の作業コンテキストを再構成し、現在状態の短いブリーフを返す。「X の作業を思い出して」「キャッチアップ」「何をしていたか」「どこまで進んだか」、作業開始・再開前に使用。"
+description: "Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting or resuming work."
 disable-model-invocation: true
 ---
 
 # Recall
 
-**作業を始めるか再開する前に、ユーザーの最近の作業コンテキストを再構築し、今どこにいるか・次に何をするかの短いカプセルを返す。**「X の作業を思い出して」「キャッチアップ」「何をしていたか」「どこまで進んだか」に使う。
+**Before you start or resume work, you rebuild the user's recent working context and hand back a tight capsule of where things stand now and what to do next.**
 
-短く、話題に沿って。スコープ内のスレッドに必要なものだけ読み、止める。重い読み取りは並列サブエージェントに扇状展開。メインスレッドは所見と最終ブリーフだけ保持する。
+Keep it tight and on-topic. Read only what the in-scope threads need, then stop.
 
-コンテキストは 2 つの記録にある。自分のチャット履歴に、何をしたか決めたか。共有記録に、同じコードの周りで別名で起きたこと: ユーザーが繰り返し報告する症状、出荷して戻された修正、本番でまだ鳴っているエラー。**why** スキルが検索するのはこの 2 つ目で、ソース管理、課題トラッカー、チャットと issue チャンネル、長文ドキュメント、エラートラッキングを横断する。長いバグの尾がある機能は物語の大半がここにある。トランスクリプトだけから再構成しない。
+Your context lives in two records. Your own chat history holds what you did and decided. The shared record holds everything that happened around the same code under other names: the symptoms users keep reporting, the fixes that shipped and got reverted, the errors still firing in prod. That second record is what the **why** skill searches, across source control, the issue tracker, chat and issue channels, long-form docs, and error tracking. A feature with a long bug tail keeps most of its story there, so don't reconstruct it from your transcripts alone.
 
-トランスクリプトは `~/.cursor/projects/<slug>/agent-transcripts/<uuid>/<uuid>.jsonl`。`<slug>` はワークスペースパスから先頭の `/` を除き、各 `/` を `-` にしたもの（`/Users/you/proj` → `Users-you-proj`）。各行が 1 チャットメッセージ。
+Transcripts live at `~/.cursor/projects/<slug>/agent-transcripts/<uuid>/<uuid>.jsonl`, where `<slug>` is the workspace path with the leading slash dropped and each "/" turned into "-" (so `/Users/you/proj` becomes `Users-you-proj`). Every line is one chat message.
 
-1. 分類してルーティング。再開する特定の過去チャット 1 つは `session-pickup` プレイブックで、ここではない。習慣を永続スキルにするのは `automate-me`。人が読める作業要約は別タスク。Recall は行動前に最近のチャット横断で作業コンテキストを読み込む。ユーザーが完全な状態カプセル（パス、ブランチ、変更内容）を既に渡していればそれを使い、マイニングはスキップ。
-2. 検索前にスコープを固定。「最近」は実際の範囲（デフォルト直近 7 日）、名前のあるトピック、ワークスペース（デフォルトはアクティブ。頼まれない限り他プロジェクトのトランスクリプトは読まない）。スコープを言い返す。「すべて」を静かに「最近 N」に置き換えない。
-3. チャット履歴に扇状展開。トランスクリプト検索は雑用なので、速く安いモデルで並列サブエージェントを起動し、コーパスをスライスに分ける。各サブエージェントに、実変更時刻（`ls -t`）で候補を並べ、UUID 名で並べないこと、まずトピックを grep してマッチするチャットだけ、関連領域だけ読むこと、現在のチャットと明らかなノイズ（subagent、eval、test チャット）をスキップすることを指示。各チャットごとに同じスキーマで 1 ブロック返す: トピック、ユーザーの目標、決定、未解決スレッド、つまずきと修正、成果物（PR、チケット、ブランチ）。チャット UUID を引用。チャットが 1〜2 個なら扇状展開をスキップして直接検索。生トランスクリプトはサブエージェントに留まる。メインスレッドは所見のみ。
-4. トピックが機能、ファイル、サブシステム、領域、バグを名指しするときは共有記録を必ずスイープ。デフォルトであり、判断事項ではない。「X の自分の作業」でも免除されない。名前のある対象には自分のトランスクリプトに見えない履歴があり、それがスイープの目的。**why** スキルのソース調査員に渡すが、質問は「なぜこう作られたか」から「現状は何か、試して持たなかったことは何か、ユーザーはまだ何を報告しているか」に寄せる。ソースごとのプレイブックを再利用し、チャット履歴マイニングと並列で調査員を走らせ、姿勢を継承: ソースごとに調査員 1 人、null 結果も所見、利用できない MCP はスキップして明記。戻りをブリーフに織り込む。名前のない対象の純粋な活動回想（「今週何をしたか」）だけスキップ。自分の履歴とライブ状態が答えの全部。
-5. ライブ状態で検証。トランスクリプトや古いチケットは履歴であり、現在の真実ではない。マイニングとスイープで出た PR、ブランチ、チケットを `git` と `gh` で確認。エージェントが実際に何をしたか（実行したツール、読んだファイル、遭遇したエラー）が答えの要なら、トリミングされたローカルコピーではなくフルトランスクリプトを読む。
-6. 下記契約でブリーフを書く。スレッドごとにグループ化。名前のあるトピックに留まる。
+1. Classify, then route. One specific prior chat to resume is the `session-pickup` playbook, not this. Turning habits into a durable skill is `automate-me`. A human-readable summary of your work is a different task. Recall loads working context across recent chats before you act. If the user already gave you a full state capsule (paths, branch, the change), use it and skip the mining.
+2. Lock the scope before searching. Pin the window ("recent" is a real range, default the last 7 days), the topic if named, and the workspace (default the active one. Never read another project's transcripts without being asked). State the scope back. Never quietly turn "all" into "recent N".
+3. Fan out across your chat history. Spawn parallel subagents on a fast, cheap model, each taking a slice of the corpus. Tell every subagent to order candidates by real modification time (`ls -t`) and never by UUID name, grep the topic first and then read only the matching chats and only their relevant regions, and skip the current chat plus obvious noise (subagent, eval, and test chats). Each returns the same schema, one block per chat: topic, the user's goal, decisions, open threads, struggles and corrections, and artifacts (PRs, tickets, branches), each citing the chat UUID. For one or two chats, skip the fan-out and search directly. The raw transcripts stay in the subagents. The main thread gets only their findings.
+4. Sweep the shared record whenever the topic names a feature, file, subsystem, area, or bug. This is the default, not a judgment call, and "my work on X" does not exempt it. Hand it to the **why** skill's source investigators, but steer their question from "why was this built this way" to "what's the current state, what's been tried and didn't hold, and what are users still reporting". Reuse its per-source playbooks, run the investigators in parallel with the chat-history mining, and inherit its posture: one investigator per source, null results are findings, skip an unavailable MCP and say so. Fold what comes back into the brief. Skip this step only for pure activity recall with no named target ("what did I do this week"), where your own history and live state are the entire answer.
+5. Verify against live state. Take the PRs, branches, and tickets that the mining and the sweep surfaced and check them with `git` and `gh`. When the answer hinges on what an agent actually did (the tools it ran, files it read, errors it hit), read the full transcript, not just a trimmed local copy.
+6. Write the brief to the contract below. Group by thread. Stay on the named topic.
 
-## 出力契約
+## Output contract
 
-カプセルを先頭に、次にスレッド状態、問題、次の一手。詳細は下か削る。
+Lead with the capsule, then the thread status, then the problems, then the next move. Deeper detail goes below or gets cut.
 
-- **カプセル。** 最大 5 箇条。この作業が何で全体としてどこにいるか。
-- **スレッド。** 各 1 行。ステータスタグはちょうど 1 つ: `[merged #N]`、`[open PR #N]`、`[in flight <branch>]`、`[verified, uncommitted]`、`[reverted #N]`、`[planned, not started]`。タグのないスレッドは未完了。タグを付ける。
-- **問題。** 最大 5、繰り返しのもの。ユーザーが繰り返し報告する症状と、出荷して戻された修正を含め、次の試行が前回の失敗地点から始まるようにする。
-- **次の一手。** 最も有用な次の行動を 1 つ、具体に。
+- **Capsule.** At most 5 bullets. What this work is and where it stands overall.
+- **Threads.** One line each, prefixed with exactly one status tag: `[merged #N]`, `[open PR #N]`, `[in flight <branch>]`, `[verified, uncommitted]`, `[reverted #N]`, or `[planned, not started]`. A thread with no tag is not done yet, so tag it.
+- **Problems.** At most 5, the recurring ones. Include the symptoms users keep reporting and any fix that shipped and was reverted, so the next attempt starts where the last one failed.
+- **Next move.** The single most useful next action, concrete.
 
-隣接機能やチケットは、これをブロックしない限り外す。カプセルとスレッド行が画面を超えたら、スレッドを削る前に詳細を削る。ブリーフは **unslop** スキルで書く。チャット所見は UUID、共有記録はソース（PR #、チケット ID、チャット permalink、エラートラッカー issue）で引用。公開出力の前にプライベートコンテキストをサニタイズする。
+An adjacent feature or ticket stays out unless it blocks this one. When the capsule and thread lines outgrow a screen, cut detail before you cut threads. Write the brief through the **unslop** skill, cite chat findings by UUID and shared-record findings by their source (PR #, ticket ID, chat permalink, error-tracker issue), and sanitize private context before any public output.
 
-**返答:** 上記契約に沿ったブリーフ。
+**Reply:** the brief, to the contract above.
