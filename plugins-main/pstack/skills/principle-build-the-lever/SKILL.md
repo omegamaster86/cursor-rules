@@ -1,23 +1,23 @@
 ---
 name: principle-build-the-lever
-description: "一括作業だけでなく、あらゆる非自明な作業（編集、マイグレーション、分析、チェック）に適用する。手作業ではなく、作業を実行または証明するツール（codemod、スクリプト、ジェネレーター、またはサブエージェントが従うスキル）を構築する。ツールはレビュアーが再実行できる成果物である。"
+description: "Apply to any non-trivial work, not just bulk work: edits, migrations, analyses, checks. Build the tool that does it or proves it (codemod, script, generator, or a skill your subagents follow) instead of working by hand. The tool is the artifact a reviewer can rerun."
 disable-model-invocation: true
 ---
-# レバーを構築する
+# Build the Lever
 
-作業が自明でない場合は、手作業で行うのではなく、それを実行するツールを構築する。
+When the work isn't trivial, build the tool that does it instead of doing it by hand.
 
-**理由:** 2つの利点がある。スループット: codemod、ジェネレーター、スクリプトは毎回同じ方法で作業を行い、無料で再実行できる。信頼性: ツールはレビュアーが読んで再実行して作業を確認できる1つの成果物である。手作業の変更は、やり直すことでしか再検証できない。決定論的なスクリプトは「信じてください」を「これを実行してください」に変える。
+**Why:** Two payoffs. Throughput: a codemod, generator, or script does the work the same way every time and reruns for free. Confidence: the tool is one artifact a reviewer can read and rerun to check the work. Hand-done changes can only be re-verified by redoing them. A deterministic script turns "trust me" into "run this".
 
-**パターン:** デフォルトはレバーを構築すること。タスクが本当に自明で、一目でわかる数回の明らかな編集の場合のみスキップする。
+**Pattern:** Default to building the lever. Skip it only when the task is trivial, a couple of obvious edits you can see at a glance.
 
-- 最初の単位を手作業で行いレシピを学び、その後ツールを構築する。手作業版と差分を取って再実行することで証明する。レバーを安全に再実行できるようにする。レビュアーがそうするだろう。
-- 編集には codemod またはスクリプト、繰り返しファイルにはジェネレーター、分析には dump-to-sqlite クエリ、検証には再実行可能なチェック。
-- 決定論的なレバーはファンアウトに勝る。ツールが1パスですべての単位を処理できるなら、自分で実行する。スクリプトでできることを手作業で適用するために委譲を分散させない。
-- サブエージェントに作業を分散させる場合、レバーを全員が読むスキルとして書く: レシピ、検証契約、触ってはいけない境界を1つの成果物にまとめ、各委譲が毎回のプロンプトで再説明してドリフトするのを防ぐ。委譲先の書き込みスコープ外に置き、契約を静かに編集できないようにする。
-- この原則を適用するとファイルが生まれる。引用したのに diff に codemod、スクリプト、ジェネレーター、委譲スキルがなければ、適用していない。
-- 作業がセッションを超えて存続する場合はレバーをコミットし、次回はやり直すのではなく再実行する。
+- Do the first unit by hand to learn the recipe, then build the tool. Prove it by rerunning it on that unit and diffing against your hand-done version. Make the lever safe to rerun.
+- Codemod or script for edits, generator for repetitive files, a dump-to-sqlite query for analysis, a rerunnable check for verification.
+- A deterministic lever beats fan-out. If the tool can process every unit in one pass, run it yourself. Don't fan out delegates to hand-apply what a script can do.
+- When you fan work out to subagents, write the lever as a skill they all read: the recipe, the verification contract, and the do-not-touch fences in one artifact. Keep it outside the delegates' write scope so they can't quietly edit the contract.
+- Applying this principle produces a file. If you cited it and there is no codemod, script, generator, or delegate skill in the diff, you didn't apply it.
+- Commit the lever when the work outlives the session.
 
-**バランス:** 基準は反復性ではなく自明性である。レバーが作業を検証可能にするものであれば、一度きりの作業でもレバーに値する。[Laziness Protocol](../principle-laziness-protocol/SKILL.md) に従い、作業を実行または証明する最小のスクリプトを構築し、フレームワークは作らない。
+**Balance:** The bar is triviality, not repetition. A one-off still earns a lever when the lever is what makes the work checkable. Per the [Laziness Protocol](../principle-laziness-protocol/SKILL.md), build the smallest script that does or proves the job, never a framework.
 
-[Encode Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md) とは異なる。そちらは繰り返しの指示を永続的なガードレールにする。こちらは目の前の作業のスループットとレビュー可能性である。検証自体をスクリプト化するには [Prove It Works](../principle-prove-it-works/SKILL.md) を参照。
+Distinct from [Encode Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md), which makes a recurring instruction a durable guardrail. This is throughput and reviewability on the work in front of you. For scripting the verification itself, see [Prove It Works](../principle-prove-it-works/SKILL.md).
