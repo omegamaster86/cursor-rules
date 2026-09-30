@@ -1,20 +1,21 @@
 ---
 name: principle-subtract-before-you-add
-description: "追加、リファクタ、書き直しの順序付け時に適用する。まず死に重量、冗長なバリデータ、スタブ参照を除去し、その後より単純な基盤の上に構築する。"
+description: "Apply when sequencing an addition, refactor, or rewrite. Remove dead code, redundant validators, and stub references first, then build on the simpler base."
 disable-model-invocation: true
 ---
 
-# 追加する前に削減する
+# Subtract Before You Add
 
-システムを進化させるとき、まず複雑さを除去し、その後構築する。削除はより単純な基盤を与え、次の追加をより小さく、よりもろくなくする。
+When evolving a system, remove complexity first, then build.
 
-**理由:** 複雑なシステムへの追加は複雑さを複合する。先に除去すると表面積が減り、本質的構造が現れ、通常次の設計が自明になる。デフォルトは削減である。
+**Why:** Adding to a complex system compounds complexity. Removing first leaves less code, reveals the essential structure, and usually makes the next design obvious. Default to subtraction.
 
-**パターン:**
-- 構築の前に除去を順序付ける
-- 磨く前に切る（品質に投資する前に最小限に到達する）
-- 推測的エッジケースではなく、観測された使用向けに設計する
-- 仕様が要求する以上の推測的バリデータ、パーサー、ガードは作らない
-- 仕様外の機能はバリデータを引きずる。永続化、起動時リトライ、スキーママイグレーションはそれぞれ入力を守るガードを必要とする。
-- プロンプトを簡素化する（冗長な指示、過剰なテンプレートを除去する）
-- 参照に新しいコンテンツがなければ、スタブを残すのではなく削除する
+Make simplification a continual investment. Leave the design slightly simpler and more capable behind the same or smaller surface than you found it.
+
+**The pattern:**
+- Sequence removal before construction
+- Cut before you polish (get to the minimum before investing in quality)
+- Design for observed usage, not speculative edge cases
+- No speculative validators, parsers, or guards beyond what the spec demands
+- Simplify prompts (remove redundant instructions, excessive templates)
+- When a reference has no novel content, delete it rather than leaving a stub
