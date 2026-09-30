@@ -1,24 +1,31 @@
 ---
 name: typescript-best-practices
-description: TypeScript のベストプラクティス。.ts または .tsx ファイルを読む・編集するときに使用。
+description: TypeScript best practices. Use when reading or editing any .ts or .tsx file.
+paths: ["**/*.ts", "**/*.tsx"]
+disable-model-invocation: true
 ---
 
 # TypeScript best practices
 
-まず **type-system-discipline** 原則スキルを適用する。このスキルは TypeScript 構文に接地する。
+Apply the **type-system-discipline** principle skill first.
 
-| ルール | 要約 |
+| Rule | Summary |
 |------|---------|
-| 判別共用体 | `kind` リテラル判別子でバリアントをモデル化し、不可能な状態を表現できないようにする。optional フィールドの袋は使わない。 |
-| ブランド型 | `& { readonly __brand: "X" }` でプリミティブにブランドを付け、混同できないようにする。作成時に一度だけ検証。 |
-| `any` より `unknown` | 外部データは `unknown`。`any` は触れた箇所すべてで型チェックを無効化する。 |
-| `as` キャスト禁止 | 各 `as` は実行時クラッシュの待ち伏せ。検証後にのみキャスト。 |
-| 絞り込みの階層 | 判別子 switch > `in` 演算子 > `typeof`/`instanceof` > ユーザー定義型ガード > `as`。 |
-| 型ガード | 主張を検証しなければならない。嘘のガードは `as` より悪い。安全と名の付いたバグが隠れる。`isX` または `hasX` と名付ける。 |
-| 網羅性 | default 節に `const _exhaustive: never = x;` をインラインで書き、新バリアント追加時にコンパイラがエラーにする。 |
-| `as` より `satisfies` | リテラル型を広げずに値を検証する。 |
-| 境界での検証 | データが入る所で検証。内部では型を信頼。**boundary-discipline** 原則スキルを参照。 |
-| スキーマ由来の型 | 新 interface を宣言する前に `Pick`/`Omit`/`Parameters`/`ReturnType`/`Awaited`/`typeof` を検討。 |
-| オブジェクト引数 | 位置引数ではなくオブジェクトを渡し、引数順を自明にする。ホットパス（フレームごとの描画、トークナイザ、パーサ）ではスキップ。 |
+| Discriminated unions | Model variants with a `kind` literal discriminant so impossible states can't be represented. No optional-field bags. |
+| Branded types | Brand primitives with `& { readonly __brand: "X" }` so they can't be mixed up. Validate once at the boundary. |
+| Constructive modeling | Build the shape so the illegal value can't be constructed. `[T, ...T[]]` for non-empty, `[T, T][]` for even length, `start` plus `duration` for a range. Not a runtime guard, not a wish for refinement types. |
+| Simplest total type | Keep `T[]` while every operation on it stays total. Strengthen to `NonEmpty<T>` only where the loose type forces `!`, a cast, or a "should never happen" throw. |
+| `unknown` over `any` | External data is `unknown`. |
+| Schemas before guards | Before hand-writing a property-by-property type guard, use the repository's runtime schema library and infer the type from the schema, such as `z.infer`. |
+| No `as` casts | Every `as` is a runtime crash waiting. Cast only after validation. |
+| Narrowing hierarchy | Discriminant switch > `in` operator > `typeof`/`instanceof` > user-defined type guard > `as`. |
+| Type guards | Must verify the claim. A lying guard is worse than `as` because the bug hides behind a name that says it's safe. Name them `isX` or `hasX`. |
+| Exhaustiveness | Inline `const _exhaustive: never = x;` in default arms so the compiler errors when a new variant is added. |
+| `satisfies` over `as` | Validates the value without widening literal types. |
+| Boundary validation | Parse where data crosses in, into a named domain type. `Record<string, unknown>` (however spelled) stops at that parse. Trust types inside. See the **boundary-discipline** principle skill. |
+| Schema-derived types | Reach for `Pick`/`Omit`/`Parameters`/`ReturnType`/`Awaited`/`typeof` before declaring a new interface. |
+| Object args | Pass objects, not positional, so argument order is self-documenting. Skip on hot paths (per-frame render, tokenizers, parsers). |
+| Real tests | Don't mock what you can run. Prefer the framework's real test primitives with leak/disposable checks, and verify UI in a running build. Mock only what you can't run locally. |
+| Structured telemetry | Prefer structured logger diagnostics with enough context to debug from an id. No `console.log` in shipped code. |
 
-例: `references/patterns.md`。
+Examples: `references/patterns.md`.

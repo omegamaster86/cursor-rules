@@ -1,10 +1,10 @@
-# TypeScript パターン
+# TypeScript patterns
 
-`SKILL.md` の各ルールのコード例。根底の原則は言語非依存。**type-system-discipline** と **boundary-discipline** 原則スキルを参照。
+Code examples for each rule in `SKILL.md`. The underlying principles are language-agnostic. See the **type-system-discipline** and **boundary-discipline** principle skills.
 
-## ブランド型
+## Branded types
 
-プリミティブにブランドを付け混同を防ぐ。作成時に一度検証。下流は型を信頼。
+Brand primitives so they can't be mixed up. Validate once at the boundary. Downstream code trusts the type.
 
 ```ts
 type AgentId = string & { readonly __brand: "AgentId" };
@@ -19,11 +19,11 @@ function focusAgent(id: AgentId): void {
 }
 ```
 
-`readonly __brand: 'X'` 形に合わせる。新しい慣習を発明しない。
+Match the `readonly __brand: 'X'` shape. Don't invent a new convention.
 
-## 判別共用体
+## Discriminated unions
 
-バグが「この組み合わせは本当に起きうるか？」と問うなら型が緩すぎる。リテラル判別子でバリアントをモデル化: 各バリアントはフィールド名を共有し値は一意。不可能な組み合わせは表現できない。
+Model variants with a literal discriminant. Every variant shares the field name and each variant's value is unique, so impossible combos can't be represented.
 
 ```ts
 // Don't. Boolean + optionals lets contradictory states exist.
@@ -36,11 +36,80 @@ type DiffState =
   | { kind: "error"; error: string };
 ```
 
-判別子名（`kind`、`type`、`tag`）を 1 つ選び一貫させる。
+Pick one discriminant name (`kind`, `type`, `tag`) and stick to it.
 
-## `any` より `unknown`
+## Constructive modeling
 
-`any` は触れたすべてで型チェックを無効化。外部データは常に `unknown`。使用前に絞る。
+Build the type from parts that are all legal instead of restricting a loose type with runtime checks.
+
+Non-empty, via a variadic tuple:
+
+```ts
+type NonEmpty<T> = [T, ...T[]];
+
+// Don't: T[] plus a length check every caller must repeat
+function pickWinner(entries: string[]): string {
+  if (entries.length === 0) throw new Error("no entries");
+  return entries[Math.floor(Math.random() * entries.length)];
+}
+
+// Do: an empty value of the type can't exist
+function pickWinner(entries: NonEmpty<string>): string {
+  return entries[Math.floor(Math.random() * entries.length)];
+}
+```
+
+Where a plain `T[]` arrives, narrow once with a guard. The fact then travels in the type:
+
+```ts
+const isNonEmpty = <T>(arr: T[]): arr is NonEmpty<T> => arr.length > 0;
+```
+
+Even length, as pairs:
+
+```ts
+type Pairs<T> = [T, T][];
+```
+
+A time range, as start plus duration:
+
+```ts
+// Don't: a comment holds the invariant
+type TimeRange = { start: Date; end: Date }; // start <= end
+
+// Do: a negative range can't be written; derive end when needed
+type TimeRange = { start: Date; durationMs: number };
+```
+
+Keep `durationMs` a plain number. Brand it (per Branded types) only if a raw number could be passed where a duration is expected, not by reflex. Pick the representation that makes the bad state unconstructable, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
+
+## Simplest total type
+
+Don't strengthen everything. Keep `T[]` when every operation on it is total:
+
+```ts
+const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
+```
+
+Strengthen when the loose type forces a lie at a use site. The tells are `!`, `arr[0] as T`, and a "should never happen" throw:
+
+```ts
+// Don't: partiality smuggled past the compiler
+function newestSession(sessions: Session[]): Session {
+  return sessions.at(0)!;
+}
+
+// Do: strengthen the input; the assertion disappears
+function newestSession(sessions: NonEmpty<Session>): Session {
+  return sessions[0];
+}
+```
+
+Weakening the result to `Session | undefined` is the other total signature.
+
+## `unknown` over `any`
+
+External data is always `unknown`. Narrow before use.
 
 ```ts
 // Don't
@@ -56,11 +125,32 @@ function handle(input: unknown) {
 }
 ```
 
-外部ソース: RPC ペイロード、`JSON.parse`、`postMessage`、IPC、ファイル内容、環境変数、DB 結果。
+External sources include RPC payloads, `JSON.parse`, `postMessage`, IPC, file contents, environment variables, database results.
 
-## `as` キャスト禁止
+## Schemas before hand-rolled guards
 
-各 `as` は実行時クラッシュの可能性。型システムが主張を検証した後にのみキャスト。
+Before writing a property-by-property type guard for external data, look for the repository's runtime schema library and existing schemas. Let one schema own validation and derive the TypeScript type from it. Do not maintain a schema, a duplicate interface, and a guard that can drift apart.
+
+```ts
+import { z } from "zod";
+
+const UserSchema = z.object({
+  id: z.string().uuid(),
+  role: z.enum(["admin", "member"]),
+});
+
+type User = z.infer<typeof UserSchema>;
+
+function parseUser(input: unknown): User {
+  return UserSchema.parse(input);
+}
+```
+
+Use `safeParse` when failure is an expected branch. Use the equivalent inference helper when the repository uses another schema library. Do not add a new schema dependency for one guard. This rule prefers the schema system the codebase already trusts.
+
+## No `as` casts
+
+Every `as` is a potential runtime crash. Cast only after the type system has verified the claim.
 
 ```ts
 // Don't
@@ -79,22 +169,22 @@ function parseUser(data: unknown): User {
 }
 ```
 
-既存コードから `as` をリファクタするとき、TypeScript が推論できない理由を特定:
+When refactoring an `as` out of existing code, identify why TypeScript can't infer:
 
-- 判別子欠如: 追加し判別共用体へ。
-- 広すぎるソース型（例 `Record<string, unknown>`）: 絞る。
-- 型付けされていない境界: parse 関数またはスキーマを追加。
-- 本当に表現不能: ブランド型または `satisfies`。
+- Missing discriminant: add one, switch to a discriminated union.
+- Overly wide source type (e.g. `Record<string, unknown>`): narrow it.
+- Untyped boundary: add a parse function or schema.
+- Genuinely inexpressible: use a branded type or `satisfies`.
 
-## 絞り込みの階層
+## Narrowing hierarchy
 
-最良から最後の手段まで:
+From best to last-resort:
 
-1. **判別共用体 switch / if。** コンパイラが自動絞り込み。
-2. **`in` 演算子。** `"key" in obj` でそのキーを持つバリアントへ。
-3. **`typeof` / `instanceof`。** プリミティブとクラスインスタンス。
-4. **ユーザー定義型ガード。** 上記が足りないとき。
-5. **`as` キャスト。** 検証後のみ。
+1. **Discriminated union switch / if.** Compiler narrows automatically.
+2. **`in` operator.** `"key" in obj` narrows to variants containing that key.
+3. **`typeof` / `instanceof`.** For primitives and class instances.
+4. **User-defined type guard.** When the above aren't enough.
+5. **`as` cast.** Only after validation.
 
 ```ts
 function area(s: Shape): number {
@@ -103,9 +193,9 @@ function area(s: Shape): number {
 }
 ```
 
-## 型ガード
+## Type guards
 
-ガードは主張を実際に検証しなければならない。嘘のガードは `as` より悪い。安全と名のバグが隠れる。
+A guard must actually verify the claim. A lying guard is worse than `as`.
 
 ```ts
 function isCircle(s: Shape): s is Shape & { kind: "circle" } {
@@ -113,11 +203,11 @@ function isCircle(s: Shape): s is Shape & { kind: "circle" } {
 }
 ```
 
-可能なら判別子絞り込みを優先。ガードは読者が辿る層を増やす。
+Prefer discriminant narrowing when possible.
 
-## 網羅性
+## Exhaustiveness
 
-default 節で判別子を `never` 型ローカルに代入。新バリアント追加時にコンパイラがエラー。
+In default arms, assign the discriminant to a `never`-typed local.
 
 ```ts
 // Value-returning switch
@@ -151,11 +241,11 @@ function handle(s: Shape): void {
 }
 ```
 
-値を返す switch は return スタイル。文 switch は void スタイル。
+Return-style in value-returning switches, void-style in statement switches.
 
-## `as` より `satisfies`
+## `satisfies` over `as`
 
-`satisfies` はリテラル型を広げずに検証。
+`satisfies` validates without widening literal types.
 
 ```ts
 // Don't. Widens, loses literal types.
@@ -166,17 +256,17 @@ const config = { theme: "dark", cols: 3 } satisfies Config;
 // config.theme is "dark" (literal), not string
 ```
 
-## 境界での検証
+## Boundary validation
 
-データが入る所で一度検証。内部では型を信頼。**boundary-discipline** 原則スキルを参照。
+Validate once where data crosses in. Trust types inside. See the **boundary-discipline** principle skill.
 
-- **ワイヤフォーマット**（proto、JSON-RPC）: `ignoreUnknownFields` でパースし前方互換変更が古クライアントを壊さないように。
-- **永続 JSON:** バージョン付き blob と parse 周りの try/catch。
-- **呼び出しチェーン深部で再検証しない。**
+- **Wire formats** (proto, JSON-RPC): parse with `ignoreUnknownFields` so forward-compatible changes don't break old clients.
+- **Persisted JSON:** versioned blob with a try/catch around the parse.
+- **Don't re-validate** deep in call chains.
 
-## スキーマ由来の型
+## Schema-derived types
 
-`.proto`、OpenAPI、GraphQL スキーマ、DB マイグレーションが形を定義しているとき、生成型から導出し重複しない。
+When a `.proto`, OpenAPI spec, GraphQL schema, or database migration already defines a shape, derive from the generated types instead of duplicating them.
 
 ```ts
 // Don't. Duplicate shape, drifts when the schema changes.
@@ -195,9 +285,9 @@ function renderChecks(s: Pick<ChecksMessage, "totalCount" | "checks">) {
 }
 ```
 
-新 interface を書く前に `Pick`、`Omit`、`Parameters`、`ReturnType`、`Awaited`、`typeof` を検討。
+Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
 
-## オブジェクト引数
+## Object args
 
 ```ts
 // Don't. Swap two args, still compiles.
@@ -220,4 +310,4 @@ openFile({
 });
 ```
 
-ホットパスではスキップ: フレームごとの描画、トークナイザ、パーサ、アロケーションコストが効くタイトループ。
+Skip on hot paths: per-frame render, tokenizers, parsers, anything in a tight loop where the allocation cost matters.
