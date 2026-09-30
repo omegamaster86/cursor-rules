@@ -1,22 +1,17 @@
 ---
 name: principle-sequence-verifiable-units
-description: "マルチステップ作業（スイープ、マイグレーション、類似編集の連続）およびコミットと PR の積み方に適用する。各単位が検証可能な状態で終わるよう作業を小さく分割し、次に進む前に各単位をチェックし、シーケンス自体がレビュアーに証明されるよう配信順序を決める。"
+description: "Apply to multi-step work (sweeps, migrations, runs of similar edits) and to how you stack commits and PRs. Break work into small units that each end in a verifiable state, check each before the next, and order delivery so the sequence proves itself to a reviewer."
 disable-model-invocation: true
 ---
 
-# 検証可能な単位にシーケンスする
+# Sequence work into verifiable units
 
-作業を小さな単位のシーケンスとして順序付け、各単位がチェック可能な状態で終わるようにする。現在の単位がグリーンになるまで先に進まない。同じ規律が2つの高度で機能する: 実行方法と配信方法。
+Order work as a sequence of small units, each ending in a state you can check, and don't advance until the current one is green.
 
-**理由:** 原因となった単位で捕捉された障害は局所化が安価である。バッチ後に捕捉された障害は埋もれ、すでに壊れた基盤の上にさらに構築している。同じ単位をレビュアーが再生できる配信にシーケンスすると、「信じてください」が「赤になってから緑になるのを見てください」に変わる。
+**Why:** A break caught at the unit that caused it is cheap to localize. A break caught after a batch is buried, and you have already built further on a broken base. Sequencing those same units into a delivery a reviewer can replay turns "trust me" into "watch it go red, then green."
 
-**実行.** スイープ、マイグレーション、類似編集の連続では、次を始める前に各変更を検証する。編集をバッチして最後に一度だけ検証しない。各単位は before/after の括弧: 既知の正常状態、1つの変更、チェック実行、続行。クリーンな trunk にリベースして、すべてのチェックが実際のベースラインに対して測定されるようにする。レバーが編集を行う場合、単位ごとのチェックはほぼ無料。それでも実行する。
+**Execution.** In a sweep, migration, or any run of similar edits, verify each change before starting the next. Each unit is a before/after bracket: known-good state, one change, run the check, then proceed. Rebase onto clean trunk first so every check measures against the real baseline. When a lever does the edits, the per-unit check is nearly free. Run it anyway.
 
-**配信.** 作業を証明する順序でコミットと PR を積む。標準的な形は、失敗するテストを先に、その上に修正。最初の単位がバグが実在することを示し（赤）、次が解決を示す（緑）。レビュアーは問題と証明の両方を見る。他のストーリー順序: 再設計前の削減、処理前のベースライン取得、機能前のスキャフォールド。各コミットは独立して着地し、シーケンスは議論として読める。
+**Delivery.** Stack commits and PRs in the order that proves the work. The canonical shape is the failing test first, then the fix on top. Other story orders are a subtraction before the reshape, a baseline capture before the treatment, the scaffold before the feature. Each commit lands on its own and the sequence reads as an argument.
 
-**パターン:**
-- チェックで終わる最小の単位を選ぶ: 編集とそのテスト、または単独で成立するコミット。
-- 先に進む前に検証する。単位ごとに赤から緑へ、最終バッチに先送りしない。
-- 実行中の自分とスタックを読むレビュアーの両方にとって、シーケンスが独自に信頼を構築するよう単位を順序付ける。
-
-各チェックを実在のものに保つ **prove-it-works** 原則スキルのシーケンシング補完であり、単位ごとのチェックを安価にする **build-the-lever** 原則スキルの補完でもある。
+The sequencing complement to the **prove-it-works** principle skill, which keeps each check real, and the **build-the-lever** principle skill, which makes the per-unit check cheap.
