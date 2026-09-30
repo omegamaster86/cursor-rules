@@ -1,32 +1,34 @@
 ---
 name: principle-boundary-discipline
-description: "検証、エラーハンドリング、フレームワークアダプタの配線時に適用する。システム境界（CLI、設定、ネットワーク、外部 API）にガードを集中させ、内部型を信頼し、ビジネスロジックを純粋関数に保つ。"
+description: "Apply when wiring validation, error handling, or framework adapters. Concentrate guards at system boundaries (CLI, config, network, external APIs); trust internal types and keep business logic in pure functions."
 disable-model-invocation: true
 ---
 
-# 境界の規律
+# Boundary Discipline
 
-検証、型の絞り込み、エラーハンドリングをシステム境界に配置する。内部コードは無条件に信頼する。ビジネスロジックは純粋関数に置き、シェルは薄く機械的に保つ。
+Place validation, type narrowing, and error handling at system boundaries. Trust internal code unconditionally. Business logic lives in pure functions. The shell is thin and mechanical.
 
-**理由:** 散在する検証はノイズが多く、冗長で、誤った安心感を与える。境界で一度だけデータを検証する。フレームワーク配線からロジックを外し、フレームワークなしでテストできるようにする。
+**Why:** Scattered validation is noisy, redundant, and gives a false sense of safety. Keep logic out of framework wiring so it can be tested without the framework.
 
-**パターン:**
-- **境界で**（CLI 引数、設定ファイル、外部 API、ネットワークプロトコル）: 検証し、エラーを返し、防御的に扱う。
-- **システム内部:** 型付きデータ、エラー伝播、再検証なし。型を信頼する。
+**The pattern:**
+- **At boundaries** (CLI args, config files, external APIs, network protocols): validate, return errors, handle defensively.
+- **Inside the system:** typed data, error propagation, no re-validation. Trust the types.
+- **Across the boundary.** Expose domain concepts, not the boundary's private representation. Keep general-purpose mechanism inside and special-purpose policy at the edge.
 
-**適用:**
+**Applications:**
 
-検証とエラーハンドリング:
-- ビジネスロジック内ではなく、パース時（境界）に設定を検証する
-- 境界では生データを保持し、使用箇所で遅延パースする
-- 境界ですでに検証済みなら、呼び出しチェーンの深部で冗長な nil チェックをしない
+Validation and error handling:
+- Validate config at parse time (the boundary), not inside business logic
+- Parse raw data into domain types at the boundary
+- Do not re-export transport, storage, framework, or wire types through the public surface
+- No redundant nil checks deep in call chains if the boundary already validated
 
-コード構成:
-- フレームワーク依存のない純粋関数にビジネスロジックを置く
-- パース関数: 生バイトから型付き状態への純粋な変換
-- プロンプト構築: 構造化状態を入力、文字列を出力
-- スコアリングと評価: 状態から結果への純粋な変換
+Code organization:
+- Business logic in pure functions with no framework dependencies
+- Parse functions: pure transforms from raw bytes to typed state
+- Prompt construction: structured state in, string out
+- Scoring and assessment: pure transforms from state to results
 
-**テスト:**
-- 「このデータは今システム境界を越えているか？」越えていなければ、検証は冗長である。
-- 「シェルが呼ぶだけの純粋関数にできるか？」できるなら、抽出する。
+**The tests:**
+- "Is this data crossing a system boundary right now?" If not, validation is redundant.
+- "Can this be a pure function that the shell just calls?" If yes, extract it.
