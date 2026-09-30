@@ -1,16 +1,16 @@
 ---
 name: principle-redesign-from-first-principles
-description: "既存の設計に新しい要件を統合するときに適用する。後付けするのではなく、要件が初日からの基礎的な前提だったかのように再設計する。"
+description: "Apply when integrating a new requirement into an existing design. Redesign as if the requirement had been a foundational assumption from day one, instead of bolting it on."
 disable-model-invocation: true
 ---
 
-# 第一原理から再設計する
+# Redesign From First Principles
 
-変更を統合するとき、既存の設計に後付けしない。要件が最初からあったかのように再設計する。結果は、初日に知っていたら構築していたものに見えるべきである。
+When integrating a change, don't bolt it onto the existing design. Redesign as if the requirement had been there from the start.
 
-- 影響を受けるすべてのファイルを読み、現在の設計を全体として理解する
-- 問う: 「この新しい要件を前提にゼロから書くなら、何を構築するか？」
-- 型、ドキュメント、例、根拠セクションなど、すべての参照に変更を波及させる
-- 再設計を全体として考え、段階的に配信する
+- Read all affected files and understand the current design
+- Ask: "if we were writing this from scratch with this new requirement, what would we build?"
+- Propagate the change through every reference: types, docs, examples, rationale sections
+- Think about the whole redesign, then deliver it incrementally
 
-既存の設計への変更統合時にオプション価値を保つための方法である。
+This is the method for preserving option value when integrating changes into an existing design.
