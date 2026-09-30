@@ -1,22 +1,22 @@
 ---
 name: principle-migrate-callers-then-delete-legacy-apis
-description: "古い呼び出し元がまだ存在する状態で新しい内部 API を導入するときに適用する。互換レイヤーを残すのではなく、同じ波で呼び出し元を移行し古い API を削除する。"
+description: "Apply when introducing a new internal API while old callers still exist. Migrate callers and delete the old API in the same wave instead of preserving compatibility layers."
 disable-model-invocation: true
 ---
 
-# 呼び出し元を移行してからレガシー API を削除する
+# Migrate Callers Then Delete Legacy APIs
 
-新しい API が正しい設計だと判断したら、互換レイヤーを残すのではなく、同じリファクタ波で呼び出し元を移行し古い API を削除する。
+When we decide a new API is the right design, migrate callers and remove the old API in the same refactor wave instead of preserving compatibility layers.
 
-**ルール:**
-- 内部呼び出し元がまだ存在するだけでレガシー API パスを生かさない
-- 呼び出し元を棚卸しし、移行し、古い API を即座に削除する
-- 一時的なアダプターは例外的で時間制限付きとして扱い、デフォルトのアーキテクチャにしない
-- テストを新しい契約をアサートするよう更新し、リファクタ前の実装詳細だけを守るテストは削除する
+**Rule:**
+- Do not keep legacy API paths only because internal callers still exist
+- Inventory callers, migrate them, and delete the old API immediately
+- Treat temporary adapters as exceptional and time-boxed, not default architecture
+- Update tests to assert the new contract, and delete tests that only protect pre-refactor implementation details
 
-**適用条件:**
-- 外部ユーザーが後方互換性に依存していない
-- プロジェクトが協調的な破壊的変更を吸収できる
-- 新しい API が簡素化またはリファクタイニティブの一部である
+**When this applies:**
+- No external users depend on backward compatibility
+- The project can absorb coordinated breaking changes
+- The new API is part of a simplification or refactor initiative
 
-新旧両方の API を残すと、二重パスの複雑さが生じ、クリーンアップが遅れ、コードベースが追記のみに感じられる。
+Keeping both old and new APIs creates dual-path complexity, slows cleanup, and makes the codebase feel append-only.
