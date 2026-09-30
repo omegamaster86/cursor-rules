@@ -1,35 +1,35 @@
-# 根拠テンプレート
+# Rationale template
 
-型スケッチと併せて出荷する文章。1 ページ。見出しは sentence case、定型文なし。イタリックの注記を実内容に置き換える。
+The prose that ships alongside the type sketch. One page. Sentence-case headings, no boilerplate. Replace the italic notes with actual content.
 
 ## Problem
 
-*1 段落。何をしようとしているか、既存システムや制約の何が形を自明でなくしているか。[フェーズ A](../SKILL.md#phase-a-ground-the-problem) で表面化した制約（相互運用する既存型、壊せない呼び出し元、境界を越えた不変条件）があればここに名指しし、読者が同じ制約を見るようにする。*
+*One paragraph. What we're trying to do, and what about the existing system or constraints makes the shape non-obvious. If [Phase A](../SKILL.md#phase-a-ground-the-problem) surfaced constraints the design must honor (existing types to interop with, callers we can't break, invariants that crossed our boundary), name them here so the reader sees the same constraints you saw.*
 
 ## Usage (caller's view)
 
-*型スケッチの前に、これを先に書く。消費者が読む README またはクイックスタートと、自分のコード内の現実的な呼び出しサイト 2〜3 個を示す。何を import し、何を呼び、何が返るか。[Shape](#shape) の型スケッチはここから導く。両者は一致しなければならない。ずれたらスケッチを usage に合わせて調整し、逆ではない。呼び出し側の体験が仕様。型はそれに従う。*
+*Write this first, before the type sketch. Show the README or quickstart the consumer reads, plus two or three realistic call sites in their own code. What they import, what they call, what comes back. The type sketch in [Shape](#shape) is derived from this. The two must agree. When they diverge, reconcile the sketch to the usage, not the reverse. The caller's experience is the spec. The types serve it.*
 
 ## Shape
 
-*推奨アーキテクチャ。まずデータ構造。次にシグネチャを通るデータの流れ。負荷を担う判断を名指す: 型にエンコードした不変条件、検証の所在、意図的にしないこと。各判断の背後の原則を引用（例: `per boundary-discipline`）。言い換えない。*
+*The recommended architecture. Data structures first. Then how data flows through the signatures. Name the load-bearing decisions. State which invariants are encoded in types, where validation lives, and what the system deliberately does not do. Judge interface depth explicitly. State what complexity the public surface hides, what remains exposed to callers, and why the interface is no larger than needed. Cite the principle behind each decision (e.g., `per boundary-discipline`). Don't restate it.*
 
 ## Synthesis decision
 
-*[arena](../../arena/SKILL.md) が埋める。どの候補がベースになりなぜか、他から何を取り込んだか、何を却下しなぜかを記録する。*
+*Filled in by [arena](../../arena/SKILL.md). Records which candidate became the base and why, what was adapted from each of the others, and what was rejected and why.*
 
 ## Tradeoffs accepted
 
-*選ばれた形が引き受けるトレードオフを 1 項目ずつ。「X を引き換えに Y を受け入れる」形式。将来の読者が見落としと誤解しうるものを名指す。早すぎる最適化や単純化に見えるものも含む。*
+*One bullet per tradeoff the chosen shape makes. Form: "we accept X in exchange for Y." Name anything a future reader might mistake for an oversight, including things that look like premature optimization or premature simplification.*
 
 ## Alternatives considered
 
-*必須。少なくとも 1 つの具体的な代替形を名指し、負けた理由を 1 行。設計空間に本当の競合があれば 2〜3。制約が答えを強いたときは 1 つでよく、結論は「制約のためこれだけが成立した…」と書く。「Synthesis decision」とは別。ここは選ばれた形が検討して却下した設計上の代替であり、他 runner 候補ではない。*
+*Required. Name at least one concrete alternative shape, with one line on why it lost. Judge each alternative on interface depth, not implementation simplicity alone. Name the complexity it exposes to callers and the complexity it hides. Two or three alternatives belong here when the design space had real contenders. One is fine when the constraints forced the answer, with the conclusion phrased as "this was the only viable shape because..." Avoid listing flavors of the same shape. This section covers design alternatives the chosen shape considered and rejected, not other runner candidates.*
 
 ## Open questions and risks
 
-*スケッチ中に気づいた、人が判断すべきことと、実装前に旗を立てるリスク。断言ではなく質問で書き、人の答えが解決になるようにする。*
+*Things you noticed during the sketch that the human needs to weigh in on, and risks worth flagging before implementation starts. Phrase as questions, not assertions, so the human's answer is the resolution rather than a comment.*
 
 ## Next implementation step
 
-*スケッチに対して最初に組み立てるもの。1 文。統合後（またはチェックポイントを選んだ場合はフェーズ D の承認後）すぐ書き始めるもの。*
+*The first thing to build against the sketch. One sentence. What you'd start writing immediately after synthesis (or after Phase D sign-off, if a checkpoint was opted into).*
