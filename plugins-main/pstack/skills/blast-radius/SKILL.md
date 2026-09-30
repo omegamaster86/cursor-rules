@@ -1,50 +1,50 @@
 ---
 name: blast-radius
-description: "出荷前に、diff を超えて変更が他所で何を壊しうるかを特定し、安全だと言える根拠となる事実を 1 つ、文章ではなく実コード実行で証明する。「X の blast radius」「これは何を壊すか」、まだ信用していない小さな diff のレビューに使用。"
+description: "Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X', 'what could this break', or reviewing a small diff you don't trust."
 disable-model-invocation: true
 ---
 
 # Blast radius
 
-出荷前に、変更が他所で何を壊すかを見つける。「blast radius of X」「what could this break」、まだ信用していない小さな diff のレビューに使う。
+Find what a change breaks somewhere else, before it ships. Use for "blast radius of X", "what could this break", or reviewing a small diff you don't trust yet.
 
-`how` と `why` の補助。`how` はコードが何をするか。`why` はなぜその形か。blast radius は他所で何を壊すか。
+Companion to `how` and `why`. `how` tells you what the code does. `why` tells you why it's shaped that way. Blast radius tells you what it breaks somewhere else.
 
-呼び出し元の列挙が仕事ではない。エージェントは grep で数秒でできる。仕事は grep が示さない破壊。
+Listing the callers is not the job. The agent can grep those in a second. The job is the breakage grep won't show you.
 
-## 自分の書き起こしを信じない
+## Don't trust your own writeup
 
-正しそうに読める blast-radius の書き起こしは価値がない。真実かどうかに関わらず説得力があるように読め、それが落とし穴。だから書き起こしを返さない。全体が依存する事実を 1〜2 個見つけ、コードを実行して証明する。言葉は出発点であり、成果物ではない。
+A blast-radius writeup that sounds right is worthless. It reads as convincing whether or not it's true. So don't hand back the writeup. Find the one or two facts the whole thing depends on and prove them by running code.
 
-### どれだけ確かか
+### How sure are you
 
-変更の安全性が依存する各事実について、安い範囲でこのリストを下げ、どこで止まったか言う。
+For each fact the change's safety depends on, get it as far down this list as is cheap, and say where it stopped.
 
-1. そう言っただけ。単体では無価値。
-2. 行を指した。実在の `file:line`、またはライブラリ自身のソース。
-3. 悪いケースが起きないことを示した。失敗経路を段階的に辿り、到達しない。
-4. 実行した。同じライブラリを import し、心配な関数を呼ぶスクリプトやテスト。間違っていれば大声で失敗する。
-5. 動いているアプリで再現した。
+1. You said so. Worthless on its own.
+2. You pointed at the line. A real `file:line`, or the library's own source.
+3. You showed the bad case can't happen. You walked the failure step by step and it doesn't reach.
+4. You ran it. A script or test that calls the real code and fails loud if you're wrong.
+5. You reproduced it in the running app.
 
-ステップ 4 まで届かない安全上の事実は、はっきりそう言う。確定として書き起こさない。ステップ 4 は通常、アプリが出荷するのと同じライブラリを import し、心配な関数を呼ぶ小さなスクリプト 1 つ。
+Step 4 is usually one small script that imports the same library the app ships and calls the exact function you're worried about.
 
-## 手順
+## Steps
 
-1. 変更を読む。diff、追加・変更・削除されたシンボル、diff に書かれていない部分を含めて何が違うか。`why` のステップ 2 で PR とコミットを引く。
-2. 安全だと言える根拠となる 1 つの事実を見つける。怖く見える変更の多くは単一の事実で安全、例:「この呼び出しは既に死んだキャッシュエントリだけを落とし、他は何もしない」。それが成り立てば怖いケースの大半は一度に消える。長い maybe リストよりここに時間を使う。
-3. grep が止まる所を見る。呼んでいるライブラリのソースを読み、ピン留めバージョンとローカルパッチを確認。いつ動くか: マイクロタスク、unmount と teardown、Solid vs React。シンボル検索が見逃すものを辿る: API が返す JSON、DB 列、ワイヤフォーマット、同じバイトを読む別言語、feature flag、3 ホップ下流のコード。
-4. 各リスクを正直に。実際に起きうる確率と、起きたときの実コスト。確認したリスクは残す。調べてクリアしたものは別に列挙。`why` と同じルール。実在の `file:line` を引用。何も見つからない検索も答え。呼び出し元や API をでっち上げない。
-5. その 1 事実を証明する。実コードを走らせるスクリプトかテストを書き、実行し、起きたことを貼る。安く証明できなければ未証明とマーク。切り上げない。
-6. 大きく広い変更なら `arena` で走らせる。複数モデルに同じ質問をし、答えをマージする。モデルが違うと本当のバグの見え方も違う。
+1. Read the change. The diff, the symbols it adds, changes, and deletes, and what it now does differently, including the part the diff doesn't spell out. Use `why` step 2 to pull the PR and commits.
+2. Find the one fact it's safe because of. Most changes that look risky are safe because of a single fact, like "this call only drops already-dead cache entries and does nothing else". Find that fact. If it holds, most risky cases are cleared at once. Spend your time here, not on a long list of maybes.
+3. Look where grep stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, Solid versus React. Follow what a symbol search misses: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream.
+4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed. List the ones you checked and cleared separately. Same rules as `why`. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
+5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened.
+6. For a big or wide change, run it as an `arena`. Ask several models the same question and merge the answers. Different models catch different real bugs.
 
-## 返すもの
+## What to hand back
 
-- **何をするか。** 何が変わったか。自明でない部分を含む。
-- **安全だと言える根拠となる 1 事実。** 述べ、どのステップまで届いたか、証明を示す。証明できなければ unproven と書く。
-- **リスク。** 本物だけ。各々がどう壊れるか、`file:line`、可能性と深刻度、確認方法。重要なものは証明を貼る。
-- **クリア済み。** 何を調べ、なぜ問題ないか。
-- **マージ前に。** 本物のバグを捕まえる最安のテストか再現。書いたスクリプトを含む。
+- **What it does.** What changed, including the part that isn't obvious.
+- **The one fact it's safe because of.** State it, say which step you got it to, and show the proof. If you couldn't prove it, write unproven.
+- **Risks.** Each names how it breaks, the `file:line`, how likely and how bad, and how to check. Paste the proof for the ones that matter.
+- **Cleared.** What you checked and why it's fine.
+- **Before you merge.** The cheapest test or repro that catches the real bug, including the script you wrote.
 
-`unslop` で書き、実コードを引用し、公開前にプライベートなものを除去する。
+Write it through `unslop`, cite real code, and strip anything private before it goes anywhere public.
 
-**返答:** 上記の書き起こし。安全の根拠となる 1 事実は証明済みか unproven とマーク。
+**Reply:** the writeup above, with the one safety fact either proven or marked unproven.
