@@ -1,21 +1,23 @@
 ---
 name: principle-minimize-reader-load
-description: "追跡が困難なコードをレビューまたは整形するときに適用する。質問と答えの間のレイヤー数と、読者の頭の中の隠れた状態を数え、単一呼び出し元のラッパーを潰し、可変スコープを縮小する。"
+description: "Apply when reviewing or shaping code that's hard to trace. Count layers between question and answer, and hidden state in the reader's head; collapse one-caller wrappers and shrink mutable scope."
 disable-model-invocation: true
 ---
 
-# 読者負荷を最小化する
+# Minimize Reader Load
 
-保守性とは、読者がコードを理解するために行う作業である。2つの軸を追跡する:
-1. **追跡するレイヤー。** 質問と答えの間にある間接化の数。
-2. **保持する状態。** 読者が頭の中に保持しなければならない隠れたまたは可変のコンテキストの量。
+Maintainability is the work a reader must do to understand code. Track two axes:
+1. **Layers to trace.** How many indirections sit between the question and the answer.
+2. **State to hold.** How much hidden or mutable context the reader must keep in their head.
 
-**理由:** コードは書かれるよりはるかに多く読まれる。LOC、循環的複雑度、「クリーンアーキテクチャ」は代理指標である。読者負荷が重要なものである。2つの軸は独立している。50のグローバルを持つフラットなファイルは、6層のアダプタスタックと同様に推論しにくい場合がある。両方を守る。これは読者にとっての [Guard the Context Window](../principle-guard-the-context-window/SKILL.md) の人間版である: 作業記憶は読者にとっても有限である。
+**Why:** Code is read far more than it is written. LOC, cyclomatic complexity, and "clean architecture" are proxies. Reader load is the thing that matters. The two axes are independent. A flat file with 50 globals can be as hard to reason about as a 6-layer adapter stack. Guard both. This is the human analog of [Guard the Context Window](../principle-guard-the-context-window/SKILL.md). Working memory is finite for readers too.
 
-**パターン:**
-- **価値を生まないレイヤーを潰す:** 呼び出し元が1つのラッパー、第2実装のないアダプター、来なかった未来のために導入された間接化。インライン化する。
-- **状態スコープを縮小する:** 純粋関数（ミューテーションより戻り値）を優先し、フィールドよりローカル、モジュール状態よりフィールド、グローバルよりモジュール状態。同期ではなく導出する。
-- **不変条件は境界で一度だけ名付ける。** すべてのコンシューマーでではなく、読者が一度学べるようにする。
-- レイヤーまたは状態の断片を追加する前に問う: これは他の場所の読者負荷を少なくとも同程度減らすか？
+**The pattern:**
+- **Collapse layers** that cost more than they save: wrappers with one caller, adapters with no second implementation, speculative indirection that was never needed. Inline them.
+- **Make adjacent layers change the abstraction.** A layer that repeats the same methods and arguments adds reader load without compression. Collapse pass-through layers.
+- **Demand interface compression.** A broad interface that hides little complexity makes readers learn both the surface and the implementation. Prefer boundaries that hide meaningful decisions.
+- **Shrink state scope:** prefer pure functions (returns over mutations), locals over fields, fields over module state, and module state over globals. Derive instead of sync.
+- **Name the invariant at the boundary,** not in every consumer, so the reader learns it once.
+- Before adding a layer or a piece of state, ask: does this reduce reader load somewhere else by at least as much?
 
-**テスト:** 新しい読者が「X はどこから来るか？」と「X を何が変更できるか？」に30秒以内に答えられるか？ できなければ、レイヤーを切るか状態を切る。
+**The test:** Can a new reader answer "where does X come from?" and "what can change X?" in under 30 seconds? If not, cut layers or cut state.
