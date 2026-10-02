@@ -1,29 +1,29 @@
 ---
 name: fix-ci
-description: 失敗した PR チェックを見つけ、ログや外部チェックリンクを調査し、絞った修正を適用する
+description: Find failing PR checks, inspect logs or external check links, and apply focused fixes
 ---
 
-# CI 修正
+# Fix CI
 
-## トリガー
+## Trigger
 
-ブランチや PR の CI が失敗し、短い反復でグリーン状態に戻したい場合。
+Branch or PR CI is failing and needs a fast, iterative path to green checks.
 
-## ワークフロー
+## Workflow
 
-1. 対象 PR を解決し `gh pr checks --json name,bucket,state,workflow,link` を確認。
-2. 失敗ジョブを調べ、最初の実行可能なエラーを抽出。可能なら GitHub Actions ログを参照し、なければチェックリンクから失敗したコマンド／サービスを特定。
-3. 最小の安全な修正を1つ適用。
-4. push → PR チェック再取得 → 成功するまで繰り返し。
+1. Resolve the active PR and inspect `gh pr checks --json name,bucket,state,workflow,link`.
+2. Inspect failed jobs and extract the first actionable error. Use GitHub Actions logs when available; otherwise use the check link to identify the failing command or service.
+3. Apply the smallest safe fix.
+4. Push, re-check the PR check set, and repeat until green.
 
-## ガードレール
+## Guardrails
 
-- 実行可能な失敗を1件ずつ修正。
-- 広範なリファクタより、最小で低リスクな変更を優先。
-- PR 全体の CI 状態の情報源は常に `gh pr checks`。
+- Fix one actionable failure at a time.
+- Prefer minimal, low-risk changes before broader refactors.
+- Keep `gh pr checks` as the source of truth for overall PR CI state.
 
-## 出力
+## Output
 
-- 主要失敗ジョブと根本原因
-- 反復順での修正内容
-- 現在の CI 状態と次アクション
+- Primary failing job and root error
+- Fixes applied in iteration order
+- Current CI status and next action
