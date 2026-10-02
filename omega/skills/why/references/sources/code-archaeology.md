@@ -1,88 +1,89 @@
-# Code Archaeology (git + in-repo)
+# コード考古学（git + リポジトリ内）
 
-## What this source contains
+## このソースに含まれるもの
 
-- Commit history (messages, dates, authors, diffs)
-- PR descriptions, review comments, and discussion threads (via `gh`)
-- Inline code comments, TODOs, FIXMEs, deprecation notes
-- ADRs (architectural decision records) if the repo keeps them
-- Tests. Names and assertions often encode the edge cases that motivated a change
-- Related files modified in the same commits (co-change signal)
-- CHANGELOG entries, release notes in the repo
-- Issue/ticket IDs mentioned in commit messages and PR bodies
+- コミット履歴（メッセージ、日付、作者、diff）
+- PR 説明、レビューコメント、議論（`gh` 経由）
+- インラインコメント、TODO、FIXME、非推奨注記
+- ADR（アーキテクチャ決定記録）（リポジトリが保持している場合）
+- テスト。名前とアサーションは変更の動機となったエッジケースをしばしばエンコードする
+- 同じコミットで変更された関連ファイル（共変シグナル）
+- CHANGELOG、リポジトリ内リリースノート
+- コミットメッセージと PR 本文に出る issue / チケット ID
 
-The most trustworthy source, tied directly to the code, and the most complete. Everything that went through the repo should be here.
+最も信頼でき、コードに直結し、最も完全。リポジトリを通ったものはここにあるはず。
 
-## How to search it
+## 検索方法
 
-Expand the seed commit list:
+シードコミットリストを広げる:
 
 ```bash
-# Full history of the file through renames
+# リネームを通したファイルの全履歴
 git log --follow --oneline -- <file>
 
-# Pickaxe: commits that added or removed this exact text
+# Pickaxe: この文字列を追加/削除したコミット
 git log -S '<exact_string_from_code>' -- <file>
 
-# Or for patterns:
+# パターン用:
 git log -G '<regex>' -- <file>
 
-# Who wrote each line and when
+# 各行の作者と日時
 git blame -L <start>,<end> <file>
 
-# The full diff of a specific commit
+# 特定コミットの完全 diff
 git show <hash>
 
-# Commits between two points affecting this file
+# 2点間でこのファイルに触れたコミット
 git log <old>..<new> -p -- <file>
 ```
 
-For each substantive commit, pull the PR context:
+実質的なコミットごとに PR 文脈を取る:
 
 ```bash
-# Find the PR number from the merge commit or branch
+# マージコミットまたはブランチから PR 番号
 git log -1 --format=%B <hash>
 
-# Full PR context: body, review comments, linked issues
+# PR 全文: 本文、レビューコメント、リンク issue
 gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIssuesReferences,comments,reviews,files
 
-# The --json reviews and comments fields are where the real signal is
+# 本当のシグナルは --json の reviews と comments
 ```
 
-Look for out-of-band docs:
+リポジトリ外ドキュメント:
 
 ```bash
-# ADRs often live in docs/adr/ or similar
+# ADR は docs/adr/ など
 rg -l -i 'architecture.decision' --glob '*.md'
 
-# TODOs and FIXMEs near the target
+# 対象付近の TODO / FIXME
 rg -n -C2 '(TODO|FIXME|HACK|XXX|NOTE)' <target_file>
 
-# Related tests. Names often encode the "why"
+# 関連テスト。名前はしばしば「なぜ」をエンコード
 rg -l '<symbol>' --glob '*test*'
 ```
 
-## What good evidence looks like here
+## ここでの良い証拠
 
-- A PR description that explains the problem being solved, not just the change ("This fixes the pagination bug that caused X")
-- A long review thread where alternatives were debated
-- An inline comment near the target line that explains a non-obvious constraint
-- A test named `test_handles_edge_case_when_X` that reveals an edge case motivating the code
-- A commit message that references a ticket or incident ID
-- A CHANGELOG entry that summarizes the user-visible rationale
+- 解く問題を説明する PR 説明（変更だけではない）（「X を起こすページネーションバグを直す」）
+- 代替が議論された長いレビュー
+- 対象行付近の非自明な制約を説明するインラインコメント
+- 動機のエッジケースを示す `test_handles_edge_case_when_X` のようなテスト名
+- チケットやインシデント ID を参照するコミットメッセージ
+- ユーザー可視 rationale を要約する CHANGELOG 項目
 
-## Common pitfalls
+## よくある落とし穴
 
-- **Squash-merge flatlands.** If the repo squashes PRs, individual commits in the branch history are lost. Fall back to PR body and comments.
-- **Misleading commit messages.** "Small refactor" sometimes hides an intentional behavior change. Look at the diff, not the message.
-- **Cargo-culted patterns.** The author may have copied a pattern without understanding why. Check if the pattern originated earlier in the codebase and investigate *that* commit.
-- **Bot commits and auto-merges.** Dependabot, Renovate, and automated backports usually don't carry motivation. Skip them when trying to find intent.
-- **Treating code as evidence of intent.** The code itself isn't evidence for why it exists. Evidence comes from commit messages, PRs, comments, tests, docs. Don't cite "the function is named X" as evidence of intent.
+- **Squash-merge の平坦化。** squash するとブランチ内の個別コミットが失われる。PR 本文とコメントにフォールバック。
+- **誤解を招くコミットメッセージ。** 「小さなリファクタ」が意図した挙動変更を隠すことがある。メッセージより diff を見る。
+- **模倣パターン。** 作者は理由を理解せずコピーしたかもしれない。パターンがコードベース内でより早く始まったコミットを追い、**その**コミットを調べる。
+- **Bot コミットと自動マージ。** Dependabot、Renovate、自動バックポートは動機をほぼ持たない。意図を探すときはスキップ。
+- **コードを意図の証拠にしない。** コード自体は存在理由の証拠にならない。証拠はコミットメッセージ、PR、コメント、テスト、ドキュメント。「関数が X と名付けられている」は意図の証拠として引用しない。
 
-## What to return
+## 返すもの
 
-Every commit/PR/comment that bears on the question, with:
-- The exact text (quoted)
-- The hash / PR number / file:line
-- Author and date
-- Whether it's direct (explicitly addresses the question) or circumstantial
+質問に関係するコミット/PR/コメントごとに:
+
+- 正確なテキスト（引用）
+- ハッシュ / PR 番号 / file:line
+- 作者と日付
+- direct（質問に明示的）か circumstantial か

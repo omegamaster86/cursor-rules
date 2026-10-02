@@ -1,100 +1,101 @@
-# Sentry Error History
+# Sentry エラー履歴
 
-## What this source contains
+## このソースに含まれるもの
 
-Sentry is the archive of things that went wrong. For defensive, corrective, or error-handling code, it often holds the direct motivation: the specific exceptions, stack traces, and frequencies that pushed someone to add a check, catch, retry, or fallback.
+Sentry はうまくいかなかったことの記録。防御・修正・エラーハンドリングコードでは、チェック・catch・リトライ・フォールバックを追加させた具体的な例外、スタックトレース、頻度という**直接の動機**がよくある。
 
-- **Issues.** Grouped errors with counts, first/last seen timestamps, affected releases, and comments
-- **Events.** Individual error instances within an issue (stack traces, tags, user context)
-- **Releases.** Deployment records with associated issues (useful for "which version fixed this?")
-- **Replays.** Session recordings of user-facing errors (if enabled)
-- **Profiles.** Performance profiling data (less useful for "why", more for "how slow")
-- **Issue comments & assignments.** Sometimes contain engineer notes on root cause
+- **Issues.** カウント、first/last seen、影響リリース、コメント付きのグループ化エラー
+- **Events.** issue 内の個別インスタンス（スタックトレース、タグ、ユーザーコンテキスト）
+- **Releases.** 関連 issue 付きデプロイ記録（「どのバージョンで直った？」に有用）
+- **Replays.** ユーザー向けエラーのセッション録画（有効な場合）
+- **Profiles.** パフォーマンスプロファイル（「なぜ」より「どれくらい遅い」向き）
+- **Issue コメントとアサイン.** 根本原因のエンジニアメモがあることも
 
-The most valuable thing Sentry provides is **temporal correlation**: "issue X was created 2024-01-02, peaked at 500 events/day, stopped appearing after release v2.14.0 on 2024-01-15, the release that shipped the defensive check."
+Sentry の最有価値は**時間相関**:「issue X は 2024-01-02 作成、1日 500 events でピーク、2024-01-15 の v2.14.0（防御チェックを出荷したリリース）以降は出なくなった」
 
-## How to search it
+## 検索方法
 
-Use the Sentry MCP.
+Sentry MCP を使う。
 
-1. **Orient.** If you don't know the project slug and organization:
+1. **オリエント。** プロジェクト slug と org が不明なら:
 
    ```
    find_organizations
    find_projects
    ```
 
-2. **Search for issues related to the target.**
+2. **対象関連 issue を検索.**
 
    ```
-   search_issues (natural language, e.g., "errors in PaymentService timeout", "unhandled exceptions in uploadFile")
+   search_issues（自然言語。例: "PaymentService timeout のエラー", "uploadFile の未処理例外"）
    ```
 
-   Good query components: exception class names the target handles, the function or class name of the target, error message strings the target checks for, the file path of the target.
+   良いクエリ要素: 対象が扱う例外クラス、対象の関数／クラス名、対象がチェックするエラーメッセージ、対象のファイルパス。
 
-3. **Narrow by release and time window.**
-
-   ```
-   search_issue_events (filter by release, time, environment, trace ID, tags)
-   get_issue_tag_values (for an issue, see distribution across versions, users, environments)
-   ```
-
-   For a suspected issue, check:
-   - **First seen.** When did the error start appearing?
-   - **Last seen.** When did it stop? Does it line up with the target's ship date?
-   - **Affected releases.** Which versions saw it? Which was the fix?
-   - **Frequency trajectory.** Did it spike, then get resolved?
-
-4. **Pull the full event for context.**
+3. **リリースと時間窓で絞る.**
 
    ```
-   get_sentry_resource (pass a Sentry URL or type+ID)
+   search_issue_events（release、時間、環境、trace ID、タグでフィルタ）
+   get_issue_tag_values（issue のバージョン・ユーザー・環境分布）
    ```
 
-   Does the stack trace pass through the target code? Do the tags and breadcrumbs match the conditions the target defends against?
+   疑わしい issue では確認:
+   - **First seen** — エラーはいつから？
+   - **Last seen** — いつ止まった？対象の出荷日と一致？
+   - **Affected releases** — どのバージョンで？修正は？
+   - **頻度の推移** — スパイクして解消？
 
-5. **Check releases that landed near the target.**
+4. **全文脈の event を取得.**
 
    ```
-   find_releases (around the commit date of the target)
+   get_sentry_resource（Sentry URL または type+ID）
    ```
 
-   Cross-reference release version with the PR's merge date.
+   スタックトレースは対象を通る？タグと breadcrumb は対象が防ぐ条件と一致？
 
-6. **Use Seer sparingly.**
+5. **対象付近のリリース.**
+
+   ```
+   find_releases（対象のコミット日付前後）
+   ```
+
+   リリースバージョンと PR マージ日を照合。
+
+6. **Seer は控えめに.**
 
    ```
    analyze_issue_with_seer
    ```
 
-   Seer produces AI root-cause analyses. Useful as a hypothesis generator, but treat them as inference, not authoritative. The actual events and stack traces are the primary evidence. Seer's narrative is secondary.
+   Seer は AI 根本原因分析。仮説生成には有用だが inference として扱い、 authoritative ではない。一次証拠は event とスタックトレースとタイムスタンプ。Seer の narrative は二次。
 
-## What good evidence looks like here
+## 良い証拠
 
-- An issue whose **first seen** is shortly before the target's PR and **last seen** shortly after, suggesting the target addressed this error
-- Stack traces that pass through or land on the target function, showing the exact failure mode being defended against
-- A comment on the issue from the PR author describing the fix
-- The target's PR description or commit message referencing a Sentry issue URL or ID
-- An issue with high event counts that stops after the release containing the target
+- **First seen** が対象 PR の直前、**Last seen** が直後 — 対象がこのエラーに対処した示唆
+- 対象関数を通過または着地するスタックトレース — 防いでいる失敗モードの具体
+- PR 作者による issue コメントで修正を説明
+- 対象の PR 説明やコミットが Sentry issue URL/ID を参照
+- 高 event 数の issue が対象を含むリリース後に停止
 
-## Common pitfalls
+## よくある落とし穴
 
-- **Grouping drift.** Sentry groups errors by fingerprint. Refactors or renames can track the "same" error under a new issue ID. If an issue ends abruptly, the error may have just been regrouped. Check for new issues immediately after.
-- **Release correlation is noisy.** A release contains many commits. An issue stopping at v2.14.0 doesn't prove the target fixed it. Another change in the same release might have. Cross-reference with the target's exact commit.
-- **Silent fixes.** Sometimes the error stops because upstream changed, not because of the defensive code. The correlation suggests the fix. It doesn't prove authorship.
-- **Resolved != fixed.** Issues can be marked "resolved" manually without any code change. Treat `resolved` as a human marker, not evidence that code fixed it.
-- **Seer hallucinations.** Seer can generate confident-sounding explanations that aren't right. Fall back to the actual events, stack traces, and timestamps when making claims.
-- **Sampling.** Some projects sample events aggressively. A low event count may just mean high sampling, not a rare error. If in doubt, note the gap.
+- **グルーピングドリフト。** fingerprint でグループ。リファクタで「同じ」エラーが新 issue ID になる。急終了なら再グループの可能性。直後の新 issue を確認。
+- **リリース相関はノイジー。** 1リリースに多数コミット。v2.14.0 で止まっても対象の証明ではない。同リリースの別変更と照合。
+- **サイレント修正。** 上流変更で止まり、防御コードとは無関係のことがある。相関は示唆、著者証明ではない。
+- **resolved ≠ fixed.** 手動 resolved でコード変更なし。`resolved` は人間マーカー。
+- **Seer の hallucination.** 自信ある説明が誤り。claim 時は event・スタック・タイムスタンプに戻る。
+- **サンプリング.**  aggressive サンプリングで event 数が低く見える。疑わしければギャップを記録。
 
-## What to return
+## 返すもの
 
-For each relevant issue:
-- Issue ID and title
-- Project and organization
-- First seen / last seen timestamps
-- Event count (and sampling rate if known)
-- Affected releases
-- A representative stack trace snippet showing relevance to the target (verbatim excerpt, not summary)
-- First/last-seen correlation with the target's ship date
-- Link to the issue
-- Any author comments or resolution notes
+関連 issue ごとに:
+
+- Issue ID とタイトル
+- プロジェクトと organization
+- First seen / last seen
+- Event 数（サンプリング率が分かれば）
+- 影響リリース
+- 対象との関連を示す代表スタックトレース抜粋（verbatim、要約不可）
+- 対象出荷日との first/last 相関
+- Issue リンク
+- 作者コメントや resolution メモ

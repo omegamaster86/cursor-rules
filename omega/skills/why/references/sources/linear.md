@@ -1,48 +1,49 @@
-# Linear Tickets
+# Linear チケット
 
-## What this source contains
+## このソースに含まれるもの
 
-- Issues describing features, bugs, and their motivation
-- Project docs attached to issues (often PRDs or specs)
-- Parent/sub-issue relationships (broader initiative → specific tickets)
-- Comments on issues (clarifications, scope changes, "why we're doing this" rationale)
-- Labels (e.g., `compliance`, `customer-request`, `perf`) that signal the type of motivation
-- Status updates that explain scope changes
-- Attachments and linked GitHub PRs
+- 機能・バグとその動機を説明する issue
+- issue に添付されたプロジェクトドキュメント（しばしば PRD や仕様）
+- 親子 issue 関係（より大きな initiative → 具体チケット）
+- issue コメント（明確化、スコープ変更、「なぜやるか」の rationale）
+- ラベル（`compliance`、`customer-request`、`perf` など動機の種類のシグナル）
+- スコープ変更を説明するステータス更新
+- 添付とリンクされた GitHub PR
 
-Linear is where the product/business context often lives: the "we're doing this because customer X asked" or "this is for the Q3 compliance initiative" layer.
+Linear にはプロダクト／ビジネス文脈がよくある。「顧客 X が依頼したから」「Q3 コンプライアンス initiative のため」という層。
 
-## How to search it
+## 検索方法
 
-Use the Linear MCP.
+Linear MCP を使う。
 
-1. **Start with linked tickets.** If the seed commits or PRs reference ticket IDs (e.g., `ENG-1234`, `[BUG-567]`), fetch those first with `get_issue`. Read the full issue including comments.
-2. **List related issues by keyword.** Use `list_issues` with text search for the feature name, key symbol, or business term. Try multiple phrasings.
-3. **Walk the issue tree.** If you land on a sub-issue, fetch its parent. Sub-issues are tactical. Parents often carry the "why."
-4. **Read project docs.** If the issue belongs to a project, use `get_project` and check attached docs. Project-level documents are where specs and rationale are most often captured.
-5. **Check labels and milestones.** Labels hint at the category of motivation (customer-request, incident-followup, compliance). Milestones tie work to deadlines, which often reveal motivation.
+1. **リンクチケットから。** シードコミットや PR がチケット ID（`ENG-1234`、`[BUG-567]`）を参照していれば、まず `get_issue` で取得。コメントまで全文読む。
+2. **キーワードで関連 issue を列挙。** `list_issues` で機能名、主要シンボル、ビジネス用語をテキスト検索。言い回しを変えて試す。
+3. **issue ツリーを歩く。** サブ issue に着地したら親を取得。サブは戦術的、親が「なぜ」を持つことが多い。
+4. **プロジェクトドキュメントを読む。** issue がプロジェクトに属すなら `get_project` で添付 doc を確認。プロジェクトレベルに仕様と rationale が最もよく残る。
+5. **ラベルとマイルストーン。** ラベルは動機のカテゴリ（customer-request、incident-followup、compliance）。マイルストーンは期限と結びつき、動機が見えやすい。
 
-## What good evidence looks like here
+## 良い証拠
 
-- An issue description stating the business problem: "Customer Acme needs X because of their SOC2 audit"
-- A comment recording a decision: "We decided to go with approach B because approach A would require touching the billing service"
-- A parent issue titled like an initiative: "Q3 Enterprise Readiness" or "Reduce Payment Failures"
-- An attached PRD or spec
-- Labels like `customer:acme`, `incident-followup`, `compliance`, `perf-regression`
+- ビジネス問題を述べる issue 説明（「顧客 Acme は SOC2 監査のため X が必要」）
+- 決定を記録するコメント（「A は billing サービスに触れるため B にした」）
+- initiative 的な親 issue タイトル（「Q3 Enterprise Readiness」「Reduce Payment Failures」）
+- 添付 PRD や仕様
+- `customer:acme`、`incident-followup`、`compliance`、`perf-regression` などのラベル
 
-## Common pitfalls
+## よくある落とし穴
 
-- **Scope drift.** The ticket the PR references may have been closed and reopened with a different scope. Read the whole history.
-- **Mechanical templates.** Some teams require "Why" sections but fill them with boilerplate. Generic text ("improve user experience") is probably not a real answer.
-- **Stale tickets.** Old tickets often reflect a version of the plan that changed. Check dates and cross-reference with the code's ship date.
-- **Closed-as-duplicate chains.** Follow the duplicate-of relationships back to the canonical ticket.
-- **Private workspace content.** If you can't access an issue, note that as a gap rather than guessing.
+- **スコープドリフト。** PR が参照するチケットは閉じて別スコープで再開されていることがある。履歴全体を読む。
+- **機械的テンプレート。** 「Why」必須でも boilerplate だけ。「UX 改善」など汎用文は本当の答えではない可能性。
+- **古いチケット。** 計画が変わった古い内容。日付とコードの出荷日を照合。
+- **duplicate チェーン。** duplicate-of を辿って正本チケットへ。
+- **非公開ワークスペース。** issue にアクセスできないなら推測せずギャップとして記録。
 
-## What to return
+## 返すもの
 
-For each relevant ticket:
-- Ticket ID and title
-- The problem/motivation quoted from the description or comments (not paraphrased. The synthesizer needs the exact text to cite)
-- Labels, parent issue, project
-- Author, created date, closed date
-- Link to the ticket if available
+関連チケットごとに:
+
+- チケット ID とタイトル
+- 説明またはコメントからの問題／動機の引用（言い換え不可。synthesizer が exact テキストで引用する）
+- ラベル、親 issue、プロジェクト
+- 作者、作成日、クローズ日
+- リンク（あれば）
