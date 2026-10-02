@@ -1,144 +1,150 @@
-# Epistemics
+# エピステミクス（確信の扱い）
 
-How to reason about confidence when evidence is historical, fragmentary, and sometimes contradictory, and how to communicate it without flattening it into false certainty.
+証拠が歴史的で断片的でときに矛盾するとき、どう確信度を扱い、偽の確実性に平坦化せず伝えるか。
 
-Code doesn't carry its own motivation. You can read what code does. You can't read *why it exists*. That lives in commits, PRs, tickets, docs, and conversations, all incomplete, biased, and sometimes missing entirely. Pretending otherwise produces confident-sounding guesses that mislead the user.
+コードは自分の動機を持たない。コードが**何をするか**は読める。**なぜ存在するか**は読めない。それはコミット、PR、チケット、ドキュメント、会話にあり、すべて不完全で偏りがあり、ときに欠落する。そうでないふりをすると、ユーザーを誤導する自信ある推測になる。
 
-## Confidence Tiers
+## 確信度ティア
 
-Every claim in the final output must sit in one of these tiers. The tier determines which output section the claim goes in and how it's phrased.
+最終出力の各 claim は次のいずれかのティアに置く。ティアは出力セクションと言い回しを決める。
 
-### 1. Direct
+### 1. Direct（直接）
 
-An explicit, textual citation that answers the question. Not "the code does X so the author must have wanted X." Something an author actually *wrote* that says why.
+質問に答える明示的なテキスト引用。「コードが X するから作者は X を望んだに違いない」ではない。作者が**なぜ**と実際に*書いた*もの。
 
-Examples:
-- A PR description that says "this fixes the bug where users with >1000 items couldn't paginate"
-- A ticket that says "we're adding this because customer Acme requested it in their security review"
-- A code comment that says "// clamp to 100 because the upstream API rejects larger values"
-- A design doc that says "we chose option A over option B because we need persistence across restarts"
-- A chat message from the author saying "switching to this approach since the old one was flaky in tests"
+例:
 
-Phrasing: confident, present tense. "This exists because X." Cite the source.
+- 「1000 件超のユーザーがページネートできなかったバグを直す」という PR 説明
+- 「顧客 Acme がセキュリティレビューで依頼したため追加」というチケット
+- 「// 上流 API が大きい値を拒否するため 100 にクランプ」というコメント
+- 「再起動後も永続が必要なので A を B より選んだ」という設計 doc
+- 「旧方式がテストでフレーキだったのでこの方式に切り替え」という作者のチャット
 
-### 2. Supported
+言い回し: 自信を持って現在形。「X のために存在する。」ソースを引用。
 
-Multiple pieces of indirect evidence converge. No single source states it explicitly, but the pattern across sources makes it likely.
+### 2. Supported（裏付け）
 
-Examples:
-- The PR title says "improve performance," the ticket is labeled "perf," and the surrounding commits all touch the same hot path
-- Multiple tests were added alongside the change, all exercising edge cases with very large inputs
-- The author's other PRs from the same week all mention the same incident in their descriptions
+複数の間接証拠が収束。どのソースも明示していないが、パターンとして likely。
 
-Phrasing: confident but clearly derived. "The evidence points strongly to X: [the specific pieces]." Cite multiple sources.
+例:
 
-### 3. Inferred
+- PR タイトル「性能改善」、チケットラベル perf、周辺コミットが同じホットパス
+- 変更と同時に複数テスト追加、すべて超大入力のエッジケース
+- 同週の作者の他 PR 説明が同じインシデントに言及
 
-A reasonable reading of the context, but nothing explicitly supports it. The reader should understand this is *your interpretation*, not a fact from the record.
+言い回し: 自信あるが派生であることが明確。「証拠は X を強く示す: [具体 pieces]。」複数ソースを引用。
 
-Examples:
-- The PR doesn't say why, but given the error was happening in production (per the incident channel timing) and the fix was rushed (merged the same day), it was likely a hotfix.
-- The function name suggests retry logic. The retry count is 3. This matches the team's general convention of "3 retries" seen elsewhere in the codebase.
+### 3. Inferred（推論）
 
-Phrasing: hedged. "It appears", "likely", "suggests", "is consistent with", "one reading is". Make the inference chain explicit: "Given A and B, C seems likely because D."
+文脈の合理的な読み取りだが、明示的支持はない。読者はこれが*あなたの解釈*であり記録の事実ではないと理解すべき。
 
-### 4. Speculative
+例:
 
-A plausible hypothesis, but the evidence is thin and other explanations fit equally well. Presenting these is valuable, but mark them clearly as guesses.
+- PR に理由がないが、本番エラー（インシデントチャンネルタイミング）と同日マージの急ぎはホットフィックスの likely 読み
+- 関数名がリトライを示唆、回数 3、コードベース他所の「3 回リトライ」慣習と一致
 
-Examples:
-- "This might be a workaround for a browser bug that's since been fixed, but we found no contemporary evidence of that."
-- "It's possible this threshold was chosen to match an SLA commitment, but no SLA doc references it."
+言い回し: ヘッジ。「〜のように見える」「likely」「示唆する」「〜と整合」「一つの読みは」。推論連鎖を明示:「A と B から、D のため C が likely。」
 
-Phrasing: explicitly speculative. "One possibility is X, but we have no direct evidence." Usually lives in the "Competing Hypotheses" section alongside other possibilities.
+### 4. Speculative（仮説）
 
-### 5. Unknown
+ plausible 仮説だが証拠は薄く、他説明も同程度に当てはまる。提示は有用だが guess として明確に。
 
-You looked and couldn't find out. A valid and important outcome. Document it.
+例:
 
-Phrasing: "We searched X, Y, and Z and found no evidence of why." Be specific about *what* you searched. "We couldn't find out" is less useful than "we searched the ticket tracker with keywords A and B, scanned the 6 PRs that touched this file since 2023, and grep'd the repo for string literals matching the threshold. None surfaced a rationale."
+- 「修正済みブラウザバグの workaround の可能性があるが、当時の証拠は見つからなかった」
+- 「SLA コミットメントに合わせた閾値の可能性があるが、SLA doc は参照しない」
 
-## Phrasing Guide
+言い回し: 明示的に speculative。「一つの可能性は X だが直接証拠はない。」通常は「Competing Hypotheses」に他候補と並べる。
 
-### Words that carry confidence. Use carefully
+### 5. Unknown（不明）
 
-These imply **Direct** or **Supported** confidence. Don't use them for inferences.
+調べたが分からなかった。有効で重要な結果。
 
-- "because". Implies a causal claim with evidence
-- "the reason is". Same
-- "was designed to". Claims author intent
-- "fixes", "addresses", "solves". Claims the change achieved its goal
-- "the team decided". Claims a group decision happened
+言い回し:「X、Y、Z を検索したが理由の証拠は見つからなかった。」*何を*検索したか具体に。「分からなかった」より「チケットでキーワード A/B、2023 以降このファイルに触れた PR 6 本、閾値に一致する文字列リテラルを grep。rationale は出てこなかった」の方が有用。
 
-If you're using these, you should have a citation immediately adjacent.
+## 言い回しガイド
 
-### Words that hedge. Use for inferences
+### 確信を帯びる語。慎重に
 
-- "appears to"
-- "seems to"
-- "likely"
-- "suggests"
-- "is consistent with"
-- "one reading is"
-- "plausibly"
-- "may have been"
-- "the evidence points toward"
+これらは **Direct** または **Supported** を暗示。推論には使わない。
 
-These signal that you're interpreting, not reporting. Use them liberally in the "What We Can Reasonably Infer" section.
+- 「because」— 証拠付き因果
+- 「the reason is」— 同様
+- 「was designed to」— 作者の意図
+- 「fixes」「addresses」「solves」— 変更が目的を達成した claim
+- 「the team decided」— グループ決定
 
-### Words to avoid
+これらを使うなら直後に引用を置く。
 
-- "obviously". If it were obvious, the user wouldn't be asking
-- "clearly". Almost always precedes a claim that isn't clear
-- "of course". Same
-- "just" (as in "it's just X for performance"). Dismissive and usually hides uncertainty
-- "I think" / "I believe". You're synthesizing evidence, not giving a personal opinion. Use "the evidence suggests" instead.
+### ヘッジ語。推論向け
 
-### Avoid rationalization
+- 「appears to」
+- 「seems to」
+- 「likely」
+- 「suggests」
+- 「is consistent with」
+- 「one reading is」
+- 「plausibly」
+- 「may have been」
+- 「the evidence points toward」
 
-Code that "makes sense" today may have been written for reasons that no longer apply, or that were wrong when they were written. Don't retrofit a clean rationale onto messy history.
+解釈であり報告ではないシグナル。「What We Can Reasonably Infer」で liberally 使う。
 
-Resist the urge to:
-- Assume the author did the "right" thing and work backward to justify it
-- Assume a consistent pattern across the codebase was intentional when it might be copy-paste
-- Turn an absence of evidence into evidence of absence ("no one mentioned security concerns, so it must not have been a concern")
+### 避ける語
 
-## The Sycophancy Trap
+- 「obviously」— 自明ならユーザーは聞かない
+- 「clearly」— ほぼ常に不明瞭な claim の前
+- 「of course」— 同様
+- 「just」（「性能のための just X」）— 軽蔑的で不確実性を隠す
+- 「I think」「I believe」— 個人意見ではなく証拠の統合。「the evidence suggests」を使う
 
-Users often phrase `why` questions with an embedded hypothesis: "Why do we do it this way, I assume it's for performance?" Don't simply confirm it. Treat it as one candidate among others and check the evidence independently. If the evidence supports it, say so with citations. If not, say so and present what the evidence *does* support.
+### 合理化を避ける
 
-The user's guess is a prompt for investigation, not a conclusion to validate.
+今日「理にかなう」コードは、もはや当てはまらない理由、または当時誤っていた理由で書かれたことがある。きれいな rationale を messy な歴史に当てない。
 
-## When Evidence Contradicts
+避ける衝動:
 
-If two sources disagree (the PR description says one thing, the ticket says another), surface both. Don't pick the one that fits a tidier narrative. A typical pattern:
+- 作者は「正しい」ことをしたと仮定して後から正当化
+- コードベースの一貫パターンが意図的だったと仮定（コピペの可能性）
+- 証拠の欠如を証拠の否定に（「セキュリティの懸念に誰も言及しなかったから懸念なかった」）
 
-- **The ticket says** "we need this for customer X's compliance requirement"
-- **The PR says** "cleaning up tech debt in this area"
+## 同調の罠（Sycophancy Trap）
 
-Both may be true (the ticket motivated the work, the PR is the author's framing of it), or one may be wrong. Present both with their citations and let the user make the call.
+ユーザーは仮説を埋め込むことが多い:「なぜこうするの？性能のためだと思うが？」単に確認しない。候補の一つとして扱い、証拠を独立に確認。支持なら引用付きで。そうでなければそう述べ、証拠が*実際に*支持するものを提示。
 
-## When Evidence Is Missing
+ユーザーの guess は調査のプロンプトであり、検証すべき結論ではない。
 
-An honest "we don't know" is one of the most valuable outputs this skill can produce. The user now knows:
+## 証拠が矛盾するとき
 
-- The answer isn't in the obvious places
-- They'll need to ask a human (the original author, the product owner, the team lead) to find out
-- Or they can decide the question isn't worth pursuing further
+二つのソースが食い違う（PR はこう、チケットはああ）なら両方出す。きれいな narrative に合う方だけ選ばない。典型:
 
-Failing to mark a gap and filling it with a confident guess actively harms the user. They'll act on the guess.
+- **チケット:**「顧客 X のコンプライアンス要件」
+- **PR:**「この領域の技術的負債の整理」
 
-When you hit a gap, name it concretely:
-- What question you were trying to answer
-- What sources you searched
-- What you searched for in each
-- What you found (nothing, or only tangentially related material)
+両方真（チケットが動機、PR が作者のフレーミング）か、一方が誤りかも。両方引用し、ユーザーに判断を委ねる。
 
-## Calibration Check Before Finalizing
+## 証拠が欠けるとき
 
-Before delivering the output, the synthesizer should review every claim in "What We Found" and "What We Can Reasonably Infer" and ask:
+正直な「分からない」はこのスキルの最有価値な出力の一つ。ユーザーは:
 
-1. Does this claim have a citation? If not, either add one or move it to "Inferred" / "Hypotheses".
-2. Is the phrasing calibrated to the tier? (A Direct claim can use "because". An Inferred claim cannot.)
-3. Am I treating the code itself as evidence for its own intent? If so, that's not evidence. Remove or reclassify.
-4. Does the output include a "What We Don't Know" section? If no gaps are mentioned, that's suspicious. Either the evidence was unusually complete or something is being swept under the rug.
+- 答えが obvious な場所にない
+- 人間（原作者、PO、リード）に聞く必要がある
+- または追う価値がないと判断できる
+
+ギャップを示さず自信ある guess で埋めると能動的に害する。guess に基づいて行動する。
+
+ギャップには具体に:
+
+- 答えようとした質問
+- 検索したソース
+- 各ソースで何を検索した
+- 見つかったもの（なし、または接 tangent だけ）
+
+## 最終化前のキャリブレーション
+
+出力前に synthesizer は「What We Found」「What We Can Reasonably Infer」の各 claim を見直す:
+
+1. 引用がある？ なければ追加するか Inferred / Hypotheses に移す
+2. 言い回しはティアに合う？（Direct は "because" 可。Inferred は不可）
+3. コード自体を自分の意図の証拠にしている？ なら証拠ではない。削除または再分類
+4. 「What We Don't Know」がある？ ギャップが無いのは疑わしい。証拠が異常に完全か、何か隠しているか

@@ -1,99 +1,100 @@
-# Datadog Telemetry
+# Datadog テレメトリ
 
-## What this source contains
+## このソースに含まれるもの
 
-Datadog holds the runtime record, what actually happened in production, as opposed to what was planned or discussed.
+Datadog はランタイムの記録、つまり本番で**実際に起きたこと**（計画や議論ではない）。
 
-- **Metrics.** Counters, gauges, histograms instrumented by the team. A metric's *presence* is itself evidence. Someone thought this number worth watching.
-- **Monitors & alerts.** Conditions the team decided warranted waking someone up. A monitor firing on `rate_limit_hit > 10/min` is direct evidence the team worried about that threshold.
-- **Dashboards.** Curated views. The charts tell you what the team considers important for a subsystem.
-- **APM traces & spans.** Request-level runtime data. Useful for "why is this slow" / "why is there a timeout here" questions.
-- **Logs.** High-volume event records. Often contain the error conditions that motivated defensive code.
-- **Incidents.** Formal incident records with timelines and linked postmortems.
-- **Notebooks.** Exploratory investigations. Often contain hypotheses and analyses.
+- **Metrics.** チームが仕込んだ counter、gauge、histogram。メトリクスの*存在自体*が証拠。この数を見る価値があると誰かが考えた。
+- **Monitors & alerts.** 誰かを起こす条件。`rate_limit_hit > 10/min` のモニターはその閾値をチームが心配した直接証拠。
+- **Dashboards.** キュレーションされたビュー。チャートはサブシステムで何を重要と見るかを示す。
+- **APM traces & spans.** リクエスト単位のランタイム。「なぜ遅い」「なぜタイムアウト」に有用。
+- **Logs.** 高ボリュームイベント。防御コードの動機となったエラー条件をしばしば含む。
+- **Incidents.** タイムラインとリンクポストモーテム付きの正式インシデント。
+- **Notebooks.** 探索調査。仮説と分析が多い。
 
-Datadog answers "what was the production reality around the time this code was written?", which often explains the code's shape.
+Datadog は「このコードが書かれた前後の本番の現実は？」に答え、コードの形を説明することが多い。
 
-## How to search it
+## 検索方法
 
-Use the Datadog MCP. Start broad, then narrow.
+Datadog MCP。広く始めて絞る。
 
-1. **Identify the owning service(s).**
-
-   ```
-   search_datadog_services (filter by name or team)
-   search_datadog_service_dependencies (see upstream/downstream)
-   ```
-
-2. **Dashboards and monitors first. They tell you what the team cares about.**
+1. **所有サービスを特定.**
 
    ```
-   search_datadog_dashboards (query: feature name, service name, symbol)
-   search_datadog_monitors   (same queries)
+   search_datadog_services（名前またはチームでフィルタ）
+   search_datadog_service_dependencies（上流/下流）
    ```
 
-   When a dashboard or monitor covers the target, note its queries and watched thresholds. The threshold is frequently the answer to "why is this clamped at N?"
-
-3. **Metrics around the target.**
+2. **ダッシュボードとモニターを先に。** チームが何を気にするかが分かる。
 
    ```
-   search_datadog_metrics (by name pattern, e.g., the feature or symbol)
-   get_datadog_metric_context (metadata: description, units, tags)
-   get_datadog_metric (timeseries; "was there a spike around the PR date?")
+   search_datadog_dashboards（機能名、サービス名、シンボル）
+   search_datadog_monitors（同じクエリ）
    ```
 
-   Correlating a metric's trajectory with the target's add/change date is strong supporting evidence: "the `payment_timeout` metric spiked 2023-11-03, and the retry logic merged 2023-11-06."
+   対象をカバーするダッシュボード／モニターでは、クエリと監視閾値を記録。閾値が「なぜ N でクランプ？」の答えであることが多い。
 
-4. **Logs. Narrow, don't dump.**
-
-   ```
-   search_datadog_logs (raw log patterns near the target, set use_log_patterns=true)
-   analyze_datadog_logs (SQL-style aggregations, only when you need counts)
-   ```
-
-   Search with symbols, error strings, or feature names. **Strongly prefer time-bounded queries** (e.g., 30 days before/after the change). Log volume is huge. Unconstrained searches waste time and may time out.
-
-5. **APM spans and traces.**
+3. **対象周辺のメトリクス.**
 
    ```
-   aggregate_spans    (stats: "how often does this endpoint fail?")
-   search_datadog_spans (inspect individual spans)
-   get_datadog_trace  (a specific trace ID)
+   search_datadog_metrics（名前パターン）
+   get_datadog_metric_context（説明、単位、タグ）
+   get_datadog_metric（時系列。「PR 日付前後にスパイク？」）
    ```
 
-   Useful for timeouts, retries, slow paths, and cross-service behavior.
+   メトリクス推移と対象の追加／変更日の相関は強い supporting evidence（例:「`payment_timeout` が 2023-11-03 にスパイク、リトライロジックが 2023-11-06 マージ」）。
+
+4. **Logs. 絞る。ダンプしない.**
+
+   ```
+   search_datadog_logs（use_log_patterns=true）
+   analyze_datadog_logs（カウントが必要なときだけ SQL 風集計）
+   ```
+
+   シンボル、エラー文字列、機能名で検索。**時間境界を強く推奨**（変更の前後 30 日など）。ログ量は巨大。無制限検索は時間切れやタイムアウト。
+
+5. **APM spans と traces.**
+
+   ```
+   aggregate_spans
+   search_datadog_spans
+   get_datadog_trace
+   ```
+
+   タイムアウト、リトライ、遅いパス、サービス横断に有用。
 
 6. **Incidents.**
 
    ```
-   search_datadog_incidents (by title, team, date range)
-   get_datadog_incident     (full detail for a specific incident)
+   search_datadog_incidents
+   get_datadog_incident
    ```
 
-   If the target looks defensive, search for incidents around the time it was added. An incident whose timeline includes "added defensive check for X" is near-direct evidence.
+   防御的に見える対象なら、追加時期前後のインシデント。「X の防御チェックを追加」がタイムラインにあるのはほぼ直接証拠。
 
-## What good evidence looks like here
+## 良い証拠
 
-- A monitor whose query and threshold match the constraint the code enforces (code clamps to 100, monitor alerts when requests exceed 100/min)
-- A dashboard created by the target's author, with widgets that correspond to what the code measures or guards against
-- A metric showing a production spike immediately before the code was merged, and stable values after
-- An incident record referencing the target code, the same symbols, or the same error strings
-- Logs showing a specific error pattern the defensive code would prevent, timestamped in the window before the change
+- コードの制約と一致するモニターのクエリと閾値（コードが 100 でクランプ、モニターが 100/min 超でアラート）
+- 対象作者が作ったダッシュボードで、コードが測定／ガードするものに対応するウィジェット
+- マージ直前の本番スパイクと、その後の安定
+- 対象コード・同じシンボル・同じエラー文字列を参照するインシデント
+- 変更前の窓で、防御コードが防ぐエラーパターンを示すログ
 
-## Common pitfalls
+## よくある落とし穴
 
-- **Correlation is not causation.** A spike before a PR and stabilization after is suggestive, not definitive. Other changes may have landed in the same window. Check neighboring PRs.
-- **Overfitting to the chart you found.** Datadog visualizations are *made* by humans and reflect that human's framing. A chart named "retry success rate" is evidence the team cared about retry success, not that it's why a specific line of code exists.
-- **Vanished telemetry.** Metrics can be renamed, deleted, or have short retention. If you can't find data from the relevant window, that's a gap, not a null result.
-- **Noise at scale.** Searching logs for a common string returns thousands of matches. Narrow by service, tag, and time aggressively. Use `analyze_datadog_logs` to aggregate rather than dumping raw logs.
-- **Instrumented != caused.** A metric's existence tells you someone cared enough to measure something, not that the code was added *because* of it. Cross-reference with commit/PR dates.
+- **相関は因果ではない。** PR 前のスパイクと後の安定は示唆的。同窓に別変更があるかも。近傍 PR を確認。
+- **見つけたチャートへの過適合。** 可視化は人間が作り、その人のフレーミングを反映。「retry success rate」チャートはリトライ成功を気にした証拠であり、特定行の存在理由の証拠ではない。
+- **消えたテレメトリ。** メトリクスの改名・削除・短い保持。関連窓のデータがないのはギャップであり null 結果ではない。
+- **スケールでのノイズ。** 共通文字列検索は数千ヒット。サービス・タグ・時間で aggressive に絞る。生ログダンプより `analyze_datadog_logs`。
+- **instrumented ≠ caused.** メトリクス存在は測定対象を気にした証拠。コードが**そのため**追加された証拠ではない。コミット/PR 日付と照合。
 
-## What to return
+## 返すもの
 
-For each relevant item:
-- Type (dashboard / monitor / metric / log pattern / trace / incident / notebook)
-- Title or name
-- Link or identifier (dashboard ID, monitor ID, metric name, incident ID)
-- Owner/author and created/modified date
-- The specific condition, query, or quote that bears on the question (verbatim where possible)
-- Relevance: what this suggests about the target code, and how strong the connection is
+関連項目ごとに:
+
+- 種別（dashboard / monitor / metric / log pattern / trace / incident / notebook）
+- タイトルまたは名前
+- リンクまたは ID
+- オーナー/作者と作成/更新日
+- 質問に関係する条件・クエリ・引用（可能なら verbatim）
+- 関連性: 対象コードについて何を示唆し、結びつきの強さ

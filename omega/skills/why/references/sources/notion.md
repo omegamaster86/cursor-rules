@@ -1,55 +1,56 @@
-# Notion Docs
+# Notion ドキュメント
 
-## What this source contains
+## このソースに含まれるもの
 
-- PRDs (product requirement documents)
-- Technical specs and RFCs
-- Architectural decision records (ADRs)
-- Meeting notes from design reviews
-- Team pages with domain context
-- Postmortems from incidents
-- Runbooks that may explain defensive code
-- Strategy documents that set priorities
+- PRD（プロダクト要求ドキュメント）
+- 技術仕様と RFC
+- ADR（アーキテクチャ決定記録）
+- デザインレビューの議事録
+- ドメイン文脈のチームページ
+- インシデントのポストモーテム
+- 防御的コードを説明する可能性のあるランブック
+- 優先度を定める戦略ドキュメント
 
-Notion is where "why" often lives in long-form before it becomes code. A significant feature usually has a doc.
+Notion には、コードになる前の長文の「なぜ」がよくある。重要な機能には通常 doc がある。
 
-## How to search it
+## 検索方法
 
-Use the Notion MCP.
+Notion MCP を使う。
 
-1. **Keyword searches with `notion-search`.** Try:
-   - The feature name
-   - Key symbols / class names from the target code
-   - Author handles (design docs are often authored before the code lands)
-   - Error strings or user-visible terms
-   - Time-bounded queries if you know when the code shipped
-2. **Fetch candidate pages with `notion-fetch`.** Read the full content, not the preview. Rationale is often buried mid-document.
-3. **Follow backlinks and child pages.** Design docs often have sub-pages for alternatives considered, appendices, or implementation notes.
-4. **Check related databases.** `notion-query-data-sources` and `notion-query-meeting-notes` can surface meeting notes that discussed the decision.
-5. **Search author-specific spaces.** If the PR author has a personal notebook (common at some companies), it may hold exploratory thinking that preceded the code.
+1. **`notion-search` でキーワード。** 試すもの:
+   - 機能名
+   - 対象コードの主要シンボル／クラス名
+   - 作者ハンドル（デザイン doc はコードより先に書かれることが多い）
+   - エラー文字列やユーザー可視用語
+   - 出荷日が分かれば時間範囲
+2. **`notion-fetch` で候補ページ。** プレビューではなく全文。rationale は文中に埋まっていることが多い。
+3. **バックリンクと子ページ。** 代替案、付録、実装メモのサブページがあることが多い。
+4. **関連データベース。** `notion-query-data-sources`、`notion-query-meeting-notes` で決定が議論された議事録。
+5. **作者固有スペース。** 個人ノートにコード前の探索思考がある会社もある。
 
-## What good evidence looks like here
+## 良い証拠
 
-- A PRD with a "Problem statement" or "Motivation" section that matches the target code's purpose
-- An "Alternatives considered" or "Rejected approaches" section
-- A postmortem that names the target code as the fix for a specific incident
-- Meeting notes that record "we decided X because Y" and tie to the same author/date range as the PR
-- An ADR template filled out non-trivially (status, context, decision, consequences)
+- 「Problem statement」「Motivation」が対象コードの目的と一致する PRD
+- 「Alternatives considered」「Rejected approaches」
+- 特定インシデントの修正として対象コードを名指すポストモーテム
+- 「X にしたのは Y のため」と PR と同作者・同期間の議事録
+- 非自明に埋められた ADR（status、context、decision、consequences）
 
-## Common pitfalls
+## よくある落とし穴
 
-- **Outdated docs.** Specs are often written before implementation and not updated. The doc may describe a plan that changed. Cross-check against the actual PR.
-- **Doc vs. reality drift.** A spec may say "we'll do X" but the code actually does Y. Flag the divergence. The synthesizer will surface the contradiction.
-- **Boilerplate templates.** Some orgs require a "Why" section that gets filled with fluff. Look for specificity.
-- **Unlinked docs.** The most relevant doc may not be linked from anywhere. Broad keyword searches help.
-- **Multiple drafts.** If a topic has multiple docs, find the one that was finalized or most recently updated. Check dates.
-- **Access-restricted pages.** If you can't access a page, note it as a gap.
+- **古い doc。** 実装前に書かれ更新されない。計画が変わった可能性。実 PR と照合。
+- **doc と現実のずれ。** 「X する」と書いてコードは Y。矛盾をフラグ。synthesizer が表面化する。
+- **テンプレートの fluff。** 「Why」が具体性なく埋まる。具体性を探す。
+- **リンクされていない doc。** 最も関連する doc がどこからもリンクされていないことがある。広いキーワード検索。
+- **複数ドラフト。** 最終化または最新更新の doc を選ぶ。日付を確認。
+- **アクセス制限ページ。** ギャップとして記録。
 
-## What to return
+## 返すもの
 
-For each relevant doc:
-- Title and URL
-- Authors and last-updated date
-- The motivation text (verbatim quote), with page/section location
-- Relevant linked pages (so the synthesizer can cite them)
-- Whether the doc was finalized or draft
+関連 doc ごとに:
+
+- タイトルと URL
+- 作者と最終更新日
+- 動機テキスト（verbatim 引用）とページ／セクション位置
+- synthesizer が引用できる関連リンクページ
+- 最終化かドラフトか
