@@ -1,29 +1,29 @@
 ---
 name: new-branch-and-pr
-description: 新規ブランチを作成し、作業を完了して Pull Request を開く
+description: Create a fresh branch, complete work, and open a pull request
 ---
 
 # New branch and PR
 
-## トリガー
+## Trigger
 
-クリーンなブランチと PR ワークフローで出荷する作業を開始するとき。
+Starting work that should be shipped through a clean branch and pull request workflow.
 
-## ワークフロー
+## Workflow
 
-1. 作業ツリーがクリーンであること、または意図的に対処済みであることを確認。
-2. 最新の main から説明的な名前のブランチを作成。
-3. 実装とテストを完了。
-4. 焦点を絞った変更をコミットし push。
-5. 概要とテストノートを含む簡潔な PR を作成。
+1. Ensure the working tree is clean or explicitly handled.
+2. Create a descriptive branch from the latest main.
+3. Complete implementation and tests.
+4. Commit focused changes and push.
+5. Create a concise PR with summary and test notes.
 
-## ガードレール
+## Guardrails
 
-- ブランチ範囲は 1 つの変更セットに集中。
-- レビュー依頼前に検証ノートを含める。
+- Keep branch scope focused on one change set.
+- Include verification notes before requesting review.
 
-## 出力
+## Output
 
-- 新規ブランチ名
-- PR 概要とテストノート
+- New branch name
+- PR summary and test notes
 - PR URL
