@@ -1,32 +1,32 @@
 ---
 name: fix-merge-conflicts
-description: 非対話式でマージ競合を解決し、ビルドとテストを検証して競合解消を確定する
+description: Resolve merge conflicts non-interactively, validate build and tests, and finalize conflict resolution
 ---
 
-# マージ競合解決
+# Fix merge conflicts
 
-## トリガー
+## Trigger
 
-ブランチに未解決のマージ競合があり、ビルド可能な状態へ戻す必要がある場合。
+Branch has unresolved merge conflicts and needs a reliable path to a buildable state.
 
-## ワークフロー
+## Workflow
 
-1. git status と競合マーカーから競合ファイルを検出。
-2. 各競合を最小変更で、正しさを優先して解決。
-3. 安全なら双方の内容を保持。難しい場合は、コンパイルが通り公開動作を安定させる側を採用。
-4. 鍵括弧を手作業で編集せず、パッケージマネージャでロックファイルを再生成。
-5. コンパイル、lint、関連テストを実行。
-6. 解決済みファイルをステージし、主要な判断を要約。
+1. Detect all conflicting files from git status and conflict markers.
+2. Resolve each conflict with minimal, correctness-first edits.
+3. Prefer preserving both sides when safe. Otherwise, choose the variant that compiles and keeps public behavior stable.
+4. Regenerate lockfiles with package manager tools instead of hand-editing.
+5. Run compile, lint, and relevant tests.
+6. Stage resolved files and summarize key decisions.
 
-## ガードレール
+## Guardrails
 
-- 変更は最小かつ読みやすく。
-- どのファイルにも競合マーカーを残さない。
-- 競合解決中の広範なリファクタは避ける。
-- 競合解決中は push やタグ付けを行わない。
+- Keep changes minimal and readable.
+- Do not leave conflict markers in any file.
+- Avoid broad refactors while resolving conflicts.
+- Do not push or tag during conflict resolution.
 
-## 出力
+## Output
 
-- 解決したファイル
-- 主要な決定内容
-- ビルド/テスト結果
+- Files resolved
+- Notable resolution choices
+- Build/test outcome
