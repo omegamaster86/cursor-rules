@@ -1,31 +1,31 @@
 ---
 name: what-did-i-get-done
-description: 指定期間内に作成されたコミットを要約し、簡潔な更新情報として返す
+description: Summarize authored commits over a user-specified time period into a concise update
 ---
 
 # What did I get done
 
-## トリガー
+## Trigger
 
-特定期間で完了した作業の要点を短く要約したい場合（例: 昨日、過去3日、先週）。
+Need a short, high-signal summary of work completed in a specific time range (for example: yesterday, last 3 days, or last week).
 
-## ワークフロー
+## Workflow
 
-1. 要求された期間を具体的な日付に変換。
-2. 対象範囲内の現在 git ユーザー email 作成コミットを読み取り。
-3. マージコミットと未コミット変更を除外。
-4. 重要な出荷変更を最短のステータス更新に統合。
-5. 最終サマリに実際の日付範囲を明記。
+1. Resolve the requested time window into concrete dates.
+2. Read commits authored by the current git user email within that range.
+3. Exclude merge commits and uncommitted changes.
+4. Synthesize the most important shipped changes into a concise status update.
+5. Include the actual date range used in the final summary.
 
-## ガードレール
+## Guardrails
 
-- 非常に簡潔で情報密度を高める。
-- 振る舞いや設計に影響する変更を優先。
-- 体裁調整のみやインポート変更、軽微なリネームは省略。
-- 意図推定は行わず、機能的内容のみ記述。
+- Be extremely concise and information-dense.
+- Prioritize substantial behavior or architecture changes.
+- Omit cosmetic-only changes (formatting, imports, minor renames).
+- Do not infer intent or motivation. Describe changes functionally.
 
-## 出力
+## Output
 
-- ステータス更新向けの短い要約
-- 実際の日付範囲
-- 主要変更のみのオプション 2〜5 項目
+- One short summary suitable for a status update
+- Real date range
+- Optional 2-5 bullets for major changes only

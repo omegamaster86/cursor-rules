@@ -1,40 +1,40 @@
 ---
 name: control-cli
-description: 外部サービスを使わずに、対話型 CLI や TUI を駆動・検査・プロファイルするローカルハーネスを構築・適応する。CLI UX の確認、起動リグレッション、メモリリーク、ハング、プロンプトフロー、端末デモに使用する。
+description: Build or adapt a local harness to drive, inspect, and profile an interactive CLI or TUI without external services. Use for CLI UX checks, startup regressions, memory leaks, hangs, prompt flows, or terminal demos.
 ---
 
 # Control CLI
 
-手動で触る代わりに、対話型 CLI を再現性のあるローカルハーネスで検証します。まずリポジトリに既存のテスト/デモハーネスがあれば再利用し、なければ標準のローカルツールで一時ハーネスを作る。
+Use a repeatable local harness to exercise an interactive CLI instead of poking at it manually. First reuse the repo's own test/demo harness if it exists; otherwise assemble a temporary harness from standard local tools.
 
-## 利用用途
+## What It Is Used For
 
-- 決定的な入力で CLI/TUI の不具合を再現。
-- キーボードフロー、プロンプト、割り込み、リサイズ、端末レイアウトの確認。
-- バグ修正用に before/after のトランスクリプトを収集。
-- 起動時間、遅い処理、ハング、メモリ増加をプロファイル。
-- 出力説明より実行結果が伝わりやすい場合、短い端末デモを録画。
+- Reproducing CLI/TUI bugs with deterministic input.
+- Verifying keyboard flows, prompts, interrupts, resize behavior, and terminal layout.
+- Capturing before/after transcripts for bug fixes.
+- Profiling startup time, slow operations, hangs, or memory growth.
+- Recording a short terminal demo when output is easier to show than explain.
 
-## ハーネスループ
+## Harness Loop
 
-1. テスト対象のコマンドと最小再現可能ワークスペースを特定。
-2. 既存のローカルハーネスを発見: package scripts、e2e テスト、デモレコーダ、expect スクリプト、PTY 補助。
-3. ハーネスがなければ、決定的な環境変数を付与して CLI を分離端末セッションで起動。
-4. 操作前に現在の画面を取得。
-5. 1 回ごとに 1 つの操作を実行: テキスト、Enter、矢印、Escape、Ctrl-C、リサイズ。
-6. 次アクションの前に具体的な画面パターンまたはプロンプトを待つ。
-7. トランスクリプトとプロファイル成果物を保存。
-8. セッションを適切に終了。
+1. Identify the command under test and the smallest reproducible workspace.
+2. Discover existing local harnesses: package scripts, e2e tests, demo recorders, expect scripts, or PTY helpers.
+3. If no harness exists, launch the CLI in an isolated terminal session with deterministic env vars.
+4. Capture the current screen before interacting.
+5. Send one action at a time: text, Enter, arrows, Escape, Ctrl-C, resize.
+6. Wait for a concrete screen pattern or prompt before the next action.
+7. Save the transcript and any profile artifacts.
+8. Kill the session cleanly.
 
-## ハーネス候補
+## Harness Options
 
-- リポジトリ標準ハーネス: アプリの起動条件・環境・プロンプトを知っているため優先。
-- `tmux`: 管理対象セッション、`capture-pane`、`send-keys`、attach/detach。
-- PTY プローブ: tmux が使えない場合、短い Python/Node/Expect スクリプトを使用。
-- ランタイムインスペクタ: Node または Bun のインスペクタで CPU プロファイル、ヒープスナップショット、ライブ評価を実行。
-- 端末録画: リポジトリのデモツールか asciinema 互換ツールを使用（ユーザー指定のデモ時）。
+- Repo-native harness: prefer checked-in scripts because they know the app's startup, env, and prompts.
+- `tmux`: managed sessions, `capture-pane`, `send-keys`, attach/detach.
+- PTY probe: use a short Python, Node, or Expect script when tmux is unavailable.
+- Runtime inspector: use Node or Bun inspector for CPU profiles, heap snapshots, and live evaluation.
+- Terminal recorder: use repo-local demo tools or asciinema-compatible tools when the user asks for a demo.
 
-## 最小 tmux ハーネス
+## Minimal tmux Harness
 
 ```bash
 SESSION="cli-harness-$(date +%s)"
@@ -45,17 +45,17 @@ tmux capture-pane -pt "$SESSION"
 tmux kill-session -t "$SESSION"
 ```
 
-Node CLI の場合:
+For Node CLIs:
 
 ```bash
 NODE_OPTIONS="--inspect=127.0.0.1:0" tmux new-session -d -s "$SESSION" -- <node-cli-command>
 ```
 
-端末出力からインスペクタ URL を見つけ、必要なら Chrome DevTools 互換のツールで解析する。
+Read the terminal output to find the inspector URL, then use Chrome DevTools-compatible tooling if profiling is needed.
 
-## 最小 PTY ハーネス
+## Minimal PTY Harness
 
-リポジトリに tmux もデモハーネスもない場合、決定的待機が必要なときに PTY スクリプトを使う。再利用可能なテストを追加する要件がない限り一時的に留める。
+Use a PTY script when you need deterministic waits in a repo that does not have tmux or a demo harness. Keep it temporary unless the user asks to add a reusable test.
 
 ```python
 import os
@@ -91,19 +91,19 @@ proc.terminate()
 os.close(master_fd)
 ```
 
-CLI がより高度な端末制御を必要とする場合、`pty.fork()` または既存の PTY ライブラリを使う。
+If the CLI needs richer terminal control, use `pty.fork()` or an existing PTY library.
 
-## プロファイル手順
+## Profiling Recipes
 
-- 起動回帰: 同じマシン、同環境、同じコマンドでベースラインと比較対象の起動時間を取得。
-- 遅い処理: CPU プロファイルを開始し、処理を実行、停止して、上位 self-time 関数を比較。
-- メモリリーク: 可能なら GC 強制→ヒープスナップショット取得→処理を繰り返し実行→再度 GC 強制→再取得。
-- ハング: 画面、アクティブハンドル/リソース、割り込み前のスタック/CPU サンプルを収集。
+- Startup regression: capture baseline and treatment startup timings under the same machine, env, and command.
+- Slow operation: start a CPU profile, perform the operation, stop the profile, and compare top self-time functions.
+- Memory leak: force GC if available, take a heap snapshot, perform the operation repeatedly, force GC again, and take another snapshot.
+- Hang: capture the screen, active handles/resources, and a stack/CPU sample before interrupting.
 
-## ガードレール
+## Guardrails
 
-- sleep より確定待機を優先。sleep を使う場合は理由を明示。
-- 認証情報や破壊的コマンドを制御セッションに送らない。
-- リポジトリに既存ハーネスがない場合は `/tmp` に保管。
-- パスは他リポジトリのものをハードコードしない。現在のリポジトリの scripts/ランタイムに合わせる。
-- 不要になった tmux セッション、作業ディレクトリ、インスペクタ、デモ成果物は、保持要求がない限り削除。
+- Prefer deterministic waits over sleeps. If you must sleep, explain why.
+- Do not send credentials or destructive commands into a controlled session.
+- Keep the harness in `/tmp` unless the repo already has a testing/demo harness.
+- Do not hard-code paths from another repository. Adapt commands to the current repo's scripts and runtime.
+- Clean up tmux sessions, temp dirs, inspector processes, and demo artifacts unless the user asks to keep them.

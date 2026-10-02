@@ -37,7 +37,7 @@ function loadPrDiffs() {
   try {
     return JSON.parse(el.textContent || '');
   } catch (err) {
-    console.error('PR diff JSON の解析に失敗しました', err);
+    console.error('Failed to parse PR diff JSON payload', err);
     return null;
   }
 }
@@ -77,8 +77,8 @@ function detectMoves(dels, adds) {
 
 /**
  * renderDiff(target, diffInput)
- *   target: DOM 要素、文字列 ID、CSS セレクタ
- *   diffInput: 差分行の配列、または文字列（\n 区切り）
+ *   target: DOM element, string ID, or CSS selector
+ *   diffInput: array of diff lines, OR a single string (will be split on \n)
  */
 function renderDiff(target, diffInput) {
   var el;
@@ -90,7 +90,7 @@ function renderDiff(target, diffInput) {
   if (!el) return;
 
   var lines = toLines(diffInput);
-  if (!lines.length) { el.innerHTML = '<div style="padding:12px;color:#777;font-size:12px;">差分データがありません</div>'; return; }
+  if (!lines.length) { el.innerHTML = '<div style="padding:12px;color:#777;font-size:12px;">No diff data</div>'; return; }
 
   var filtered = lines.filter(function(l) {
     if (l.startsWith('--- ') || l.startsWith('+++ ') || l.startsWith('@@') || l.startsWith('diff ')) return true;
@@ -156,7 +156,7 @@ function renderDiff(target, diffInput) {
   el.innerHTML = '<table class="diff-table"><tbody>' + rows.join('') + '</tbody></table>';
 }
 
-/* DOM 読み込み後に [data-diff] 属性を持つ要素を自動検出し、pr-diffs-json から差分を描画する */
+/* Auto-discovery: after DOM loads, find all [data-diff] elements and render diffs from pr-diffs-json. */
 document.addEventListener('DOMContentLoaded', function() {
   var prDiffs = loadPrDiffs();
   if (!prDiffs) return;

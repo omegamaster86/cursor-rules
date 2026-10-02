@@ -1,23 +1,23 @@
 ---
 name: check-compiler-errors
-description: コンパイルおよび型チェックのコマンドを実行し、失敗を報告
+description: Run compile and type-check commands and report failures
 ---
 
-# コンパイラエラー確認
+# Check compiler errors
 
-## トリガー
+## Trigger
 
-コンパイルや型チェックの失敗が、ローカル検証や CI のボトルネックになっている場合。
+Compile or type-check failures are blocking local validation or CI.
 
-## ワークフロー
+## Workflow
 
-1. リポジトリのコンパイル／型チェックコマンドを実行。
-2. エラーをファイルと種類で要約。
-3. まず確度の高い問題を優先して修正。
-4. クリーンになるか、または修正不能な状態になるまで再実行。
+1. Run the repo's compile and type-check commands.
+2. Summarize errors by file and type.
+3. Fix the highest-confidence issues first.
+4. Re-run checks until clean or blocked.
 
-## 出力
+## Output
 
-- 現在のコンパイルおよび型チェックの状態
-- ファイル別・カテゴリ別のエラー要約
-- 実施した修正と未解決の阻害要因
+- Current compile and type-check status
+- Error summary grouped by file and category
+- Fixes applied and remaining blockers

@@ -1,50 +1,50 @@
 ---
 name: workflow-from-chats
-description: 直近のチャットから継続利用可能な作業嗜好を抽出し、スキル・ルール・運用ドキュメントへ反映。嗜好学習、フィードバック抽出、パーソナライズ、チーム/個人別のエージェントガイダンス作成で使用。
+description: Extract durable working preferences from recent Cursor chats and convert them into skills, rules, or workflow docs. Use when asked to learn preferences, mine feedback, personalize workflows, or generate team/person-specific agent guidance.
 ---
 
 # Workflow From Chats
 
-直近チャットから継続的に使える作業嗜好を推定する。チャットの要約ではなく、再利用可能な運用指針を抽出する。
+Infer durable working preferences from recent chats. Do not summarize chats; extract reusable workflow guidance.
 
-## スコープ
+## Scope
 
-- デフォルトは過去 7 日。別ウィンドウ指定があればその期間。
-- 親チャットと関連サブエージェントチャットを参照。サブエージェント内容は根拠として利用するが、引用は親会話のみ。
-- ローカルパス、シークレット、顧客データ、プライベートチャット内容、認証情報は出力しない。
+- Default to the last 7 days unless the user asks for a different window.
+- Read parent transcripts and relevant subagent transcripts. Use subagent content as evidence, but cite only parent conversations.
+- Do not expose local transcript paths, secrets, customer data, private chat content, or credentials.
 
-## ワークフロー
+## Workflow
 
-1. 対象ワークフロー/嗜好の範囲を1段落で明示。
-2. 内部トランスクリプト台帳を作る: タイトル/トピック、親会話ID、概ねの日付、完了状態、関連サブエージェント、嗜好根拠の妥当性。
-3. 「I prefer」「always」「never」「not what I asked」「stop」「review」「PR」「CI」「logs」「skill」等の明示的表現を検出。
-4. 嗜好要素を抽出: トリガー、ワークフロー手順、意思決定ルール、品質基準、停止条件、根拠、確信度。
-5. 確信度を strong / medium / weak / contradicted で評価。
-6. トランスクリプトではなくワークフロー観点でクラスタリング: shipping / review / simplification / debugging / capture / communication / delegation / validation。
-7. 成果物を選ぶ: 新規 skill / skill 更新 / rule / workflow doc / no artifact。
-8. 再利用できるガイダンスのみをドラフト。未来に役立たない逸話は除外。
+1. State the target workflow or preference surface in one paragraph.
+2. Build an internal transcript inventory: title/topic, parent conversation ID, approximate date, completion state, relevant subagents, and why it may contain preference evidence.
+3. Scan for explicit preferences, corrections, and workflow markers such as "I prefer", "always", "never", "not what I asked", "stop", "review", "PR", "CI", "logs", and "skill".
+4. Extract preference atoms: trigger, workflow step, decision rule, quality bar, stop condition, evidence, and confidence.
+5. Rate confidence as strong, medium, weak, or contradicted.
+6. Cluster by workflow shape rather than transcript: shipping, review, simplification, debugging, capture, communication, delegation, or validation.
+7. Choose the artifact: new skill, skill edit, rule, workflow doc, or no artifact.
+8. Draft only the reusable guidance. Filter anecdotes that will not help future tasks.
 
-## 確信度
+## Confidence
 
-- Strong: 明示的なユーザー嗜好、ワークフロー変更の明確訂正、繰り返し現れる親チャットパターン、または明示的実装要求。
-- Medium: 採用されたワークフロー、繰り返しのツール・モデル・検証嗜好、サブエージェントが親で成功したという合意。
-- Weak: ユーザーからの明確なフィードバックがない agent 主導の挙動、1件のみで解釈が難しい修正。
-- Contradicted: 根拠が矛盾する場合。ファイル作成前に確認。
+- Strong: explicit user preference, workflow-changing correction, repeated parent-chat pattern, or direct request to encode behavior.
+- Medium: accepted workflow, repeated tool/model/validation preference, or subagent consensus that the parent used successfully.
+- Weak: agent-chosen behavior with no user feedback, one ambiguous transcript, or a likely task-specific correction.
+- Contradicted: evidence points in incompatible directions; ask the user before writing files.
 
-## 成果物選定
+## Artifact Choice
 
-- Skill: 触発可能な明確なトリガーを持つ再帰的なマルチステップワークフロー。
-- Rule: 幅広く適用すべき一般行動。
-- Workflow doc: トリガー化が難しいが有用な背景情報。
-- No artifact: 状況限定、古い、確度不足で実行困難な観察。
+- Skill: recurring multi-step workflow with clear triggers.
+- Rule: general behavior that should apply broadly.
+- Workflow doc: useful context that is not reliably triggerable.
+- No artifact: situational, stale, or low-confidence observation.
 
-## 出力
+## Output
 
-まず簡潔な要約を返す:
+Return a concise synthesis first:
 
-- 対象ワークフロー
-- 根拠ソース（親会話参照のみ）
-- 嗜好プロファイル
-- 採用 / 検討 / 棄却
-- 提案する成果物
-- 書き込みを阻害する疑問点（必要時のみ）
+- Target workflow.
+- Evidence corpus with parent conversation citations only.
+- Preference profile.
+- Adopt, consider, dismissed.
+- Proposed artifacts.
+- Open questions only if they block writing.

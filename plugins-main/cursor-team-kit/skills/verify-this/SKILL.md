@@ -1,42 +1,42 @@
 ---
 name: verify-this
-description: 「最新の証拠で主張を検証」: 反証可能な形で再言語化し、ベースラインと変更後を比較して `VERIFIED`, `NOT VERIFIED`, `INCONCLUSIVE` を返す。
+description: "Verify a claim with fresh local evidence: restate it falsifiably, capture baseline and treatment, compare artifacts, and return VERIFIED, NOT VERIFIED, or INCONCLUSIVE."
 ---
 
 # Verify This
 
-検証は進捗報告ではない。再現可能な証拠で特定主張を立証/反証する。
+Verification is not a recap. It proves or disproves a specific claim with repeatable evidence.
 
-## 使用タイミング
+## When To Use
 
-- ユーザーが「これを検証して」「動作確認して」「これで直ったか」
-- バグ修正に前後比較再現が必要な場合
-- UI/CLI/API/性能/メモリの主張に計測が必要な場合
-- テストが通っても、ユーザー体感の動作確認が必要な場合
+- The user asks "verify this", "prove it works", "did this fix it", or "show me the evidence".
+- A bug fix needs a before/after repro.
+- A UI, CLI, API, performance, or memory claim needs measurement.
+- A test passes but the user-visible behavior still needs confirmation.
 
-計測不能な曖昧表現（例: 「コードがクリーンになった」）には使わない。まず測定可能な主張を確認する。
+Do not use this for vague claims like "the code is cleaner". Ask for a measurable claim first.
 
-## ワークフロー
+## Workflow
 
-1. 主張を反証可能な形に言い換える: 条件・指標・閾値。
-2. 失敗を最小限の局所条件で再現できる最小対象を選ぶ。
-3. ベースラインを取得: merge base、親コミット、失敗分岐のベース、または現在の壊れた再現。
-4. 変更後の状態で同一コマンド・同一データ・同一ウォームアップ・同一環境の成果物を取得。
-5. 生の成果物（数値、スクショ、端末トランスクリプト、HTTP 応答、プロファイル、ヒープ、テスト出力）を比較。
-6. 結果を1種類に絞る: `VERIFIED`, `NOT VERIFIED`, `INCONCLUSIVE`。
+1. Restate the claim in falsifiable form: condition, metric, and threshold.
+2. Pick the smallest local surface that can disprove it.
+3. Capture a baseline from the old state: merge base, parent commit, failing branch, or current broken repro.
+4. Capture treatment from the changed state with the same command, data, warmup, and environment.
+5. Compare raw artifacts: numbers, screenshots, terminal transcripts, HTTP responses, profiles, heap snapshots, or test output.
+6. Return exactly one verdict: `VERIFIED`, `NOT VERIFIED`, or `INCONCLUSIVE`.
 
-## ローカル検証対象
+## Local Surfaces
 
-- コード動作: フォーカスした単体/統合テスト、または最小再現スクリプト。
-- CLI/TUI 挙動: `control-cli`、端末トランスクリプト、デモ録画。
-- UI 挙動: `control-ui`、スクリーンショット、アクセシビリティスナップショット、ブラウザトレース。
-- API 挙動: ローカル HTTP/RPC のリクエスト・レスポンス差分。
-- 性能: 同一マシンでのベースライン/比較時刻、CPU プロファイル。
-- メモリ: 対象操作前後のヒープスナップショット。
+- Code behavior: focused unit/integration tests or a minimal repro script.
+- CLI/TUI behavior: `control-cli`, terminal transcript, or demo recording.
+- UI behavior: `control-ui`, screenshots, accessibility snapshots, or browser traces.
+- API behavior: local HTTP/RPC request and response diff.
+- Performance: same-machine baseline/treatment timings or CPU profiles.
+- Memory: heap snapshots before and after the suspected operation.
 
-## 成果物構成
+## Artifact Layout
 
-安全に書き込む場合:
+When safe to write artifacts:
 
 ```text
 /tmp/verify-this/<claim-slug>/
@@ -48,25 +48,27 @@ description: 「最新の証拠で主張を検証」: 反証可能な形で再�
 └── verdict.md
 ```
 
-機密情報（コード、プロンプト、スクリーンショット、HTTP 本文、ヒープ情報）が含まれる可能性がある場合、ユーザー同意がない限り最小限の inline 証拠のみ保存。
+If artifacts may contain sensitive code, prompts, screenshots, HTTP bodies, or heap data, keep only the minimal inline evidence unless the user agrees to disk storage.
 
-## 判定規則
+## Verdict Rules
 
-- `VERIFIED`: 予測方向に、主張の閾値分だけ差分が確認でき、明確な交絡要因がない。
-- `NOT VERIFIED`: 挙動が変わらない、逆方向、または閾値を満たさない。
-- `INCONCLUSIVE`: 有効なベースラインなし、ノイズが大きい、計測失敗、環境差が比較を無効化する。
+- `VERIFIED`: baseline and treatment differ in the predicted direction, by the claimed threshold, with no obvious confound.
+- `NOT VERIFIED`: the behavior is unchanged, moves the wrong way, or misses the threshold.
+- `INCONCLUSIVE`: no valid baseline, noisy signal, failed measurement, or an environment difference invalidates the comparison.
 
-## 出力
+## Output
+
+Use this shape:
 
 ```text
 VERIFIED | NOT VERIFIED | INCONCLUSIVE
-Claim: <反証可能な主張>
+Claim: <falsifiable claim>
 
 Evidence:
 <metric/artifact>: baseline=<...>, treatment=<...>, delta=<...>, threshold=<...>
 
 Reasoning:
-<証拠と交絡要因を述べる簡潔な1段落>
+<one tight paragraph naming the evidence and any confounds>
 ```
 
-否定結果は緩めにしない。`NOT VERIFIED` は有効な結果。
+Do not soften a negative result. A clear `NOT VERIFIED` is useful.

@@ -1,50 +1,50 @@
 ---
 name: loop-on-ci
-description: PR チェックを監視し、緑になるまで失敗を再試行・修正する。PR 付きチェックの真実源として gh pr checks を使用。
+description: Monitor PR checks and fix failures until green. Uses gh pr checks as the source of truth for PR-attached checks.
 ---
 
 # Loop on CI
 
-## トリガー
+## Trigger
 
-ブランチまたは Pull Request を監視し、必要なチェックがすべて緑になるまで CI 失敗を反復対応する必要がある場合。
+Need to watch a branch or pull request and iterate on CI failures until all required checks are green.
 
-`gh pr checks` を真実の情報源として使う。`gh run list` は GitHub Actions 分しか扱えないため。
+Use `gh pr checks` as the source of truth. It includes all PR-attached checks, while `gh run list` only covers GitHub Actions.
 
-## ワークフロー
+## Workflow
 
-1. 現在のブランチに対する PR を解決。
-2. 待機前に現在の PR チェックを確認。
-3. 既に失敗があれば、まずそれらを診断。
-4. 保留中なら `gh pr checks --watch --fail-fast` で監視。
-5. push ごとに全 PR チェックを再取得し、緑になるまで繰り返す。
+1. Resolve the PR for the current branch.
+2. Inspect current PR checks before waiting.
+3. If checks already failed, diagnose those failures first.
+4. If checks are pending, watch with `gh pr checks --watch --fail-fast`.
+5. After each push, re-check the full PR check set and repeat until green.
 
-## コマンド
+## Commands
 
 ```bash
-# 対象 PR を解決
+# Resolve the active PR
 gh pr view --json number,url,headRefName
 
-# すべての添付チェックを確認
+# Inspect all attached checks
 gh pr checks --json name,bucket,state,workflow,link
 
-# 保留チェックを fail-fast で監視
+# Watch pending checks and fail fast
 gh pr checks --watch --fail-fast
 
-# GitHub Actions ログ (失敗チェックが GHA 実行に紐づく場合)
+# GitHub Actions logs, when the failing check links to a GHA run
 gh run view <run-id> --log-failed
 ```
 
-## ガードレール
+## Guardrails
 
-- 可能なら各修正は 1 つの失敗原因に限定。
-- `--no-verify` でフックを無効化して進捗を強行しない。
-- 失敗が明確に PR と無関係で main で解決済みなら、不要な修正を PR に積まず main を取り込む。
-- 不安定なら 1 回再試行し、フレーク証拠を報告。
-- 各 push 後に `gh pr checks --json name,bucket,state,workflow,link` を再実行。チェック構成は変化し得る。
+- Keep each fix scoped to a single failure cause when possible.
+- Do not bypass hooks (`--no-verify`) to force progress.
+- If the failure is clearly unrelated to the PR and appears fixed on main, merge latest main instead of bloating the PR with unrelated fixes.
+- If failures are flaky, retry once and report flake evidence.
+- Re-run `gh pr checks --json name,bucket,state,workflow,link` after every push; the check set can change.
 
-## 出力
+## Output
 
-- 現在の CI ステータス
-- 失敗要約と適用した修正
-- チェックが成功した際の PR URL
+- Current CI status
+- Failure summary and fixes applied
+- PR URL once checks are green

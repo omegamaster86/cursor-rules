@@ -1,6 +1,6 @@
 ---
-description: TypeScript の union 型と enum に対して、switch 文を網羅的に扱う
+description: Use exhaustive switch handling for TypeScript unions and enums
 alwaysApply: true
 ---
 
-typescript-exhaustive-switch: 判別 union や enum を switch で処理する場合、default に `never` チェックを入れて、追加されたバリアントが未処理だとコンパイル時に失敗するようにする。
+typescript-exhaustive-switch: In switch statements over discriminated unions or enums, use a `never` check in the default case so newly added variants cause compile-time failures until handled.

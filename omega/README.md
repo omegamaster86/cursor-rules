@@ -280,8 +280,9 @@ Dashboard または Agents Window から環境を再 Build する。
 ## 由来
 
 - `genai/` — Next.js / Supabase コーディング規約
-- `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（日本語訳済み）
+- `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー。README は日本語）
 
 参考
 https://github.com/mattpocock/skills/tree/main/skills 
 https://github.com/cursor/plugins/tree/main/pstack 
+

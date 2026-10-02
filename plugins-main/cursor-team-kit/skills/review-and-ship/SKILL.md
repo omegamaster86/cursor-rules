@@ -1,24 +1,24 @@
 ---
 name: review-and-ship
-description: 現在のブランチをバグ、意図適合、テスト網羅で確認し、テスト実行・修正・コミット後に PR を開くか更新する
+description: Review the current branch for bugs, intent fit, and test coverage; run or write tests; commit focused work; open or update a PR.
 ---
 
 # Review and ship
 
-## トリガー
+## Trigger
 
-出荷前の変更レビュー。重要な問題を解消し、振る舞いを検証し、PR を開くか更新する。
+Reviewing changes before shipping. Close key issues, verify behavior, and open or update a PR.
 
-## ワークフロー
+## Workflow
 
-1. コンテキストを収集: base ブランチとの差分、未コミット変更、最近のコミット、変更ファイル、必要なら関連チャットの意図。
-2. 変更された挙動に対して対象テストを実行。フォーカスしたテストがない場合、追加するかギャップを明記。
-3. 正当性、リグレッション、セキュリティ、意図適合をレビュー。大きな差分は並列サブエージェントを使用。
-4. 重要問題を修正して再テスト、必要なら影響範囲のテストを再実行。
-5. 絞り込まれたファイルを簡潔なメッセージでコミット。
-6. ブランチを push し、PR を開くか更新。
+1. Gather context: diff against base branch, uncommitted changes, recent commits, changed files, and user intent from recent relevant chats if useful.
+2. Run targeted tests for changed behavior. If no focused tests exist, decide whether to add them or document the gap.
+3. Review for correctness, regressions, security, and intent fit. Use parallel subagents for larger diffs.
+4. Fix critical issues before finalizing and re-run affected tests.
+5. Commit selective files with a concise message.
+6. Push branch and open or update a PR.
 
-## 推奨チェック
+## Suggested Checks
 
 ```bash
 git fetch origin main
@@ -27,15 +27,15 @@ git status
 gh pr checks --json name,bucket,state,workflow,link
 ```
 
-## ガードレール
+## Guardrails
 
-- 正当性・セキュリティ・リグレッションを、スタイルコメントより優先。
-- コミットは絞り込み、無関係なファイル変更を避ける。
-- pre-commit が失敗した場合はフックを無効化せず、問題を修正。
-- PR 準備は `gh pr checks` を GitHub Actions 固有コマンドより優先。
+- Prioritize correctness, security, and regressions over style-only comments.
+- Keep commits focused and avoid unrelated file changes.
+- If pre-commit checks fail, fix the issues rather than bypassing hooks.
+- Use `gh pr checks` instead of GitHub Actions-only commands when judging PR readiness.
 
-## 出力
+## Output
 
-- 発見事項サマリ（critical / warning / note）
-- 実行テストと結果
+- Findings summary (critical, warning, note)
+- Tests run and outcomes
 - PR URL

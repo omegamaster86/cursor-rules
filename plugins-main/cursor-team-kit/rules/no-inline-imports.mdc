@@ -1,8 +1,8 @@
 ---
-description: import をファイル先頭にまとめ、インラインインポートを避ける
+description: Keep imports at top of file and avoid inline imports
 alwaysApply: true
 ---
 
-# インラインインポート禁止
+# No inline imports
 
-インポートは必ずモジュール先頭に配置すること。厳密に循環参照対策が必要で、その理由が明示されている場合のみ、関数本体・型注釈・インターフェースフィールド内のインラインインポートを許可する。
+Always place imports at the top of the module. Avoid inline imports in function bodies, type annotations, or interface fields unless there is a strict circular-dependency reason and it is documented.
