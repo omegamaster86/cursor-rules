@@ -1,42 +1,42 @@
 ---
 name: run-smoke-tests
-description: Playwright スモークテストを実行し、失敗解析と修正確認を行う
+description: Run Playwright smoke tests, debug failures, and verify fixes
 ---
 
 # Run smoke tests
 
-## トリガー
+## Trigger
 
-変更前後のエンドツーエンドスモーク検証が必要な場合。
+Need end-to-end smoke verification before or after changes.
 
-## ワークフロー
+## Workflow
 
-1. 対象アプリの前提条件を整備。
-2. 該当するスモークスイートまたは特定テストを実行。
-3. 失敗したらトレース/ログを調査し、根本原因を切り分け。
-4. 最小修正を適用し、安定するまで再実行。
+1. Build prerequisites for the target app.
+2. Run the relevant smoke suite or a focused test file.
+3. If failing, inspect traces/logs and isolate the root cause.
+4. Apply a minimal fix and rerun until stable.
 
-## コマンド例
+## Example Commands
 
 ```bash
-# 全スモークスイート
+# Run full smoke suite
 npm run smoketest
 
-# 特定テストファイル
+# Run a specific smoke test file
 npm run smoketest -- path/to/test.spec.ts
 
-# ビルド成果物が揃っている場合の高速反復
+# Faster iteration when build artifacts are ready
 npm run smoketest-no-compile -- path/to/test.spec.ts
 ```
 
-## ガードレール
+## Guardrails
 
-- 時間依存より確定待機とアサーションを優先。
-- 再現可能性を上げるため、通過した修正は再実行。
-- フレーク除外は明示要求か文書化がある場合のみ許可。
+- Prefer deterministic waits and assertions over brittle timeouts.
+- Re-run passing fixes to reduce flaky false positives.
+- Quarantine tests only when explicitly requested and documented.
 
-## 出力
+## Output
 
-- テスト結果サマリ
-- 根本原因と修正内容
-- 残存フレークリスク（あれば）
+- Test results summary
+- Root cause and fix
+- Remaining flake risk (if any)
