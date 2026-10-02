@@ -1,23 +1,23 @@
 ---
 name: get-pr-comments
-description: 対象の Pull Request からレビュアーコメントを取得・要約する
+description: Fetch and summarize review comments from the active pull request
 ---
 
-# PR コメント取得
+# Get PR comments
 
-## トリガー
+## Trigger
 
-対象 PR のフィードバックを簡潔で実行可能な形に要約する必要がある場合。
+Need a concise, actionable summary of feedback on the active pull request.
 
-## ワークフロー
+## Workflow
 
-1. 現在のブランチに紐づく PR を解決。
-2. レビューコメントと議論コメントを取得。
-3. フィードバックを重要度と実行可能性でグループ化。
-4. 優先度付きで簡潔なアクションリストを返す。
+1. Resolve the active PR for the current branch.
+2. Fetch review comments and discussion comments.
+3. Group feedback by severity and actionability.
+4. Return a concise action list.
 
-## 出力
+## Output
 
-- 重要度別のフィードバック要約
-- 優先度順のアクションリスト
-- 追加確認が必要な未解決質問
+- Grouped feedback summary
+- Action list ordered by priority
+- Open questions that still need clarification
