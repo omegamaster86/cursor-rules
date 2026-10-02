@@ -1,33 +1,33 @@
-# Design red flags
+# 設計のレッドフラグ
 
-Screen every candidate before synthesis. A red flag is a reason to revise or reject the shape.
+合成に入る前に、候補をすべてこの観点で点検する。レッドフラグは、その形を見直す、または却下する理由である。
 
-## Shallow module
+## 浅いモジュール
 
-A shallow module exposes a large interface while hiding little complexity. Judge depth by the capability and policy hidden behind the public surface relative to the size of that surface. Prefer a simple interface backed by substantial behavior.
+浅いモジュールは、公開インターフェースが大きい一方で、裏に隠している複雑さが少ない。深さは、公開面の大きさに対して、その背後にどれだけの能力とポリシーが隠れているかで判断する。公開面は小さく、振る舞いは十分に厚いモジュールを好む。
 
-Do not confuse a deep module with a deep call chain. A deep call chain scatters understanding across layers. A deep module concentrates capability behind one interface.
+深いモジュールと深い呼び出しチェーンを混同しない。深い呼び出しチェーンは理解を層に散らす。深いモジュールは、一つのインターフェースの背後に能力を集約する。
 
-Look for these signs:
+次の兆候に注意する:
 
-- Callers coordinate several methods to complete one operation.
-- Public options expose internal stages or implementation choices.
-- Learning the interface does not save the caller from learning the implementation.
+- 呼び出し側が一つの操作を完了するために、複数メソッドの調整を行っている。
+- 公開オプションが内部段階や実装の選択肢を露出している。
+- インターフェースを覚えても、呼び出し側が実装を理解せずに済まない。
 
-## Information leakage
+## 情報漏洩
 
-Information leakage makes multiple modules depend on the same internal decision. A representation, policy, or protocol detail appears in more than one place, so changing it requires coordinated edits.
+情報漏洩は、複数モジュールが同じ内部の決定に依存してしまう状態である。表現・ポリシー・プロトコルの詳細が複数箇所に現れ、変更には協調した編集が必要になる。
 
-Public re-exports of transport or wire types are leakage. Parse external data into domain types behind the interface. Keep storage schemas, framework objects, and protocol details private.
+トランスポート型やワイヤ型の公開再エクスポートは漏洩である。外部データはインターフェースの背後でドメイン型にパースする。ストレージスキーマ、フレームワークオブジェクト、プロトコル詳細は非公開に保つ。
 
-## Temporal decomposition
+## 時間的分割
 
-Temporal decomposition organizes modules by execution order instead of the knowledge they own. Separate load, validate, transform, and save stages often repeat one representation and its invariants across several boundaries.
+時間的分割は、モジュールを所有する知識ではなく、実行順序で分割することである。load、validate、transform、save などを別モジュールに分けると、同じ表現と不変条件が複数の境界に繰り返し現れやすい。
 
-Group code around domain knowledge and ownership. Methods that run at different times can still belong to one module when they protect the same decisions.
+コードはドメイン知識と所有権のまわりにまとめる。実行タイミングが異なるメソッドでも、同じ決定を守るなら一つのモジュールに属してよい。
 
-## Pass-through method
+## パススルーメソッド
 
-A pass-through method forwards the same arguments to another method with the same shape. It adds a layer without hiding complexity.
+パススルーメソッドは、同じ形の引数を、同じ形の別メソッドへそのまま転送するだけである。複雑さを隠さずに層だけ増やす。
 
-Remove it or move responsibility to the module that can complete the operation. Keep a forwarding boundary only when it adds policy, adaptation, or a distinct abstraction.
+削除するか、操作を完了できるモジュールへ責務を移す。転送境界を残すのは、ポリシー、適応、または明確に異なる抽象を追加するときだけに限る。
