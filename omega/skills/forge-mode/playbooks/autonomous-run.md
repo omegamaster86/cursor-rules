@@ -3,7 +3,7 @@
 **exit condition を所有する。done を定義し、止まらず drive。** 「going to bed」/「run until done」/「/loop until X」向け。
 
 1. 最初の iteration 前に exit condition を checkable predicate として述べる（tests green、repro fixed、all N PRs merged、pixel-diff zero）。
-2. Cursor の `/loop` コマンド（pstack スキルではなく組み込み）で wake mechanism を選ぶ。watch する event（CI、merge、ref advance）には event で wake する watcher subagent、long time-based heartbeat を fallback。event なしは re-check する価値がある間隔の fixed-interval heartbeat。
+2. Cursor の `/loop` コマンド（forge-mode スキルではなく組み込み）で wake mechanism を選ぶ。watch する event（CI、merge、ref advance）には event で wake する watcher subagent、long time-based heartbeat を fallback。event なしは re-check する価値がある間隔の fixed-interval heartbeat。
 3. 各 iteration は evidence が正当化する最小変更、predicate に対して verify、advanced なら commit、助けなかった change は discard。belt-and-suspenders の「効くかも」は revert。ride させない。
    **sequence-verifiable-units** 原則スキルで work を sequence。end で batch check せず各 unit を verify。
 4. 各 iteration **decision-log** スキルで checkpoint（1 ページ）。決定詳細に what changed、決定理由または result に predicate の状態。
