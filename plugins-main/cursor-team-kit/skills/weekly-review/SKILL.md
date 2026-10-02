@@ -1,32 +1,32 @@
 ---
 name: weekly-review
-description: コミット履歴を基に、バグ修正・技術的負債・新規機能の観点で週次要約を作成
+description: Produce a weekly synthesis of authored commits with highlights by bugfix, tech debt, and net-new work
 ---
 
 # Weekly review
 
-## トリガー
+## Trigger
 
-ステータス更新、振り返り、計画用に、出荷済み作業の週次要約が必要な場合。
+Need a weekly recap of shipped work for status updates, retros, or planning.
 
-## ワークフロー
+## Workflow
 
-1. リポジトリ設定から現在の git ユーザー email を取得。
-2. メインブランチ基準で直近 7〜10 日の authorship コミットを収集。
-3. マージコミットを除外。
-4. 重要な変更を 2〜5 の簡潔な箇条書きに整理。
-5. 以下を短く分類:
-   - おそらくバグ修正
-   - おそらく技術的負債対応
-   - おそらく新規機能
+1. Determine the current git user email from repo config.
+2. Collect authored commits from the last 7-10 days on the primary branch context.
+3. Exclude merge commits.
+4. Group meaningful changes into 2-5 concise bullets.
+5. Add a short classification paragraph covering:
+   - likely bug fixes
+   - likely tech debt work
+   - likely net-new functionality
 
-## ガードレール
+## Guardrails
 
-- 要約は短く、経営層が読める粒度にする。
-- 根拠はコミット履歴と差分のみに。
-- git email がない場合は先に設定依頼。
+- Keep the recap short and executive-readable.
+- Base claims only on commit history and diffs.
+- If git email is missing, ask the user to set it before proceeding.
 
-## 出力
+## Output
 
-- 2〜5 箇条書きの週次サマリ
-- 簡潔な分類パラグラフ（bugfix / tech debt / net-new）
+- 2-5 bullet weekly summary
+- Brief classification paragraph (bugfix / tech debt / net-new)
