@@ -15,6 +15,8 @@
 
 omega 正本に skill を足したら、各 PJ で `omega-link` を再実行（symlink 更新）。
 
+**yomiyasu**（日本語推敲）は repo 直下 submodule + `omega/skills/yomiyasu/` 抜粋。上流 bump 後は `omega/skills/yomiyasu/scripts/sync-from-upstream.sh` と [README.md](../../../README.md)。`SKILL.md` / `writing-rules.md` は必要時手マージ。
+
 スキル authoring: forge-mode **authoring-a-skill** プレイブック、Cursor **create-skill**。
 
 ## 振り返り
@@ -24,3 +26,5 @@ omega 正本に skill を足したら、各 PJ で `omega-link` を再実行（s
 - `study-log` — 学習を `.cursor/study-log/` に
 
 次: [レシピと落とし穴](./10-recipes.md)
+
+

@@ -54,6 +54,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `daily-chat-digest` | 指定日（JST）のチャットを `.cursor/chat-digest/<日付>/daily-chat.md` に出力（単独利用可） |
 | `engineer-retrospective` | 振り返り入口。`daily-chat.md` が無ければ digest を同一ターンで実行してから批評 |
 | `study-log` | チャットの学習内容をテックブログ形式で `.cursor/study-log/` に記録 |
+| `yomiyasu` | AI 臭い日本語の推敲（PR・仕様・記事。**Cursor 向け抜粋**。正本 submodule は repo 直下 `yomiyasu/`。**明示依頼時**） |
 | `session-log` | 長セッション状態をファイル化し新規チャットへ handoff |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
 | `decision-log` | 長時間 run の監査証跡（Notion DB 正本。forge プレイブック・figure-it-out からルーティング） |
@@ -137,6 +138,8 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+
+
 
 
 

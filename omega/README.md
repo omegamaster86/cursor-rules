@@ -281,8 +281,12 @@ Dashboard または Agents Window から環境を再 Build する。
 
 - `genai/` — Next.js / Supabase コーディング規約
 - `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー。README は日本語）
+- `yomiyasu/` — AI 生成日本語の推敲（[nanaism/yomiyasu](https://github.com/nanaism/yomiyasu) を **git submodule**）。Cursor 向けは `omega/skills/yomiyasu/` に抜粋同梱。同期: `scripts/sync-from-upstream.sh`（[README.md](../README.md)）
 
 参考
 https://github.com/mattpocock/skills/tree/main/skills 
 https://github.com/cursor/plugins/tree/main/pstack 
+https://github.com/nanaism/yomiyasu
+
+
 

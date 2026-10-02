@@ -2,3 +2,7 @@
 	path = supabase-skills
 	url = https://github.com/omegamaster86/agent-skills.git
 	branch = main
+[submodule "yomiyasu"]
+	path = yomiyasu
+	url = https://github.com/nanaism/yomiyasu.git
+	branch = main
