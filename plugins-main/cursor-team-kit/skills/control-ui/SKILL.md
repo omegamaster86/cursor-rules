@@ -1,32 +1,32 @@
 ---
 name: control-ui
-description: Web/IDE/Electron UI を駆動・検証するためのローカルブラウザ/CDP ハーネスを構築または適応。ローカル UI 確認、スクリーンショット、アクセシビリティ、パフォーマンスプロファイル、ビジュアル差分、UI 不具合再現に使用。
+description: Build or adapt a local browser/CDP harness to drive and inspect a web, IDE, or Electron UI. Use for local UI verification, screenshots, accessibility snapshots, perf profiles, visual diffs, or reproducing UI bugs.
 ---
 
 # Control UI
 
-ローカルのブラウザ自動化を使って UI 挙動を証拠付きで検証します。まずリポジトリの Playwright・ブラウザ・Electron ハーネスを再利用し、なければ dev server や Chromium デバッグポート周辺で一時ハーネスを構成します。
+Use local browser automation to verify UI behavior with evidence. First reuse the repo's own Playwright, browser, or Electron harness if it exists; otherwise assemble a temporary local harness around the app's dev server or Chromium debug port.
 
-## 利用用途
+## What It Is Used For
 
-- 実ブラウザのフォーカス、キーボード入力、スクロール、リサイズ、描画に依存する UI 不具合の再現。
-- スクリーンショットとスナップショットでビジュアル/アクセシビリティ変更を確認。
-- 配布前のローカル Web / IDE / Electron 挙動をチェック。
-- コンソールログ、ネットワークログ、CPU プロファイル、トレース、ヒープスナップショットを収集。
-- `verify-this` のための before/after 証拠を作成。
+- Reproducing UI bugs that depend on real browser focus, keyboard input, scrolling, resizing, or rendering.
+- Verifying visual or accessibility changes with screenshots and snapshots.
+- Checking local web, IDE, or Electron behavior before shipping.
+- Capturing console logs, network logs, CPU profiles, traces, or heap snapshots.
+- Creating before/after evidence for `verify-this`.
 
-## セットアップパターン
+## Setup Pattern
 
-1. リポジトリのドキュメントに従ってローカルでアプリ起動。
-2. 既存ハーネスを検出: Playwright テスト、Cypress 仕様、Storybook、ブラウザスクリプト、Electron 起動スクリプト、スナップショットツール。
-3. Web アプリでは既存ブラウザツールでローカル URL に接続。
-4. Electron/Chromium では対応時にリモートデバッグポートを有効化。
-5. タブ順のみでなく安定した識別子で正しいページを選択。
-6. 座標依存より、アクセシビリティロール、ラベル、安定した `data-*` セレクタを優先。
+1. Start the app locally using the repo's documented dev command.
+2. Discover existing local harnesses: Playwright tests, Cypress specs, Storybook, browser scripts, Electron launch scripts, or snapshot tools.
+3. For a web app, connect to the local URL with the existing browser tooling.
+4. For Electron/Chromium, enable a remote debugging port when supported.
+5. Select the correct page by stable app markers, not by tab order alone.
+6. Prefer accessibility roles, labels, and stable `data-*` selectors over coordinates.
 
-## 汎用 Web ハーネス
+## Generic Web Harness
 
-可能ならリポジトリの導入済みブラウザツールを使います。Playwright がある場合の最小例:
+Use the repo's installed browser tooling when possible. If the repo already has Playwright, a minimal one-off probe looks like:
 
 ```javascript
 import { chromium } from "playwright";
@@ -39,11 +39,11 @@ await page.screenshot({ path: "/tmp/ui-harness-after.png", fullPage: true });
 await browser.close();
 ```
 
-この検証のためだけに Playwright を新規依存として追加しない。既存の devDependencies または環境に既にあるブラウザツールを優先。
+Do not add Playwright as a project dependency just for this probe unless the user asks. Prefer existing dev dependencies or external browser tools already available in the environment.
 
-## 汎用 CDP ハーネス
+## Generic CDP Harness
 
-`--remote-debugging-port=<port>` 付きで起動された Electron/Chromium アプリは CDP 接続します。
+For Electron or a Chromium app launched with `--remote-debugging-port=<port>`, connect over CDP:
 
 ```javascript
 import { chromium } from "playwright";
@@ -63,47 +63,47 @@ if (!page) {
     title: await p.title(),
     url: p.url(),
   }))));
-  throw new Error("対象ページが見つかりません");
+  throw new Error("No matching app page found");
 }
 
 await page.screenshot({ path: "/tmp/ui-harness-cdp.png", fullPage: true });
 await browser.close();
 ```
 
-`<app-root-selector>` は現在のリポジトリ固有の root ノード、ランドマーク、または `data-*` 属性など安定したマーカーに置き換える。
+Replace `<app-root-selector>` with a stable marker from the current repo, such as a root app node, landmark, or product-specific `data-*` attribute.
 
-## 操作ループ
+## Interaction Loop
 
-1. 操作前にページのスナップショット/スクリーンショットを保存。
-2. 最新のページ構造から対象を選ぶ。
-3. 一度に1つの操作だけ実施: click / type / keypress / drag / scroll / navigate / resize。
-4. 新しいスナップショット/スクリーンショットを保存。
-5. 想定の状態遷移を検証。
-6. ユーザーが証拠提出を依頼した場合、before/after 比較の成果物を保存。
+1. Capture a page snapshot or screenshot before acting.
+2. Choose a target from the latest page structure.
+3. Perform exactly one structural action: click, type, keypress, drag, scroll, navigate, or resize.
+4. Capture a fresh snapshot/screenshot.
+5. Verify the expected state change.
+6. Save artifacts for before/after comparisons when the user asked for proof.
 
-## CDP 機能
+## CDP Capabilities
 
-上位レベル API で不足する場合のみ低レベル CDP を使う。
+Use raw CDP only when higher-level browser APIs are insufficient:
 
-- パフォーマンス: CPU プロファイル、トレース、paint フラッシュ、FPS、レイアウトシフト確認。
-- メモリ: リーク調査のためのヒープスナップショットおよび強制 GC。
-- ネットワーク: リクエストブロック、スロットリング、キャッシュ無効、リクエスト/レスポンスログ。
-- レンダリング: ビューポート変更、配色スキームエミュレーション、reduce motion、アクセシビリティチェック。
-- デバッグ: コンソールストリーム、例外捕捉、DOM スナップショット。
+- Performance: CPU profiles, traces, paint flashing, FPS meter, layout shift inspection.
+- Memory: heap snapshots and forced GC for leak investigations.
+- Network: request blocking, throttling, cache disablement, request/response logs.
+- Rendering: viewport changes, color scheme emulation, reduced motion, accessibility checks.
+- Debugging: console streaming, exception capture, DOM snapshots.
 
-## ページ選択
+## Page Selection
 
-1 つのデバッグポートで複数ウィンドウ/タブがある場合:
+When multiple app windows/tabs share a debug port:
 
-- テスト対象を示す明示的なマーカー（app root selector）を優先。
-- 必要なら除外マーカーで誤選択を回避。
-- 該当ページがない場合は、推測せず利用可能タイトル/URL を列挙。
+- Prefer a positive marker for the surface under test, such as an app root selector.
+- Use a negative marker to avoid the wrong surface when necessary.
+- If no page matches, list available page titles and URLs instead of guessing.
 
-## ガードレール
+## Guardrails
 
-- ナビゲーションや構造変更後は古い要素参照に依存しない。
-- クリック座標は、直前に新規スクリーンショットを取得した場合のみ使用。
-- テストデータはローカルのみかつ破棄可能に保つ。
-- プライバシー配慮が必要なワークスペースのスクリーンショット/ヒープスナップショットは、明示同意がない限り保存しない。
-- 他リポジトリのセレクタ、ポート、スクリプトパスをハードコードしない。現在リポジトリのローカルマーカーを発見して利用。
-- 作業後は開発サーバ、デバッグセッション、テンポラリプロファイルをクリーンアップ。
+- Do not rely on stale element references after navigation or structural changes.
+- Avoid coordinate clicks unless a fresh screenshot was captured immediately before the click.
+- Keep test data local and disposable.
+- Do not store screenshots or heap snapshots from privacy-sensitive workspaces unless the user explicitly agrees.
+- Do not hard-code selectors, ports, or script paths from another repository. Discover the current repo's local app markers.
+- Clean up dev servers, debug sessions, and temp profiles when done.
