@@ -103,4 +103,4 @@ Notion DB を上から下へ読み、決定詳細とコード・成果物を照�
 
 ## このスキルの合成
 
-他スキルは独自の監査形式を作らず、証跡を **decision-log** にルーティングする。参照名は **`decision-log`**。形式（決定日・Name・決定詳細・決定理由）はここが正本。プレイブック（Hillclimb、Autonomous run、Multi-phase plan 等）と **figure-it-out**、**forge-mode** の長時間 run トリガーはすべて本スキルを指す。pstack の show-me-your-work / TSV は omega では使わない。
+他スキルは独自の監査形式を作らず、証跡を **decision-log** にルーティングする。参照名は **`decision-log`**。形式（決定日・Name・決定詳細・決定理由）はここが正本。プレイブック（Hillclimb、Autonomous run、Multi-phase plan 等）と **figure-it-out**、**forge-mode** の長時間 run トリガーはすべて本スキルを指す。forge-mode 以前の show-me-your-work / TSV は omega では使わない。
