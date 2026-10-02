@@ -1,52 +1,52 @@
-# Cursor Team Kit プラグイン
+# Cursor Team Kit plugin
 
-CI、コードレビュー、出荷、テスト信頼性向上のための社内向けワークフロー。プラグインは、サードパーティのサービス連携なしでそのまま利用できるように、プラグイン&プレイ方式で設計されています。
+Internal-style workflows for CI, code review, shipping, and test reliability. The kit is designed to be plug and play without requiring third-party service integrations.
 
-## インストール
+## Installation
 
 ```bash
 /add-plugin cursor-team-kit
 ```
 
-## 構成
+## Components
 
 ### Skills
 
-| Skill | 説明 |
+| Skill | Description |
 |:------|:------------|
-| `loop-on-ci` | CI 実行を監視し、失敗を解消するまで再試行を繰り返す |
-| `review-and-ship` | 体系的なレビューを実行し、変更をコミットして PR を作成 |
-| `pr-review-canvas` | 注釈付き・カテゴリ分けされた差分を表示する対話型 HTML PR ウォークスルーを生成 |
-| `verify-this` | ベースライン/比較対象の成果物を使って主張を検証し、明確な結論を返す |
-| `control-cli` | 対話型 CLI や TUI を駆動し、プロファイル取得するためのローカルハーネスを構築・適応 |
-| `control-ui` | Web や Electron UI 向けにローカルブラウザ/CDP ハーネスを構築・適応 |
-| `make-pr-easy-to-review` | ノイズの多い PR 履歴を整理し、説明を改善し、レビュアー向けガイダンスを追加 |
-| `run-smoke-tests` | Playwright スモークテストを実行し、失敗をトリアージ |
-| `fix-ci` | 失敗した CI ジョブを特定し、ログを調査し、絞った修正を適用 |
-| `new-branch-and-pr` | 新規ブランチを作成し、作業を完了して Pull Request を作成 |
-| `get-pr-comments` | 対象 PR のレビュアーコメントを取得・要約 |
-| `check-compiler-errors` | コンパイルと型チェックを実行し、失敗を報告 |
-| `what-did-i-get-done` | 指定期間の作業コミットを要約し、簡潔なステータス更新を作成 |
-| `weekly-review` | バグ修正/技術的負債/新規対応の観点で毎週の作業要約を生成 |
-| `fix-merge-conflicts` | マージ競合を解消し、ビルド/テストを検証、決定内容を要約 |
-| `deslop` | AI 由来の冗長実装を取り除き、コードスタイルを整える |
-| `workflow-from-chats` | チャット内容から継続的に使える作業方針を抽出し、スキル・ルール・ドキュメントに反映 |
-| `thermo-nuclear-code-quality-review` | 例外的に厳密な保守性レビューを実施（code-judo、1k 行ルール、スパゲッティ、境界チェック） |
+| `loop-on-ci` | Watch CI runs and iterate on failures until checks pass |
+| `review-and-ship` | Run a structured review, commit changes, and open a PR |
+| `pr-review-canvas` | Generate an interactive HTML PR walkthrough with annotated, categorized diffs |
+| `verify-this` | Prove or disprove claims with baseline/treatment artifacts and a clear verdict |
+| `control-cli` | Build or adapt a local harness to drive and profile interactive CLIs or TUIs |
+| `control-ui` | Build or adapt a local browser/CDP harness for web or Electron UIs |
+| `make-pr-easy-to-review` | Clean noisy PR history, improve descriptions, and add reviewer guidance |
+| `run-smoke-tests` | Run Playwright smoke tests and triage failures |
+| `fix-ci` | Find failing CI jobs, inspect logs, and apply focused fixes |
+| `new-branch-and-pr` | Create a fresh branch, complete work, and open a pull request |
+| `get-pr-comments` | Fetch and summarize review comments from the active pull request |
+| `check-compiler-errors` | Run compile and type-check commands and report failures |
+| `what-did-i-get-done` | Summarize authored commits over a given time period into a concise status update |
+| `weekly-review` | Generate a weekly recap of shipped work with bugfix/tech-debt/net-new highlights |
+| `fix-merge-conflicts` | Resolve merge conflicts, validate build/tests, and summarize decisions |
+| `deslop` | Remove AI-generated code slop and clean up code style |
+| `workflow-from-chats` | Extract durable working preferences from chats into skills, rules, or docs |
+| `thermo-nuclear-code-quality-review` | Run an unusually strict maintainability review (code-judo, 1k-line rule, spaghetti, boundaries) |
 
 ### Agents
 
-| Agent | 説明 |
+| Agent | Description |
 |:------|:------------|
-| `ci-watcher` | GitHub Actions の実行を監視し、簡潔な成功/失敗サマリを返す |
-| `thermo-nuclear-code-quality-review` | 差分に対して thermo-nuclear コード品質ルーブリックを適用する Task サブエージェント |
+| `ci-watcher` | Monitor GitHub Actions runs and return concise pass/fail summaries |
+| `thermo-nuclear-code-quality-review` | Task subagent that runs the thermo-nuclear code quality rubric against a diff |
 
 ### Rules
 
-| Rule | 説明 |
+| Rule | Description |
 |:-----|:------------|
-| `typescript-exhaustive-switch` | union/enum に対して網羅的な switch を要求 |
-| `no-inline-imports` | 可読性と一貫性のため、インポートはモジュール先頭に配置 |
+| `typescript-exhaustive-switch` | Require exhaustive switch handling for unions/enums |
+| `no-inline-imports` | Keep imports at module top-level for readability and consistency |
 
-## ライセンス
+## License
 
 MIT
