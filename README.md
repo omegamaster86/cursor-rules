@@ -63,3 +63,6 @@ git commit -m "chore: pin yomiyasu at <sha>"
 
 **運用:** yomiyasu は **明示依頼時** の推敲用（Cursor のみの抜粋版）。forge-mode 常時適用や他の日本語校正スキルとの同時有効化は避ける。
 
+`product-design` は **Cursor 専用**（`omega/skills/product-design/`）。Codex CLI のスキルパスには載せない。`omega-link` で各 PJ の `.cursor/skills/product-design` にリンクされる。
+
+

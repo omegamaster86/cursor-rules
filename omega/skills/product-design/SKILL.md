@@ -1,11 +1,20 @@
 ---
 name: product-design
-description: "プロダクト設計ワークフロー: UXリサーチ、監査、ビジュアル探索、URLクローン、モック実装、デザインQA、プロトタイプ共有。product-design、プロトタイプ、画面監査、URLをクローン、モックを実装、デザインQA に使用。"
+description: "プロダクト設計ワークフロー（Cursor 専用）: UXリサーチ、監査、ビジュアル探索、URLクローン、モック実装、デザインQA、プロトタイプ共有。product-design、プロトタイプ、画面監査、URLをクローン、モックを実装、デザインQA に使用。Codex CLI では使用しない。"
 ---
 
 # Product Design（Cursor）
 
 アイデア・URL・スクリーンショットから、レビュー可能なプロトタイプまでを扱うスキル群。エントリは [skills/index/SKILL.md](skills/index/SKILL.md)。
+
+## omega での位置づけ
+
+| 項目 | 方針 |
+|------|------|
+| 対象環境 | **Cursor のみ**（`omega-link` → `.cursor/skills/product-design`）。**Codex CLI / `~/.codex/skills` には載せない** |
+| 前提 MCP | `cursor-ide-browser`、任意で Figma MCP |
+| 状態 | `~/.cursor/product-design/` または `.cursor/product-design/` |
+| 上流残骸 | `.codex-plugin/`・`agents/openai.yaml` は OpenAI Product Design プラグイン由来。**omega 運用では参照しない** |
 
 ## 起動
 

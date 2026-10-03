@@ -2,6 +2,8 @@
 
 アイデア・ライブ URL・スクリーンショットから、レビュー可能なプロトタイプを作るスキル群。Cursor ではルートの [SKILL.md](SKILL.md) から入る。
 
+**Codex CLI では使用しない。** omega 正本は Cursor 向けに移植済み。`~/.codex/skills` や Codex 用スキル同期に含めない。
+
 ## 使い方
 
 チャットで例:
@@ -34,3 +36,4 @@
 ## レガシー（OpenAI Codex プラグイン）
 
 `.codex-plugin/`、`agents/openai.yaml`、テンプレ内 `.openai/hosting.json` は上流 OpenAI Product Design プラグイン由来。Cursor 運用では必須ではない。Sites 専用ビルド手順は `share` スキル内のフォールバックとして残している。
+

@@ -55,6 +55,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `engineer-retrospective` | 振り返り入口。`daily-chat.md` が無ければ digest を同一ターンで実行してから批評 |
 | `study-log` | チャットの学習内容をテックブログ形式で `.cursor/study-log/` に記録 |
 | `yomiyasu` | AI 臭い日本語の推敲（PR・仕様・記事。**Cursor 向け抜粋**。正本 submodule は repo 直下 `yomiyasu/`。**明示依頼時**） |
+| `product-design` | アイデア・URL・モックからレビュー可能プロトタイプ（**Cursor 専用**。browser MCP・`.cursor/product-design/` 前提。**Codex CLI 非対象**） |
 | `session-log` | 長セッション状態をファイル化し新規チャットへ handoff |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
 | `decision-log` | 長時間 run の監査証跡（Notion DB 正本。forge プレイブック・figure-it-out からルーティング） |
@@ -138,6 +139,18 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+
+---
+
+## Cursor 専用（Codex CLI 非対象）
+
+`omega-link` / Cloud の `install-omega-cloud.sh` は `.cursor/skills` にだけリンクする。次は **Codex CLI（`~/.codex/skills` 等）へ同期しない** 想定。
+
+| スキル | 理由 |
+|--------|------|
+| `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ前提。同梱の `.codex-plugin/` は上流 OpenAI プラグイン用で omega では無視 |
+| `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
+
 
 
 
