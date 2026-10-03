@@ -6,3 +6,7 @@
 	path = yomiyasu
 	url = https://github.com/nanaism/yomiyasu.git
 	branch = main
+[submodule "openai-plugins"]
+	path = openai-plugins
+	url = https://github.com/openai/plugins.git
+	branch = main
