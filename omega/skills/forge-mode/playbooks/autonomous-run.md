@@ -10,4 +10,3 @@
 5. predicate が met なら stop。plateau は stop ではない。continue し approach を pivot して push past。genuine dead end を surface。spin しない。victory 宣言のため predicate を relax しない。
 
 **Reply:** exit condition、iterations run、land したもの、discard したもの、final predicate state。
-

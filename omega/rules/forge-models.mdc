@@ -39,5 +39,3 @@ swarm workers: composer-2.5
 
 # 並列設計 bakeoff: multi-agent-candidates / architect runners。カバレッジ・レース: swarm スキル。
 # モデル変更は /setup-forge スキルまたは本ファイルの手編集。
-
-

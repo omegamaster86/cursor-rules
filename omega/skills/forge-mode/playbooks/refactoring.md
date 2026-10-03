@@ -13,5 +13,3 @@ cleanup が missing feature または real bug を reveal したら split out。
 7. story を語る small ordered commit に rebase。subtraction commit、reshape、follow-on cleanup。1 revert が1 slice undo。[`sequence-verifiable-units`](../principles/sequence-verifiable-units.md) で shape。各 behavior-preserving slice green のまま next。**Opening a PR**。
 
 **Reply:** 変わった structure、hold した pin、equivalence proof、reader-load delta、ship と revert。new behavior なし。
-
-

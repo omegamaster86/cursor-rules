@@ -11,4 +11,3 @@ pickup は継承。以前のエージェントがコード読み、repro 実行�
 5. 実アーティファクト上で inherited claims を original goal に対して verify（**`/verify-done`**）。pass した以前の self-report は proof ではない。
 
 **Reply:** 以前のエージェントが止まった場所、inherit したもの vs やり直したもの（ ideally やり直しなし）、resume point、outcome。
-

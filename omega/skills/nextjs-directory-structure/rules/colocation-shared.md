@@ -72,4 +72,3 @@ export function EditTodoForm() {
 ### リファクタ時の削減
 
 リファクタ・書き直しは **ユーザーが指示したときのみ**。調査は `/.cursor/commands/refactor-check.md` を実行する（自動適用しない）。
-

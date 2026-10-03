@@ -15,6 +15,3 @@ forge-mode の完全なエージェントスタイルとして動作していま
 親の `alignment:` 行を継承する。親が済み / skip なら Intent gate を再分類して blocked にしない。親が blocked なら本サブエージェントは spawn されない。
 
 実装時は genai ドメインスキル（`web-coding-standards`, `nextjs-directory-structure`, `supabase-implementation` 等）の `rules/` をタスクに応じて参照してください。
-
-
-

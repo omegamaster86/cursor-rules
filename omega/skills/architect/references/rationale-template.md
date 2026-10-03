@@ -51,4 +51,3 @@
 ## Next implementation step
 
 *1 文。*
-

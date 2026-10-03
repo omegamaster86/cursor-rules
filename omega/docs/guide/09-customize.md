@@ -28,6 +28,3 @@ omega 正本に skill を足したら、各 PJ で `omega-link` を再実行（s
 - `study-log` — 学習を `.cursor/study-log/` に
 
 次: [レシピと落とし穴](./10-recipes.md)
-
-
-

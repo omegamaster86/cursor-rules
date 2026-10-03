@@ -11,4 +11,3 @@
 PR、babysit、code change に先行しない限り `architect` なし。code change に先行するなら user に hand back し Bug fix または Feature に re-route。
 
 **Reply:** investigation output。「are we sure?」answer なら reasons 付き real judgment。premise が wrong なら push back（Autonomy 参照）。
-

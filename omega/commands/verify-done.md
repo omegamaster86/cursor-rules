@@ -119,5 +119,3 @@ PJ にテストがある場合の参照（任意）:
 - 単位ごとの積み方: `forge-mode/principles/sequence-verifiable-units.md`
 - ユーザー操作レシピの生成 / メンテ: `commands/create-verification-skill.md`、`commands/maintain-verification-skill.md`
 - forge-mode 入口: `commands/forge-mode.md`
-
-

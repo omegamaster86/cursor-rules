@@ -142,4 +142,3 @@ Append new candidate learnings here during or after babysitting when they look t
   exists for a missing dependency rather than a failed operation.
 - Source: one CLI-rename PR whose fallback existed for a missing binary rather
   than a failed command.
-

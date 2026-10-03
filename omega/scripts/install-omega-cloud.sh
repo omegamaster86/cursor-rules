@@ -86,4 +86,3 @@ echo "  omega:     $OMEGA"
 echo "  workspace: $WORKSPACE"
 echo "  workspace .cursor: $WS_CURSOR"
 echo "  vm skills:         $HOME_CURSOR/skills"
-

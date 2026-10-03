@@ -85,4 +85,3 @@ interface Window {
 - [ ] DB から取得するデータは `database.types.ts` から再定義
 - [ ] 画面専用 ViewModel のみ各ページファイル内に定義
 - [ ] `type` を優先使用（`interface` は必要な場合のみ）
-

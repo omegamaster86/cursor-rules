@@ -8,4 +8,3 @@
 4. off-context で resume note を書く。intent、何をしていたか、progress と verify 済み、current state、next steps、key files、gotchas を capture。compaction trigger では `/tmp/<slug>-resume.md` のようなファイルに書く。in-context plan は summarization を survive しない。**decision-log** の Notion ページ URL があるなら duplicate せず resume note から指す。
 
 **Reply:** loop のどこにいるか、disk 上 vs まだ head 内（paths、diff dump なし）、作った commit と tree が clean か、resume 時の first action。これは pause で final report ではない。resume は Session pickup playbook がこの note を読む。
-

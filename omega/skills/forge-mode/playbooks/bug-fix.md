@@ -15,5 +15,3 @@
 Investigation は `how` を parallel subagent に fan-out。regression 履歴が必要なら `git`/`gh` で並列確認。
 
 **Reply:** 何が壊れていたか、root cause、fix、verify 方法。failing-then-passing repro 出力を verbatim で paste。
-
-

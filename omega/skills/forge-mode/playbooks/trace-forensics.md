@@ -12,4 +12,3 @@
 6. cited diagnosis を hand back。求められない限り fix なし。原因が分かったら Bug fix または Perf issue に route。throughput checkpoint は1行：`throughput checkpoint: n/a, read-only forensics`。
 
 **Reply:** artifact と format、reduced finding、source location、artifact paths、paired capture が confirm したか。
-

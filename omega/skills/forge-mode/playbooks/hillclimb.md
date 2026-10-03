@@ -19,4 +19,3 @@ Core discipline：1 change、1 measurement、keep または revert。untested ch
 8. accepted commit を land 順に stack して **Opening a PR**。metric climb が top to bottom で読めるように。
 
 **Reply:** metric と target、baseline から final と percent delta、iterations run（kept vs reverted）、accepted fix 各1行、当 run の主要 **decision-log** Notion ページ URL、さらに push するなら try する best idea。
-

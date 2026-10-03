@@ -21,6 +21,3 @@
 code-coupled work（1 feature、1 migration）は checkpoint inline の single owner。blocking phase 後 internal fan-out。parent-level fan-out は independent artifact を produce する slice 用（audit、cross-subsystem investigation、competing experiment）。phase boundary で checkpoint rewrite。interrupt chain より fresh owner spawn。
 
 **Reply:** build したもの、選んだものと why、open decisions。design alternative は tables。プラン提示時は Mermaid 2種（または skip 理由）。
-
-
-

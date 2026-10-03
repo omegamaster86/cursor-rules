@@ -56,4 +56,3 @@ When Product Design is explicitly invoked, Product Design owns visual selection,
 
 - Never fake visible assets with ASCII, prose, text symbols, emoji, placeholder boxes, CSS art, div art, handcrafted SVGs, inline SVGs, or approximate code drawings. Use real source assets when available. Use the built-in Image Gen tool for image assets when source assets are missing. Use the closest matching icon library for icons.
 - Work like a designer. Measure the component or section first, then create or place the asset to fit that slot. Match the needed dimensions, crop, subject, palette, and density. Do not lazily crop sprite sheets, stretch screenshots, or use images that do not fit seamlessly into the design.
-

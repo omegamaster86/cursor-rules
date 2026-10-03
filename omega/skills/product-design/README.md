@@ -36,4 +36,3 @@
 ## レガシー（OpenAI Codex プラグイン）
 
 `.codex-plugin/`、`agents/openai.yaml`、テンプレ内 `.openai/hosting.json` は上流 OpenAI Product Design プラグイン由来。Cursor 運用では必須ではない。Sites 専用ビルド手順は `share` スキル内のフォールバックとして残している。
-

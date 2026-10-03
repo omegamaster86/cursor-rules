@@ -41,4 +41,3 @@
 - **`explore-shapes`:** `.cursor/multi-agent-candidates/<task-slug>/<model-slug>.<shape-slug>.md`
 
 （`candidate-*` フォルダや `design.md` 固定名は使わない）
-

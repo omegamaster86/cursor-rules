@@ -59,4 +59,3 @@ supabase functions deploy function-name --project-ref your-project-id
 - [ ] `supabase/functions/_shared/database.types.ts` が最新
 - [ ] `src/types/database.types.ts` が最新
 - [ ] Biome でフォーマット済み
-

@@ -72,4 +72,3 @@ I'll use this as a starting map for future Product Design work. The source you p
 When the user asks what Product Design knows, read `user-context.md` and summarize only saved entries.
 
 If no saved context exists, say that plainly and offer the Step 1 setup prompt.
-
