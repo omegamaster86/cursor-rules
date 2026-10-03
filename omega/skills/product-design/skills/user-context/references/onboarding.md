@@ -1,74 +1,74 @@
-# Product Design Setup
+# Product Design セットアップ
 
-Use this reference when saved user context is missing, when the user asks what Product Design can remember, when the user asks to set up Product Design, or when the user provides product/design references to save.
+保存ユーザーコンテキストが無いとき、Product Design が何を記憶できるか聞かれたとき、セットアップを求められたとき、プロダクト／デザイン参照を保存するために使う。
 
-Before beginning setup, run the persistence availability check in [$user-context](../SKILL.md). If persistent context is unavailable, do not render the onboarding prompt below. Explain that references can be used in the current conversation but cannot be saved for future conversations.
+セットアップ開始前に [$user-context](../SKILL.md) の永続化可否チェックを実行する。永続コンテキストが使えないときは下のオンボーディングプロンプトを出さない。参照は今の会話では使えるが将来の会話には保存できないと説明する。
 
-Setup is short. It is not a questionnaire and not a formal onboarding state machine.
+セットアップは短い。アンケートでも正式オンボーディング状態機械でもない。
 
-## Step 1: Orientation
+## Step 1: オリエンテーション
 
-Render this first. Do not write files, inspect tools, browse URLs, open Figma, create prototypes, generate images, or run audits before this message.
+これを最初に出す。このメッセージの前にファイル書き込み、ツール inspect、URL 閲覧、Figma 開く、プロトタイプ作成、画像生成、監査をしない。
 
 ```md
-Product Design can remember the product surfaces and design sources you use most, so future work starts from the right place.
+Product Design は、よく使うプロダクト画面とデザインソースを記憶し、次の作業を正しい場所から始められます。
 
-Useful things to save:
-1. Product URLs
-2. Figma files
-3. Screenshots or reference images
-4. Codebase paths
-5. Storybook or component docs
-6. Design-system refs
-7. Brand and asset sources
-8. Preferred tools and share targets
+保存に便利なもの:
+1. プロダクト URL
+2. Figma ファイル
+3. スクリーンショットまたは参照画像
+4. コードベースパス
+5. Storybook またはコンポーネントドキュメント
+6. デザインシステム参照
+7. ブランドとアセットソース
+8. 好みのツールと共有先
 
-Send any of those now, or say `skip` and I'll work from each task's source.
+今すぐ送るか、`skip` と言えば各タスクのソースだけから進めます。
 ```
 
-## Step 2: Save Context
+## Step 2: コンテキスト保存
 
-When the user provides references, save them to:
+ユーザーが参照を渡したら保存先:
 
 ```text
 ~/.cursor/product-design/user-context.md
 ```
 
-Or project-scoped:
+プロジェクトスコープ（任意）:
 
 ```text
 .cursor/product-design/user-context.md
 ```
 
-Create the file first if needed:
+必要なら先にファイルを作る:
 
 ```bash
 python3 scripts/init_user_context.py
 ```
 
-Use the category structure from `../SKILL.md`.
+カテゴリ構造は `../SKILL.md` に従う。
 
-If the user provides screenshots or reference images, copy them into:
+スクリーンショットや参照画像は次にコピー:
 
 ```text
 ~/.cursor/product-design/assets/
 ```
 
-Give saved images clear names that say what they show, such as `assets/payment-sheet-mobile-error-state.png` or `assets/account-menu-open-state.png`.
+保存画像には内容が分かる名前を付ける（例: `assets/payment-sheet-mobile-error-state.png`）。
 
-Do not save secrets, API keys, credentials, private tokens, or unsupported claims.
+秘密、API キー、認証情報、私有トークン、未サポートの主張は保存しない。
 
-Use this save recap:
+保存後の要約:
 
 ```md
-Saved Product Design context:
+Product Design コンテキストを保存しました:
 - {Category}: {what was saved}
 
-I'll use this as a starting map for future Product Design work. The source you provide in a task still wins.
+将来の Product Design 作業の起点マップとして使います。タスクで渡すソースが常に優先されます。
 ```
 
-## Step 3: Read Context
+## Step 3: コンテキスト読み出し
 
-When the user asks what Product Design knows, read `user-context.md` and summarize only saved entries.
+Product Design が何を知っているか聞かれたら `user-context.md` を読み、保存エントリだけ要約する。
 
-If no saved context exists, say that plainly and offer the Step 1 setup prompt.
+保存が無ければ明言し、Step 1 のセットアッププロンプトを提案する。

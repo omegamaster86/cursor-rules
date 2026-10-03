@@ -1,132 +1,112 @@
 ---
 name: url-to-code
-description: "Clone a live URL as a runnable frontend-only local app."
+description: "ライブ URL を runnable なフロントエンドのみのローカルアプリとしてクローンする。"
 ---
 
 # URL To Code
 
-If the user explicitly invokes this skill, continue.
+ユーザーがこのスキルを明示的に呼んだら続行。
 
-Only continue when the user asks to clone or recreate the current site.
+ユーザーが現在サイトのクローンまたは再現を求めたときだけ続行。
 
-If the user says `like`, `better`, `redesign`, or `improve`, return to [$index](../index/SKILL.md).
+`like`、`better`、`redesign`、`improve` と言われたら [$index](../index/SKILL.md) に戻る。
 
-Clone `<target-url>` as a real interactive, frontend-only local app or website. The clone should look and interact like the source.
+`<target-url>` を、見た目も操作もソースに近い、インタラクティブなフロントエンドのみのローカルアプリ／サイトとしてクローンする。
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## User Context
 
-Before starting, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+開始前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight を実行する。
 
-Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets as grounding material when relevant.
-
-Do not inspect every saved reference. Inspect only what the current task needs.
+保存参照を接地材料として使う（必要なものだけ inspect）。
 
 ## Workflow
 
-1. CRITICAL STEP: Warn the user that they must follow the target website's terms before proceeding. This workflow is only for apps and websites the user owns, or has permission to recreate.
+1. **必須:** 対象サイトの利用規約に従う必要があると警告する。このワークフローはユーザーが所有する、または再現許可のあるサイトのみ。
 
-2. Open the source URL using the Browser Choice rule in [$index](../index/SKILL.md#browser-choice).
+2. [$index](../index/SKILL.md#browser-choice) の Browser Choice でソース URL を開く。
 
-3. Check that the page is correct.
+3. ページが正しいか確認。
 
-- Do not continue if it shows the wrong page, a blocked page, a login page, a promo page, a loading screen, an error page, an app-install page, or an unrelated redirect.
-- If the page is wrong, try again with another available browser.
-- If every browser shows the wrong page, stop and tell the user what you can see.
+- 誤ページ、ブロック、ログイン、プロモ、ローディング、エラー、アプリインストール、無関係リダイレクトなら続行しない。
+- 誤りなら別ブラウザで再試行。
+- すべて誤りなら見えている状態をユーザーに伝えて停止。
 
-4. Capture the source page carefully.
+4. ソースページを慎重にキャプチャ。
 
-- Start at the top of the page.
-- Scroll down in small steps.
-- At each step, capture what is visible.
-- Note any new sections, controls, sticky elements, animations, or lazy-loaded assets.
-- Continue until the full page has been seen.
-- Scroll back to the top and check whether anything changed.
-- Repeat on mobile at `390 x 844`.
+- ページ最上部から開始。
+- 小刻みにスクロール。
+- 各段階で見えるものをキャプチャ。
+- 新セクション、コントロール、sticky、アニメ、lazy アセットを記録。
+- 全文見終わるまで続行。
+- 最上部に戻り変化を確認。
+- モバイル `390 x 844` でも繰り返す。
 
-5. Use the browser DOM tools to gather everything needed to recreate the source.
+5. ブラウザ DOM ツールで再現に必要なものを収集。
 
-- Elements
-- Components
-- Text
-- Links
-- Buttons and controls
-- States
-- Images
-- Icons
-- Fonts
-- Videos
-- SVGs
-- Style sheets
-- Colors
-- Spacing
-- Layout sizes
-- Responsive behavior
+- 要素、コンポーネント、テキスト、リンク、ボタンとコントロール、状態、画像、アイコン、フォント、動画、SVG、スタイルシート、色、余白、レイアウトサイズ、レスポンシブ挙動。
 
-6. Find and test the page interactions.
+6. ページインタラクションを見つけてテスト。
 
-- Use the screenshots and browser DOM tools to find visible controls.
-- Include navigation, buttons, links, inputs, menus, drawers, modals, tabs, carousels, hover states, sticky elements, and anything else the user can interact with.
-- Test one control at a time.
-- Return to the starting state before testing the next control.
-- Save the result when the page visibly changes or the browser tools show a state change.
+- スクリーンショットと DOM で見えるコントロールを含める（ナビ、ボタン、リンク、入力、メニュー、ドロワー、モーダル、タブ、カルーセル、hover、sticky など）。
+- 1コントロールずつテスト。
+- 次の前に開始状態に戻す。
+- 見た目が変わるか DOM が状態変化したら保存。
 
-7. Copy the real assets from the source page.
+7. ソースから実アセットをコピー。
 
-- If the page loads the asset, treat it as available unless the browser cannot access or save it.
-- If an image, logo, icon, font, video, SVG, sprite, mask, cursor, or background image is used by the page, copy it locally.
-- If an image asset cannot be copied, generate a replacement with ImageGen using a screenshot of the original.
-- If a font file cannot be copied, use the closest open source font match.
-- If an icon or glyph cannot be copied, use the closest matching open source icon set. Do not default to Lucide unless it is the closest match.
-- Briefly note any asset, font, or icon you replaced and why.
+- ページが読み込むアセットはブラウザが保存できない場合を除き利用可能。
+- 画像、ロゴ、アイコン、フォント、動画、SVG、スプライト、マスク、カーソル、背景画像はローカルにコピー。
+- コピー不可の画像は元のスクリーンショットで ImageGen 置換。
+- フォント不可なら最も近いオープンソースフォント。
+- アイコン不可なら最も近いオープンセット。Lucide は最適一致のときだけ。
+- 置換したアセット・フォント・アイコンと理由を短く記録。
 
-8. Create the local app with [local-prototype-preflight](../../references/local-prototype-preflight.md).
+8. [local-prototype-preflight](../../references/local-prototype-preflight.md) でローカルアプリを作成。
 
-9. Build only from what you captured, copied, or gathered from the source.
+9. キャプチャ・コピー・収集したものだけからビルド。
 
-- Do not add new visual ideas.
-- Do not use hotlinked source assets.
-- Do not guess when source proof is available.
+- 新しいビジュアルアイデアを足さない。
+- ホットリンクソースアセットを使わない。
+- ソース証拠があるとき推測しない。
 
-10. Run the local app.
+10. ローカルアプリを実行。
 
-### Previewing prototypes in Cursor
+### Cursor でのプロトタイププレビュー
 
-Follow [cursor-preview](../../references/cursor-preview.md). Verification requires browser inspection via cursor-ide-browser, not merely starting `npm run dev`.
+[cursor-preview](../../references/cursor-preview.md) に従う。検証は `npm run dev` 開始だけでは不十分。cursor-ide-browser で inspect が必要。
 
-11. Compare the local app against the original.
+11. ローカルとオリジナルを比較。
 
-- Check desktop.
-- Check mobile.
-- Check every interaction you captured.
-- Fix any obvious mismatch before running final QA.
+- デスクトップ、モバイル、キャプチャした各インタラクション。
+- 最終 QA 前に明らかな不一致を修正。
 
-12. Run [design-qa](../design-qa/SKILL.md) as the blocking build gate.
+12. ブロッキングゲートとして [design-qa](../design-qa/SKILL.md) を実行。
 
-- Save the QA report as `design-qa.md` in the project root.
-- Fix P0/P1/P2 issues, capture the app again, and repeat until the QA report says `final result: passed`.
-- Do not keep looping on P3 polish. Include any remaining P3s as follow-up iteration notes.
-- If source capture, prototype capture, or visual comparison is blocked, stop. `design-qa.md` must say `final result: blocked`.
-- Do not hand off unless `design-qa.md` exists and says `final result: passed`.
+- QA レポートをプロジェクトルート `design-qa.md` に保存。
+- P0/P1/P2 を修正、再キャプチャ、 `final result: passed` まで繰り返す。
+- P3 polish でループし続けない。残 P3 は follow-up メモ。
+- キャプチャまたは比較ブロック時は停止。`design-qa.md` は `final result: blocked`。
+- `design-qa.md` が `final result: passed` でない限り引き渡ししない。
 
-13. Handoff the app or website
+13. アプリ／サイトを引き渡し
 
-- Only hand off after [design-qa](../design-qa/SKILL.md) passes.
-- Keep the prototype running locally.
-- Keep the dev server running and give the user the local URL. Do not deploy unless the user explicitly asks to share, publish, or deploy.
-- After the preview handoff, use the shared build handoff from `critical-overrides.md`. Do not add a different completion message.
-- Include the post-build iteration and share nudge from [critical-overrides](../../references/critical-overrides.md#build-handoff).
+- [design-qa](../design-qa/SKILL.md) 合格後のみ。
+- ローカルでプロトタイプを動かし続ける。
+- dev サーバーを動かしローカル URL を渡す。明示的な共有・公開・デプロイ依頼までデプロイしない。
+- プレビュー引き渡し後は `critical-overrides.md` の共有ビルド引き渡しを使う。別の完了メッセージを足さない。
+- [critical-overrides](../../references/critical-overrides.md#build-handoff) の post-build 反復と共有 nudge を含める。
 
 ## Hard Rules
 
-- Capture source evidence first. Do not scaffold, write app code, start a server, or create the local prototype until desktop capture, mobile capture, key states, and every required asset, icon, control mark, and font is captured or replaced.
-- Do not hand off until every single interaction and state is captured from the target.
-- Do not build from memory, screenshots alone, guessed CSS, generic assets, or prior chats.
-- Do not implement a saved state without source screenshot plus the available DOM/style/layout evidence for that state.
-- Do not use hotlinked source assets in the final app.
-- Do not create temporary CSS icons, text glyphs, emoji marks, placeholder blocks, or handmade SVGs while "waiting" to resolve assets. Resolve assets first, then build.
-- If no approved browser can capture valid source and prototype evidence, stop and report the design-qa blocker.
+- 先にソース証拠。デスクトップ／モバイルキャプチャ、主要状態、必要アセット・アイコン・フォントが揃うまで足場・コード・サーバー・プロトタイプ作成をしない。
+- ターゲットのすべてのインタラクションと状態をキャプチャするまで引き渡ししない。
+- メモリ、スクリーンショットのみ、推測 CSS、汎用アセット、過去チャットからビルドしない。
+- その状態のソーススクリーンショットと DOM／スタイル／レイアウト証拠なしに保存状態を実装しない。
+- 最終アプリにホットリンクソースアセットを使わない。
+- アセット解決を「待つ」ための仮 CSS アイコン、文字グリフ、絵文字、プレースホルダー、手作り SVG を作らない。先にアセットを解決してからビルド。
+- 承認ブラウザが有効なソースとプロトタイプ証拠をキャプチャできないときは停止し design-qa ブロッカーを報告。

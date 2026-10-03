@@ -1,92 +1,90 @@
 ---
 name: research
-description: "Run fast, source-grounded UX research on the highest-signal problems users are experiencing with a user-specified digital product. Use when the user asks to research user pain, UX friction, onboarding issues, docs/help problems, developer experience friction, support pain, product workflow issues, or current user complaints for a named product."
+description: "ユーザー指定のデジタルプロダクトについて、ユーザーが経験している最高シグナルの問題に対する、迅速でソースに根ざした UX リサーチ。ユーザーの痛み、UX 摩擦、オンボーディング、ドキュメント／ヘルプ、開発者体験、サポート、ワークフロー、現行の不満の調査に使用。"
 ---
 
 # Research
 
-Run a fresh UX research scan for the product the user specifies.
+ユーザーが指定したプロダクトについて、新しい UX リサーチスキャンを実行する。
 
-Focus on current, evidence-backed user problems. Prioritize logged-in product experience, self-serve flows, onboarding, docs/help, developer experience, support friction, and product workflows.
+現在の、根拠のあるユーザー問題に焦点を当てる。ログイン後体験、セルフサーブフロー、オンボーディング、ドキュメント／ヘルプ、開発者体験、サポート摩擦、プロダクトワークフローを優先する。
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## User Context
 
-Before starting, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+開始前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight を実行する。
 
-Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets as grounding material when relevant.
-
-Do not inspect every saved reference. Inspect only what the current task needs.
+保存済み参照を接地材料として使う（必要なものだけ inspect）。
 
 ## Contract
 
-- Restate the product, audience, time horizon, and research scope before scanning.
-- Use public sources by default. Use internal sources when the connectors are available and the user request allows it.
-- Cite sources wherever available.
-- Separate observed evidence from inference.
-- Do not overclaim from anecdotes.
-- Do not return a dump of complaints. Tell a clear product story.
-- Say clearly when source access is missing or weak.
+- スキャン前にプロダクト、オーディエンス、時間軸、リサーチスコープを再述する。
+- デフォルトは公開ソース。コネクタが使えユーザー依頼が許すときは内部ソースも使う。
+- 可能ならソースを引用する。
+- 観察された根拠と推論を分ける。
+- 逸話から過大主張しない。
+- 不満のダンプを返さない。明確なプロダクトストーリーを語る。
+- ソースアクセスが弱い・欠けているときは明言する。
 
 ## Workflow
 
-1. Restate the research scope.
+1. リサーチスコープを再述する。
 
-2. Search public sources:
+2. 公開ソースを検索:
 
 - Reddit
 - X/Twitter
 - Hacker News
 - Stack Overflow
 - GitHub issues/discussions
-- forums, blogs, reviews, YouTube comments, and developer communities where relevant
+- 関連フォーラム、ブログ、レビュー、YouTube コメント、開発者コミュニティ
 
-3. Search internal sources when available:
+3. 利用可能なら内部ソース:
 
 - Slack
 - Gong
 - Notion
 - Google Drive/docs
 - Linear/Jira/GitHub
-- support or CRM notes if available
+- サポート・CRM メモ
 
-4. Cluster evidence into the highest-signal UX problems.
+4. 根拠を最高シグナルの UX 問題にクラスタリングする。
 
-5. Separate:
+5. 分離:
 
-- product UI/workflow friction
-- docs/help friction
-- onboarding friction
-- account, billing, permissions, or setup friction
-- developer/API/SDK friction
-- reliability/performance issues
-- feature requests
+- プロダクト UI／ワークフロー摩擦
+- ドキュメント／ヘルプ摩擦
+- オンボーディング摩擦
+- アカウント、請求、権限、セットアップ摩擦
+- 開発者／API／SDK 摩擦
+- 信頼性／性能
+- 機能要望
 
-6. Rank problems by severity, frequency, confidence, and product leverage.
+6. 深刻度、頻度、信頼度、プロダクトレバレッジでランク付けする。
 
-7. Tell a clear product story.
+7. 明確なプロダクトストーリーを語る。
 
 ## Output
 
-Default to an in-chat research brief unless the user asks for another format.
+ユーザーが別形式を求めない限り、チャット内リサーチブリーフをデフォルトとする。
 
-Include:
+含めるもの:
 
-- Executive read: the core story in 5-7 sentences.
-- Ranked UX problems: for each problem, include the problem, user goal, surface, what breaks, evidence, severity, frequency signal, confidence, and recommended product move.
-- Source map: what was searched, what each source contributed, and where signal was weak.
-- Opportunity map: group recommendations into fix this week, fix this quarter, and needs deeper research.
+- Executive read: 5〜7文のコアストーリー。
+- ランク付け UX 問題: 各問題に問題、ユーザーゴール、表面、何が壊れる、根拠、深刻度、頻度シグナル、信頼度、推奨プロダクトムーブ。
+- Source map: 何を検索したか、各ソースの寄与、シグナルが弱かった場所。
+- Opportunity map: 今週直す、今四半期、さらに調査が必要。
 
 ## Rules
 
-- Use citations wherever available.
-- Do not overclaim from anecdotes.
-- Separate loud complaints from frequent problems.
-- Separate UX friction from missing features.
-- Separate reliability/performance issues from UX workflow issues.
-- Mark internal-only evidence separately from public evidence.
-- Keep the brief sharp, specific, and easy to consume.
+- 可能なら引用する。
+- 逸話から過大主張しない。
+- 大きな声の不満と頻出問題を分ける。
+- UX 摩擦と不足機能を分ける。
+- 信頼性／性能と UX ワークフローを分ける。
+- 内部のみの根拠と公開根拠を分ける。
+- ブリーフは鋭く、具体的で、読みやすく保つ。

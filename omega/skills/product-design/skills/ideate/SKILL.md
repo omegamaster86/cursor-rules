@@ -1,114 +1,112 @@
 ---
 name: ideate
-description: "Generate image-based alternatives, remixes, or new design directions from a Product Design brief. Use when the user asks for design variants, visual exploration, remixes, or image-generated approaches from provided context."
+description: "Product Design ブリーフから画像ベースの代替案、リミックス、新しいデザイン方向を生成する。デザイン案、ビジュアル探索、リミックス、コンテキストからの画像生成アプローチの依頼に使用。"
 ---
 
 # Ideate
 
-You're tasked with generating design concepts for a user's idea.
+ユーザーのアイデア向けにデザインコンセプトを生成する。
 
-Follow the shared Product Design routing guidance in [$index](../index/SKILL.md).
+[$index](../index/SKILL.md) の共有 Product Design ルーティング指針に従う。
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## User Context
 
-Before starting, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+開始前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight を実行する。
 
-Attach provided product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets to the Image Gen generations to align them to the design brief.
+提供 URL、Figma、スクリーンショット、参照画像、コードベース、Storybook、トークン、デザインシステム、ブランドアセット、コンポーネント参照、ブラウザ設定、共有先を Image Gen 生成に添付しブリーフに合わせる。
 
-Do not inspect every saved reference. Inspect only what the current task needs.
+保存参照をすべて inspect しない。必要なものだけ。
 
 ## Workflow
 
-Do not generate images until `$get-context` has satisfied the minimum required design brief.
+`$get-context` が最小デザインブリーフを満たすまで画像を生成しない。
 
-Before generating images:
+画像生成前に:
 
-1. Understand the brief.
+1. ブリーフを理解。
 
-- Identify the target: component, screen, feature/workflow, or broad product idea.
-- Identify the intended user, product surface, and goal.
-- Preserve hard constraints from the user.
-- Run `get-context` if the minimum required design brief isn't satisfied.
+- ターゲット: コンポーネント、画面、機能／ワークフロー、広いプロダクトアイデア。
+- intended user、プロダクト表面、ゴール。
+- ユーザーの硬い制約を保持。
+- 最小ブリーフ未満なら `get-context` を実行。
 
-2. Resolve context.
+2. コンテキストを解決。
 
-- Use provided files, screenshots, links, and visible references.
-- In a local workspace, look for nearby design documentation and other local visual context.
-- Check likely design context folders such as `user-context`, `storybook/`, `.storybook/`, `design-system/`, `design-systems/`, `tokens/`, `components/`, `app/`, and generated prototype roots.
-- In an existing project, look for existing product screenshots, similar flows, Storybook captures, design tokens, and component references before generating. Ask if the user can provide example screens similar to the one they are building if the existing app isn't accessible. Ensure you add design language and tokens to the Image Gen prompt.
+- 提供ファイル、スクショ、リンク、見える参照を使う。
+- ローカルワークスペースでは近くのデザインドキュメントとビジュアルコンテキストを探す。
+- `user-context`、`storybook/`、`.storybook/`、`design-system/`、`tokens/`、`components/`、`app/`、生成プロトタイプルートなど。
+- 既存プロジェクトでは類似画面、Storybook キャプチャ、トークン、コンポーネント参照を先に。アプリにアクセスできないときは類似画面の提供を求める。Image Gen プロンプトにデザイン言語とトークンを足す。
 
-3. Inspect references directly.
+3. 参照を直接 inspect。
 
-- Look at screenshots, images, Figma frames, app surfaces, or other visual references before generating.
-- Do not infer from filenames alone.
-- If a named local path or reference is not visible, stop and ask the user to confirm the path, upload the file, start the local app, or point to the correct workspace.
+- 生成前にスクショ、画像、Figma フレーム、アプリ表面を見る。ファイル名だけから推測しない。
+- ローカルパスや参照が見えないときは停止し、パス確認、ファイルアップロード、アプリ起動、ワークスペース指定を求める。
 
-4. Decide the variation mode.
+4. バリエーションモードを決める。
 
-- If useful local design context exists and the user has not asked for a new style, stay within that existing direction.
-- If no useful design context exists, or the user asks for broad exploration, vary both concept and visual system.
-- For a specific component or existing surface, vary structure, interaction, hierarchy, and emphasis before varying brand style.
-- For a broad product idea, explore three meaningfully different product directions.
+- 有用なローカルデザインコンテキストがありユーザーが新スタイルを求めていないときは既存方向内。
+- コンテキストが無い、または広い探索を求められたときはコンセプトとビジュアルシステムの両方を変える。
+- 特定コンポーネント／既存表面では、ブランドスタイルより先に構造、インタラクション、ヒエラルキー、強調を変える。
+- 広いプロダクトアイデアでは意味のある3方向を探索。
 
-5. Choose target dimensions before Image Gen.
+5. Image Gen 前にターゲット寸法を選ぶ。
 
-- Pick the dimensions that best match the user's request and any provided visual reference.
-- Mobile app: `390 x 844`.
-- Tablet app: `834 x 1194`.
-- Desktop app, dashboard, admin, or SaaS: `1440 x 1024`.
-- Landing or marketing page: `1440` wide and scrollable.
-- Modal, panel, widget, or component: natural container size.
-- Provided screenshot, Figma frame, mockup, or reference image: match its dimensions and aspect ratio when the user wants to continue from that visual.
-- Avoid crowding. Make the design fit the chosen dimensions cleanly, with realistic spacing, readable type, and no clipped content.
-- Include the chosen dimensions in every Image Gen prompt.
+- 依頼と参照に最も合う寸法。
+- モバイルアプリ: `390 x 844`。
+- タブレット: `834 x 1194`。
+- デスクトップアプリ、ダッシュボード、管理、SaaS: `1440 x 1024`。
+- LP・マーケ: 幅 `1440` でスクロール可。
+- モーダル、パネル、ウィジェット、コンポーネント: 自然なコンテナサイズ。
+- 提供スクショ、Figma、モック、参照画像: そのビジュアルから続けるときは寸法とアスペクトを合わせる。
+- 詰め込みを避け、現実的な余白、読めるタイポ、クリップなしで寸法に収める。
+- 各 Image Gen プロンプトに選んだ寸法を含める。
 
-6. Check for access gaps.
+6. アクセスギャップを確認。
 
-- If a connector, reference, or file cannot be accessed because of auth, permissions, expired login, missing scope, suspiciously empty results, or unavailable local state, stop.
-- Name the gap clearly and ask whether to troubleshoot access or continue without that source.
-- Do not generate images while silently ignoring a named reference.
+- 認証、権限、期限切れログイン、スコープ不足、空結果、ローカル状態不可でコネクタ・参照・ファイルにアクセスできないときは停止。
+- ギャップを明確に名指し、トラブルシュートかそのソースなし続行か聞く。
+- 名指し参照を黙って無視している間は生成しない。
 
-7. Attach images and mocks provided by the user to the Image Gen call along with your design brief.
+7. ユーザー提供画像・モックを Image Gen 呼び出しにデザインブリーフと一緒に添付。
 
-8. Generate 3 independent options that have distinct information hierarchy, layout strategy, interaction model, or product framing.
+8. 情報ヒエラルキー、レイアウト戦略、インタラクションモデル、プロダクトフレーミングが独立して異なる3オプションを生成。
 
-Rules you must follow:
+守るルール:
 
-- Use the Image Gen prompt below.
-- Use the built-in Image Gen tool.
-- Generate exactly three independent images unless the user overrides the count.
-- Launch each Image Gen call independently. Do not batch Image Gen calls with `Promise.all`, collect them into an ordered array, or replay them in request order.
-- Each option must be its own Image Gen result. Do not put multiple ideas in one image.
-- Give each direction a distinct, descriptive name before generation, but do not call it `option 1`, `option 2`, or `option 3` and do not put planned numeric labels in Image Gen prompts. Parallel results can arrive in a different order from the requests.
-- Number options only after the Image Gen results are present in the thread. The only authoritative option order is the order those generated-image results are displayed in the current thread. Ignore the planned concept order, original request chain, prompt submission order, `Promise.all` result order, batch order, array indexes, retry order, and assumed completion order.
-- After all results return, bind each visible option number to the result in that displayed order. Do not name or describe the options in the final selection message.
-- Attach provided screenshots, files, app captures, Figma references, and visual source material as moodboard inspiration when available.
-- Attach existing product screenshots, similar flows, Storybook captures, design tokens, and component references as grounding material when available.
-- When mock data includes dates or time-sensitive information, resolve the exact current date and include it in every Image Gen prompt. Derive visible dates from that anchor; preserve dates required by the user or source design.
-- If a screenshot, image, or visual file is available, attach the actual image to the Image Gen call. Do not rely on text descriptions of it.
-- Only claim a visual reference was attached if the Image Gen call actually received that image or a readable local image path.
-- If you cannot attach the image, say that clearly and ask whether to continue with text-only direction.
-- Preserve hard constraints from the brief in every image.
-- After generating options, stop for the user's selection before any build work begins.
-- When the user later selects option `N`, resolve it against the Nth displayed generated-image result from the most recent ideation set, not the original planned concept order. If the exact displayed result cannot be resolved, do not build from a guess; ask the user to name the concept or reattach/select the image.
-- The selected option is the visual target for `$image-to-code`.
+- 下の Image Gen プロンプトを使う。
+- 組み込み Image Gen ツールを使う。
+- ユーザーが数を上書きしない限り独立画像を厳密に3枚。
+- 各 Image Gen 呼び出しを独立起動。`Promise.all` でバッチ、順序配列、リクエスト順再生をしない。
+- 各方向は別の Image Gen 結果。1画像に複数アイデアを入れない。
+- 生成前に各方向に説明的な名前を付けるが、`option 1` などやプロンプト内の計画番号ラベルは使わない。並列結果は要求順と異なる順で返ることがある。
+- 番号はスレッドに generated-image 結果が揃った **後だけ**。正しい順序はスレッド表示順のみ。計画概念順、要求チェーン、送信順、`Promise.all` 結果順、バッチ順、インデックス、リトライ順、想定完了順は無視。
+- 全結果後、表示順にオプション番号をバインド。最終選択メッセージでオプションを名前付け・説明しない。
+- 利用可能ならスクショ、ファイル、アプリキャプチャ、Figma、ビジュアルソースをムードボードとして添付。
+- 既存プロダクトスクショ、類似フロー、Storybook、トークン、コンポーネント参照を接地材料として添付。
+- モックデータに日付や時間敏感情報があるときは現在日付を解決し各 Image Gen プロンプトに含める。表示日付はその基準から。ユーザーまたはソースデザインが要求する日付は保持。
+- スクショ・画像・ビジュアルファイルがあれば Image Gen に実画像を添付。テキスト説明だけに頼らない。
+- 画像を実際に添付したときだけ参照添付を主張。添付できないときは明言し、テキストのみ続行するか聞く。
+- ブリーフの硬い制約を各画像で保持。
+- オプション生成後、ビルド前にユーザー選択を待つ。
+- 後でユーザーがオプション `N` を選んだときは、直近 ideation の **表示順** N 番目の generated-image を解決。計画順からビルドしない。解決できないときは推測せず概念名または画像の再選択を求める。
+- 選択オプションは `$image-to-code` のビジュアルターゲット。
 
 ## Feedback Loop
 
-If the user gives feedback after seeing options, generate revised options with that feedback.
+オプション後にフィードバックがあれば、そのフィードバックで修正オプションを生成。
 
-If the user selects an option and gives feedback, generate a revised option with that feedback before build.
+オプション選択とフィードバックが同時なら、ビルド前に修正オプションを1枚生成。
 
-If the user likes parts of more than one option, combine those choices into a new Image Gen design and show it before build.
+複数オプションの良い部分を組み合わせたいときは新 Image Gen デザインにまとめ、ビルド前に見せる。
 
 ## Image Gen Prompt
 
-Adapt this prompt to the current design brief, attach any available image references, and send it to Image Gen:
+現在のデザインブリーフに合わせてこのプロンプトを調整し、利用可能な画像参照を添付して Image Gen に送る:
 
 ```text
 Create realistic, production-quality UI designs with clear hierarchy, strong typography, intentional imagery, and purposeful spacing.
@@ -166,26 +164,26 @@ When the design includes dates or time-sensitive mock data, use the supplied cur
 
 ## Output
 
-Wait until all Image Gen calls have returned before sending the final message that asks the user to choose.
+ユーザーに選ばせる最終メッセージを送る前に、すべての Image Gen 呼び出しの返却を待つ。
 
-Do not send the final selection message until every requested generated image is visible exactly once in the main chat.
+要求枚数の生成画像がメインチャットにそれぞれ1回だけ見えるまで選択メッセージを送らない。
 
-If fewer Image Gen outputs are visible than requested, retry the missing generation. Do not send the selection message.
+見える Image Gen 出力が要求より少ないときは不足分を再試行。選択メッセージは送らない。
 
-Number the returned Image Gen outputs in the order they appear in the conversation context:
+会話コンテキストの **表示順** で Image Gen 出力に番号:
 
-- First Image Gen output = Option 1
-- Second Image Gen output = Option 2
-- Third Image Gen output = Option 3
+- 1番目 = オプション 1
+- 2番目 = オプション 2
+- 3番目 = オプション 3
 
-Ignore the planned concept order, original request chain, request order, `Promise.all` result order, batch order, array indexes, retry order, and tool submission order.
+計画概念順、要求チェーン、送信順、`Promise.all` 結果順、バッチ順、インデックス、リトライ順、ツール送信順は無視。
 
-Do not name or describe the options. For the default three images, send only:
+オプションを名前付け・説明しない。デフォルト3枚では次だけ送る:
 
 `Which option should I build: 1, 2, or 3? Or tell me what you'd like to refine or personalize first.`
 
-Adjust the numbers only if the user requested a different count.
+ユーザーが別枚数を求めたときだけ数字を調整。
 
-If the user chooses a number, acknowledge the chosen option before routing to `$image-to-code`, for example: `Building option 2!` Do not ask for confirmation when the mapping is clear.
+ユーザーが番号を選んだら `$image-to-code` にルーティングする前に選択を短く認知（例: `Building option 2!`）。マッピングが明確なとき確認を求めない。
 
-Done means the requested number of independent images have been generated and the user has been asked to select one.
+完了とは、要求枚数の独立画像が生成され、ユーザーに選択を求めた状態。

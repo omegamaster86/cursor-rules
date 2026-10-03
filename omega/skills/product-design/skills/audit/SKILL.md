@@ -1,160 +1,158 @@
 ---
 name: audit
-description: "Audit or critique a product flow, journey, workflow, funnel, onboarding path, checkout path, settings path, screen, or multi-step product experience by capturing screenshots first, then reporting UX, design, and accessibility findings inline from that evidence. Use Figma only when the user explicitly asks for a board. Use when the user asks to audit, review, critique, inspect, assess, analyze, evaluate, or give feedback on a product experience."
+description: "スクリーンショットを先に取得し、その根拠から UX・デザイン・アクセシビリティの finding をインライン報告して、プロダクトフロー・ジャーニー・ワークフロー・ファネル・オンボーディング・チェックアウト・設定・画面・マルチステップ体験を監査または critique する。ユーザーが Figma ボードを明示的に求めたときだけ Figma を使用。監査、レビュー、critique、inspect、assess、analyze、evaluate、フィードバック依頼に使用。"
 ---
 
 # Audit
 
-Use this skill when the user wants to audit, review, critique, inspect, assess, analyze, evaluate, or give feedback on a product flow, journey, funnel, onboarding path, checkout path, settings path, screen, or other product experience.
+ユーザーがプロダクトフロー、ジャーニー、ファネル、オンボーディング、チェックアウト、設定、画面、その他体験の監査・レビュー・critique・inspect・assess・analyze・evaluate・フィードバックを求めたときに使う。
 
-The output is not a loose opinion. The output is:
+出力は散漫な意見ではない。出力は:
 
-- Screenshots of the flow
-- Those screenshots rendered inline in the report
-- A numbered step list
-- UX and design findings tied to steps or screenshots
-- Accessibility risks tied to steps or screenshots
-- Clear limits on what could not be checked from screenshots alone
+- フローのスクリーンショット
+- レポート内にインライン表示されたスクリーンショット
+- 番号付きステップリスト
+- ステップまたはスクリーンショットに結びついた UX・デザイン finding
+- ステップまたはスクリーンショットに結びついたアクセシビリティリスク
+- スクリーンショットだけでは確認できなかったことの明確な限界
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## User Context
 
-Before starting, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+開始前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight を実行する。
 
-Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets as grounding material when relevant.
-
-Do not inspect every saved reference. Inspect only what the current task needs.
+保存参照を接地材料として使う（必要なものだけ inspect）。
 
 ## Route
 
-Before auditing:
+監査前に:
 
-1. Identify the product or surface.
-2. Identify the flow or task.
-3. Choose the capture tool.
-4. Capture the flow.
-5. Save and inspect each screenshot.
-6. Return the audit inline with the accepted screenshots.
+1. プロダクトまたは表面を特定。
+2. フローまたはタスクを特定。
+3. キャプチャツールを選択。
+4. フローをキャプチャ。
+5. 各スクリーンショットを保存・inspect。
+6. 受理スクリーンショット付きでインライン監査を返す。
 
-Output rules:
+出力ルール:
 
-- Default to a concise inline report with screenshots rendered in the chat.
-- Saving screenshots and notes in the workspace is an internal implementation detail. Do not ask the user to choose a local folder.
-- If the user explicitly asks for Figma, create the Figma audit board in addition to the inline report.
-- After the inline report, ask once: `Want me to plot this out in Figma with the screenshots and notes?`
+- デフォルトはスクリーンショットをチャットに描画した簡潔なインラインレポート。
+- ワークスペースへの保存は内部実装詳細。ローカルフォルダ選択をユーザーに求めない。
+- ユーザーが明示的に Figma を求めたら、インラインレポートに加えて Figma 監査ボードを作成。
+- インラインレポート後に一度聞く: `Want me to plot this out in Figma with the screenshots and notes?`
 
-Capture rules:
+キャプチャルール:
 
-- Follow the Browser Choice rule in [$index](../index/SKILL.md#browser-choice).
-- If none of those can capture valid screenshots or control the flow, stop and report the blocker.
+- [$index](../index/SKILL.md#browser-choice) の Browser Choice に従う。
+- 有効スクリーンショットやフロー制御ができないときは停止しブロッカーを報告。
 
-Browser capture order:
+ブラウザキャプチャ順:
 
-1. Load the Browser skill before browser work.
-2. Connect to the browser and use the current tab when it already shows the target.
-3. Do not reload or navigate away unless the audit needs a fresh start.
-4. Observe the visible state before acting.
-5. Before each click, type, or key press, use the latest DOM snapshot to target one clear control.
-6. After each action, take the cheapest fresh check that proves what changed: DOM for structure, screenshot for visual state.
-7. Save and inspect the accepted screenshot before using it as audit evidence.
+1. ブラウザ作業前に Browser スキルを読む。
+2. ブラウザに接続し、ターゲット表示済みタブがあればそれを使う。
+3. 監査が新規開始を必要としない限りリロード・離脱しない。
+4. 操作前に見える状態を観察。
+5. 各クリック・入力・キー前に最新 DOM スナップショットで1つの明確なコントロールを狙う。
+6. 各操作後、変化を証明する最安のチェック（構造は DOM、視覚状態はスクリーンショット）。
+7. 監査根拠にする前に受理スクリーンショットを保存・inspect。
 
-Figma rules:
+Figma ルール:
 
-- If Figma is the destination, load the required Figma skills before creating or editing the file.
-- Keep a local copy of every screenshot even when Figma succeeds.
-- Do not upload a screenshot to Figma until the saved local file has been inspected and accepted.
-- Figma is not done until the screenshots are visibly placed in the Figma output.
-- After placing screenshots in Figma, render or inspect the board and confirm every flow step has the correct screenshot visible in the correct card.
-- If an image is missing, misplaced, blank, or only uploaded as an unused asset, fix it before handoff.
-- If Figma tools cannot create files or place images, return the inline audit and explain the missing Figma capability.
+- 宛先が Figma なら必要 Figma スキルを先に読む。
+- Figma 成功時も各スクリーンショットのローカルコピーを保持。
+- ローカルファイルを inspect・受理するまで Figma にアップロードしない。
+- スクリーンショットが Figma 出力に見える配置されるまで Figma 完了ではない。
+- 配置後にボードを render/inspect し、各フローステップに正しいスクリーンショットが正しいカードに見えることを確認。
+- 欠落、誤配置、空白、未使用アセットのみのアップロードなら引き渡し前に修正。
+- Figma ツールがファイル作成や画像配置できないときはインライン監査を返し、不足能力を説明。
 
-Evidence rules:
+根拠ルール:
 
-- Use only evidence captured in the current audit run.
-- Do not use memory, prior chats, old traces, cached screenshots, or prior generated artifacts as audit evidence unless the user explicitly provides them.
-- Do not audit until the product, flow, and capture tool are known.
-- Do not claim full accessibility compliance from screenshots alone.
+- 現在の監査実行でキャプチャした根拠のみ。
+- メモリ、過去チャット、古いトレース、キャッシュスクショ、過去生成物を根拠にしない（ユーザーが明示提供した場合を除く）。
+- プロダクト、フロー、キャプツールが分かるまで監査しない。
+- スクリーンショットだけから完全 a11y 準拠を主張しない。
 
 ## Capture And Audit The Flow
 
-You are an expert design, UX, and accessibility auditor. For each step in the flow, capture what the user sees, observe how the screen behaves, inspect the screenshot, and write audit notes before moving on.
+デザイン・UX・アクセシビリティ監査の専門家として、フロー各ステップでユーザーが見るものをキャプチャし、画面挙動を観察し、スクリーンショットを inspect し、次に進む前に監査メモを書く。
 
-Follow [references/design-audit-framework.md](references/design-audit-framework.md) when deciding what to inspect and how to describe strengths, UX issues, accessibility risks, limits, and recommendations.
+inspect 内容と強み・UX 問題・a11y リスク・限界・推奨の記述には [references/design-audit-framework.md](references/design-audit-framework.md) に従う。
 
-Screenshot source rule:
+スクリーンショットソースルール:
 
-- Use the screenshot you actually saw.
-- Save that exact screenshot to the local audit folder.
-- Open or inspect the saved file before accepting it.
-- If the saved file shows the wrong window, wrong state, blank page, crop, or loading screen, reject it and capture again.
-- When Figma is the destination, upload that accepted local file.
-- After upload, verify the Figma board shows the same step.
-- Do not replace a Browser, Chrome, or Computer Use screenshot with an OS screenshot unless you first prove the saved file shows the same window and state.
+- 実際に見たスクリーンショットを使う。
+- そのスクリーンショットをローカル監査フォルダに保存。
+- 受理前に保存ファイルを開く／inspect。
+- 誤ウィンドウ、誤状態、空白、クロップ、ローディングなら拒否して再キャプチャ。
+- Figma が宛先なら受理ローカルファイルをアップロード。
+- アップロード後 Figma ボードに同じステップが見えることを確認。
+- Browser/Chrome/Computer Use スクショを、同じウィンドウ・状態を証明しない限り OS スクショに置き換えない。
 
-For every step:
+各ステップで:
 
-1. Move to the next step in the requested flow.
-2. Wait until the screen is loaded and visually stable.
-3. Check for loading spinners, blank areas, login walls, error pages, blocked states, cookie dialogs, and half-rendered content.
-4. Capture the screenshot.
-5. Inspect the screenshot before accepting it.
-6. Reject the screenshot if it is blank, loading, cropped, blocked, or showing the wrong state.
-7. Observe behavior that matters for the audit, such as navigation, focus, loading, validation, error handling, empty states, motion, and whether the next action is clear.
-8. Write notes for that step.
-9. In the notes, report strengths, UX issues, accessibility risks, and any limits that made the step difficult to audit.
-10. Save accepted screenshots with numbered names, such as `01-start.png`, `02-form-filled.png`, and `03-confirmation.png`.
-11. Inspect the saved screenshot file before upload or handoff.
-12. Keep each accepted screenshot and its notes together for the final inline report.
-13. If the user explicitly requested Figma, add each accepted screenshot and its notes to the board immediately.
+1. 要求フローの次ステップへ。
+2. 画面が読み込み完了し視覚的に安定するまで待つ。
+3. スピナー、空白、ログイン壁、エラー、ブロック、Cookie、半レンダーを確認。
+4. スクリーンショット。
+5. 受理前に inspect。
+6. 空白、ローディング、クロップ、ブロック、誤状態なら拒否。
+7. ナビ、フォーカス、ローディング、検証、エラー、空状態、モーション、次アクションの明確さなどを観察。
+8. そのステップのメモ。
+9. メモに強み、UX 問題、a11y リスク、監査困難な限界を書く。
+10. 受理スクショを `01-start.png` など番号付きで保存。
+11. アップロード・引き渡し前に保存ファイルを inspect。
+12. 受理スクショとメモを最終インラインレポート用にまとめる。
+13. ユーザーが明示的に Figma を求めたら、受理スクショとメモをすぐボードに追加。
 
-Default inline report:
+デフォルトインラインレポート:
 
-- Render accepted screenshots in flow order.
-- Keep the report pithy: overall verdict, numbered steps, highest-impact changes, and evidence limits.
-- Tie every finding to the screenshot or step that supports it.
+- 受理スクショをフロー順に描画。
+- 簡潔: 全体 verdict、番号ステップ、最大影響の変更、根拠の限界。
+- 各 finding を支持するスクショまたはステップに結びつける。
 
-If the user explicitly requested Figma:
+ユーザーが明示的に Figma を求めた場合:
 
-- Place screenshots in order, left to right on the same row, with 200px between each one. Go to a new row every 15 screenshots, and separate those rows by 600px.
-- Underneath the screenshot, add text with the Step number and its name, and notes.
-- Keep a local folder copy even when Figma succeeds.
-- When you are done, wrap all of the assets you added in a Section and title the section.
+- スクショを順に左から右、間隔 200px。15枚ごとに新行、行間 600px。
+- スクショ下にステップ番号・名前・メモ。
+- Figma 成功時もローカルフォルダコピーを保持。
+- 完了時に追加アセットを Section で包みタイトル付け。
 
-Acceptance checks:
+受理チェック:
 
-- Every important step in the requested flow has a valid screenshot or a named blocker.
-- Screenshots are saved in order.
-- Screenshots are rendered inline in the final report.
-- When Figma was explicitly requested, screenshots and notes are placed in the board as they are captured.
-- Every note points to the screenshot or step it describes.
-- Notes explain strengths, UX issues, accessibility risks, and evidence limits when those apply.
-- Accessibility risks say what can be seen from screenshots and what still needs testing.
-- The final screenshot set and notes are enough to support the requested audit.
+- 重要ステップすべてに有効スクショまたは名前付きブロッカー。
+- スクショは順序保存。
+- 最終レポートにインライン描画。
+- Figma 明示時はキャプチャと同時にボード配置。
+- 各メモは説明するスクショまたはステップを指す。
+- 強み、UX、a11y、限界を説明。
+- a11y リスクはスクショから見えることと追加テストが必要なことを述べる。
+- 最終スクショセットとメモが要求監査を支持できる。
 
-Blockers:
+ブロッカー:
 
-- The flow cannot be completed.
-- A required step cannot be screenshotted.
-- The source changes in a way that makes the flow unclear.
-- Screenshots cannot be saved or rendered inline.
-- Notes cannot be written.
-- The requested claim would require evidence that screenshots cannot provide.
-- Do not claim an audit if the actual flow could not be accessed and captured. Help Center pages, web searches, and other indirect evidence are research, not an audit.
+- フロー完了不能。
+- 必須ステップをスクショできない。
+- ソース変化でフロー不明。
+- スクショ保存・インライン描画不能。
+- メモ書けない。
+- スクショでは提供できない根拠が必要な主張。
+- 実フローにアクセス・キャプチャできないなら監査完了と言わない。ヘルプセンター、Web 検索などはリサーチであり監査ではない。
 
 ## Final Response
 
-After the flow is captured and notes are written, list every step in the final response.
+キャプチャとメモ後、最終応答に全ステップを列挙。
 
-The final step list MUST include:
+最終ステップリストに **必須**:
 
-- step number
-- short description of the step
-- general health of that step
+- ステップ番号
+- ステップの短い説明
+- そのステップの全体的な健全性
 
-Also include where the full output was saved or placed.
+また完全出力の保存場所を含める。
 
-Keep the language direct. Do not use broad design jargon when a plain phrase works.
+平易な言葉を使う。広いデザイン用語より短いフレーズを優先。

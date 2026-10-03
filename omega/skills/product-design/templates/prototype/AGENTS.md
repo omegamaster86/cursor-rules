@@ -1,9 +1,9 @@
-# Prototype Instructions
+# プロトタイプ指示
 
-Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
+ローカルサーバーは自分で起動し、この環境で使えるブラウザでプレビューを開く。自分で起動できるのにユーザーにサーバー起動手順を渡さない。
 
-Before making substantial visual changes, use Product Design `get-context` when the visual source is unclear or no longer matches the current goal. When the user gives durable prototype-specific design feedback, preferences, or decisions, record them in `AGENTS.md`.
+大きなビジュアル変更の前に、ビジュアルソースが不明または目標とずれたときは Product Design の `get-context` を使う。プロトタイプ固有の durable なデザインフィードバック・好み・決定は `AGENTS.md` に記録する。
 
-When implementing from a selected generated mock, treat that image as the source of truth for layout, component anatomy, density, spacing, color, typography, visible content, and hierarchy.
+選択した生成モックから実装するとき、その画像をレイアウト、コンポーネント解剖、密度、余白、色、タイポ、見えるコンテンツ、ヒエラルキーの正本とする。
 
-Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
+アプリ UI は `src/` に組む。`.openai/hosting.json`、`worker/index.js`、`scripts/prepare-sites-build.mjs`、`tests/sites-worker.test.mjs` は壊さず、同じローカルプロトタイプを Sites に渡せる状態を保つ。Sites 引き渡し前に `npm run build` と `npm run test:sites` を実行する。ビルド後 `dist/client/index.html`、`dist/server/index.js`、`dist/.openai/hosting.json` が残ること。

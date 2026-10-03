@@ -1,8 +1,8 @@
-# Mobile runtime components
+# モバイルランタイムコンポーネント
 
 ## Carousel
 
-`Carousel` is the standard component for horizontal collections: cards, images, media, swipeable items, and chip or filter rails. Place it directly inside `MobileScroll`; consumers should not add gesture wrappers or pointer handlers.
+`Carousel` は水平コレクション（カード、画像、メディア、スワイプ項目、チップ／フィルタレール）の標準コンポーネント。`MobileScroll` 内に直接置く。利用側はジェスチャラッパやポインタハンドラを足さない。
 
 ```tsx
 <MobileScroll>
@@ -18,14 +18,14 @@
 </MobileScroll>
 ```
 
-The runtime resolves nested gestures by axis. Horizontal intent stays with `Carousel`; vertical intent is handed to the parent `MobileScroll`. Slight vertical drift after a horizontal gesture is claimed does not move, rubber-band, or add momentum to the parent. Taps remain clickable, while a completed drag suppresses the item click.
+ランタイムは軸でネストジェスチャを解決する。水平は `Carousel`、垂直は親 `MobileScroll` に渡す。水平を取ったあとのわずかな垂直ドリフトは親の移動・ラバーバンド・慣性を起こさない。タップはクリック可能、完了したドラッグは項目クリックを抑制する。
 
-Do not use `data-scroll-drag="ignore"` for carousels or ordinary rails. It is a hard opt-out that prevents parent scrolling in every direction. Do not layer CSS scroll snapping over the runtime's JavaScript momentum. If snapping is added later, it should be a component option so one system owns release motion.
+カルーセルや通常レールに `data-scroll-drag="ignore"` は使わない。全方向で親スクロールを止める強い opt-out になる。ランタイムの JS 慣性の上に CSS scroll snap を重ねない。将来 snap を足すならコンポーネントオプションにし、リリースモーションは一系統に任せる。
 
 ## Keyboard-linked surfaces
 
-Use `KeyboardInput`, `KeyboardTextarea`, or `MobileTextField` for all text entry. Position a composer, search surface, or other keyboard-linked UI from `useKeyboardInsets().bottomInset`. The inset is relative to the app viewport: Android's closed-keyboard viewport already ends above its navigation bar, while iOS still needs its overlaid home-indicator inset; both platforms return the keyboard height while the keyboard is open. Never pin those surfaces to only `keyboardHeight`. When that surface closes, call `keyboard.hide()` in the same event before updating its own open state.
+テキスト入力はすべて `KeyboardInput`、`KeyboardTextarea`、`MobileTextField` を使う。コンポーザー、検索面、その他キーボード連動 UI は `useKeyboardInsets().bottomInset` で位置する。inset はアプリビューポート基準: Android はキーボード閉じたビューポートが既にナビ上で終わり、開いたときはキーボード高さを返す。iOS はオーバーレイホームインジケータ inset が必要で、開いたときはキーボード高さ。`keyboardHeight` だけに pin しない。面を閉じるときは open 状態を更新する同じイベントで `keyboard.hide()` を呼ぶ。
 
 ## BottomSheet
 
-`BottomSheet` dismisses the keyboard before opening and animates both in and out by default. Keep its `open` state controlled through `onOpenChange`; no consumer exit-animation wrapper is needed.
+`BottomSheet` は開く前にキーボードを閉じ、デフォルトで出入り両方アニメする。`open` は `onOpenChange` で制御。利用側の exit アニメラッパは不要。

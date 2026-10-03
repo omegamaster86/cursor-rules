@@ -1,38 +1,38 @@
-# Design Audit Framework
+# デザイン監査フレームワーク
 
-Use this structure for `audit`.
+`audit` ではこの構造を使う。
 
-Use `audit` for systematic assessment across a broader experience, not for feedback on a single artifact.
+`audit` は単一アーティファクトのフィードバックではなく、より広い体験の体系的評価向け。
 
-## Audit modes
+## 監査モード
 
 - `UX audit`
 - `Accessibility audit`
 - `Combined audit`
 
-## UX audit lenses
+## UX 監査のレンズ
 
-- Task entry and discoverability
-- Information architecture
-- Interaction flow and friction
-- Hierarchy and clarity
-- Trust and reassurance
-- Default states and empty states
-- Copy and calls to action
-- Consistency across the experience
+- タスクの入口と発見性
+- 情報アーキテクチャ
+- インタラクションフローと摩擦
+- ヒエラルキーと明瞭性
+- 信頼と安心
+- デフォルト状態と空状態
+- コピーと CTA
+- 体験全体の一貫性
 
-## Accessibility audit lenses
+## アクセシビリティ監査のレンズ
 
-- Perceivable content and contrast risks
-- Semantic structure and reading order
-- Keyboard access and focus behavior
-- Target size and interaction affordances
-- Labels, instructions, and error recovery
-- Motion, timing, and state change communication
-- Responsive reflow and zoom resilience
-- Assistive-technology clarity and robustness
+- 感知可能なコンテンツとコントラストリスク
+- セマンティック構造と読み上げ順
+- キーボード操作とフォーカス挙動
+- ターゲットサイズと操作の手がかり
+- ラベル、説明、エラー回復
+- モーション、タイミング、状態変化の伝達
+- レスポンシブのリフローとズーム耐性
+- 支援技術向けの明瞭性と堅牢性
 
-## UX audit output structure
+## UX 監査の出力構造
 
 1. `Audit scope`
 2. `User goal`
@@ -42,7 +42,7 @@ Use `audit` for systematic assessment across a broader experience, not for feedb
 6. `Optional comparison context`
 7. `Recommendations`
 
-## Accessibility audit output structure
+## アクセシビリティ監査の出力構造
 
 1. `Audit scope`
 2. `Accessibility target`
@@ -52,7 +52,7 @@ Use `audit` for systematic assessment across a broader experience, not for feedb
 6. `Evidence limits and verification gaps`
 7. `Recommendations`
 
-## Combined audit output structure
+## 複合監査の出力構造
 
 1. `Audit scope`
 2. `User goal and accessibility target`
@@ -63,11 +63,11 @@ Use `audit` for systematic assessment across a broader experience, not for feedb
 7. `Evidence limits and verification gaps`
 8. `Recommendations`
 
-## Guardrails
+## ガードレール
 
-- Focus on experience patterns, not business strategy.
-- Keep comparator products optional; use them only when they sharpen the audit.
-- Separate structural issues from polish issues.
-- Tie recommendations back to the user goal, workflow, or accessibility outcome.
-- Do not imply full WCAG compliance unless the user has provided the implementation details needed to support that claim.
-- If the request is about a single screen, component, modal, or bounded interaction, keep the audit scoped to that surface.
+- ビジネス戦略ではなく体験パターンに焦点を置く。
+- 比較プロダクトは任意。監査を鋭くするときだけ使う。
+- 構造問題と仕上げ問題を分ける。
+- 推奨はユーザーゴール、ワークフロー、アクセシビリティ成果に結びつける。
+- ユーザーが実装詳細を十分に提供していない限り、完全 WCAG 準拠を暗示しない。
+- 単一画面・コンポーネント・モーダル・限定的インタラクションなら、その表面にスコープを限定する。

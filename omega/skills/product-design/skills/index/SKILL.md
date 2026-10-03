@@ -1,140 +1,140 @@
 ---
 name: index
-description: "Use when Product Design is explicitly invoked, or when the user's main goal is to explore a design, research UX, audit or critique a flow, faithfully clone a visual source, check a built design, or share a prototype. Do not use Product Design for ordinary implementation unless the user explicitly asks for it."
+description: "Product Design が明示的に呼ばれたとき、または主目的がデザイン探索、UX リサーチ、フロー監査・critique、ビジュアルソースの忠実クローン、ビルド済みデザイン確認、プロトタイプ共有のときに使用。UI・プロトタイプ・ビジュアルスタイルの言及だけでは Product Design ではない。通常実装はユーザーが明示的に求めない限り Product Design にしない。"
 ---
 
 # Skill Purpose
 
-Route Product Design requests to the right Product Design skill. Use this bundle for the `product-design` skill, a direct Product Design request, or a request mainly about design exploration, faithful source cloning, audits, research, critique, or sharing. A request is not Product Design just because it mentions UI, a prototype, or visual style.
+Product Design 依頼を適切な Product Design スキルにルーティングする。`product-design` スキル、直接の Product Design 依頼、デザイン探索・忠実クローン・監査・リサーチ・critique・共有が主目的の依頼でこのバンドルを使う。UI・プロトタイプ・ビジュアルスタイルの言及だけでは Product Design ではない。
 
 # Plugin Purpose
 
-The Product Design plugin helps designers and other non-coders close the gap between product ideas and working software.
+Product Design プラグインは、プロダクトアイデアと動くソフトウェアのギャップを、デザイナーや非コーダーが埋めるためのもの。
 
-The Product Design plugin equips you with the following set of skills to:
+Product Design プラグインは次のスキル群を提供する:
 
-- Research ideas and pain points related to your product.
-- Conduct product-flow audits.
-- Generate distinctly new ideas for your product with ImageGen.
-- Clone existing product apps into lightweight prototypes.
-- Build lightweight or interactive prototypes to share with your team.
+- プロダクト関連のアイデアとペインポイントのリサーチ。
+- プロダクトフロー監査。
+- ImageGen で明確に新しいプロダクトアイデアを生成。
+- 既存プロダクトアプリを軽量プロトタイプにクローン。
+- チーム共有用の軽量またはインタラクティブプロトタイプのビルド。
 
 ## Communication Style
 
-Speak to the user in a warm, fun, and collaborative way, prioritizing pithy explanations over long walls of text and numerous bullet points. Refer to the [communication-protocol](../../references/communication-protocol.md) for relaying Product Design plugin progress updates and handoff.
+温かく、楽しく、協力的に話す。長い箇条書きより簡潔な説明を優先。Product Design の進捗更新と引き渡しは [communication-protocol](../../references/communication-protocol.md) を参照。
 
 ## Critical Overrides
 
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## Router Only
 
-This index chooses the next Product Design skill. It does not do that skill's work.
+この index は次の Product Design スキルを選ぶだけ。そのスキルの作業はここではしない。
 
-If the user names a focused skill, read that exact skill first. Do not replace it with a related skill.
+ユーザーが focused スキルを名指ししたら、そのスキルを先に読む。関連スキルで置き換えない。
 
-When a request matches `$user-context`, `$get-context`, `$research`, `$ideate`, `$image-to-code`, `$url-to-code`, `$audit`, `$design-qa`, or `$share`, load the focused skill and follow it.
+依頼が `$user-context`、`$get-context`、`$research`、`$ideate`、`$image-to-code`、`$url-to-code`、`$audit`、`$design-qa`、`$share` に一致したら focused スキルを読み従う。
 
-For requests to audit, review, critique, inspect, assess, analyze, evaluate, or give feedback on an existing product experience, load `$audit` directly; do not load `$get-context` first. If the same request also asks to build, fix, redesign, or implement afterward, run `$audit` first, then continue through the appropriate normal workflow.
+既存プロダクト体験の監査、レビュー、critique、inspect、assess、analyze、evaluate、フィードバック依頼は `$audit` を直接読み込む。先に `$get-context` は読まない。同じ依頼でその後ビルド・修正・リデザイン・実装も求めるなら、先に `$audit`、その後通常ワークフロー。
 
-For visual ideation, `$ideate` is the focused workflow. Use `$get-context` to resolve the minimum brief and play back any defaults before `$ideate` starts.
+ビジュアル ideation では `$ideate` が focused ワークフロー。`$ideate` 開始前に `$get-context` で最小ブリーフを解決し、デフォルトを再生する。
 
-For clone or recreation of a live URL, load `$url-to-code` directly.
+ライブ URL のクローン・再現は `$url-to-code` を直接読み込む。
 
-For a redesign, improvement, or new site based on a URL, use `$get-context` to confirm the redesign brief. `Like <URL>` means redesign, not clone. Capture the current site with screenshots, attach those screenshots to the `$ideate` Image Gen calls, then execute `$ideate`.
+URL に基づくリデザイン・改善・新サイトは `$get-context` でリデザインブリーフを確認。`Like <URL>` はリデザインでありクローンではない。現サイトをスクショでキャプチャし、それらを `$ideate` の Image Gen 呼び出しに添付してから `$ideate` を実行。
 
 ## Environment (Cursor)
 
-- Shell, filesystem, and **cursor-ide-browser** MCP are expected for capture, preview, and design QA.
-- If the browser MCP is unavailable, say so once and ask whether to continue with unverified HTML only. Do not claim verified fidelity without browser evidence. URL-to-code still requires capture when the workflow demands it.
+- キャプチャ、プレビュー、design QA にはシェル、ファイルシステム、**cursor-ide-browser** MCP を想定。
+- browser MCP が使えないときは一度明言し、未検証 HTML だけで続行するか聞く。ブラウザ根拠なしに検証済みフィデリティを主張しない。URL-to-code でもワークフローが要求するときはキャプチャ必須。
 
 ## Browser Choice
 
-Follow [cursor-preview](../../references/cursor-preview.md):
+[cursor-preview](../../references/cursor-preview.md) に従う:
 
-- Use **cursor-ide-browser** (`browser_navigate`, `browser_snapshot`, `browser_take_screenshot`) for live URLs, local dev servers, and QA screenshots.
-- Start `npm run dev` (or the template’s dev script) yourself; do not ask the user to start the server when you can.
-- Hand off with the local URL the user can open (for example `http://localhost:5173/`).
+- ライブ URL、ローカル dev サーバー、QA スクショには **cursor-ide-browser**（`browser_navigate`、`browser_snapshot`、`browser_take_screenshot`）。
+- `npm run dev`（またはテンプレの dev スクリプト）は自分で起動。できるのにユーザーにサーバー起動を求めない。
+- ユーザーが開けるローカル URL で引き渡す（例: `http://localhost:5173/`）。
 
-Use the user’s own Chrome or Playwright only when they ask, or when login/profile/extension requirements block the IDE browser.
+ユーザー自身の Chrome や Playwright は、ユーザーが求めたとき、またはログイン／プロファイル／拡張要件で IDE ブラウザがブロックされたときだけ。
 
 ## No Visual Target, No Build
 
-For new app, prototype, redesign, or UI build requests without a URL, screenshot, Figma frame, mockup, source image, or existing code target:
+URL、スクリーンショット、Figma フレーム、モック、ソース画像、既存コードターゲットのない新規アプリ・プロトタイプ・リデザイン・UI ビルド依頼では:
 
-- `$ideate` is the focused workflow.
-- Use `$get-context` to resolve the minimum brief.
-- Once the target and intended user outcome are clear, play back the assumptions and run `$ideate` in the same turn.
-- Show exactly three visual options and wait for the user to choose one.
-- Do not scaffold, edit files, or start a server before a visual option is selected.
+- `$ideate` が focused ワークフロー。
+- `$get-context` で最小ブリーフを解決。
+- ターゲットと intended user outcome が明確になったら、同じターンで前提を再生し `$ideate` を実行。
+- 厳密に3つのビジュアルオプションを見せ、1つ選ぶまで待つ。
+- ビジュアルオプション選択前に足場、ファイル編集、サーバー起動をしない。
 
-`Full working version`, `no refs`, `go for it`, `make an assumption`, or a complete brief do not waive this.
+`Full working version`、`no refs`、`go for it`、`make an assumption`、完全ブリーフもこの免除にはならない。
 
 ## User Context
 
-Use [$user-context](../user-context/SKILL.md) when the user asks to:
+次を求められたとき [$user-context](../user-context/SKILL.md) を使う:
 
-- Set up Product Design
-- Get started with Product Design
-- Onboard with Product Design
-- Save product or design sources
-- See what Product Design remembers
-- Update saved product or design context
-- Remember a Product Design preference
-- Setup my plugin
+- Product Design のセットアップ
+- Product Design の開始
+- Product Design のオンボーディング
+- プロダクト／デザインソースの保存
+- Product Design の記憶内容の確認
+- 保存コンテキストの更新
+- Product Design の好みを記憶
+- setup my plugin
 
-Adjust the context-gathering request to match the user's request. First-time setup differs from updating existing context.
+コンテキスト収集の依頼はユーザー依頼に合わせて調整。初回セットアップと既存更新は異なる。
 
-For setup-only requests, do not inspect the workspace, install dependencies, scaffold a prototype, generate images, run audits, or start implementation.
+セットアップのみの依頼では、ワークスペース inspect、依存インストール、プロトタイプ足場、画像生成、監査、実装をしない。
 
-When answering "what can you do?", "how do I get started?", or similar broad Product Design questions, load `$user-context` and follow its persistence availability check before offering saved-context onboarding.
+「何ができる？」「どう始める？」など広い Product Design 質問では `$user-context` を読み、保存コンテキストオンボーディングを提案する前に永続化可否チェックを行う。
 
-Before routing to Product Design workflows, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+Product Design ワークフローにルーティングする前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight スクリプトを実行。
 
 ## Browser Annotation Updates
 
-Treat annotations as scoped edits to the current prototype.
+アノテーションは現在のプロトタイプへのスコープ付き編集として扱う。
 
-Read the annotation, its target, and the surrounding screen before changing code. Preserve the existing prototype by default: layout, style, content, routes, assets, interactions, and working behavior stay the same unless the annotation asks to change them.
+コード変更前にアノテーション、ターゲット、周辺画面を読む。デフォルトで既存プロトタイプを保持: レイアウト、スタイル、コンテンツ、ルート、アセット、インタラクション、動作はアノテーションが変えを求めない限り同じ。
 
-Do not redesign nearby UI or rebuild the prototype just because an annotation touches that area. If the annotation is ambiguous and the choice would materially change the prototype, ask first.
+アノテーションが触れるからといって近傍 UI をリデザインしたりプロトタイプ全体を再ビルドしない。アノテーションが曖昧で選択がプロトタイプを大きく変えるときは先に聞く。
 
 ## Skills
 
-Use this as the root routing guidance for Product Design plugin work. If several focused skills apply, sequence them in the order that creates the most useful design workflow. Keep this index as a router; do not perform focused workflow logic here.
+Product Design プラグイン作業のルートルーティング指針として使う。複数 focused スキルが当てはまるときは、最も有用なデザインワークフローになる順に並べる。この index はルーターに留め、focused ワークフローロジックはここで実行しない。
 
 ### $user-context
 
-Preflight, save, or answer from Product Design setup context. Route here before Product Design workflows to load saved product and design sources, and for direct setup, get-started, onboarding, save, remember, recall, inspect, or customization requests. This skill owns Product Design plugin-scoped context and preference policy.
+Product Design セットアップコンテキストの preflight、保存、回答。Product Design ワークフローの前にルーティングし、保存プロダクト／デザインソースを読み込む。直接のセットアップ、開始、オンボーディング、保存、記憶、想起、inspect、カスタマイズ依頼にも。Product Design プラグインスコープのコンテキストと好みポリシーを所有。
 
 ### $get-context
 
-Route here first for design, build, prototype, redesign, extend, or UI exploration work. Require only a clear design target and intended user outcome. Ask one targeted question only when one of those is missing; otherwise play back the brief and defaults, then continue without waiting for approval.
+デザイン、ビルド、プロトタイプ、リデザイン、拡張、UI 探索作業ではここを最初にルーティング。明確なデザインターゲットと intended user outcome だけ必須。どちらか欠けるときだけ1つの targeted 質問。そうでなければブリーフとデフォルトを再生し、承認待ちせず続行。
 
 ### $research
 
-Run fast, source-grounded UX research on current user problems for a named digital product. Route here for researching user pain, UX friction, onboarding issues, docs/help problems, developer experience friction, support pain, product workflow issues, or current user complaints.
+名前付きデジタルプロダクトの現行ユーザ問題について、迅速でソース接地の UX リサーチ。ユーザーの痛み、UX 摩擦、オンボーディング、ドキュメント／ヘルプ、開発者体験、サポート、ワークフロー、現行不満の調査にルーティング。
 
 ### $audit
 
-Capture and review a product flow, journey, screen, or multi-step product experience from screenshots. Route here for user-facing audit, review, critique, inspect, assess, analyze, evaluate, or feedback requests. It reports UX, design, and accessibility findings tied to captured evidence; do not use `design-qa` for user-facing audits.
+スクショを先に取得し、プロダクトフロー、ジャーニー、画面、マルチステップ体験をレビュー。ユーザー向け監査、レビュー、critique、inspect、assess、analyze、evaluate、フィードバック依頼にルーティング。キャプチャ根拠に結びついた UX・デザイン・アクセシビリティ finding を報告。ユーザー向け監査に `design-qa` は使わない。
 
 ### $ideate
 
-Generate image-based visual alternatives, remixes, or concept directions for a component, screen, feature, workflow, or product idea. Route here after `get-context` has played back the minimum brief and the user needs visual exploration, design variants, alternatives to an existing design, or idea discovery before choosing a visual target. Prefer this over prose-only ideation unless the user asks for prose.
+`get-context` が最小ブリーフを再生した後、コンポーネント、画面、機能、ワークフロー、プロダクトアイデアの画像ベースビジュアル代替、リミックス、コンセプト方向を生成。ビジュアル探索、デザイン案、既存デザインの代替、ビジュアルターゲット選択前のアイデア発見にルーティング。ユーザーが文章のみを求めない限り、文章のみ ideation より優先。
 
 ### $url-to-code
 
-Clone a live URL as a runnable frontend-only local app using the Browser Choice rule above. Load this alongside `get-context` when the user provides a production URL for a faithful local prototype or clone, but do not execute it until the minimum brief has been played back. It should not modify production code; stay in `get-context` when source selection is still unclear.
+上記 Browser Choice でライブ URL を runnable フロントエンドのみのローカルアプリとしてクローン。ユーザーが本番 URL を忠実ローカルプロトタイプ／クローン用に渡したときは `get-context` と併読するが、最小ブリーフ再生まで実行しない。本番コードは変更しない。ソース選択がまだ不明なら `get-context` に留まる。
 
 ### $image-to-code
 
-Implement a selected visual target as a faithful, responsive, interactive frontend. Route here after `get-context` has played back the minimum brief and the user has chosen an ImageGen mock, screenshot, Figma frame, mockup, reference image, or other visual source. Do not start here when no visual target has been selected; use `get-context` and `ideate` first.
+`get-context` が最小ブリーフを再生し、ユーザーが ImageGen モック、スクショ、Figma フレーム、モック、参照画像、その他ビジュアルソースを選んだ後、忠実でレスポンシブでインタラクティブなフロントエンドとして実装。ビジュアルターゲット未選択ではここから始めない。先に `get-context` と `ideate`。
 
 ### $share
 
-Deploy a runnable prototype and return a shareable URL using the user's preferred target when available. Route here when the user asks to share, deploy, publish, host, create a link, or make a prototype shareable with `@Sites`, `@Vercel`, or another deployment tool.
+利用可能ならユーザー好みの先で runnable プロトタイプをデプロイし共有可能 URL を返す。共有、デプロイ、公開、ホスト、リンク作成、プロトタイプ共有（`@Sites`、`@Vercel` など）依頼にルーティング。
 
 ### $design-qa
 
-Compare a coded Product Design prototype against its source visual target before handoff. Route here only as an internal helper after a prototype, URL-to-code build, or image-to-code build has both a source visual and rendered implementation. Do not route broad UX critiques, audits, or product-flow reviews here; use `audit` instead.
+引き渡し前に、ソースビジュアルとレンダリング実装の両方がある Product Design プロトタイプを比較する内部ヘルパーとしてのみルーティング。プロトタイプ、URL-to-code、image-to-code ビルド後。広い UX critique、監査、プロダクトフローレビューにはルーティングしない。`audit` を使う。

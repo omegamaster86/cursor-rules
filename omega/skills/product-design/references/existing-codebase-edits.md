@@ -1,18 +1,18 @@
-# Existing App or Website Edits
+# 既存アプリ・サイトの編集
 
-Use this only when editing an existing local app or website directly.
+既存のローカルアプリやサイトを **直接** 編集するときだけ使う。
 
-1. Inspect the running app and source code before changing it.
-2. Follow local `AGENTS.md` and any equivalent local design notes when they exist.
-3. Prefer the existing codebase's design system: tokens, style variables, components, layout patterns, and interaction patterns.
-4. Reuse existing layouts and components as much as you can.
-5. Use realistic mock data that a user would expect to see in practice.
-6. Record durable design decisions in `AGENTS.md` or local design notes when they should guide future edits.
+1. 変更前に、動いているアプリとソースを確認する。
+2. ローカルの `AGENTS.md` や同等のデザインメモがあれば従う。
+3. 既存コードベースのデザインシステムを優先する（トークン、スタイル変数、コンポーネント、レイアウト、インタラクション）。
+4. 既存のレイアウトとコンポーネントをできるだけ再利用する。
+5. 実運用でユーザーが期待するリアルなモックデータを使う。
+6. 将来の編集の指針になる durable なデザイン決定は `AGENTS.md` やローカルのデザインメモに記録する。
 
-Do not:
+次をしない:
 
-- Invent a new design system when the existing app has one
-- Replace the app structure unless the user asks for a redesign
-- Add made-up features just to fill the UI
-- Use text, punctuation, emoji, CSS shapes, placeholder boxes, or handcrafted SVGs as asset or icon stand-ins
-- Add long explanations inside the UI
+- 既存アプリにデザインシステムがあるのに新規に作り直す
+- ユーザーがリデザインを求めない限りアプリ構造を置き換える
+- UI を埋めるために架空の機能を足す
+- テキスト・記号・絵文字・CSS 図形・プレースホルダー箱・手作り SVG をアセットやアイコンの代用に使う
+- UI 内に長い説明文を入れる

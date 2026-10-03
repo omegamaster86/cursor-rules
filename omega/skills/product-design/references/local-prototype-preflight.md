@@ -1,13 +1,13 @@
-# Local Prototype Preflight
+# ローカル・プロトタイプ・プリフライト
 
-Use this before creating a new local prototype.
+新しいローカルプロトタイプを作る **前** に使う。
 
-- Keep the work self-contained in the new project folder.
-- Plugin UI icons live in `../assets/`. Do not put prototype starter code or generated app assets there.
-- Bundled Product Design starters live in `../templates/`.
-- Use the default `prototype` template for web or desktop-like prototypes.
-- Use `--template mobile-app` for mobile app prototypes.
-- Create the app with the bootstrap script. Resolve the script path relative to this file, then run it with an absolute path:
+- 作業は新プロジェクトフォルダ内に自己完結させる。
+- プラグイン UI アイコンは `../assets/` にある。プロトタイプスタータや生成アプリのアセットはそこに置かない。
+- 同梱 Product Design スタータは `../templates/` にある。
+- Web／デスクトップ風プロトタイプはデフォルトの `prototype` テンプレを使う。
+- モバイルアプリプロトタイプは `--template mobile-app` を使う。
+- bootstrap スクリプトでアプリを作る。このファイルからスクリプトパスを解決し、絶対パスで実行する:
 
 ```bash
 node /absolute/path/to/plugins/product-design/scripts/bootstrap-prototype.mjs --dest /absolute/path/to/new-prototype
@@ -17,15 +17,14 @@ node /absolute/path/to/plugins/product-design/scripts/bootstrap-prototype.mjs --
 node /absolute/path/to/plugins/product-design/scripts/bootstrap-prototype.mjs --template mobile-app --dest /absolute/path/to/new-mobile-prototype
 ```
 
-- For `mobile-app`, run `npm ci --prefer-offline --no-audit --no-fund` from the generated project root. For the web `prototype` template, run `npm install --prefer-offline --no-audit --no-fund`. Use the environment's configured npm cache.
-- Do not replace the starter with static HTML because package install is slow. If install is genuinely blocked, report the blocker.
-- Once a mobile template is selected and dependencies are installed, start its preview immediately so the user can see the device frame while the screen is built. Keep the preview alive through implementation and QA.
-- Both templates use ordinary Vite development for localhost and Work Mode preview. Do not hardcode `localhost` or `terminal.local` in app code; use relative URLs and same-origin requests.
-- Both templates are Sites-ready. `npm run build` emits static client files under `dist/client`, the required Worker at `dist/server/index.js`, and metadata at `dist/.openai/hosting.json`. Run `npm run test:sites` before handing a verified project to Sites. Do not run `init-site.sh` or replace the Product Design project with a Vinext starter.
+- `mobile-app` では生成プロジェクトルートで `npm ci --prefer-offline --no-audit --no-fund` を実行する。Web の `prototype` では `npm install --prefer-offline --no-audit --no-fund`。環境の npm キャッシュを使う。
+- パッケージインストールが遅いからといってスタータを静的 HTML に置き換えない。インストールが本当にブロックされているときだけブロッカーを報告する。
+- モバイルテンプレを選び依存関係を入れたら、すぐプレビューを開始し、画面を組みながらデバイスフレームを見せる。実装と QA の間もプレビューを維持する。
+- 両テンプレは通常の Vite 開発で localhost と Work Mode プレビューに対応する。アプリコードに `localhost` や `terminal.local` をハードコードしない。相対 URL と同一オリジンリクエストを使う。
+- 両テンプレは Sites 対応。`npm run build` は `dist/client` に静的クライアント、`dist/server/index.js` に Worker、`dist/.openai/hosting.json` にメタデータを出す。Sites に渡す前に `npm run test:sites` を実行する。`init-site.sh` を走らせたり、Product Design プロジェクトを Vinext スタータに置き換えない。
 
+`mobile-app` テンプレではランタイムシェルを保持する。`App` を単体ページに置き換えない。ユーザーがランタイム変更を明示しない限り、`PhoneFrame`、iPhone / Pixel 10 デバイスピッカー、`KeyboardProvider`、`MobileScroll`、`KeyboardDock`、`StatusBar`、`HomeIndicator`、プラットフォーム別 iOS / Android 下部 chrome、Pixel のカメラ切り抜きを削除しない。`FlowStack` はマルチ画面向けだが、単一画面は `KeyboardProvider` 内に `MobileScroll` を直接マウントしてよい。`StatusBar`、iOS ホームインジケータ、カメラ切り抜きはオーバーレイのデバイス chrome として保持する。キーボード閉じた Android のアプリビューポートはナビゲーションバー領域を予約する。キーボード開いた Android はキーボードアセット内蔵の IME ナビストリップを使い続ける。iOS の safe-area コンテンツパディングは各アプリ画面に置き、スクロールラッパーには置かない。`FlowScreen.footer` もオーバーレイなので、固定下部タブ／ナビを使う画面はフローシェルに頼らず自前の下部コンテンツパディングを足す。
 
-When using the `mobile-app` template, preserve its runtime shell. Do not replace `App` with a standalone page, and do not remove `PhoneFrame`, the iPhone / Pixel 10 device picker, `KeyboardProvider`, `MobileScroll`, `KeyboardDock`, `StatusBar`, `HomeIndicator`, the platform-specific iOS / Android bottom chrome, or the Pixel camera cutout unless the user explicitly asks to change the runtime. `FlowStack` is available for multi-screen flows, but simple single-screen prototypes can mount `MobileScroll` directly inside `KeyboardProvider`. Keep `StatusBar`, the iOS home indicator, and camera cutout as overlaid device chrome. The closed-keyboard Android app viewport reserves its navigation-bar region; the keyboard-open Android state continues using the keyboard asset's built-in IME navigation strip. Put iOS safe-area content padding on each app screen rather than on the scroll wrapper. `FlowScreen.footer` is also an overlay, so screens that use fixed bottom tabs or nav bars must add their own bottom content padding instead of relying on the flow shell to reserve space.
+アプリ固有 UI は `src/Prototype.tsx` と `src/prototype.css` に組む。`src/App.tsx`、`src/main.tsx`、`src/styles.css`、`src/mobile/`、`public/assets/iphone/`、`public/assets/android/`、`public/assets/status/`、`vite.config.ts`、`worker/index.js`、`scripts/prepare-sites-build.mjs` は保護ランタイムとして扱う。プレビューまたは引き渡し前に `npm run check:runtime` を実行する。失敗したらランタイムを復元する。
 
-Build app-specific UI in `src/Prototype.tsx` and `src/prototype.css`. Treat `src/App.tsx`, `src/main.tsx`, `src/styles.css`, `src/mobile/`, `public/assets/iphone/`, `public/assets/android/`, `public/assets/status/`, `vite.config.ts`, `worker/index.js`, and `scripts/prepare-sites-build.mjs` as protected runtime files. Run `npm run check:runtime` before preview or handoff; restore the runtime if the check fails.
-
-For Sites hosting, keep the mobile project intact. `npm run build` emits static client files under `dist/client`, the required Worker at `dist/server/index.js`, and metadata at `dist/.openai/hosting.json`. Run `npm run test:sites` before handing the verified project to Sites. Do not run `init-site.sh` or replace the mobile runtime with a Vinext starter.
+Sites ホスティングではモバイルプロジェクトをそのまま保持する。`npm run build` の出力構成は上記と同じ。Sites に渡す前に `npm run test:sites` を実行する。`init-site.sh` や Vinext スタータへの置き換えはしない。

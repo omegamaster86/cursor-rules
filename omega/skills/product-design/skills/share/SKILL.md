@@ -1,42 +1,42 @@
 ---
 name: share
-description: "Share a runnable prototype using the user's preferred deployment tool."
+description: "ユーザーが好むデプロイツールで runnable プロトタイプを共有する。"
 ---
 
 # Share
 
-Deploy the user's runnable prototype so they can share it with others.
+ユーザーの runnable プロトタイプをデプロイし、他者と共有できるようにする。
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## User Context
 
-Before starting, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+開始前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight スクリプトを実行する。
 
-Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets as grounding material when relevant.
+保存済みプロダクト URL、Figma、スクリーンショット、参照画像、コードベースパス、Storybook、トークン、デザインシステム、ブランドアセット、コンポーネント参照、ブラウザ設定、共有先を、関連するときの接地材料として使う。
 
-Do not inspect every saved reference. Inspect only what the current task needs.
+保存参照をすべて inspect しない。現在のタスクに必要なものだけ。
 
 ## Workflow
 
-1. Confirm the prototype directory and the user's preferred deployment target.
-2. If the user names a deployment target (Vercel, GitHub Pages, Cloudflare, existing CI, or OpenAI Sites when that stack is in the repo), treat that as the selected hosting target.
-3. If the user did not choose a target, ask one question:
+1. プロトタイプディレクトリとユーザーが好むデプロイ先を確認する。
+2. ユーザーがデプロイ先（Vercel、GitHub Pages、Cloudflare、既存 CI、リポに OpenAI Sites スタックがある場合の Sites）を名指ししたら、それを選択済みホスティング先とする。
+3. 未選択なら1問:
 
-> Where should I deploy this: Vercel, GitHub Pages, or another target you already use?
+> どこにデプロイしますか: Vercel、GitHub Pages、それとも既に使っている別の先？
 
-4. Before using Sites for a fresh Product Design prototype, keep the existing project intact. Run `npm run build` and `npm run test:sites`; for `mobile-app`, run `npm run check:runtime` first. Confirm `dist/client/index.html`, `dist/server/index.js`, `dist/.openai/hosting.json`, and source `.openai/hosting.json` exist. Hand that verified project to `sites-hosting`. Do not invoke `sites-building`, run `init-site.sh`, or replace the Product Design runtime with a Vinext starter.
-5. Use the selected deployment tool when it is available.
-6. If the selected tool is not available, say that clearly and ask whether to use another target.
-7. Run the deployment when possible. Do not give setup instructions if you can complete the deployment directly.
-8. Return the shareable URL.
-9. State any misses or manual follow-up the user still needs to do.
+4. 新規 Product Design プロトタイプで Sites を使う前に、既存プロジェクトを保持する。`npm run build` と `npm run test:sites` を実行する。`mobile-app` なら先に `npm run check:runtime`。`dist/client/index.html`、`dist/server/index.js`、`dist/.openai/hosting.json`、ソースの `.openai/hosting.json` の存在を確認する。検証済みプロジェクトを `sites-hosting` に渡す。`sites-building` を呼ばない。`init-site.sh` を走らせず、Product Design ランタイムを Vinext スタータに置き換えない。
+5. 選択ツールが利用可能ならそれを使う。
+6. 利用不可なら明言し、別先を使うか聞く。
+7. 可能ならデプロイを実行する。自分で完了できるのにセットアップ手順だけ渡さない。
+8. 共有可能な URL を返す。
+9. ユーザーがまだ手動で必要な不足やフォローアップを述べる。
 
 ## Rules
 
-- Do not deploy before the user chooses or confirms the target.
-- Do not claim the prototype is shared until you have a working URL.
-- If the selected tool is not available, say that clearly and ask whether to use another target.
+- ユーザーが選ぶまたは確認する前にデプロイしない。
+- 動く URL があるまで共有済みと言わない。
+- 選択ツールが使えないときは明言し、別先を使うか聞く。

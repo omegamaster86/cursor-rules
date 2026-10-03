@@ -1,50 +1,49 @@
 ---
 name: get-context
-description: "Mandatory design-brief gate for clarifying the product and outcome. Use before ideation, image-to-code builds, redesigns, or product UI work to clarify missing product information and play back the brief before proceeding."
+description: "プロダクトと成果を明確にする必須デザインブリーフゲート。ideation、image-to-code、リデザイン、プロダクト UI 作業の前に、不足情報を整理しブリーフを再生してから進む。"
 ---
 
 # Get Context
 
+デザイン・ビルド・プロトタイプ・クローン・リデザイン・拡張・プロダクト UI 方向の生成を求める Product Design 依頼の **開始時** に実行する。
 
-Run this skill at the start of Product Design requests that ask to design, build, prototype, clone, redesign, extend, or generate product UI directions.
+次のいずれかが不明なときは質問モード:
 
-Use question mode when any of the following are unclear:
+- 何のプロダクト・サイト・機能・ワークフロー・コンポーネント・画面をデザイン／リデザイン／拡張するか
+- その機能・変更・アプリ・サイトがユーザーに何をさせたいか
+- ビジュアルソースやブリーフから判然としないとき、Web サイト・デスクトップ／Web アプリ・モバイルアプリのどれか
 
-- what product, site, feature, workflow, component, or screen is being designed, redesigned, or extended
-- what the feature, change, app, or website should help the user do
-- whether the target is a website, desktop/web application, or mobile app when that is not apparent from the visual source or brief
+答え済みの質問は繰り返さない。両方明確なら、ブリーフとデフォルトを1つの簡潔なメモで再生し、次のワークフローを名指し、**同じターンで** 続行する。再生は承認依頼ではない。ユーザーはいつでもスタイル・スコープ・インタラクティブ性を修正できる。
 
-Do not re-ask answered questions. When both are clear, play back the brief and defaults in one pithy note, name the next workflow, and continue in the same turn. Playback is not a request for approval. The user can course-correct style, scope, or interactivity at any point.
-
-Hard boundary: do not implement UI, scaffold a prototype, start a server, or create files while the design target or intended user outcome is still missing.
+硬い境界: デザインターゲットまたは intended user outcome がまだ欠けているときは、UI 実装・プロトタイプ足場・サーバー起動・ファイル作成をしない。
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
 
 ## User Context
 
-Before starting, load [$user-context](../user-context/SKILL.md) and run its preflight script when local shell access is available.
+開始前に [$user-context](../user-context/SKILL.md) を読み、ローカルシェルが使えるときは preflight を実行する。
 
-Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets as grounding material when relevant.
+保存済みプロダクト URL、Figma、スクリーンショット、参照画像、コードベースパス、Storybook、トークン、デザインシステム、ブランドアセット、コンポーネント参照、ブラウザ設定、共有先を接地材料として使う。
 
-Do not inspect every saved reference. Inspect only what the current task needs.
+保存参照をすべて inspect しない。現在のタスクに必要なものだけ。
 
 ## Handoff To The Next Workflow
 
-1. When the next workflow is already clear, read that skill before sending the brief playback. Do not only name a skill you have not read.
+1. 次のワークフローが既に明確なら、ブリーフ再生を送る前にそのスキルを読む。読んでいないスキル名だけ言わない。
 
-2. Before executing `$ideate`, `$url-to-code`, or `$image-to-code`, play back the minimum brief and any defaults in one pithy user-visible note.
+2. `$ideate`、`$url-to-code`、`$image-to-code` を実行する前に、最小ブリーフとデフォルトを1つの簡潔なユーザー向けメモで再生する。
 
-3. If the target and intended user outcome are clear, continue to the next workflow in the same turn. Do not wait for explicit confirmation. If the user provides feedback, incorporate it and course-correct.
+3. ターゲットと intended user outcome が明確なら、同じターンで次へ。明示確認を待たない。フィードバックがあれば取り込み修正する。
 
-4. Before starting an involved app, prototype, clone, redesign, or build, send one short expectation-setting note and continue. Example:
+4. 手の込んだアプリ・プロトタイプ・クローン・リデザイン・ビルドを始める前に、短い期待設定メモを1つ送って続行。例:
 
 ```text
-This kind of build usually takes about 10-15 minutes, and ambitious ones can take longer. Good moment to grab coffee or tend to something else; I’ll keep moving and bring the prototype back when it is ready.
+この種のビルドはだいたい10〜15分かかります。大きめだとさらに長くなります。コーヒーなど別件をどうぞ。このまま進め、できたプロトタイプを持ってきます。
 ```
 
-Do not send this note for tiny static changes, quick audits, simple research, setup-only, or share-only requests.
+小さな静的変更、短い監査、簡単なリサーチ、セットアップのみ、共有のみにはこのメモを送らない。
 
-Done means the design target and intended user outcome are clear, defaults have been played back, and any already-determined next skill has been read.
+完了とは、デザインターゲットと intended user outcome が明確で、デフォルトが再生され、既に決まっている次スキルが読まれている状態。

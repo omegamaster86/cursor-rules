@@ -1,113 +1,111 @@
 ---
 name: user-context
-description: Load or manage Product Design's saved user context. Use when the user asks to set up Product Design, get started, onboard, save product or design sources, see what Product Design remembers, update saved context, or remember Product Design preferences. Examples include product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, and general product/design notes.
+description: "Product Design の保存ユーザーコンテキストの読み込み・管理。セットアップ、開始、オンボーディング、プロダクト／デザインソースの保存、記憶内容の確認、コンテキスト更新、好みの記憶に使用。例: プロダクト URL、Figma、スクリーンショット、参照画像、コードベースパス、Storybook、トークン、デザインシステム、ブランドアセット、一般的なプロダクト／デザインメモ。"
 ---
 
 # User Context
 
-User Context stores the product and design references a designer uses often, so future Product Design work starts from the right sources.
+User Context はデザイナーがよく使うプロダクトとデザイン参照を保存し、将来の Product Design が正しいソースから始められるようにする。
 
-Use this skill when the user asks to:
+次を求められたときに使う:
 
-- set up Product Design
-- get started with Product Design
-- onboard with Product Design
-- save product or design sources
-- see what Product Design remembers
-- update saved product or design context
-- remember a Product Design preference
+- Product Design のセットアップ
+- Product Design の開始
+- Product Design のオンボーディング
+- プロダクト／デザインソースの保存
+- Product Design が何を記憶しているか確認
+- 保存コンテキストの更新
+- Product Design の好みを記憶
 - setup my plugin
 
 ## Critical Overrides
 
-- Refer to the Plugin router [$index](../index/SKILL.md) before proceeding.
-- Follow [$critical-overrides](../../references/critical-overrides.md).
-- Before offering onboarding or saving context for future conversations, confirm that local shell access is available and the Cursor state directory exists and is writable or can be created. Default: `~/.cursor/product-design/`, or `./.cursor/product-design/` when saving in the current project. Override with `PRODUCT_DESIGN_STATE_DIR`. If `user-context.md` already exists, confirm it is writable.
-- If any check cannot be completed or fails, persistent context is unavailable. Do not offer saved-context onboarding or claim that new context was saved for future conversations. If the user asks to save something, explain that it can be used in the current conversation but not saved for future conversations.
+- 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
+- [$critical-overrides](../../references/critical-overrides.md) に従う。
+- オンボーディングや将来会話向け保存を提案する前に、ローカルシェルが使え、Cursor 状態ディレクトリが存在し書き込み可能（または作成可能）ことを確認する。デフォルト: `~/.cursor/product-design/`、またはプロジェクト保存時 `./.cursor/product-design/`。`PRODUCT_DESIGN_STATE_DIR` で上書き可。`user-context.md` が既にあるときは書き込み可能か確認する。
+- チェックが完了できない／失敗したら永続コンテキストは利用不可。保存オンボーディングを提案しない。将来会話向けに保存したと言わない。保存を求められたら、今の会話では使えるが将来には保存できないと説明する。
 
 ## Saved User Context
 
-If `user-context.md` exists, use it by default.
+`user-context.md` があればデフォルトで使う。
 
-Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets to ground Product Design work.
+保存済み参照で Product Design を接地する。ユーザーが別のことを求めない限り、ideation・プロトタイプ・監査・クローン・critique は保存コンテキストに合わせる。
 
-Ideation, prototypes, audits, clones, and critiques should match the saved product context unless the user asks for something different.
-
-When a workflow needs visual grounding, attach or include relevant saved screenshots, reference images, tokens, design language, and component references in ImageGen, ideation, prototype, audit, and critique work.
+ビジュアル接地が必要なときは、保存スクリーンショット・参照画像・トークン・デザイン言語・コンポーネント参照を ImageGen、ideation、プロトタイプ、監査、critique に含める。
 
 ## State File
 
-Saved context lives here:
+保存コンテキストの場所:
 
 ```text
 ~/.cursor/product-design/user-context.md
 ```
 
-Project-scoped (optional):
+プロジェクトスコープ（任意）:
 
 ```text
 .cursor/product-design/user-context.md
 ```
 
-Saved screenshots and reference images live next to `user-context.md`:
+スクリーンショットと参照画像は `user-context.md` の横:
 
 ```text
 .../product-design/assets/
 ```
 
-If the file does not exist, continue normally unless the user asks to set up Product Design, save context, or the current task is blocked by missing product/design context.
+ファイルが無く、ユーザーがセットアップ・保存を求めない、タスクがプロダクト／デザインコンテキスト不足でブロックされていない限り、通常どおり続行する。
 
 ## Preflight
 
-When any Product Design workflow needs saved context, run:
+保存コンテキストが必要な Product Design ワークフローでは実行:
 
 ```bash
 python3 scripts/user_context_preflight.py
 ```
 
-Use the returned saved entries as the starting context for the task.
+返された保存エントリをタスクの起点コンテキストとして使う。
 
-If the script reports that no saved context exists, continue from the current user prompt unless setup context is required.
+スクリプトが保存なしと報告したら、セットアップが必須でない限り現在のプロンプトから続行する。
 
-Do not browse, open, or inspect every saved reference during preflight. Inspect only the saved references needed for the current task.
+preflight で保存参照をすべて開かない。現在のタスクに必要なものだけ inspect する。
 
 ## Setup
 
-Use [references/onboarding.md](references/onboarding.md) when the user asks to set up Product Design, asks what Product Design can remember, asks what Product Design knows about their product, or provides product/design references to save.
+ユーザーがセットアップ、記憶内容、プロダクトについて知っていること、参照保存を求めたときは [references/onboarding.md](references/onboarding.md) を使う。
 
-For setup-only requests, explain what Product Design can remember and ask for useful sources.
+セットアップのみの依頼では、記憶できることを説明し有用なソースを求める。
 
-Adjust the context-gathering request to match the user's request. First-time setup differs from updating existing context.
+初回セットアップと既存コンテキスト更新では聞き方を変える。
 
-Do not inspect the workspace, install dependencies, scaffold a prototype, generate images, run audits, or start implementation during setup.
+セットアップ中はワークスペース inspect、依存インストール、プロトタイプ足場、画像生成、監査、実装をしない。
 
-After the user provides references to save, run:
+保存する参照を受け取ったあと:
 
 ```bash
 python3 scripts/init_user_context.py
 ```
 
-Then add the references to the created `user-context.md`.
+作成した `user-context.md` に参照を追加する。
 
 ## Save
 
-Save useful, durable Product Design context:
+保存する有用で durable な Product Design コンテキスト:
 
-- Product URLs
-- Figma files
-- Screenshots and reference images
-- Codebase paths
-- Storybook and component docs
-- Design tokens and theme sources
-- Brand, logo, icon, illustration, image, and asset sources
-- Preferred browser, capture tools, and share targets
-- Team conventions that make future Product Design work more accurate
+- プロダクト URL
+- Figma ファイル
+- スクリーンショットと参照画像
+- コードベースパス
+- Storybook とコンポーネントドキュメント
+- デザイントークンとテーマソース
+- ブランド、ロゴ、アイコン、イラスト、画像、アセットソース
+- 好みのブラウザ、キャプチャツール、共有先
+- 将来の精度を上げるチーム規約
 
-When the user provides screenshots or reference images to save, copy them into `assets/` next to `user-context.md` and link them from the saved entry.
+保存するスクリーンショット・参照画像は `user-context.md` 横の `assets/` にコピーし、エントリからリンクする。
 
-Give each saved image a clear, descriptive filename that says what the image shows. Use names future Product Design runs can understand without opening the file.
+画像には将来開かなくても分かる説明的ファイル名を付ける。
 
-Good image names:
+良い例:
 
 ```text
 assets/chatgpt-settings-modal-dark-mode.png
@@ -120,9 +118,9 @@ assets/checkout-confirmation-screen.png
 assets/account-menu-open-state.png
 ```
 
-Do not save secrets, credentials, API keys, private tokens, copied customer data, or anything that should not persist.
+秘密、認証情報、API キー、私有トークン、コピーした顧客データ、永続すべきでないものは保存しない。
 
-Use this structure:
+構造:
 
 ```md
 # {Category}
@@ -138,18 +136,18 @@ Use this structure:
 - Future Use: {how future Product Design work should use it}
 ```
 
-Include `File:` only when the saved entry has a local image file.
+ローカル画像があるときだけ `File:` を含める。
 
-When a category has no saved references yet, use exactly:
+カテゴリに保存がまだ無いときは厳密に:
 
 ```md
 status: not provided
 ```
 
-Keep saved context curated. Prefer a few high-value references over a dump of every possible URL or file.
+保存コンテキストは curated に。可能な URL やファイルのダンプより少数の高価値参照を優先する。
 
 ## Read
 
-- Do not treat `status: not provided` as a fact.
-- Read through `scripts/user_context_preflight.py` when local shell access is available.
-- Use saved context as default grounding, then inspect only what the current task needs.
+- `status: not provided` を事実として扱わない。
+- ローカルシェルが使えるときは `scripts/user_context_preflight.py` を読む。
+- 保存コンテキストをデフォルト接地として使い、現在のタスクに必要なものだけ inspect する。

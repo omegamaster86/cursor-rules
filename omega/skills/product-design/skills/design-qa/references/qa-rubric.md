@@ -1,61 +1,61 @@
-# QA Rubric
+# QA ルーブリック
 
-Use this rubric for comprehensive design-to-implementation QA.
+デザインから実装への包括的 QA にこのルーブリックを使う。
 
 ## Fidelity
 
-- Layout: frame size, grid, alignment, content order, spatial grouping, card radius, elevation, borders.
-- Spacing: page margins, section gaps, item gaps, padding, tap-target spacing, vertical rhythm, cramped text, collapsed sections, and density drift.
-- Typography: font family, weight, size, line height, letter spacing, wrapping, truncation, hierarchy, text density, optical balance, and mismatched display/body treatment.
-- Color: token mapping, contrast, brand palette, state colors, gradients, opacity, shadows.
-- Imagery: all target image assets are accounted for and match subject accuracy, crop, aspect ratio, generated/real image quality, background treatment.
-- Icons: all icons are accounted for and match stroke weight, size, style family, alignment, optical balance, state changes.
-- Shape and surfaces: rounded cards, borders, dividers, shadows, fills, and container treatments match the target rather than generic component defaults.
-- Responsiveness: elements do not overlap, collapse into adjacent sections, clip, wrap awkwardly, or break hierarchy across desktop, tablet, and mobile viewports.
-- Implementation shortcuts: custom CSS art, inline SVG substitutes, placeholder avatars, decorative blobs, and fake product imagery are flagged when they drift from the target design.
+- Layout: フレームサイズ、グリッド、整列、コンテンツ順、グルーピング、カード角丸、エレベーション、ボーダー。
+- Spacing: ページマージン、セクション間、項目間、パディング、タップターゲット間隔、垂直リズム、詰まったテキスト、潰れたセクション、密度のずれ。
+- Typography: ファミリ、ウェイト、サイズ、行高、字間、折り返し、省略、ヒエラルキー、テキスト密度、光学バランス、display/body の不一致。
+- Color: トークンマッピング、コントラスト、ブランドパレット、状態色、グラデーション、不透明度、シャドウ。
+- Imagery: ターゲット画像アセットがすべて揃い、被写体・クロップ・アスペクト・生成／実画像品質・背景処理が一致。
+- Icons: すべてのアイコンが揃い、ストロークウェイト、サイズ、スタイルファミリ、整列、光学バランス、状態変化が一致。
+- Shape and surfaces: 角丸カード、ボーダー、区切り、シャドウ、塗り、コンテナ処理が汎用コンポーネントデフォルトではなくターゲットに一致。
+- Responsiveness: デスクトップ・タブレット・モバイルで要素が重ならない、潰れない、クリップしない、不自然に折り返さない、ヒエラルキーを壊さない。
+- Implementation shortcuts: ターゲットからずれたとき、カスタム CSS アート、インライン SVG 代用、プレースホルダーアバター、装飾 blob、偽プロダクト画像をフラグする。
 
 ## Mandatory Comparison Passes
 
-Do not rely on generic "looks close" judgment. For each design QA pass, inspect and report on these areas:
+汎用の「だいたい近い」判断に頼らない。各 design QA パスで次を inspect し報告する:
 
-### Core design and functionality
+### コアデザインと機能
 
-- Fonts and typography: identify mismatched font family/fallback, weight, scale, line height, letter spacing, antialiasing, text hierarchy, wrapping, truncation, display-vs-body optical treatment, cramped text, and places where text spacing makes the UI feel broken or harder to scan.
-- Spacing and layout: compare frame/crop, alignment, margins, padding, gaps, component sizes, radii, elevation, borders, and vertical rhythm. Cite where spacing drift changes hierarchy, density, readability, or causes elements to collide.
-- Viewport resilience: check desktop, tablet, and mobile widths for overlapping elements, clipped content, collapsing sections, broken grids, awkward wrapping, and controls that become unusable.
-- Colors and tokens: compare palette, gradients, opacity, shadows, contrast, semantic status colors, disabled/active states, and whether implementation tokens map to design intent.
-- Image quality and asset fidelity: check subject match, crop, scale, aspect ratio, sharpness, compression, transparency/masking artifacts, halos, background integration, and raster-vs-vector suitability. Div/CSS art or custom SVG art that replace images in the target design are banned.
-- Copy and content: for any copy that is part of the app, not dynamic content, check that it is coherent, makes sense in the standalone context of the app, and is visually appealing.
-- Icons: zoom in and analyze all visible icons and icons hidden behind controls/interactions to ensure they are fully implemented, aligned, and visually consistent.
-- States and interactions: expand/collapse sidebars, tooltips, forms, hover, focus, active, selected, disabled, loading, success, error, empty states, and any interactive controls needed for a functional frontend.
-- AI shortcut artifacts: flag generic rounded cards, unnecessary borders, decorative CSS blobs, fake SVG illustrations, half-built avatars, mismatched hero art, and custom CSS/SVG replacements where the target called for real imagery, real icons, or a different surface treatment.
+- Fonts and typography: ファミリ／フォールバック、ウェイト、スケール、行高、字間、アンチエイリアス、ヒエラルキー、折り返し、省略、display/body、詰まったテキスト、読みづらさやスキャン困難を招く余白。
+- Spacing and layout: フレーム／クロップ、整列、マージン、パディング、ギャップ、コンポーネントサイズ、角丸、エレベーション、ボーダー、垂直リズム。余白のずれがヒエラルキー・密度・可読性を変える箇所、衝突箇所を引用。
+- Viewport resilience: デスクトップ・タブレット・モバイル幅で重なり、クリップ、セクション潰れ、グリッド破損、不自然な折り返し、使えなくなるコントロール。
+- Colors and tokens: パレット、グラデーション、不透明度、シャドウ、コントラスト、セマンティック色、disabled/active、実装トークンがデザイン意図にマップされているか。
+- Image quality and asset fidelity: 被写体、クロップ、スケール、アスペクト、シャープネス、圧縮、透過／マスクのアーティファクト、ハロ、背景統合、ラスタ／ベクタの適切性。ターゲット画像を div/CSS アートやカスタム SVG で置き換えは禁止。
+- Copy and content: アプリ固有のコピー（動的コンテンツ以外）が単体コンテキストで一貫し意味があり見た目も良いか。
+- Icons: 拡大し、見えるアイコンとインタラクション裏のアイコンが実装・整列・一貫しているか。
+- States and interactions: サイドバー開閉、ツールチップ、フォーム、hover、focus、active、selected、disabled、loading、success、error、empty、機能的フロントに必要なコントロール。
+- AI shortcut artifacts: 汎用角丸カード、不要ボーダー、装飾 CSS blob、偽 SVG イラスト、半端アバター、ヒーロー不一致、ターゲットが実画像・実アイコン・別表面処理を求めていた箇所の CSS/SVG 置換。
 
 ### Accessibility
 
-- Contrast, focus indicators, keyboard reachability, semantic controls, labels, alt text, reduced motion.
-- Text scaling and zoom resilience.
-- Tap targets at practical mobile sizes.
-- Layout stability when text wraps, scales, or appears in longer real-world strings.
+- コントラスト、フォーカスインジケータ、キーボード到達性、セマンティックコントロール、ラベル、alt、モーション削減。
+- テキストスケールとズーム耐性。
+- 実用的なモバイルサイズのタップターゲット。
+- 長い実文字列での折り返し・スケール時のレイアウト安定性。
 
 ## Finding Quality
 
-A useful finding includes:
+有用な finding には:
 
-- One specific mismatch or flaw.
-- Design evidence and implementation evidence.
-- User or fidelity impact.
-- Concrete fix, ideally with file/component/token/CSS guidance.
-- Severity based on user impact, not personal taste.
-- The affected fidelity surface when relevant: fonts, spacing, colors, image quality, layout, behavior, accessibility, content, icons, or responsiveness.
-- Crammed text, broken wrapping, mismatched font weights, bad line height, or awkward letter spacing when they affect readability or hierarchy.
-- Elements that overlap, clip, collapse into nearby sections, or break at alternate viewport sizes.
-- Rounded cards, borders, shadows, or container treatments that appear in the implementation but are not present in the target.
-- Borked icons, custom SVGs, half-assed attempts at avatars, hero art mismatches, custom CSS art, and placeholder-looking generated assets.
-- Overflowing text, cramped text, broken layout, missing states, and incomplete interactions.
+- 1つの具体的な不一致または欠陥。
+- デザイン根拠と実装根拠。
+- ユーザーまたはフィデリティへの影響。
+- 具体的な修正（ファイル／コンポーネント／トークン／CSS が望ましい）。
+- 個人の好みではなくユーザー影響に基づく深刻度。
+- 関連する fidelity surface: fonts、spacing、colors、image quality、layout、behavior、accessibility、content、icons、responsiveness。
+- 可読性・ヒエラルキーに効く詰まったテキスト、折り返し破損、ウェイト不一致、行高・字間の問題。
+- 重なり、クリップ、隣セクションへの潰れ、別ビューポートでの破損。
+- ターゲットに無い角丸カード、ボーダー、シャドウ、コンテナ処理が実装に出ている場合。
+- 壊れたアイコン、カスタム SVG、手抜きアバター、ヒーロー不一致、カスタム CSS アート、プレースホルダー風生成アセット。
+- はみ出しテキスト、詰まり、レイアウト破損、欠けた状態、不完全インタラクション。
 
-Avoid:
+避ける:
 
-- Vague statements such as "make it more polished."
-- Criticizing known placeholder content unless it affects the design goal.
-- Treating every pixel difference as a bug when the design intent is preserved.
-- Mixing multiple unrelated flaws into one finding.
+- 「もっと磨く」など曖昧な表現。
+- デザイン目標に効かない既知プレースホルダーの批判。
+- 意図が保たれているのにすべてのピクセル差をバグ扱い。
+- 無関係な複数欠陥を1 finding に混ぜる。

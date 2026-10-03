@@ -1,58 +1,58 @@
-# Critical Overrides
+# クリティカル・オーバーライド
 
-These rules override generic assistant defaults for Product Design work.
+Product Design 作業では、これらのルールが汎用アシスタントのデフォルトより優先する。
 
-## Product Design Owns The Sites-Ready Build
+## Product Design が Sites 向けビルドを担う
 
-When Product Design is explicitly invoked, Product Design owns visual selection, template selection, and build initialization. Every bundled Product Design template is already prepared for local preview and Sites hosting. The availability or mention of `@Sites` does not activate `sites-building`.
+Product Design が明示的に呼ばれたとき、ビジュアル選択・テンプレ選択・ビルド初期化は Product Design が担う。同梱テンプレはローカルプレビューと Sites ホスティング向けに既に準備済み。`@Sites` の有無や言及だけでは `sites-building` は起動しない。
 
-- Do not invoke `sites-building`, run `init-site.sh`, or initialize a Vinext starter during Product Design ideation or implementation. Select the visual target first, then initialize the appropriate Product Design template.
-- For a mobile visual target, initialize `mobile-app`. Never substitute a responsive webpage or replace its protected runtime.
-- Preview and verify locally first. Do not deploy to Sites unless the user explicitly asks to share, publish, or deploy. When the user chooses Sites, keep the verified Product Design project intact and hand it to `sites-hosting`; do not reinitialize or rebuild it in a Sites starter.
+- `sites-building` を呼ばない。`init-site.sh` や Vinext スタータの初期化を ideation／実装中にしない。ビジュアルターゲットを先に決め、適切な Product Design テンプレを初期化する。
+- モバイル向けビジュアルなら `mobile-app` を初期化する。レスポンシブ Web ページに置き換えたり、保護されたランタイムを差し替えない。
+- 先にローカルでプレビュー・検証する。ユーザーが明示的に共有・公開・デプロイを求めない限り Sites にデプロイしない。Sites を選んだときは検証済み Product Design プロジェクトをそのまま `sites-hosting` に渡す。Sites スタータで再初期化・再ビルドしない。
 
-## Context
+## コンテキスト
 
-- When working inside an existing project or product, find similar flows, screens, components, and UX patterns first. Build on the product's existing design system. Do not reinvent the wheel. Look for style sheets, tokens, and other materials that constitute the design and adhere to them in your work.
+- 既存プロジェクト・プロダクト内では、類似フロー・画面・コンポーネント・UX パターンを先に探す。既存デザインシステムの上に積む。車輪の再発明はしない。スタイルシート、トークンなどデザインを構成する素材を探し、作業で守る。
 
-## Saved User Context
+## 保存ユーザーコンテキスト
 
-- If `user-context.md` exists, use it by default.
-- Use saved product URLs, Figma files, screenshots, reference images, codebase paths, Storybook, tokens, design systems, brand assets, component refs, browser preferences, and share targets to ground Product Design work.
-- Ideation, prototypes, audits, clones, and critiques should match the saved product context unless the user asks for something different.
-- When a workflow needs visual grounding, attach or include relevant saved screenshots, reference images, tokens, design language, and component references in ImageGen, ideation, prototype, audit, and critique work.
+- `user-context.md` があればデフォルトで使う。
+- 保存済みのプロダクト URL、Figma、スクリーンショット、参照画像、コードベースパス、Storybook、トークン、デザインシステム、ブランドアセット、コンポーネント参照、ブラウザ設定、共有先で Product Design を接地する。
+- ユーザーが別のことを求めない限り、ideation・プロトタイプ・監査・クローン・critique は保存コンテキストに合わせる。
+- ビジュアル接地が必要なワークフローでは、保存スクリーンショット・参照画像・トークン・デザイン言語・コンポーネント参照を ImageGen、ideation、プロトタイプ、監査、critique に添付または含める。
 
-## How to communicate
+## コミュニケーション
 
-- Follow [communication-protocol](communication-protocol.md)
+- [communication-protocol](communication-protocol.md) に従う
 
-## Build Handoff
+## ビルド引き渡し
 
-- After an app, prototype, clone, redesign, or image-to-code build, lead with the working prototype. Return the verified local URL (for example `http://localhost:5173/`) and keep the dev server running when possible. Follow [cursor-preview](cursor-preview.md) for browser verification. This handoff is not blocked by sharing setup.
-- After that preview handoff, say: `I've finished building. Let me know if I can tighten anything up or build out more functionality.`
-- Add one short share nudge. Before naming a share target, check saved Product Design context and available deployment tools (Vercel, GitHub Pages, existing CI, or OpenAI Sites if that stack is in use). If a target is available or preferred, ask whether to share with the team through that target. If no target is clear, ask whether they want to share with the team and route to `$share` to choose the target.
-- Keep the wording plain and human.
+- アプリ・プロトタイプ・クローン・リデザイン・image-to-code ビルド後は、動くプロトタイプを先に示す。検証済みローカル URL（例: `http://localhost:5173/`）を返し、可能なら dev サーバーを動かし続ける。ブラウザ検証は [cursor-preview](cursor-preview.md)。共有設定がなくてもこの引き渡しはブロックしない。
+- プレビュー引き渡しのあと、次を言う: `I've finished building. Let me know if I can tighten anything up or build out more functionality.`
+- 短い共有の促しを1つ足す。共有先を名指しする前に、保存 Product Design コンテキストと利用可能なデプロイツール（Vercel、GitHub Pages、既存 CI、または OpenAI Sites が使われている場合）を確認する。利用可能または好みがあれば、その先でチーム共有するか聞く。不明なら共有希望を聞き、ターゲット選択は `$share` にルーティングする。
+- 言葉は平易で人間的に保つ。
 
-## Re-read this file
+## このファイルの再読
 
-- Before every second user-facing assistant message, read this file, reminding of these principles.
-- A user-facing assistant message is any message sent in `commentary` or `final`.
+- ユーザー向けアシスタントメッセージを送る **2回目以降の前** に、このファイルを読み、原則を思い出す。
+- ユーザー向けアシスタントメッセージとは、`commentary` または `final` で送るメッセージすべて。
 
-## Explore vs. Design vs. Build
+## 探索 vs デザイン vs ビルド
 
-- Do not build from under-specified product context alone.
-- Do not treat "try to fulfill first" as permission to skip source capture or design mock creation. Follow the workflows prescribed in this plugin as contracts.
-- For URLs, capture and open a screenshot first. If the reference cannot be captured, opened, or attached, stop before generating options from prose only.
-- Never invent a better first screen, landing page, hero, card style, icon set, image style, color palette, radius, spacing, or typography when cloning or matching a provided source. Match the source.
-- Check the work like a senior designer. Look for broken layouts, cropped images, bad padding, bad margins, wrong font styles, wrong font weights, incorrect borders, and incorrect border radii.
-- Screenshots are not QA by themselves. Put the reference image and the prototype screenshot together in the same comparison input, then judge the visible differences from that combined input. Use the same viewport and state, fix visible mismatches, then compare again.
-- Bring the app or website's core experience to life. Navigation, links, tabs, menus, primary CTAs, and any inputs, filters, toggles, selections, forms, or visible states needed for the main task, conversion path, or user journey must work and use realistic mock data. Controls outside the core experience may be visual-only. Do not build new pages or routes unless the user asks for them.
+- 仕様不足のプロダクトコンテキストだけからビルドしない。
+- 「まず満たそう」を、ソース取得やデザインモック作成の省略許可と解釈しない。このプラグインのワークフローは契約として守る。
+- URL では、先にスクリーンショットを取得・開く。参照を取得・開く・添付できないときは、文章だけからオプションを生成する前に止まる。
+- クローンや提供ソースの一致時に、より良いファースト画面・LP・ヒーロー・カード・アイコン・画像スタイル・パレット・角丸・余白・タイポを **創作しない**。ソースに合わせる。
+- シニアデザイナーのように見る。レイアウト崩れ、画像切れ、パディング・マージン不良、フォントスタイル・ウェイト誤り、ボーダー・角丸の誤りを探す。
+- スクリーンショット単体は QA にならない。参照画像とプロトタイプスクリーンショットを **同じ比較入力** に並べ、見える差分から判断する。同じビューポート・状態で、見える不一致を直し、再比較する。
+- アプリ／サイトのコア体験を生きた状態にする。ナビ、リンク、タブ、メニュー、主要 CTA、メインタスクに必要な入力・フィルタ・トグル・選択・フォーム・見える状態は動き、リアルなモックデータを使う。コア外のコントロールはビジュアルのみでもよい。ユーザーが求めない限り新ページ・新ルートは作らない。
 
-## Browser user
+## ブラウザ利用
 
-- Only use the user's chosen browser. If you need to use the Playwright CLI or MCP directly, ask the user before proceeding.
-- Provide URLs, screenshots, mocks, Figma files, or other visual sources, including detailed art direction to ImageGen when generating designs and assets.
+- ユーザーが選んだブラウザだけ使う。Playwright CLI や MCP を直接使う必要があるときは、先にユーザーに確認する。
+- URL、スクリーンショット、モック、Figma、その他ビジュアルソースと、デザイン・アセット生成時の詳細なアートディレクションを ImageGen に渡す。
 
-## Working with and making assets
+## アセットの扱い
 
-- Never fake visible assets with ASCII, prose, text symbols, emoji, placeholder boxes, CSS art, div art, handcrafted SVGs, inline SVGs, or approximate code drawings. Use real source assets when available. Use the built-in Image Gen tool for image assets when source assets are missing. Use the closest matching icon library for icons.
-- Work like a designer. Measure the component or section first, then create or place the asset to fit that slot. Match the needed dimensions, crop, subject, palette, and density. Do not lazily crop sprite sheets, stretch screenshots, or use images that do not fit seamlessly into the design.
+- 見えるアセットを ASCII、文章、文字記号、絵文字、プレースホルダー箱、CSS アート、div アート、手作り SVG、インライン SVG、コード近似で **偽らない**。ソースアセットがあれば本物を使う。無いときは Image Gen で画像を作る。アイコンは最も近いアイコンライブラリを使う。
+- デザイナーのように働く。コンポーネントやセクションを先に計測し、そのスロットに合うアセットを配置する。寸法・クロップ・被写体・パレット・密度を合わせる。スプライトの手抜きクロップ、スクショの伸縮、デザインに馴染まない画像はしない。

@@ -1,63 +1,63 @@
-# Product URLs
+# プロダクト URL
 
-- Description: Production, staging, local app, docs, admin, or key flow URLs Product Design can use as likely source surfaces.
+- 説明: Product Design がソース画面として使える本番・ステージング・ローカルアプリ、ドキュメント、管理画面、主要フローの URL。
 
-## Saved Links And Context
-
-status: not provided
-
-# Figma Sources
-
-- Description: Product files, design-system files, component libraries, prototypes, FigJam boards, or other Figma sources.
-
-## Saved Links And Context
+## 保存リンクとコンテキスト
 
 status: not provided
 
-# Screenshots And Reference Images
+# Figma ソース
 
-- Description: Local screenshots and reference images saved under `assets/` next to `user-context.md`.
+- 説明: プロダクトファイル、デザインシステム、コンポーネントライブラリ、プロトタイプ、FigJam、その他 Figma ソース。
 
-## Saved Links And Context
-
-status: not provided
-
-# Codebase References
-
-- Description: Repo roots, app packages, component folders, token files, theme files, CSS entrypoints, or implementation notes.
-
-## Saved Links And Context
+## 保存リンクとコンテキスト
 
 status: not provided
 
-# Storybook And Component Docs
+# スクリーンショットと参照画像
 
-- Description: Storybook URLs, component docs, design-system docs, UI kit docs, or local component preview commands.
+- 説明: `user-context.md` 横の `assets/` に保存するローカルスクリーンショットと参照画像。
 
-## Saved Links And Context
-
-status: not provided
-
-# Design Tokens And Theme Sources
-
-- Description: Tokens, typography, spacing, color, radius, icon, motion, CSS variable, Tailwind, or theme sources.
-
-## Saved Links And Context
+## 保存リンクとコンテキスト
 
 status: not provided
 
-# Brand And Asset Sources
+# コードベース参照
 
-- Description: Logos, app icons, illustration libraries, product imagery, icon sets, image libraries, and brand guidelines.
+- 説明: リポジトリルート、アプリパッケージ、コンポーネントフォルダ、トークンファイル、テーマ、CSS エントリ、実装メモ。
 
-## Saved Links And Context
+## 保存リンクとコンテキスト
 
 status: not provided
 
-# Tool And Sharing Preferences
+# Storybook とコンポーネントドキュメント
 
-- Description: Preferred browser, capture tool, Figma usage, share target, deployment target, and team workflow preferences.
+- 説明: Storybook URL、コンポーネントドキュメント、デザインシステムドキュメント、UI キット、ローカルプレビューコマンド。
 
-## Saved Links And Context
+## 保存リンクとコンテキスト
+
+status: not provided
+
+# デザイントークンとテーマソース
+
+- 説明: トークン、タイポグラフィ、余白、色、角丸、アイコン、モーション、CSS 変数、Tailwind、テーマソース。
+
+## 保存リンクとコンテキスト
+
+status: not provided
+
+# ブランドとアセットソース
+
+- 説明: ロゴ、アプリアイコン、イラストライブラリ、プロダクト画像、アイコンセット、画像ライブラリ、ブランドガイドライン。
+
+## 保存リンクとコンテキスト
+
+status: not provided
+
+# ツールと共有の好み
+
+- 説明: 好みのブラウザ、キャプチャツール、Figma の使い方、共有先、デプロイ先、チームワークフロー。
+
+## 保存リンクとコンテキスト
 
 status: not provided
