@@ -14,7 +14,6 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 | 対象環境 | **Cursor のみ**（`omega-link` → `.cursor/skills/product-design`）。**Codex CLI / `~/.codex/skills` には載せない** |
 | 前提 MCP | `cursor-ide-browser`、任意で Figma MCP |
 | 状態 | `~/.cursor/product-design/` または `.cursor/product-design/` |
-| 上流残骸 | `.codex-plugin/`・`agents/openai.yaml` は OpenAI Product Design プラグイン由来。**omega 運用では参照しない** |
 
 ## 起動
 
@@ -40,7 +39,5 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 
 - **ブラウザ**: `cursor-ide-browser` MCP（`browser_navigate`, `browser_snapshot`, `browser_take_screenshot`）。詳細は [references/cursor-preview.md](references/cursor-preview.md)。
 - **永続コンテキスト**: `~/.cursor/product-design/`（プロジェクトに `.cursor/product-design/user-context.md` がある場合はそちらを優先）。`PRODUCT_DESIGN_STATE_DIR` で上書き可。
-- **画像生成**: セッションで `GenerateImage` 等が使えるときは ideate／アセット生成に利用。不可のときはユーザー提供画像を要求。
+- **画像生成**: セッションで `GenerateImage` 等が使えるときは ideate／アセット生成に利用。出力はワークスペースルートの `.cursor/assets/`（[references/generated-image-assets.md](references/generated-image-assets.md)）。不可のときはユーザー提供画像を要求。
 - **共有**: Vercel・GitHub Pages・既存 CI など、利用可能なデプロイ手段。OpenAI Sites 専用手順は [skills/share/SKILL.md](skills/share/SKILL.md) のフォールバックとしてのみ参照。
-
-`.codex-plugin/` と各 `agents/openai.yaml` は上流 OpenAI プラグイン用の残骸。Cursor では無視する。

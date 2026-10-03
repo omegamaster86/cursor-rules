@@ -13,6 +13,7 @@ description: "Product Design ブリーフから画像ベースの代替案、リ
 
 - 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
 - [$critical-overrides](../../references/critical-overrides.md) に従う。
+- 生成ラスタの保存先: [$generated-image-assets](../../references/generated-image-assets.md)（作業ワークスペースルートの `.cursor/assets/`）。
 
 ## User Context
 
@@ -80,6 +81,7 @@ description: "Product Design ブリーフから画像ベースの代替案、リ
 
 - 下の Image Gen プロンプトを使う。
 - 組み込み Image Gen ツールを使う。
+- 各 Image Gen 完了後、返却ファイルをワークスペースルートの `.cursor/assets/` にコピーまたは移動する（`ideate-option-<表示順>-<slug>.png` など）。`.cursor/assets/` が無ければ作成。チャット表示だけに残さない。
 - ユーザーが数を上書きしない限り独立画像を厳密に3枚。
 - 各 Image Gen 呼び出しを独立起動。`Promise.all` でバッチ、順序配列、リクエスト順再生をしない。
 - 各方向は別の Image Gen 結果。1画像に複数アイデアを入れない。

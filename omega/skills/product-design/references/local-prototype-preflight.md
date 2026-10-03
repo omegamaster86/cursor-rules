@@ -3,18 +3,18 @@
 新しいローカルプロトタイプを作る **前** に使う。
 
 - 作業は新プロジェクトフォルダ内に自己完結させる。
-- プラグイン UI アイコンは `../assets/` にある。プロトタイプスタータや生成アプリのアセットはそこに置かない。
-- 同梱 Product Design スタータは `../templates/` にある。
+- 同梱 Product Design スタータは `../templates/` にある。アプリコードとテンプレ runtime は生成プロジェクト内に置き、スキル正本ディレクトリには書き込まない。
+- bootstrap 後、Image Gen で作る画像はワークスペースルートの `.cursor/assets/` に保存する（[generated-image-assets](generated-image-assets.md)）。初回生成前に `mkdir -p .cursor/assets` してよい。
 - Web／デスクトップ風プロトタイプはデフォルトの `prototype` テンプレを使う。
 - モバイルアプリプロトタイプは `--template mobile-app` を使う。
 - bootstrap スクリプトでアプリを作る。このファイルからスクリプトパスを解決し、絶対パスで実行する:
 
 ```bash
-node /absolute/path/to/plugins/product-design/scripts/bootstrap-prototype.mjs --dest /absolute/path/to/new-prototype
+node /absolute/path/to/cursor-rules/omega/skills/product-design/scripts/bootstrap-prototype.mjs --dest /absolute/path/to/new-prototype
 ```
 
 ```bash
-node /absolute/path/to/plugins/product-design/scripts/bootstrap-prototype.mjs --template mobile-app --dest /absolute/path/to/new-mobile-prototype
+node /absolute/path/to/cursor-rules/omega/skills/product-design/scripts/bootstrap-prototype.mjs --template mobile-app --dest /absolute/path/to/new-mobile-prototype
 ```
 
 - `mobile-app` では生成プロジェクトルートで `npm ci --prefer-offline --no-audit --no-fund` を実行する。Web の `prototype` では `npm install --prefer-offline --no-audit --no-fund`。環境の npm キャッシュを使う。
@@ -28,3 +28,5 @@ node /absolute/path/to/plugins/product-design/scripts/bootstrap-prototype.mjs --
 アプリ固有 UI は `src/Prototype.tsx` と `src/prototype.css` に組む。`src/App.tsx`、`src/main.tsx`、`src/styles.css`、`src/mobile/`、`public/assets/iphone/`、`public/assets/android/`、`public/assets/status/`、`vite.config.ts`、`worker/index.js`、`scripts/prepare-sites-build.mjs` は保護ランタイムとして扱う。プレビューまたは引き渡し前に `npm run check:runtime` を実行する。失敗したらランタイムを復元する。
 
 Sites ホスティングではモバイルプロジェクトをそのまま保持する。`npm run build` の出力構成は上記と同じ。Sites に渡す前に `npm run test:sites` を実行する。`init-site.sh` や Vinext スタータへの置き換えはしない。
+
+

@@ -30,9 +30,9 @@
 | --- | --- |
 | ブラウザ | cursor-ide-browser MCP（[references/cursor-preview.md](references/cursor-preview.md)） |
 | 保存コンテキスト | `~/.cursor/product-design/` または `.cursor/product-design/` |
-| 画像生成 | セッションの `GenerateImage` 等（ideate） |
+| 画像生成 | セッションの `GenerateImage` 等（ideate）。保存先は作業 PJ の `.cursor/assets/`（[references/generated-image-assets.md](references/generated-image-assets.md)） |
 | Figma | Figma MCP が接続されていれば利用 |
 
-## レガシー（OpenAI Codex プラグイン）
+テンプレ内 `.openai/hosting.json` と Sites 向けビルド手順は、OpenAI Sites をデプロイ先に選ぶときのフォールバックとして [skills/share/SKILL.md](skills/share/SKILL.md) に残している。
 
-`.codex-plugin/`、`agents/openai.yaml`、テンプレ内 `.openai/hosting.json` は上流 OpenAI Product Design プラグイン由来。Cursor 運用では必須ではない。Sites 専用ビルド手順は `share` スキル内のフォールバックとして残している。
+

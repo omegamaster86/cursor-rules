@@ -148,5 +148,6 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 
 | スキル | 理由 |
 |--------|------|
-| `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ前提。同梱の `.codex-plugin/` は上流 OpenAI プラグイン用で omega では無視 |
+| `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ（`~/.cursor/product-design/`）前提 |
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
+
