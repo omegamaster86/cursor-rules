@@ -17,6 +17,7 @@ description: "ライブ URL を runnable なフロントエンドのみのロー
 
 - 進行前にプラグインルーター [$index](../index/SKILL.md) を参照する。
 - [$critical-overrides](../../references/critical-overrides.md) に従う。
+- ImageGen / `GenerateImage` で作るラスタ: [$generated-image-assets](../../references/generated-image-assets.md)（`.cursor/assets/`、無ければ作成）。
 
 ## User Context
 
@@ -61,7 +62,7 @@ description: "ライブ URL を runnable なフロントエンドのみのロー
 
 - ページが読み込むアセットはブラウザが保存できない場合を除き利用可能。
 - 画像、ロゴ、アイコン、フォント、動画、SVG、スプライト、マスク、カーソル、背景画像はローカルにコピー。
-- コピー不可の画像は元のスクリーンショットで ImageGen 置換。
+- コピー不可の画像は元のスクリーンショットで ImageGen 置換。生成ファイルは `.cursor/assets/<slug>.png` に保存（`mkdir -p .cursor/assets`）し、`src/` から import する。
 - フォント不可なら最も近いオープンソースフォント。
 - アイコン不可なら最も近いオープンセット。Lucide は最適一致のときだけ。
 - 置換したアセット・フォント・アイコンと理由を短く記録。

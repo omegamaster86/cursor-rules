@@ -26,6 +26,7 @@ Product Design プラグインは次のスキル群を提供する:
 ## Critical Overrides
 
 - [$critical-overrides](../../references/critical-overrides.md) に従う。
+- Image Gen / `GenerateImage` の出力はすべて [generated-image-assets](../../references/generated-image-assets.md)（ワークスペースルート `.cursor/assets/`、無ければ `mkdir -p`）。
 
 ## Router Only
 
