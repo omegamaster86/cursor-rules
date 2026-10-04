@@ -5,21 +5,25 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 
 # Product Design（Cursor）
 
-アイデア・URL・スクリーンショットから、レビュー可能なプロトタイプまでを扱うスキル群。エントリは [skills/index/SKILL.md](skills/index/SKILL.md)。
+アイデア・ライブ URL・スクリーンショットから、レビュー可能なプロトタイプまでを扱う。**Cursor のみ**（`omega-link` → `.cursor/skills/product-design`）。**Codex CLI / `~/.codex/skills` 非対象。**
 
-## omega での位置づけ
-
-| 項目 | 方針 |
-|------|------|
-| 対象環境 | **Cursor のみ**（`omega-link` → `.cursor/skills/product-design`）。**Codex CLI / `~/.codex/skills` には載せない** |
-| 前提 MCP | `cursor-ide-browser`、任意で Figma MCP |
-| 状態 | `~/.cursor/product-design/` または `.cursor/product-design/` |
+依頼はルーター [skills/index/SKILL.md](skills/index/SKILL.md) に従う。
 
 ## 起動
 
-- スキル `product-design` を読み込んだあと、ルーター [skills/index/SKILL.md](skills/index/SKILL.md) に従う。
-- セットアップ・保存コンテキスト: [skills/user-context/SKILL.md](skills/user-context/SKILL.md)
-- プレビューとブラウザ検証: [references/cursor-preview.md](references/cursor-preview.md)
+1. [skills/index/SKILL.md](skills/index/SKILL.md) でサブスキルを選ぶ。
+2. 保存コンテキスト: [skills/user-context/SKILL.md](skills/user-context/SKILL.md)
+3. プレビュー・ブラウザ検証: [references/cursor-preview.md](references/cursor-preview.md)
+
+## ワークフロー例
+
+| 目的 | スキル | 結果 |
+| --- | --- | --- |
+| 新規アイデアのプロトタイプ | `ideate` → `image-to-code` | 3 方向のビジュアル案 → 選択後に runnable プロトタイプ |
+| ライブ画面の再現 | `url-to-code` | キャプチャに基づくローカルプロトタイプ |
+| モック実装 | `image-to-code` | 選択デザインのインタラクティブ実装 |
+| UX 監査 | `audit` | スクリーンショット付きの findings |
+| 共有 | `share` | デプロイ URL |
 
 ## サブスキル
 
@@ -35,9 +39,9 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 | `design-qa` | 実装とソースの比較 QA |
 | `share` | デプロイ・共有 URL |
 
-## Cursor での前提
+## 実行時の必須
 
-- **ブラウザ**: `cursor-ide-browser` MCP（`browser_navigate`, `browser_snapshot`, `browser_take_screenshot`）。詳細は [references/cursor-preview.md](references/cursor-preview.md)。
-- **永続コンテキスト**: `~/.cursor/product-design/`（プロジェクトに `.cursor/product-design/user-context.md` がある場合はそちらを優先）。`PRODUCT_DESIGN_STATE_DIR` で上書き可。
-- **画像生成**: セッションで `GenerateImage` 等が使えるときは ideate／アセット生成に利用。**本スキルで生成したラスタはすべて**ワークスペースルートの `.cursor/assets/`（無ければ `mkdir -p .cursor/assets`。[references/generated-image-assets.md](references/generated-image-assets.md)）。不可のときはユーザー提供画像を要求。
-- **共有**: Vercel・GitHub Pages・既存 CI など、利用可能なデプロイ手段。OpenAI Sites 専用手順は [skills/share/SKILL.md](skills/share/SKILL.md) のフォールバックとしてのみ参照。
+- **MCP**: `cursor-ide-browser`（プレビュー・キャプチャ）。任意で Figma MCP。
+- **状態**: `.cursor/product-design/user-context.md` があれば優先。なければ `~/.cursor/product-design/`。`PRODUCT_DESIGN_STATE_DIR` で上書き可。
+- **生成ラスタ**: ワークスペース `.cursor/assets/`（無ければ `mkdir -p`。[references/generated-image-assets.md](references/generated-image-assets.md)）。ImageGen 不可時はユーザー画像を要求。
+- **共有**: Vercel・GitHub Pages・既存 CI など。OpenAI Sites のみ [skills/share/SKILL.md](skills/share/SKILL.md) フォールバック（テンプレ `.openai/hosting.json` 含む）。
