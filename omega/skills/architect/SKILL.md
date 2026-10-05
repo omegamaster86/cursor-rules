@@ -52,7 +52,9 @@ disable-model-invocation: true
 
 multi-agent-candidates は 1 つの統合設計パッケージを返す。統合メモの **Runners** 表と **Dropout** 節も必須。**Runners の Status が確定する前に Synthesis decision を書かない。**
 
-Synthesis の前に各候補を `references/design-red-flags.md` でスクリーニング（shallow module、情報漏洩、時間分解、パススルー）。red flag がある形は修正または棄却してから統合する。
+合成前に [`references/design-red-flags.md`](references/design-red-flags.md) で全候補をスクリーニング。次の contributor は、開いたファイルだけ見るエージェントで、最寄りの例をコピーし、コンパイルが通る最短経路を取ると仮定する。1 ファイルから見て正しく見える変更が repo 全体で正しい設計を選ぶ。
+
+実装可能な候補を、エージェント contributor が実際に触る形で評価する。viable な候補は interface depth で比較する。公開面が小さく、裏に能力が集約された設計を好む。red flag がある形は修正または棄却してから統合する。
 
 ## フェーズ C: 合意（オプトイン）
 

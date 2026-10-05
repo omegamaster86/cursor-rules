@@ -12,7 +12,7 @@
 | `/create-verification-skill`（command） | 対象 PJ にユーザー操作の証明レシピ（`verify-<app>`）を生成 |
 | `/maintain-verification-skill`（command） | 上記 feature map の監査・更新（プロダクトコードは触らない） |
 | `/setup-forge`（skill） | ロール別モデル・reasoning budget を `forge-models.mdc` に書く |
-| `forge-mode`（skill） | 原則・プレイブック（23）・Intent gate の本体（コマンドと同名） |
+| `forge-mode`（skill） | 原則（24）・プレイブック（23）・Intent gate の本体（コマンドと同名） |
 | [omega ガイド](../docs/guide/README.md) | 初回オンボーディング（plan-interview → forge-mode → ship） |
 
 ---
@@ -58,6 +58,8 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `product-design` | アイデア・URL・モックからレビュー可能プロトタイプ（**Cursor 専用**。browser MCP・`.cursor/product-design/` 前提。**Codex CLI 非対象**） |
 | `session-log` | 長セッション状態をファイル化し新規チャットへ handoff |
 | `figure-it-out` | プレイブック不適合時の監査可能プラン設計 |
+| `benchmark-checklist` | perf 計測の vet（Perf / Hillclimb と併用） |
+| `correct` | 繰り返しミスを repo 変更で再発不能に（architecture → lint → test） |
 | `decision-log` | 長時間 run の監査証跡（Notion DB 正本。forge プレイブック・figure-it-out からルーティング） |
 | `create-verification-skill` | PJ 固有の動作確認スキルと feature map を生成 |
 | `maintain-verification-skill` | 上記のソース読み + ライブ drive によるメンテ |
@@ -72,7 +74,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature / Refactoring / Prototype / Visual parity / Authoring a skill / Eval / **Babysit** / **Shipping** / Autonomous run / **Orchestrate** / **Autopilot-stack** / **Autopilot-full** / Session pickup / Pause safely / Multi-phase plan / **Worktree cleanup** / Opening a PR。太字は pstack から追加した PR・夜間運用系。Bugbot 参照: `forge-mode/references/bugbot-triage.md`。スクリプト: `forge-mode/scripts/watch-pr`、`orch`、`worktree-audit.sh`。
 
-### 原則（`forge-mode/principles/`）23本
+### 原則（`forge-mode/principles/`）24本
 
 `forge-mode` の Principles インデックスから **on-demand** で読む。`/forge-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `forge-mode/principles/*.md` を全文読む。
 
@@ -110,6 +112,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `fix-root-causes.md` | デバッグ中 | 再現→根本。nil-check で黙らせない |
 | `sequence-verifiable-units.md` | マルチステップ・PR の積み方 | 各単位が check で終わる |
 | `test-behavior-not-implementation.md` | テストの作成・変更 | リテラル expected、実装 pin を避ける |
+| `explain-the-number.md` | 測った数値を信じる・報告する前 | limiter と別物測定の除外。**benchmark-checklist** が手順正本 |
 
 #### Delegation
 
@@ -150,4 +153,5 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 |--------|------|
 | `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ（`~/.cursor/product-design/`）前提 |
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
+
 

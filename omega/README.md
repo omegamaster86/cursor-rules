@@ -255,7 +255,7 @@ Dashboard または Agents Window から環境を再 Build する。
 ## モードの関係
 
 - **通常モード**: `global.mdc` が適用。タスク分析・実行結果報告フォーマットあり。
-- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則23本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。ユーザー操作の証明レシピは **`/create-verification-skill`**。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
+- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則24本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。ユーザー操作の証明レシピは **`/create-verification-skill`**。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
 
 コマンド（入口）とスキル（原則・プレイブック本体）はどちらも **forge-mode** という名前で統一しています。
 
@@ -267,6 +267,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | pstack `interrogate` | 未採用。**`/review-orchestrator-triple-hybrid`** コマンドを使用 |
 | pstack `arena` | 未採用。**`multi-agent-candidates`**（`/architect` 経由可） |
 | pstack `show-me-your-work` | 未採用。**`decision-log`**（Notion）を監査正本 |
+| pstack `correct` / `benchmark-checklist` | 採用（`omega/skills/correct`、`benchmark-checklist`）。原則 **explain-the-number** は `forge-mode/principles/` |
 | `poteto-agent` | **`forge-agent`** にリネーム |
 | `cursor-team-kit`（deslop, control-*） | 未導入時は skip、手動 verify で代替 |
 | grilling vs never-block | **Intent gate。** Align は `/plan-interview`、Ship は `/forge-mode`。同じターンで両方オンにしない |
@@ -280,13 +281,14 @@ Dashboard または Agents Window から環境を再 Build する。
 ## 由来
 
 - `genai/` — Next.js / Supabase コーディング規約
-- `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー。README は日本語）
+- `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー。omega の forge 系は **0.15.9 相当**まで手動 port）
 - `yomiyasu/` — AI 生成日本語の推敲（[nanaism/yomiyasu](https://github.com/nanaism/yomiyasu) を **git submodule**）。Cursor 向けは `omega/skills/yomiyasu/` に抜粋同梱。同期: `scripts/sync-from-upstream.sh`（[README.md](../README.md)）
 
 参考
 https://github.com/mattpocock/skills/tree/main/skills 
 https://github.com/cursor/plugins/tree/main/pstack 
 https://github.com/nanaism/yomiyasu
+
 
 
 

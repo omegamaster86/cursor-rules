@@ -29,6 +29,8 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | 争点のある設計の並列案 | **`multi-agent-candidates`** スキル（`/architect` からも） |
 | カバレッジ分割・レース・ガントレット | **`swarm`** スキル |
 | ロール別モデル・budget の初期設定 | **`setup-forge`** スキル |
+| ベンチ実行・自分で測った speedup / regression の報告 | **`benchmark-checklist`** スキル（`explain-the-number` 原則） |
+| オペレーターが繰り返し直すミスクラス | **`correct`** スキル |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
 | 何を作るか・非ゴール・用語が未確定 | **`plan-interview` に戻す。** プレイブックに入らない。親は grilling を自己起動せず、ユーザーに `/plan-interview` を案内する |
 | 観測すれば決まる分岐（レイアウト、タイミング、出力） | Prototype。人間に聞かない（Intent gate が blocked のときは使わない） |
@@ -93,6 +95,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
 - SKILL.md を作成または編集 → **create-skill** スキル（SKILL.md 作成用の Cursor 組み込み）。
 - UI / IDE / CLI を出荷 → 対象 PJ の `verify-*` があればその Drive。無ければブラウザ MCP または手動 verify。PJ に証明レシピが無いなら `/create-verification-skill`。バグ修正では同じ表面で先に自分で再現。
+- ベンチを走らせる、perf を自分で計測する、測った speedup / regression を報告またはそれに基づいて動く → **benchmark-checklist** スキル。数字を信じる前に **explain-the-number**（`principles/explain-the-number.md`）。
 - PR 状態・CI・レビュー・Bugbot（「babysit」「get it green」「check on PR X」）→ **Babysit** プレイブック（`playbooks/babysit.md`）。Cursor 組み込み babysit には委譲しない。
 - merge / land / ship の明示依頼 → **Shipping** プレイブック（`playbooks/shipping.md`）。Babysit の後半。
 - 多日・多 PR の standing プログラム → **Orchestrate** プレイブック（`playbooks/orchestrate.md`）。
@@ -134,6 +137,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - **Fix Root Causes.** デバッグ中。症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない。`principles/fix-root-causes.md`。
 - **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。`principles/sequence-verifiable-units.md`。
 - **Test Behavior, Not Implementation.** テストの作成・変更・維持。ユーザー視点のリテラル assert。`principles/test-behavior-not-implementation.md`。
+- **Explain the Number.** 信じる・報告する・動く前に、自分で測った数値（speedup、regression、throughput、latency、eval 結果）。limiter を特定し、別物を測っていないことを除外。perf は **benchmark-checklist** で手順完走。`principles/explain-the-number.md`。
 
 **Delegation**
 
@@ -160,7 +164,9 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 **すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`forge-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
 
-サブエージェントの作業はすべて自分が所有する。diff をレビューし自分の要約を書く。言ったことをそのまま通さない。interrupt 連鎖 resume は directive を黙って drop するので、「完了」要約を信じるより consolidated scope で fresh サブエージェントを起動。セカンドオピニオンは別モデルに同じプロンプト。一致は high-signal。
+サブエージェントの作業はすべて自分が所有する。diff をレビューし自分の要約を書く。言ったことをそのまま通さない。セカンドオピニオンは別モデルに同じプロンプト。一致は high-signal。
+
+**デフォルトは fresh subagent。** 新しい work は consolidated scope（元 brief、後続 directive、前 agent の report と branch）を渡した fresh subagent に任せる。fix round、follow-up、retry、次の queue 項目も同様。既存 subagent の resume / message / queue follow-up は、移すコストが高い state だけ（local checkout、未 commit 変更、その agent がまだ動かす process：dev server、simulator、babysit watcher）。running agent への stop / hold は reuse ではない。PR owner などの role は agent より長生きし、return 後は fresh agent が次の round を取る。interrupt 連鎖 resume は directive を黙って drop するので、「完了」要約を信じず fresh を起動する。
 
 ## Playbooks
 
