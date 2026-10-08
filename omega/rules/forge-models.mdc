@@ -4,6 +4,7 @@ alwaysApply: true
 ---
 # forge-mode model configuration
 # 1行1ロール。行を削除するとスキル内デフォルトにフォールバック。
+# budget: large (xhigh) — /setup-forge で変更
 
 ## Task `model` で使える model
 
@@ -15,27 +16,25 @@ alwaysApply: true
 - `cursor-grok-4.5-medium`
 - `cursor-grok-4.6-medium`
 - `gemini-3.8-flash-medium`
-- `gpt-5.6-sol-medium`
 
-feature, refactoring: composer-2.5
-bug-fix: composer-2.5
-perf-issue: composer-2.5
-hillclimb: composer-2.5
-judgment and prose: composer-2.5
-how explorer: composer-2.5
-how explainer: composer-2.5
-how critics: composer-2.5, composer-2.5, composer-2.5
-why investigators: composer-2.5
+feature, refactoring: cursor-grok-4.6-medium
+bug-fix: cursor-grok-4.6-medium
+perf-issue: cursor-grok-4.6-medium
+hillclimb: cursor-grok-4.6-medium
+judgment and prose: claude-opus-5.5-thinking-medium
+hardest tasks: claude-opus-5.5-thinking-medium
+how explorer: cursor-grok-4.6-medium
+how explainer: claude-opus-5.5-thinking-medium
+why investigators: cursor-grok-4.6-medium
 why synthesizer: claude-opus-5.5-thinking-medium
-reflect tooling: composer-2.5
-reflect judgment, divergent, synthesizer: composer-2.5
-# Task API 有効 slug のみ。旧名（gpt-5.5, grok-4.5, claude-sonnet-5-medium 等）は inherit 落ちする。
-multi-agent-candidates runners: claude-sonnet-5-thinking-medium, gpt-5.6-sol-medium, cursor-grok-4.5-medium
-architect runners: composer-2.5, cursor-grok-4.5-medium, claude-opus-5-thinking-medium
-review orchestrator grok: grok-4.5
-review orchestrator sonnet correctness: claude-sonnet-5-medium
-review orchestrator sonnet quality: claude-sonnet-5-medium
-swarm workers: composer-2.5
+reflect tooling: cursor-grok-4.6-medium
+reflect judgment, divergent, synthesizer: claude-opus-5.5-thinking-medium
+multi-agent-candidates runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
+architect runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
+review orchestrator grok: cursor-grok-4.6-medium
+review orchestrator sonnet correctness: claude-sonnet-5-thinking-medium
+review orchestrator sonnet quality: claude-sonnet-5-thinking-medium
+swarm workers: cursor-grok-4.6-medium
 
 # 並列設計 bakeoff: multi-agent-candidates / architect runners。カバレッジ・レース: swarm スキル。
 # モデル変更は /setup-forge スキルまたは本ファイルの手編集。

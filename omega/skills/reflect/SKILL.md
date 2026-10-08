@@ -1,6 +1,6 @@
 ---
 name: reflect
-description: "アクティブなトランスクリプトを 3 視点で並列レビューし、学びを既存スキルへの具体 edits にルーティング。/reflect、「reflect」に使用。"
+description: Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
 disable-model-invocation: true
 ---
 
@@ -30,23 +30,23 @@ For each candidate, read the first JSONL line and check that `message.content[0]
 
 One message, three `Task` calls, `subagent_type: generalPurpose`, with `model` set as below, agent mode (`readonly: false`). Reviewers need MCP access for context lookups (tickets, chat threads, observability traces referenced in the transcript). Readonly strips MCPs.
 
-Each reviewer and the synthesizer name a role line in `.cursor/rules/forge-models.mdc` and a default. Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `auto` or `inherit-parent`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message.
+Each reviewer and the synthesizer name a role line in the `forge-models.mdc` rule and a default. Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `inherit`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message.
 
 | Lens | Role line | Default `model` | Prompt template |
 |---|---|---|---|
-| Judgment | `reflect judgment, divergent, synthesizer` | `composer-2.5` | `references/judgment-reviewer.md` |
-| Tooling | `reflect tooling` | `composer-2.5` | `references/tooling-reviewer.md` |
-| Divergent | `reflect judgment, divergent, synthesizer` | `composer-2.5` | `references/divergent-reviewer.md` |
+| Judgment | `reflect judgment, divergent, synthesizer` | `claude-opus-5.5-thinking-medium` | `references/judgment-reviewer.md` |
+| Tooling | `reflect tooling` | `cursor-grok-4.6-medium` | `references/tooling-reviewer.md` |
+| Divergent | `reflect judgment, divergent, synthesizer` | `claude-opus-5.5-thinking-medium` | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the `Task` response body.
 
 ### 3. Synthesize
 
-One `Task` call, `subagent_type: generalPurpose`, with `model` from the `reflect judgment, divergent, synthesizer` line (default `composer-2.5`), agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access. Readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
+One `Task` call, `subagent_type: generalPurpose`, with `model` from the `reflect judgment, divergent, synthesizer` line (default `claude-opus-5.5-thinking-medium`), agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access. Readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
 
 ### 4. Structural enforcement check
 
-Sanity-check the synthesizer's Accepted list. For any item that would be enforced more reliably by a lint rule, script, metadata flag, or runtime check, move it from Accepted to Backlog. See `forge-mode/principles/encode-lessons-in-structure.md`.
+Sanity-check the synthesizer's Accepted list. For any item that would be enforced more reliably by a lint rule, script, metadata flag, or runtime check, move it from Accepted to Backlog. See the **encode-lessons-in-structure** principle skill.
 
 ### 5. Apply
 

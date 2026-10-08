@@ -1,11 +1,11 @@
 ### Runtime forensics
 
-**診断を所有する。live process を instrument。source から theorize しない。** 「why is X leaking / spinning / slow at runtime」、heap snapshot、idle-but-busy process、intermittent glitch 向け。成果物は cited diagnosis。fix ではない。
+**You own the diagnosis. Instrument the live process, don't theorize from source.** The deliverable is a cited diagnosis, not a fix.
 
-1. control スキル経由で matching surface 上で live signal を capture：spinning process なら CPU profile、leak なら heap snapshot、visual glitch なら CDP trace。guess ではなく real artifact。
-2. artifact を smoking gun に reduce：hot path 上の function、leaked object から GC root への retainer chain、input なしで fire する loop。大 artifact は subagent で parse（**guard-the-context-window** 原則スキル）。reduced finding をメインスレッドに保持。
-3. 信じる前に mechanism を prove。running process 上で CDP eval 経由 instrumentation inject、または reload なし live code hotfix で仮説を安く confirm。
-4. finding を source に map：file、symbol、allocate または schedule する line。
-5. throughput checkpoint は1行のまま：`throughput checkpoint: n/a, read-only forensics`。
+1. Capture the live signal on the matching surface via the control skill: a CPU profile for a spinning process, a heap snapshot for a leak, a CDP trace for a visual glitch. A real artifact, not a guess.
+2. Reduce the artifact to the smoking gun: the function on the hot path, the retainer chain from the leaked object to a GC root, the loop firing without input. Parse large artifacts in a subagent (the **guard-the-context-window** principle skill), keep the reduced finding in the main thread.
+3. Prove the mechanism before believing it. Inject instrumentation via CDP eval on the running process, or hotfix the live code without reloading, to confirm the hypothesis cheaply.
+4. Map the finding back to source: file, symbol, the line that allocates or schedules.
+5. Throughput checkpoint stays one line: `throughput checkpoint: n/a, read-only forensics`.
 
-**Reply:** capture した signal、reduced finding、mechanism の prove 方法、source location、artifact paths。求められない限り fix なし。原因が分かったら Bug fix または Perf に hand back。
+**Reply:** the signal captured, the reduced finding, how you proved the mechanism, the source location, artifact paths. No fix unless asked. Hand back to Bug fix or Perf once the cause is known.

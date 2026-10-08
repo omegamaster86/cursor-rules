@@ -1,17 +1,15 @@
 ### Bug fix
 
-**このタスクを所有する。Plan、review、verify。** 調査と fix を subagent に delegate、リードに留まる。
+**You own this task. Plan, review, verify.** Delegate investigation and the fix to subagents, stay in the lead.
 
-科学的に。ship された各行は runtime evidence に trace。belt-and-suspenders の「効くかも」は仮説であり fix ではない。ship しない。evidence が仮説を反証したら、それが動機づけたものを revert。evidence が正当化する最小変更だけ ship。それ以上はない。Perf も同じ discipline。evidence は trace。
+Be scientific. Every shipped line traces to runtime evidence. Belt-and-suspenders that "might help" is a hypothesis, not a fix. It does not ship. When evidence refutes a hypothesis, revert what it motivated. The smallest change the evidence justifies ships, nothing more.
 
-1. control スキル経由で matching surface 上で自分で再現（Non-negotiables）。repro をユーザーに渡さない。ユーザーに聞くよう言う debug または instrumentation protocol はこれを上書きしない。計装 runtime を自分で drive。control surface が target に届けない具体的理由を述べたうえで、drive できる限りまで drive した後だけユーザーに聞く。直接 repro しないなら force：trigger を合成、条件を tighten、または instrument して発火させる。
-2. 原因を binary-search。candidate 仮説を形成し、1つ残るまで排除。症状の沈黙（nil-check、ガード追加）は **fix-root-causes**（`principles/fix-root-causes.md`）。`how` で affected subsystem、`git log` / `gh pr view` で regression 履歴から seed。各 pass で残 problem space を最も切る split を取り、runtime evidence を得て eliminate。program state が unclear なら instrumentation または logging を追加し、コード実行中に読む。guess しない。長いまたは stubborn な hunt は Cursor の `/loop` で drive。step-3 architect / review-orchestrator fan-out 前に、surviving *mechanism* を runtime evidence で confirm。
-3. fix を plan。function boundary を越えるなら先に `architect`。触るファイルが2以上またはデータ経路が変わるなら **File change map** + **Data flow** の Mermaid を提示（[`../references/plan-diagrams.md`](../references/plan-diagrams.md)）。CreatePlan 可なら Cursor Plan に書く。specific scope で設定 bug-fix model（デフォルト `gpt-5.5-high-fast`）の subagent に implementation を delegate。diff を review。
-4. 同 surface で verify。元 repro が pass。Inconclusive または wrong-surface は pass ではない。flag。ユニットテストは branch 動作を示す。バグ不在は示さない。
-5. git history で failing repro が fix より先に land するよう commit を stage。diff が story を語る。**tdd** スキル参照。安価なローカル test path があるバグでは failing-test-first cadence。テストが expensive、integration-heavy、unclear なら skip。
-   これが canonical **sequence-verifiable-units** 原則スキル。failing test 先、fix が上。
-6. **Opening a PR** を実行。
+1. Reproduce it yourself on the matching surface via the control skill (Non-negotiables), even when a debug or instrumentation protocol says to ask the user to reproduce. Ask the user only with a stated, specific reason the control surface cannot reach the target, and only after driving it as far as it goes. If it won't reproduce directly, synthesize the trigger, tighten conditions, or instrument until it fires.
+2. Binary-search the cause. Form the candidate hypotheses, then rule them out until one survives. Seed them with `how` over the affected subsystem and the **why** skill for regression history. Each pass, take the split that cuts the most remaining problem space, get runtime evidence, eliminate. When program state is unclear, add instrumentation or logging and read it as the code runs. Don't guess. Drive a long or stubborn hunt with Cursor's `/loop` command. Confirm the surviving *mechanism* with runtime evidence before the step-3 architect / review-orchestrator-triple-hybrid fan-out.
+3. Plan the fix. If it crosses a function boundary, `architect` first. Delegate implementation to a subagent using your configured bug-fix model (default `cursor-grok-4.6-medium`) with a specific scope.
+4. Verify on the same surface. The original repro now passes. "Inconclusive" or wrong-surface is not a pass. Flag it. Unit tests show branch behavior, not bug absence.
+5. Stage the commits so the failing repro lands before the fix in git history. See the **tdd** skill for the failing-test-first cadence when the bug has a cheap local test path. Skip it when the test would be expensive, integration-heavy, or unclear.
+   This is the canonical **sequence-verifiable-units** principle skill, the failing test first and the fix on top.
+6. Run **Opening a PR**.
 
-Investigation は `how` を parallel subagent に fan-out。regression 履歴が必要なら `git`/`gh` で並列確認。
-
-**Reply:** 何が壊れていたか、root cause、fix、verify 方法。failing-then-passing repro 出力を verbatim で paste。
+**Reply:** what was broken, root cause, fix, how you verified. Paste failing-then-passing repro output verbatim.

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Setup forge
 
-`~/.cursor/rules/forge-models.mdc` を書き、forge-mode のロールごとのモデルを上書きする。PJ に omega を `omega-link` 済みなら、テンプレは `.cursor/rules/forge-models.mdc`（PJ コピー）を編集してもよい。ユーザー全体の既定は `~/.cursor/rules/forge-models.mdc`。
+`~/.cursor/rules/forge-models.mdc` を書き、forge-mode のロールごとのモデルを上書きする。PJ に omega を `omega-link` 済みなら、テンプレは `.cursor/rules/forge-models.mdc`（PJ コピー）を編集してもよい。
 
 ## Steps
 
@@ -16,18 +16,18 @@ disable-model-invocation: true
 
 ### 2. 現状を読む
 
-デフォルトの形は下記 step 5。`~/.cursor/rules/forge-models.mdc` または PJ の `.cursor/rules/forge-models.mdc` があれば `# budget` 行と各ロール値を現状として読む。step 5 に無いロール行は廃止扱いで削除。
+デフォルトの形は下記 step 5。`~/.cursor/rules/forge-models.mdc` または PJ の `.cursor/rules/forge-models.mdc` があれば `# budget` 行と各ロール値を現状として読む。step 5 に無いロール行（例: 廃止された `how critics`）は落とす。
 
 ### 3. Budget、マップ、確認
 
-**(a) budget を聞く。** AskQuestion を優先。次の 4 択（ラベルはそのまま）。既存 budget があれば名指す。
+**(a) budget を聞く。** AskQuestion を優先。次の 4 択（ラベルはそのまま）。既存 budget があれば名指す。ルールが無いときは `large` がスキルデフォルトと同じと伝える。
 
-- `unlimited — keep max`
+- `unlimited — max reasoning`
 - `large — xhigh reasoning`
 - `medium — high reasoning`
 - `small — medium reasoning`
 
-**(b) 適用。** スキルデフォルトから作業表を構築。再実行時はユーザーが変えたロールはファミリ・リスト・`inherit` を保持。`unlimited` は effort をそのまま。`large` / `medium` / `small` は実 slug の effort を `xhigh` / `high` / `medium` に下げる（`max` > `xhigh` > `high` > `medium` > `low`、末尾 `fast` の前のトークンが effort）。結果が検出集合に無ければ同ファミリで target 以下の最高 effort、なければ要選択。`inherit` は変えない。
+**(b) 適用。** スキルデフォルトから作業表を構築。再実行時はユーザーが変えたロールはファミリ・リスト・`inherit` を保持。`unlimited` / `large` / `medium` / `small` は実 slug の effort を `max` / `xhigh` / `high` / `medium` に下げる（`max` > `xhigh` > `high` > `medium` > `low`、末尾 `fast` の前のトークンが effort）。結果が検出集合に無ければ同ファミリで target 以下の最高 effort、なければ要選択。`inherit` は変えない。Grok 系は effort の上限が `xhigh` のことが多い。
 
 **(c) ロール一覧を見せて確認。** 検出外 slug は要選択とマーク。step 2 で落とした行も列挙。そのままかロール単位で変更かを聞く。リスト型ロール（`multi-agent-candidates runners`、`architect runners`、`review orchestrator *`）はエントリ数＝fan-out 数。`swarm workers` は各ワーカーのデフォルト（レース arm は brief で別指定可）。
 
@@ -37,7 +37,7 @@ disable-model-invocation: true
 
 ### 5. ルールを書く
 
-`alwaysApply: true`、idempotent にファイル全体を上書き。形:
+`alwaysApply: true`、idempotent にファイル全体を上書き。`# budget` 行を含める。形:
 
 ```
 ---
@@ -45,28 +45,27 @@ description: forge-mode ロールごとのモデル選択（スキルデフォ�
 alwaysApply: true
 ---
 # forge-mode model configuration
-# budget: medium (high)
-feature, refactoring: composer-2.5
-bug-fix: composer-2.5
-perf-issue: composer-2.5
-hillclimb: composer-2.5
-judgment and prose: claude-opus-5-thinking-medium
-how explorer: composer-2.5
-how explainer: composer-2.5
-how critics: composer-2.5, composer-2.5, composer-2.5
-why investigators: composer-2.5-fast
-why synthesizer: claude-opus-5-thinking-medium
-reflect tooling: composer-2.5
-reflect judgment, divergent, synthesizer: composer-2.5
-multi-agent-candidates runners: claude-sonnet-5-thinking-medium, gpt-5.6-sol-medium, cursor-grok-4.5-medium
-architect runners: composer-2.5, cursor-grok-4.5-medium, claude-opus-5-thinking-medium
-swarm workers: composer-2.5-fast
-review orchestrator grok: cursor-grok-4.5-medium
+# `inherit` のロールは親チャットモデルで走る（Task の `model` を省略）
+# budget: large (xhigh)
+feature, refactoring: cursor-grok-4.6-medium
+bug-fix: cursor-grok-4.6-medium
+perf-issue: cursor-grok-4.6-medium
+hillclimb: cursor-grok-4.6-medium
+judgment and prose: claude-opus-5.5-thinking-medium
+hardest tasks: claude-opus-5.5-thinking-medium
+how explorer: cursor-grok-4.6-medium
+how explainer: claude-opus-5.5-thinking-medium
+why investigators: cursor-grok-4.6-medium
+why synthesizer: claude-opus-5.5-thinking-medium
+reflect tooling: cursor-grok-4.6-medium
+reflect judgment, divergent, synthesizer: claude-opus-5.5-thinking-medium
+multi-agent-candidates runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
+swarm workers: cursor-grok-4.6-medium
+architect runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
+review orchestrator grok: cursor-grok-4.6-medium
 review orchestrator sonnet correctness: claude-sonnet-5-thinking-medium
 review orchestrator sonnet quality: claude-sonnet-5-thinking-medium
 ```
-
-`inherit` を値にしたロールは親チャットモデルで走る（Task の `model` を省略）。
 
 ### 6. 確認
 

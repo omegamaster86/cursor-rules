@@ -29,6 +29,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | 争点のある設計の並列案 | **`multi-agent-candidates`** スキル（`/architect` からも） |
 | カバレッジ分割・レース・ガントレット | **`swarm`** スキル |
 | ロール別モデル・budget の初期設定 | **`setup-forge`** スキル |
+| セットアップ・スキル選びの案内 | **`forge-help`** スキル（`/forge-help`） |
 | ベンチ実行・自分で測った speedup / regression の報告 | **`benchmark-checklist`** スキル（`explain-the-number` 原則） |
 | オペレーターが繰り返し直すミスクラス | **`correct`** スキル |
 | PR 準拠チェック | `nextjs-code-review`, `supabase-code-review` |
@@ -162,11 +163,29 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 **プレイブックステップ内で spawn するサブエージェントはすべて `subagent_type: "forge-agent"` を使う**（コード書き delegate、ad-hoc ヘルパー）。`/forge-mode` と `forge-agent` は同じラッパーを通る。ルーティングされたワークフロースキル（`how`、`why`、`reflect`）は diverse-model レビュー用に独自の `subagent_type` を設定。スキルが規定するものを尊重し、`forge-agent` で上書きしない。
 
-**すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`forge-models.mdc` で設定。行を削除するとスキル内デフォルトにフォールバック。genai-pstack デフォルト: code は `composer-2.5-fast`、正しさレビューは `gpt-5.3-codex` / `claude-4.6-sonnet-medium-thinking`、judgment は `claude-opus-4-8-thinking-high`）。
+**すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`/setup-forge` または `forge-models.mdc`。行を削除するとスキル内デフォルトにフォールバック。デフォルト: コード系は `cursor-grok-4.6-medium`、散文・判断は `claude-opus-5.5-thinking-medium`）。難度で tier 分け。横断設計・並行・微妙なアルゴリズムは **`hardest tasks`** 行（無ければ judgment と同じ）。些末な mechanical 編集は fast コードモデル。ルーティングスキル（`how`、`why`、`reflect`、`swarm`、`architect`）は各 SKILL のロール行が `forge-models.mdc` を上書き。`inherit` のロールは Task の `model` を省略し親モデルで走る。
 
 サブエージェントの作業はすべて自分が所有する。diff をレビューし自分の要約を書く。言ったことをそのまま通さない。セカンドオピニオンは別モデルに同じプロンプト。一致は high-signal。
 
 **デフォルトは fresh subagent。** 新しい work は consolidated scope（元 brief、後続 directive、前 agent の report と branch）を渡した fresh subagent に任せる。fix round、follow-up、retry、次の queue 項目も同様。既存 subagent の resume / message / queue follow-up は、移すコストが高い state だけ（local checkout、未 commit 変更、その agent がまだ動かす process：dev server、simulator、babysit watcher）。running agent への stop / hold は reuse ではない。PR owner などの role は agent より長生きし、return 後は fresh agent が次の round を取る。interrupt 連鎖 resume は directive を黙って drop するので、「完了」要約を信じず fresh を起動する。
+
+## 返信の書き方
+
+下書きの段階できれいに書く。後から整形してもこのパターンは残す。
+
+- **短い宣言文。** 1文1思考。句点で終える。
+- **長いダッシュ文字は使わない。** ファイル列挙は文で書く（「`main.js` が永続化と IPC を担当する」）。太字見出しも独立した文にする（「**Verification.** CDP で end to end」）。
+- **文の途中でコロンをつなぎに使わない**（リスト直前のコロンは可）。
+- **簡潔さは省略の言い訳にならない。** プレイブックが求める節（詳細、トレードオフ、選択、未決）は残す。
+- **利用者と保守者への影響を先に書く。** 実装詳細の前に、誰の何が変わるか。次の担当者が何を引き継ぐか。どちらも言えなければ説明か作業がずれている。
+- **リンク・引用・トランスクリプト参照を捏造しない。** このセッションで作った／読んだ成果物だけリンクする。
+- **主張には同じ文で根拠またはラベル**（測定済み / 推論 / 推測）。人間に自分でできる確認を渡さない。
+
+各プレイブックはこの形式で終える。PR URL は `https://github.com/<owner>/<repo>/pull/<number>`。
+
+## コメント
+
+返信と同じ基準。コードが示せない非自明な *why* だけ残す。verify / test スクリプトに `// Phase 1: add cards` のようなフェーズ実況コメントは書かない。assert やログ文字列がステップを担う（`assert(ok, 'persisted across restart')`）。delegate の diff も含め、生成するすべてのファイルに適用。
 
 ## Playbooks
 

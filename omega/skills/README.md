@@ -12,6 +12,7 @@
 | `/create-verification-skill`（command） | 対象 PJ にユーザー操作の証明レシピ（`verify-<app>`）を生成 |
 | `/maintain-verification-skill`（command） | 上記 feature map の監査・更新（プロダクトコードは触らない） |
 | `/setup-forge`（skill） | ロール別モデル・reasoning budget を `forge-models.mdc` に書く |
+| `/forge-help`（skill） | セットアップ・スキル / プレイブック選びの案内（作業は開始しない） |
 | `forge-mode`（skill） | 原則（24）・プレイブック（23）・Intent gate の本体（コマンドと同名） |
 | [omega ガイド](../docs/guide/README.md) | 初回オンボーディング（plan-interview → forge-mode → ship） |
 

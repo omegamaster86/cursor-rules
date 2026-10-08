@@ -1,58 +1,57 @@
-# 設計のレッドフラグ
+# Design red flags
 
-合成に入る前に、候補をすべてこの観点で点検する。レッドフラグは、その形を見直す、または却下する理由である。
+Screen every candidate before synthesis. A red flag is a reason to revise or reject the shape.
 
-## 浅いモジュール
+## Shallow module
 
-浅いモジュールは、公開インターフェースが大きい一方で、裏に隠している複雑さが少ない。深さは、公開面の大きさに対して、その背後にどれだけの能力とポリシーが隠れているかで判断する。公開面は小さく、振る舞いは十分に厚いモジュールを好む。
+A shallow module exposes a large interface while hiding little complexity. Judge depth by the capability and policy hidden behind the public surface relative to the size of that surface. Prefer a simple interface backed by substantial behavior.
 
-深いモジュールと深い呼び出しチェーンを混同しない。深い呼び出しチェーンは理解を層に散らす。深いモジュールは、一つのインターフェースの背後に能力を集約する。
+Do not confuse a deep module with a deep call chain. A deep call chain scatters understanding across layers. A deep module concentrates capability behind one interface.
 
-次の兆候に注意する:
+Look for these signs:
 
-- 呼び出し側が一つの操作を完了するために、複数メソッドの調整を行っている。
-- 公開オプションが内部段階や実装の選択肢を露出している。
-- インターフェースを覚えても、呼び出し側が実装を理解せずに済まない。
+- Callers coordinate several methods to complete one operation.
+- Public options expose internal stages or implementation choices.
+- Learning the interface does not save the caller from learning the implementation.
 
-## 情報漏洩
+## Information leakage
 
-情報漏洩は、複数モジュールが同じ内部の決定に依存してしまう状態である。表現・ポリシー・プロトコルの詳細が複数箇所に現れ、変更には協調した編集が必要になる。
+Information leakage makes multiple modules depend on the same internal decision. A representation, policy, or protocol detail appears in more than one place, so changing it requires coordinated edits.
 
-トランスポート型やワイヤ型の公開再エクスポートは漏洩である。外部データはインターフェースの背後でドメイン型にパースする。ストレージスキーマ、フレームワークオブジェクト、プロトコル詳細は非公開に保つ。
+Public re-exports of transport or wire types are leakage. Parse external data into domain types behind the interface. Keep storage schemas, framework objects, and protocol details private.
 
-## 時間的分割
+## Temporal decomposition
 
-時間的分割は、モジュールを所有する知識ではなく、実行順序で分割することである。load、validate、transform、save などを別モジュールに分けると、同じ表現と不変条件が複数の境界に繰り返し現れやすい。
+Temporal decomposition organizes modules by execution order instead of the knowledge they own. Separate load, validate, transform, and save stages often repeat one representation and its invariants across several boundaries.
 
-コードはドメイン知識と所有権のまわりにまとめる。実行タイミングが異なるメソッドでも、同じ決定を守るなら一つのモジュールに属してよい。
+Group code around domain knowledge and ownership. Methods that run at different times can still belong to one module when they protect the same decisions.
 
-## パススルーメソッド
+## Pass-through method
 
-パススルーメソッドは、同じ形の引数を、同じ形の別メソッドへそのまま転送するだけである。複雑さを隠さずに層だけ増やす。
+A pass-through method forwards the same arguments to another method with the same shape. It adds a layer without hiding complexity.
 
-削除するか、操作を完了できるモジュールへ責務を移す。転送境界を残すのは、ポリシー、適応、または明確に異なる抽象を追加するときだけに限る。
+Remove it or move responsibility to the module that can complete the operation. Keep a forwarding boundary only when it adds policy, adaptation, or a distinct abstraction.
 
-## 所有の分割（split ownership）
+## Split ownership
 
-複数モジュールが同じ状態を書く、または各自がコピーを持つ。1 つの writer だけを編集するエージェントは他を見えず、ルールが乖離する。
+More than one module writes the same state or keeps its own copy of it. An agent that edits one writer can't see the others, so their rules diverge.
 
-状態ごとに 1 owner。他は読むか owner に変更を依頼する。
+Give each piece of state one owner. Other modules read it or ask the owner to change it.
 
-## 同一タスクの二通り（two ways）
+## Two ways to do one task
 
-同じタスクを完了する複数の経路がある。エージェントは最初に見つけた経路をコピーし、各経路に caller が増え続ける。
+The design supports more than one way to do the same task. An agent copies whichever way it finds first, so every way keeps gaining callers.
 
-1 通りに統一。他の caller を同じ変更で移し、経路を削除する。
+Keep one way. Move callers off the others and delete them in the same change.
 
-## インポート可能な内部（importable internals）
+## Importable internals
 
-caller がモジュール内部を import できる。コンパイルが通る最短経路で内部を直接 import し、それが公開 API になる。
+A caller can import a module's internals. An agent takes the shortest path that compiles, so it imports them directly and they become part of the interface.
 
-外部から内部に到達できないようにし、外部からの import は build で失敗させる。
+Make internals unreachable from outside the module, so an import from outside fails the build.
 
-## 手同期リスト（hand-synced list）
+## Hand-synced list
 
-同じ項目が複数箇所にリストされ、追加時にすべてを編集する必要がある。エージェントは 1 リストだけ見て、その 1 つだけ更新する。
+Two or more places list the same items, and adding an item means editing every list. An agent that sees one list updates only that one.
 
-リストは 1 つにし、他はそこから derive する。derive できないなら、不一致で build を失敗させる。
-
+Keep one list and derive the others from it. If a list can't be derived, make the build fail when the lists disagree.
