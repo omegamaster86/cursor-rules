@@ -17,13 +17,13 @@ My agent style, layered on [pstack](../pstack/). pstack does the heavy lifting: 
 
 | Skill | Use it when |
 |---|---|
-| [`/dyl-mode`](./skills/dyl-mode/SKILL.md) | Default entry for non-trivial work. Routes through pstack's `poteto-mode` playbooks with my gates on top. |
+| [`/dyl-mode`](./skills/dyl-mode/SKILL.md) | Default entry for non-trivial work. Routes through pstack's `forge-mode` playbooks with my gates on top. |
 | [`/dyl-review`](./skills/dyl-review/SKILL.md) | You want up to 7 paste-ready review comments and one 🟢/🟡/🔴 call. Say "deep" to add thermos and Bugbot. Never posts. |
 | [`/dyl-ready-pr`](./skills/dyl-ready-pr/SKILL.md) | "Get PR green." Deep review until 🟢, mark ready, fix conflicts, babysit CI to merge-ready. Never merges. |
 | [`/build-figma`](./skills/build-figma/SKILL.md) | You have a `figma.com/design` URL with a `node-id`. Intake first, map to your repo's design system, then a visual judge against the live UI. Also fires on its own from Figma URLs. |
 | [`principle-the-algorithm`](./skills/principle-the-algorithm/SKILL.md) | Referenced by `dyl-mode`. Question the requirement, delete, then optimize, accelerate, automate. |
 
-## What dyl-mode adds over poteto-mode
+## What dyl-mode adds over forge-mode
 
 - **Root cause, not symptom.** Any failure gets a `Root cause: X because Y` todo before a fix. Null guards, retries, `.skip`, and snapshot updates are symptom fixes until that line justifies them.
 - **The Algorithm** before designing anything bigger than a glance-sized edit.

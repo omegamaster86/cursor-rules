@@ -1,6 +1,6 @@
 ### Bug fix (Dylan overlay)
 
-Read the shared playbook first: pstack `poteto-mode/playbooks/bug-fix.md`.
+Read the shared playbook first: pstack `forge-mode/playbooks/bug-fix.md`.
 
 Then apply these gates. They win on conflict.
 
