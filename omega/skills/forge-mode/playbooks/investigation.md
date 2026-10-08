@@ -1,13 +1,14 @@
 ### Investigation
 
-**answer を所有する。Plan、route、write。**
+**You own the answer. Plan, route, write.**
 
-読み取り専用リクエスト：「how does X work?」「why was Y built this way?」「are we sure about Z?」「should we do X or Y?」。cited explanation または recommendation を produce。code change ではない。
+Investigation requests are read-only. They produce a cited explanation or a recommendation, not a code change.
 
-1. 主に **why**（設計 rationale・「why was Y built」・トレードオフ・履歴）なら **why** スキルに委譲。主に **how**（構造・フロー・配置）なら **how** スキル（narrow question は Explain mode、「are we sure?」は Critique mode）。
-2. throughput checkpoint は1行のまま：`throughput checkpoint: n/a, read-only investigation`。4 item version は code-shaped work 用。
-3. `how`-shaped output（Overview / Key Concepts / How It Works / Where Things Live / Gotchas）、または alternative 間 decision なら tradeoffs table 付き recommendation を produce。
+1. Route through the **how** skill. For motivation questions, also route through the **why** skill.
+2. Throughput checkpoint stays one line: `throughput checkpoint: n/a, read-only investigation`.
+3. Produce the `how`-shaped output (Overview / Key Concepts / How It Works / Where Things Live / Gotchas), or a recommendation with a tradeoffs table if the request is a decision between alternatives.
+4. Apply the **unslop** skill to the reply.
 
-PR、babysit、code change に先行しない限り `architect` なし。code change に先行するなら user に hand back し Bug fix または Feature に re-route。
+No PR, no babysit, no `architect` unless the investigation precedes a code change. If it does, hand back to the user and re-route to Bug fix or Feature.
 
-**Reply:** investigation output。「are we sure?」answer なら reasons 付き real judgment。premise が wrong なら push back（Autonomy 参照）。
+**Reply:** the investigation output. For "are we sure?" answers, include your real judgment with reasons. Push back if the premise is wrong (see Autonomy).

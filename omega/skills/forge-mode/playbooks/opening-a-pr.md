@@ -23,11 +23,11 @@
 
 **Forge.** 最初の PR 操作前に forge を決め、create / edit / view / watch / merge で維持。デフォルトは GitHub CLI（`gh`）。`command -v origin` が成功し Origin が repo を解決できるなら `origin pr ...` を優先。無ければ `gh` に留まり fallback を記録。Graphite（`gt`）は要求しない。
 
-**Built-in PR tool.** run が組み込み PR ツールを提供するなら、create / edit / retarget / ready はツール経由（CLI ではない）。ツールが無い操作と、ツールが無い run 全体は resolved forge を使う。
+**Built-in PR tool.** run が組み込み PR ツールを提供するなら、create / edit / retarget / ready はツール経由（CLI ではない）。ツールの手順に従う。CLI だけで作った PR はツールが追跡しない説明などを欠くことがある。ツールがカバーしない操作と、ツールが無い run 全体は resolved forge を使う。
 
-**Size and stacks.** 1 fat より 5 narrow PR。stack は base-branch 連鎖。root は trunk。child は親 tip に rebase し PR base は親 branch。独立 work だけ trunk から branch。大きな stack 前に trunk で rebase。
+**Size and stacks.** 1 fat より 5 narrow PR。stack は base-branch 連鎖。root は trunk。child は親 tip に rebase し PR base は親 branch。組み込み PR ツールが無いときは、resolved forge に従い child を `origin pr create --status open --base <parent-branch>` または `gh pr create --base <parent-branch>` で作り、既存 child の retarget は `origin pr edit <pr> --base <parent-branch>` または `gh pr edit <pr> --base <parent-branch>`。独立 work だけ trunk から branch。大きな stack 前に trunk で rebase。
 
-**Readiness.** PR は ready で開く（draft ではない）。組み込みツールは `draft: false`。`gh` では `--draft` を付けない。draft になったら ready にする。
+**Readiness.** PR は ready で開く（draft ではない）。組み込みツールは毎回 `draft: false`。Origin なら `--status open`。`gh` では `--draft` を付けない。draft のままなら PR ツールで ready、または resolved forge で `origin pr ready <number>` / `gh pr ready <number>`。状態を言う前に `origin pr view <number>` または `gh pr view <number>`。
 
 **Babysit.** Opening a PR は babysit を開始しない。URL を出して build を続ける。phase / stack が揃った後、ユーザーが求めたときだけ別 pass で **Babysit**（`babysit.md`）。各 PR ごとの babysit は build を止め、後続 wave で restart される commit に check を浪費する。intent から drift した feedback には push back。
 

@@ -1,44 +1,42 @@
 ---
 name: tdd
-description: "ユーザーが明示的に TDD、失敗テスト、回帰テストを求めたとき、またはバグに安価で明らかなローカルテスト対象があるときのみ使用。テスト経路が不明、高コスト、統合重視、または要求されていないときはスキップ。"
+description: "Use only when the user explicitly asks for TDD, a failing test, or a regression test, OR when the bug has an obvious cheap local test target. Skip when the test path is unclear, expensive, integration-heavy, or not requested."
 disable-model-invocation: true
 ---
 
 # TDD Bug Fix
 
-安価で明確なテスト経路があるバグ修正では、本番コードを変える前に壊れた振る舞いを実行可能にする。目的は、修正前に失敗し修正後に通る、焦点を絞った回帰テスト。
+When fixing a bug with a clear, cheap test path, make the broken behavior executable before changing production code. The goal is a focused regression test that fails before the fix and passes after it.
 
-非現実的ならテストを強制しない。利用可能なテストが広いハーネス設定、もろいモック、遅い E2E 基盤、本番専用状態、曖昧な再現手順、無関係なフィクスチャの大量変更を要するなら、新規テストは追加せず、最も近い有用な検証を使う。
+Do not force a test when it would be impractical. If the available test would require broad harness setup, brittle mocks, slow end-to-end infrastructure, production-only state, vague reproduction steps, or large unrelated fixture churn, skip adding a new test and use the closest useful verification instead.
 
-## ワークフロー
+## Workflow
 
-1. **バグを理解する。** 意図した振る舞い、現在の振る舞い、影響パス、最小の観測可能な再現を特定する。
-2. **最も狭い実行可能チェックを選ぶ。** そのコードパスで既に使われている最も近いユニット、コンポーネント、統合、回帰テストを優先。実用的なテスト経路が明らかでなければ、ワークフローを満たすためにゼロから作らない。
-3. **先に失敗テストを書く。** バグを捕まえたはずの最小の焦点テストを追加。現在の実装を写すのではなく、意図した振る舞いをエンコードする。
-4. **修正前に新テストを実行。** 意図した理由で失敗することを確認。通るか無関係な理由で失敗するなら、実装を編集する前にテストか再現を直す。
-5. **バグを修正する。** 意図した振る舞いを満たし、近傍の契約を保つ最小の本番変更。
-6. **回帰テストを再実行。** テストが通ることを確認。
-7. **近傍の検証を実行。** 変更に広いリスクがあるとき、関連する隣接テスト、型チェック、lint、シナリオチェックを実行。
+1. **Understand the bug.** Identify the intended behavior, current behavior, affected path, and smallest observable reproduction.
+2. **Choose the narrowest executable check.** Prefer the closest unit, component, integration, or regression test already used for that codepath. If no practical test path is obvious, do not create one from scratch just to satisfy the workflow.
+3. **Write the failing test first.** Add the smallest focused test that would have caught the bug. The test should encode intended behavior, not mirror the current implementation.
+4. **Run the new test before fixing.** Confirm it fails for the intended reason. If it passes or fails for an unrelated reason, correct the test or reproduction before editing the implementation.
+5. **Fix the bug.** Make the smallest production change that satisfies the intended behavior while preserving nearby contracts.
+6. **Rerun the regression test.** Confirm the test now passes.
 
-## 失敗テストが非現実的なとき
+## If a Failing Test Is Impractical
 
-回帰ステップを黙ってスキップしない。修正前に、失敗テストが不可能またはコストに見合わない理由を明示し、利用可能な最も近い実行可能な回帰チェックを選ぶ。例: 対象スクリプト、手動再現コマンド、ブラウザ自動化、スナップショット比較、ログアサーション、焦点を絞った統合チェック。
+Use the closest executable regression check instead: a targeted script, manual reproduction command, browser automation, snapshot comparison, log assertion, or focused integration check.
 
-悪いテストより新規テストなしを優先。悪いテストとは、主にモックをテストする、現在の実装詳細をエンコードする、タイミングや無関係なグローバル状態に依存する、小さな修正に高価な基盤が要る、修正証明後すぐ消されるもの。
+Prefer no new test over a bad test. A bad test is one that mostly tests mocks, encodes current implementation details, depends on timing or unrelated global state, needs expensive infrastructure for a small fix, or would be deleted immediately after proving the fix.
 
-## ガードレール
+## Guardrails
 
-- 間違った実装に合わせてテストだけ変えない。
-- 期待振る舞いが本当に変わり理由が明確でない限り、既存アサーションを弱めない。
-- 回帰テストはバグに焦点。広いフィクスチャ変更や無関係なカバレッジ拡大は避ける。
-- 実用的なシグナルが弱いときはテストを追加せず、手動かスクリプト検証を使い理由を述べる。
-- バグがフレークなら、可能ならテストを決定論的にし、ロックダウンするシグナルを文書化する。
-- バグがより広いクラスの失敗を露わにしたら、まず焦点を絞った回帰経路を着地し、その後兄弟カバレッジを検討する。
+- Do not change tests merely to match a wrong implementation.
+- Do not weaken existing assertions unless the expected behavior has genuinely changed and the reason is clear.
+- Keep the regression test focused on the bug. Avoid broad fixture churn or unrelated coverage expansion.
+- If the bug is flaky, make the test deterministic where possible and document the signal being locked down.
+- If the bug exposes a broader class of failures, first land the focused regression path, then consider additional sibling coverage.
 
-## 最終応答
+## Final Response
 
-結果だけでなく証拠を報告する:
+Report the evidence, not just the outcome:
 
-- 修正前に失敗したテストまたは実行可能チェックの名前と、それが出した失敗。
-- 修正後に通ったテスト実行と、行った近傍検証。
-- 修正前の証拠を示せなかった場合、その理由と代わりに使った最も近い回帰チェック。
+- Name the failing-before test or executable check and the failure it produced.
+- Name the passing-after test run and any nearby validation performed.
+- If failing-before evidence could not be demonstrated, state why and describe the closest regression check used instead.

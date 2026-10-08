@@ -1,18 +1,16 @@
 ---
 name: swarm
-description: N 並列ワーカーを扇状展開し、集約して 1 本のレポートを返す。/swarm、「swarm this」、カバレッジ分割・レース・ガントレット・探索に使用。
+description: "Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration."
 disable-model-invocation: true
 ---
 
 # Swarm
 
-N 個の並列 cloud ワーカーを扇状展開する。スライス分割、同一 brief のレース、または混在。親は待ち、集約し、1 本のレポートを返す。
+Fan out N parallel cloud workers. They may cover separate slices, race the same brief, or mix both. The parent waits, aggregates, and returns one report.
 
-forge-mode の **multi-agent-candidates** は設計 bakeoff 向き。**swarm** は実行・検証・探索のカバレッジ分割向き。
+## Start
 
-## 開始
-
-起動前にフェーズごと 1 項目の todolist を開く。
+Open a todolist with one entry per phase before launching anything.
 
 1. Frame
 2. Fan out
@@ -21,28 +19,28 @@ forge-mode の **multi-agent-candidates** は設計 bakeoff 向き。**swarm** �
 
 ## Phase A: Frame
 
-1. 完了条件（done predicate）と swarm が返すべき成果物またはレポートを述べる。
-2. 形を選ぶ。スライス分割、同一 brief で N レース、または混在。レースまたは混在では spawn 前に `first pass` / `rank all` / `best-of` を宣言。
-3. N はユーザー指定または形から決める。N は総ワーカー数であり cloud 並列上限ではない。
-4. ワーカーモデルは `.cursor/rules/forge-models.mdc` の `swarm workers` 行から。行が無いときは `composer-2.5-fast`。`inherit` のときは Task の `model` を省略し親モデルで走らせる。slug が拒否されたらデフォルトを使い明記。レースでは各 arm のモデルを先に名指し。
-5. 書き込みがあるワーカーには専用の出力先を渡す。コミットを verify / 計測する brief は exact SHA を名指す。計測 brief は方法（サンプル数、1 サンプルの定義、順序）も名指し。ワーカーは結果に両方を記録。
+1. State the done predicate and the artifact or report the swarm must return.
+2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
+3. Set N from the user or derive it from the shape. N is total workers, not the cloud concurrency limit.
+4. Pick the worker model from the `swarm workers` line in `~/.cursor/rules/forge-models.mdc`. If the rule or that line is missing, use `cursor-grok-4.6-medium`. For `inherit`, omit `model` so the workers run on the parent model. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. For a model race, name each arm's model up front.
+5. Give each worker its own writable output when it writes. When workers verify or measure commits, each brief names the exact SHAs. A measurement brief also names the method (sample count, what one sample is, order). The worker records both in its result.
 
 ## Phase B: Fan out
 
-1 メッセージで N ワーカーをすべて spawn。`subagent_type: generalPurpose`（または forge-mode コンテキストでは `forge-agent` でコード実装）、`environment: "cloud"`、`run_in_background: true`、Phase A のモデル（`inherit` なら省略）。ユーザーマシン上のものだけ必要なら `environment: "local"`。
+Spawn all N workers in one message with `subagent_type: generalPurpose`, `environment: "cloud"`, `run_in_background: true`, and the step 4 model, left unset for `inherit`. Use `environment: "local"` only when the worker needs access to something on the user's computer.
 
-非デフォルトの push 済みブランチから始める必要があるときは `cloud_base_branch` を渡す。
+When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
 
-各 brief は単体で完結。goal、scope、exact スライスまたはレース arm、verify 方法、報告形式を含める。報告は `PASS` / `ISSUES` / `BLOCKED` と evidence。欠陥を証明できるワーカーは `ISSUES` と、最初の 1 件だけでなく証明できるすべてを列挙。
+Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
 
-ワーカーが落ちたら N-1 で続行し明記。
+If a worker drops out, proceed with N-1 and note it.
 
 ## Phase C: Aggregate
 
-終端結果を読む。brief が名指した SHA と方法を記録していない結果は捨て、そのワーカーを 1 回再実行。2 回目も欠けたら gap として記録。gap は pass に数えない。カバレッジでは必須スライスごとに結果が必要。レースでは先に宣言した選択規則を適用。生ダンプは貼らない。
+Read the terminal results. Drop a result that does not record the SHAs and method its brief names, and respawn that worker once. After a second miss, record a gap. A gap does not count as a pass. For coverage, every required slice needs a result. For a race, apply the selection rule declared up front. Use first pass, rank all, or best-of. Do not paste raw worker dumps.
 
-コンパクトな結果表、1 行 evidence 付き issue、gap / dropout を保持。
+Keep a compact result table, one-line evidenced issues, and explicit gaps or dropouts.
 
 ## Phase D: Report
 
-表、issue 1 行要約、gap / dropout、使用したレース規則を含む 1 本のチャット内レポートを返す。
+Return one consolidated in-chat report with the table, issue one-liners, gaps or dropouts, and the race rule when used.

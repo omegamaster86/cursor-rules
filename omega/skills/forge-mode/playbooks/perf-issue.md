@@ -1,10 +1,11 @@
 ### Perf issue
 
-**measurement story を所有する。Plan、review、数字を verify。** 各 fix を measurement に tie。source を読む代わりに measure しない。
+**You own the measurement story. Plan, review, verify the numbers.** Tie every fix to a measurement, don't read source instead of measuring.
 
-1. matching control スキルまたは対象 PJ の `verify-*` / 計測手順で baseline trace を capture。baseline と以降の各数字を **benchmark-checklist** スキルで vet。
-2. 仮説を ground するため `how`。実行せず perf ceiling を claim しない。次の performance mantras を安い順に試す:
-   1. Don't do it. 結果を誰も使わない work は安くするのではなく止める。
+1. Capture a baseline trace via the matching control skill. Vet the baseline, and each later number, with the **benchmark-checklist** skill.
+2. `how` to ground hypotheses. Don't claim a perf ceiling without running it first.
+   Try the performance mantras in order, cheapest first:
+   1. Don't do it. Stop work whose result nothing uses rather than cheapening it.
    2. Do it, but don't do it again.
    3. Do it less.
    4. Do it later.
@@ -12,13 +13,13 @@
    6. Do it concurrently.
    7. Do it cheaper.
 
-   早い mantra で target に届いたら止める。
-3. trace から fix を plan。function boundary を越えるなら先に `architect`。設定 perf-issue model（デフォルト `composer-2.5-fast`）の subagent に implementation を delegate。diff を review。post-fix trace を capture。
-   **sequence-verifiable-units** 原則スキルを適用。次を試す前に各 attempt を verify。
-4. artifact を parse して compare（JSON to sqlite、diff）。Inconclusive または wrong-surface は pass ではない。flag。
-5. PR に measurement を cite。
-6. **Opening a PR** を実行。
+   When an earlier mantra meets the target, stop.
+3. Plan the fix from the trace. If it crosses a function boundary, `architect` first. Delegate implementation to a subagent using your configured perf-issue model (default `cursor-grok-4.6-medium`). Review the diff. Capture a post-fix trace.
+   Apply the **sequence-verifiable-units** principle skill, verifying each attempt before trying the next.
+4. Parse and compare the artifacts (JSON to sqlite, diff). "Inconclusive" or wrong-surface is not a pass. Flag it.
+5. Cite the measurement in the PR.
+6. Run **Opening a PR**.
 
-1回限り fix ではなく metric に対する sustained improvement なら Hillclimb playbook（`playbooks/hillclimb.md`）を使用。
+For sustained improvement against a metric rather than a one-off fix, use the Hillclimb playbook (`playbooks/hillclimb.md`).
 
-**Reply:** baseline number、post-fix number、delta、artifact path。
+**Reply:** baseline number, post-fix number, delta, artifact path.
