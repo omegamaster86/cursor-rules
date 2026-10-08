@@ -281,7 +281,7 @@ Dashboard または Agents Window から環境を再 Build する。
 ## 由来
 
 - `genai/` — Next.js / Supabase コーディング規約
-- `plugins-main/pstack/` — poteto のエンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー。omega の forge 系は **0.15.9 相当**まで手動 port）
+- `plugins-main/pstack/` — エンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー **0.15.15**、`poteto-*` は `forge-*` に改名）。omega の forge 系は **0.15.9 相当**まで手動 port（以降は必要分を cherry-pick）
 - `yomiyasu/` — AI 生成日本語の推敲（[nanaism/yomiyasu](https://github.com/nanaism/yomiyasu) を **git submodule**）。Cursor 向けは `omega/skills/yomiyasu/` に抜粋同梱。同期: `scripts/sync-from-upstream.sh`（[README.md](../README.md)）
 
 参考

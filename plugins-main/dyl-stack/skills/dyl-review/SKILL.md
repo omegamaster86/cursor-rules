@@ -48,7 +48,7 @@ Read the diff file the main thread wrote. Open surrounding files from the checko
 
 ### 2. Lenses (apply in full when relevant)
 
-- **Dyl-mode.** Read the `dyl-mode` skill's Dylan gates and pstack `poteto-mode`'s Principles index. Ask whether applying them would shrink or clarify the change (The Algorithm, reuse, simplify, flag scope, prove-it, laziness, measure-before-code for UI).
+- **Dyl-mode.** Read the `dyl-mode` skill's Dylan gates and pstack `forge-mode`'s Principles index. Ask whether applying them would shrink or clarify the change (The Algorithm, reuse, simplify, flag scope, prove-it, laziness, measure-before-code for UI).
 - **Repo standards.** Read the repo's `AGENTS.md`, `.cursor/rules/`, and any repo-local best-practices skill for the surface the PR touches. Apply them as a lens.
 - **Grug.** Complexity is the enemy. 80/20 over completeness. No factoring before the second real caller. Keep behavior near the code that triggers it. Chesterton's fence: understand why something exists before deleting it.
 - **Priorities, in order.** Correctness, then simplicity, types, concurrency and performance, boundaries, context and observability, naming, tests. A lower item never outranks a higher one.

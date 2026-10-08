@@ -52,7 +52,7 @@ Run the `dyl-review` skill at **deep** depth against the PR. Then:
 
 ### Phase 2. Drive to merge-ready
 
-Run pstack's Babysit playbook (`poteto-mode/playbooks/babysit.md`) in `drive` mode, even for a small or docs-only PR, with these steps added.
+Run pstack's Babysit playbook (`forge-mode/playbooks/babysit.md`) in `drive` mode, even for a small or docs-only PR, with these steps added.
 
 1. **Mark ready.** If the latest `/dyl-review` is 🟢 and the PR is a draft, mark it ready before waiting on anything. Bugbot and some CI lanes only run on ready PRs. Run `gh pr ready <n>` or `origin pr ready <n>`.
 2. **Resolve conflicts.** Babysit reports a conflict and stops. Here you fix it. Fetch the PR's base branch, merge it into the PR branch, resolve, rerun the tests covering the conflicted files, and push. No force-push. A conflict where both sides changed intent, not just text, needs a human, so surface it and stop.
