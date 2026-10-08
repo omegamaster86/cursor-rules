@@ -41,7 +41,8 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | スキル | 用途 |
 |--------|------|
 | `plan-interview` | 計画・設計のストレステスト（Align 入口。`/plan-interview`。終了時に `alignment:` を返す） |
-| `grilling` | 上記のインタビュー技法本体（plan-interview から委譲。forge 中は使わない） |
+| `grilling` | plan-interview の委譲先。frontier / ラウンド方式のインタビュー本体（forge 中は使わない） |
+| `grill-me` | 上流互換入口（`grilling` に委譲。推奨は `/plan-interview`） |
 | `how` | サブシステムの仕組み・フロー・配置（how does X work） |
 | `why` | 設計 rationale・経緯・トレードオフ（why was Y built。MCP 並列調査） |
 | `reflect` | 長タスク後にトランスクリプトから学びを既存スキル edits にルーティング |
