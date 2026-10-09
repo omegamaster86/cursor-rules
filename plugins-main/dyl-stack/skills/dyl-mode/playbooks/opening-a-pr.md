@@ -1,6 +1,6 @@
 ### Opening a PR (Dylan overlay)
 
-Read the shared playbook first: pstack `forge-mode/playbooks/opening-a-pr.md`.
+Read the shared playbook first: pstack `poteto-mode/playbooks/opening-a-pr.md`.
 
 Then apply these gates. They win on conflict.
 

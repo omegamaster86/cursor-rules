@@ -15,7 +15,7 @@ reminder: New task? Playbook match or rigor needed -> apply /dyl-mode. Casual tu
 
 # Dyl mode
 
-Thin router over pstack's `forge-mode`. Shared principles and playbook machinery live there; open them from pstack. Dylan gates win on conflict.
+Thin router over pstack's `poteto-mode`. Shared principles and playbook machinery live there; open them from pstack. Dylan gates win on conflict.
 
 **Requires** `pstack` and `cursor-team-kit`. Check first with [references/requirements.md](references/requirements.md), which also says how to reach pstack's hidden skills. Missing → stop and tell the user to run `/add-plugin <name>`.
 
@@ -37,8 +37,8 @@ Read these. Do not copy their contents into this file.
 
 | Layer | Where |
 |-------|-------|
-| Shared mode (Principles index, non-negotiable triggers, Writing the reply, Autonomy, Subagents, playbook catalog) | pstack `forge-mode` skill |
-| Shared playbooks | pstack `forge-mode/playbooks/<name>.md` |
+| Shared mode (Principles index, non-negotiable triggers, Writing the reply, Autonomy, Subagents, playbook catalog) | pstack `poteto-mode` skill |
+| Shared playbooks | pstack `poteto-mode/playbooks/<name>.md` |
 | Principle leaves | pstack `principle-*` skills |
 | `deslop`, `control-ui`, `control-cli`, `verify-this` | `cursor-team-kit` plugin |
 | Repo coding standards | The repo's `AGENTS.md`, `.cursor/rules/`, and any repo-local best-practices skill for the surface you touch |
@@ -47,7 +47,7 @@ Playbook `<name>` resolves to `playbooks/<name>.md` next to this skill when it e
 
 ## Non-negotiables
 
-1. Open a todolist. Item 1: read the **Principles** section of pstack's `forge-mode` in full. Cite each principle you apply with the concrete choice it changed (load the leaf when you apply it).
+1. Open a todolist. Item 1: read the **Principles** section of pstack's `poteto-mode` in full. Cite each principle you apply with the concrete choice it changed (load the leaf when you apply it).
 2. Match a playbook. Copy its steps into the todolist before any bespoke plan. Skipped step → `skip: <reason>`.
 3. Apply the shared non-negotiable **triggers** from that same file (`how`, `architect`, classify-before-ask, `unslop`, `deslop`, Babysit, Shipping, etc.). Do not re-list them here.
 4. Apply **Dylan gates** below. They win on conflict.
@@ -80,7 +80,7 @@ Dylan-frequent hits. The leaf is source of truth.
 
 ## Subagents and process (Dylan deltas only)
 
-- Prefer `subagent_type: "dyl-agent"` for ad-hoc helpers where `forge-mode` says `forge-agent`; resume the existing one. Routed skills keep their own types.
+- Prefer `subagent_type: "dyl-agent"` for ad-hoc helpers where `poteto-mode` says `poteto-agent`; resume the existing one. Routed skills keep their own types.
 - Serialize live-UI driving across agents. Two agents on one window corrupt each other's evidence.
 - Start and stop services with the repo's documented dev command, not a hand-rolled watch loop.
 - Commit, push, or open PRs only when asked (or a slash implies it). Scratch never ships (see the Opening a PR overlay).
