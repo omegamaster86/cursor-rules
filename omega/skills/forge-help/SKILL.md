@@ -20,7 +20,7 @@ disable-model-invocation: true
 - `/forge-mode` でタスクを始める
 - 状況に合うスキルを選ぶ
 - うまくいかなかった run の対処
-- omega を自分用にカスタムする
+- omega を自分用にカスタムする（[`/automate-me`](../automate-me/SKILL.md) で personal `-mode`）
 
 状態によって答えが変わるときだけ触れる。
 
@@ -57,6 +57,9 @@ disable-model-invocation: true
 | コードの動き・配置 | [`/how`](../how/SKILL.md) |
 | 設計 rationale・経緯 | [`/why`](../why/SKILL.md) |
 | 最近のチャットから文脈 | [`/recall`](../recall/SKILL.md) |
+| 仕組み・経緯を人向けに説明 | [`/teach`](../teach/SKILL.md)（`how` + `why`） |
+| 個人の `-mode` スキルを生成・更新 | [`/automate-me`](../automate-me/SKILL.md) |
+| 直前の返信を平易に言い直す | [`/bro`](../bro/SKILL.md) |
 | 差分の外側の破壊 | [`/blast-radius`](../blast-radius/SKILL.md) |
 | 関数境界を越える設計 | [`/architect`](../architect/SKILL.md) |
 | 並列設計案の比較 | [`/multi-agent-candidates`](../multi-agent-candidates/SKILL.md) |
