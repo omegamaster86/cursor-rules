@@ -1,16 +1,16 @@
 ### Refactoring
 
-**You own the contract. The structure changes. The behavior does not.** Distinct from Feature, which adds behavior, and Bug fix, which corrects it.
+**contract を自分が持つ。構造は変わる。挙動は変わらない。** Feature（挙動追加）や Bug fix（挙動修正）とは別。
 
-If the cleanup reveals a missing feature or a real bug, split it out and ship the structural change first against the pinned contract. A redesign is allowed, but name it and route to Feature. Large or cross-cutting structural work belongs to the **figure-it-out** skill. This playbook is the focused-to-medium change.
+cleanup が欠けた feature や本物の bug を露わにしたら切り出し、pinned contract に対して structural change を先に出荷。redesign は可だが名指して Feature にルート。大きい・横断的な structural work は **figure-it-out** skill。本 playbook は focused〜medium 変更。
 
-1. Pin the behavior contract first. Run the **how** skill over the affected subsystem to learn the contract, then write a characterization test, snapshot, or equivalence harness that captures current behavior before any structure moves. If the area has no coverage, write the pin before touching structure. Type check and lint are not a pin.
-2. Name the structure the code is missing per **principle-model-the-domain**. Boring code stays when the shape is already clear and local. The reshape must delete branches or invalid states, not add indirection.
-3. Name the target shape. State what the module layout, types, and call graph should be if built today (**principle-foundational-thinking**, **principle-redesign-from-first-principles**). If the target crosses a function boundary, run the **architect** skill for parallel design exploration of the shape before the move.
-4. Subtract before you add. Delete dead code, collapse one-caller wrappers, drop redundant validators, and remove orphan references before introducing the new shape (**principle-subtract-before-you-add**). The smallest change that reaches the target shape ships (**principle-laziness-protocol**). A speculative cleanup that "might help" gets reverted.
-5. Move in small behavior-preserving steps, each keeping the pin green. For API reshapes, migrate every caller and delete the old API in the same wave (**principle-migrate-callers-then-delete-legacy-apis**). No compatibility shims, no parallel old-and-new paths. Spot-check every rename against the actual files. Renames silently miss usages in strings, prose, and back-references. Delegate the mechanical edits to a subagent using your configured refactoring model (default `cursor-grok-4.6-medium`) with a specific scope (file paths, the names being moved, the behavior to hold).
-6. Prove behavior is unchanged on the real artifact, not "it compiles" (**principle-prove-it-works**). For larger reshapes, run an equivalence check: a script that diffs old-vs-new outputs, a recorded baseline replayed against the new code, or a smoke run on the matching surface via the relevant control skill.
-7. Confirm the change is worth keeping. The success measure is reduced reader load (**principle-minimize-reader-load**). If the diff does not lower reader load somewhere, revert it.
-8. Rebase into small ordered commits. A subtraction commit, then the reshape, then any follow-on cleanup. Shape them with the **sequence-verifiable-units** principle skill, so each behavior-preserving slice stays green before the next. Run **Opening a PR**.
+1. 先に behavior contract を pin。影響 subsystem への **how** skill で contract を学び、structure を動かす前に characterization test、snapshot、または equivalence harness で現挙動を capture。coverage が無い領域は structure に触れる前に pin を書く。type check と lint は pin ではない。
+2. コードに欠けている構造を **principle-model-the-domain** に沿って名指す。shape が既に明確で local なら boring code は残す。reshape は branch や invalid state を削る。indirection を足さない。
+3. target shape を名指す。今日 build するなら module layout、types、call graph がどうあるべきか（**principle-foundational-thinking**、**principle-redesign-from-first-principles**）。target が function boundary を跨ぐなら move の前に **architect** skill で shape の並列 design exploration。
+4. 足す前に引く。dead code 削除、one-caller wrapper 潰し、冗長 validator 落とし、orphan reference 除去してから新 shape（**principle-subtract-before-you-add**）。target shape に届く最小変更を出荷（**principle-laziness-protocol**）。「効くかも」の speculative cleanup は revert。
+5. small behavior-preserving step で move。各 step で pin を green に保つ。API reshape なら全 caller を migrate し同 wave で旧 API 削除（**principle-migrate-callers-then-delete-legacy-apis**）。compatibility shim なし、old-and-new 並行 path なし。rename は実 file に対して spot-check。string、prose、back-reference の usage を rename が静かに逃がす。mechanical edit は設定済み refactoring model（デフォルト `cursor-grok-4.6-medium`）の subagent に具体 scope（file path、動かす名前、保つ挙動）で委譲。
+6. 実 artifact で挙動が変わっていないことを証明。「compiles」ではない（**principle-prove-it-works**）。大きい reshape なら equivalence check：old-vs-new 出力を diff する script、新 code に replay する recorded baseline、または relevant control skill で matching surface の smoke run。
+7. 変更を残す価値があるか確認。success measure は reader load の削減（**principle-minimize-reader-load**）。diff がどこかの reader load を下げなければ revert。
+8. small ordered commit に rebase。subtraction commit、その後 reshape、その後 follow-on cleanup。**sequence-verifiable-units** principle skill で各 behavior-preserving slice を次の前に green。**Opening a PR** を実行。
 
-**Reply:** the structure that changed, the pin you held it against, the equivalence proof, the reader-load delta, what shipped and what got reverted. No new behavior.
+**Reply:** 変えた構造、pin した contract、equivalence proof、reader-load delta、出荷したものと revert したもの。新挙動なし。

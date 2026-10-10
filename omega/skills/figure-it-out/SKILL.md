@@ -1,53 +1,53 @@
 ---
 name: figure-it-out
-description: "Design an auditable playbook when no narrower one fits: a large migration, an ambitious multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis loop, and logs decisions via decision-log. Use for /figure-it-out, 'figure it out', a large migration, or when no narrower playbook applies."
+description: "狭い playbook が合わないときに監査可能な playbook を設計: 大規模 migration、野心のある multi-part 変更、離席後に人がレビューする作業。タスクに rigor をスケール、仮説ループを走らせ、decision-log で決定を記録。/figure-it-out、'figure it out'、大 migration、狭い playbook が無いとき。"
 disable-model-invocation: true
 ---
 
 # Figure it out
 
-When the task matches no playbook, design one. The deliverable before any code is the workflow itself: a sequence of phases that scales rigor to the task, runs the scientific method, and leaves a decision trail a human can audit after stepping away.
+タスクがどの playbook にも合わないとき、playbook を設計する。コードより前の deliverable は workflow 自身: タスクに rigor をスケールし、科学的方法を走らせ、離席後に人が監査できる決定 trail を残す phase の列。
 
 ## Start
 
-Open a todolist whose first item is to read the Principles section of the **forge-mode** skill. Then add the phases below as todos.
+todolist を開き、最初の項目は **forge-mode** スキルの Principles 節を読む。次に下の phase を todo として追加。
 
 ## Phase A: Frame
 
-Ground first, then commit. Don't start the run until you can state:
+まず ground、次に commit。次を述べられるまで run を始めない:
 
-- The definition of done as a falsifiable predicate (the **prove-it-works** principle skill).
-- Scope, quantified: rough units and effort, plus the blockers grounding surfaced.
-- The rigor level, biased high. One-way doors and high blast radius get more. Reversible low-stakes steps get less. Rigor is gates and artifacts, not "try harder".
+- done の定義を falsifiable predicate として（**prove-it-works** principle スキル）。
+- scope を定量化: 粗い単位と effort、grounding が出した blocker も。
+- rigor level、高めに bias。one-way door と高 blast radius は多め。可逆で低 stakes の step は少なめ。rigor は gate と artifact であり「もっと頑張る」ではない。
 
-Present the framing and tradeoffs before committing to a long run. Reversible work proceeds (the **never-block-on-the-human** principle skill), but a multi-hour run earns one checkpoint.
+長い run に commit する前に framing と tradeoff を提示。可逆作業は進める（**never-block-on-the-human** principle スキル）が、数時間 run には 1 checkpoint。
 
 ## Phase B: Design the workflow
 
-Decompose into atomic, independently-landable units. Sequence riskiest-unknown-first. Scaffold and verification come before features (the **foundational-thinking** principle skill).
+atomic で独立に land できる単位に分解。riskiest-unknown-first で順序。scaffold と verification は feature の前（**foundational-thinking** principle スキル）。
 
-- Build the verification harness before the work, with the baseline captured from the pre-change state, so the check reads as "old value vs new value".
-- For one-way-door design decisions, run the **architect** skill (it runs **multi-agent-candidates**). Skip it for mechanical work whose shape is already concrete. A second multi-agent-candidates run over a settled design is over-engineering (the **laziness-protocol** principle skill).
-- Decide what fans out. Parallelize only across seams, and give each worker its own worktree or branch (the **separate-before-serializing-shared-state** principle skill). Don't over-fan.
-- Write the designed phase list down. That list is what the human reviews.
+- 作業前に verification harness を組み、変更前 state から baseline を capture し、check が「旧値 vs 新値」として読めるようにする。
+- one-way-door の設計決定には **architect** スキル（**multi-agent-candidates** を走らす）。形状が既に concrete な mechanical 作業ではスキップ。落ち着いた設計への 2 回目 multi-agent-candidates は over-engineering（**laziness-protocol** principle スキル）。
+- 何を fan out するか決める。seam 横だけ parallelize し、各 worker に独自 worktree または branch（**separate-before-serializing-shared-state** principle スキル）。過剰 fan はしない。
+- 設計した phase リストを書き留める。人がレビューするのはそのリスト。
 
-Then execute the design. Add its steps to the todolist as concrete items, after the Phase C entry and before Phase D. Run each under the Phase C loop discipline, and weave the Phase D log through them, a row as each step lands, rather than saving the whole trail for the end.
+次に設計を実行。Phase C エントリの後・Phase D の前に todolist に具体 step を追加。各 step を Phase C loop discipline で走らせ、Phase D log を step が land するたびに 1 行織り込み、trail 全体を最後に溜めない。
 
 ## Phase C: Run the loop
 
-Each unit is an experiment. State the hypothesis, make the smallest change, measure against the predicate on the real artifact, keep it if it advanced, revert it if it didn't.
-Apply the **sequence-verifiable-units** principle skill, verifying each unit before starting the next instead of batching checks at the end.
+各単位は experiment。仮説を述べ、最小変更、real artifact で predicate を measure、進めたら keep、しなければ revert。
+**sequence-verifiable-units** principle スキルに従い、次を始める前に各単位を verify し、最後に check を batch しない。
 
-- Verify by inspecting the artifact, never a self-report. When something passes too easily, suspect the observation method before the system.
-- Pair delegated work with a judge. If a worker games the gate, reset and harden the contract. If the gate itself is wrong, fix the gate in its own change rather than routing around it.
-- A verdict is VERIFIED, NOT VERIFIED, or INCONCLUSIVE. Inconclusive is not a pass. Don't hide a negative.
+- artifact を inspect して verify、self-report はしない。簡単に pass しすぎるときは system より observation 方法を疑う。
+- 委譲作業に judge を pair。worker が gate を game したら reset して contract を harden。gate 自体が誤りなら gate を単独変更で直し、迂回しない。
+- verdict は VERIFIED、NOT VERIFIED、INCONCLUSIVE。Inconclusive は pass ではない。negative を隠さない。
 
 ## Phase D: Keep the audit trail
 
-Log the run via the **decision-log** skill. figure-it-out's work is usually ambitious enough to commit the trail so the reviewer can read it in the PR. The trail plus the diff is what lets the human come back and trust the work.
+**decision-log** スキルで run を log。figure-it-out の作業は通常野心があり、reviewer が PR で読めるよう trail を commit する。trail と diff で人が戻って信頼できる。
 
 ## Phase E: Verify and hand back
 
-Check the whole against the Phase A predicate on the real product, not just the harness. Encode any recurring correction as a gate, a lint rule, a check, or a script (the **encode-lessons-in-structure** principle skill).
+harness だけでなく real product で Phase A predicate 全体を check。繰り返す修正は gate、lint rule、check、script に encode（**encode-lessons-in-structure** principle スキル）。
 
-**Reply:** the playbook you designed, the rigor level and why, the decision-trail path, what's verified against the predicate, and what's still open.
+**Reply:** 設計した playbook、rigor level と理由、decision-trail path、predicate に対して verified なもの、まだ open なもの。

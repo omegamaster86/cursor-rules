@@ -1,11 +1,11 @@
 ### Runtime forensics
 
-**You own the diagnosis. Instrument the live process, don't theorize from source.** The deliverable is a cited diagnosis, not a fix.
+**診断を自分が持つ。live process に instrument し、source から理論で語らない。** 成果物は cited diagnosis。fix ではない。
 
-1. Capture the live signal on the matching surface via the control skill: a CPU profile for a spinning process, a heap snapshot for a leak, a CDP trace for a visual glitch. A real artifact, not a guess.
-2. Reduce the artifact to the smoking gun: the function on the hot path, the retainer chain from the leaked object to a GC root, the loop firing without input. Parse large artifacts in a subagent (the **guard-the-context-window** principle skill), keep the reduced finding in the main thread.
-3. Prove the mechanism before believing it. Inject instrumentation via CDP eval on the running process, or hotfix the live code without reloading, to confirm the hypothesis cheaply.
-4. Map the finding back to source: file, symbol, the line that allocates or schedules.
-5. Throughput checkpoint stays one line: `throughput checkpoint: n/a, read-only forensics`.
+1. control skill で matching surface 上の live signal を取得：spin する process の CPU profile、leak の heap snapshot、visual glitch の CDP trace。推測ではなく実 artifact。
+2. artifact を smoking gun に縮約：hot path の function、leaked object から GC root への retainer chain、入力なしで走る loop。大きい artifact は subagent で parse（**guard-the-context-window** principle skill）。縮約した finding は main thread に残す。
+3. 信じる前に mechanism を証明。実行中 process への CDP eval で instrumentation を注入、または reload せず live code を hotfix して hypothesis を安く確認。
+4. finding を source に写像：file、symbol、allocate または schedule する行。
+5. throughput checkpoint は 1 行のまま：`throughput checkpoint: n/a, read-only forensics`。
 
-**Reply:** the signal captured, the reduced finding, how you proved the mechanism, the source location, artifact paths. No fix unless asked. Hand back to Bug fix or Perf once the cause is known.
+**Reply:** 取得した signal、縮約 finding、mechanism の証明方法、source location、artifact paths。求められなければ fix なし。原因が分かったら Bug fix または Perf に戻す。

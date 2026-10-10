@@ -1,58 +1,58 @@
 ---
 name: how
-description: "Use for \"how does X work\", code walkthroughs before changing something, and placement / ownership / layering questions (\"where should this live\", \"which package owns this\", \"is this the right layer\"). Explains subsystem architecture, runtime flow, onboarding mental models. Use why for motivation."
+description: "「X はどう動くか」、変更前のコード walkthrough、配置・所有・レイヤの質問（「どこに置くか」「どの package が持つか」「このレイヤで正しいか」）に使用。サブシステムの architecture、runtime 流れ、オンボーディングの mental model。動機は why を使用。"
 disable-model-invocation: true
 ---
 
 # How
 
-Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
+コードベースを探索し「X はどう動くか」に答える。サブシステムにオンボーディングするシニア相当の architectural 説明。動く mental model が作れる程度に。annotated ソースのように読ませない。
 
-Each spawn below names a role line in the `forge-models.mdc` rule and a default. Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `inherit`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message.
+各 spawn は `forge-models.mdc` ルールの role 行と default を名指す。`model` はその行の値、ルールや行が無ければ default。値が `inherit` なら `model` は未設定。Task ツールが slug を拒否したら default を使い、その旨を述べる。default も拒否されたらエラーメッセージから同族の最も近い有効 slug を使う。
 
 ## Step 1. Assess Complexity
 
-If the scope is ambiguous, state your interpretation and explore. The user can redirect.
+スコープが曖昧なら解釈を述べて探索する。ユーザーは差し替えできる。
 
-- **Simple** (a single module, a small utility, a narrow question such as "how does function X work"): no explorers. One explainer explores and explains in a single pass. Go to Step 2b.
-- **Complex** (a subsystem spanning multiple files or services, a cross-cutting feature, a full architectural overview): spawn parallel explorers first, then hand off to the explainer. Go to Step 2a.
+- **Simple**（単一 module、小さな utility、「function X はどう動くか」など狭い質問）：explorer なし。1 explainer が 1 パスで探索・説明。Step 2b。
+- **Complex**（複数 file/service にまたがるサブシステム、横断 feature、architecture 全体像）：先に parallel explorer、その後 explainer に渡す。Step 2a。
 
-When in doubt, take the simple path.
+迷ったら simple 経路。
 
-## Step 2a. Explore (complex questions only)
+## Step 2a. Explore（complex のみ）
 
-Decompose the question into 2 to 4 exploration angles, each a distinct slice of the subsystem. Spawn all explorers in a single message:
-
-- `subagent_type`: `generalPurpose`
-- `model`: the `how explorer` line, default `cursor-grok-4.6-medium`
-- `readonly`: `true`
-
-Each explorer gets the prompt in `references/explorer-prompt.md` with its angle filled in. Then go to Step 3.
-
-## Step 2b. Direct Explain (simple questions)
-
-Spawn one Task subagent that explores and explains in one pass:
+質問を 2〜4 の探索角度に分解。各角度はサブシステムの distinct な slice。1 メッセージで全 explorer を spawn：
 
 - `subagent_type`: `generalPurpose`
-- `model`: the `how explainer` line, default `claude-opus-5.5-thinking-medium`
+- `model`: `how explorer` 行、default `cursor-grok-4.6-medium`
 - `readonly`: `true`
 
-Build its prompt from `references/explainer-prompt.md` without the explorer-findings section. Go to Step 4.
+各 explorer は `references/explorer-prompt.md` のプロンプトに角度を埋める。Step 3。
 
-## Step 3. Synthesize (complex questions only)
+## Step 2b. Direct Explain（simple）
 
-Once all explorers have returned, spawn one Task subagent to synthesize their findings into one explanation:
+1 Task サブエージェントが 1 パスで探索・説明：
 
 - `subagent_type`: `generalPurpose`
-- `model`: the `how explainer` line, default `claude-opus-5.5-thinking-medium`
+- `model`: `how explainer` 行、default `claude-opus-5.5-thinking-medium`
 - `readonly`: `true`
 
-Build its prompt from `references/explainer-prompt.md` with every explorer's findings filled in.
+`references/explainer-prompt.md` から explorer-findings セクションなしでプロンプトを組む。Step 4。
+
+## Step 3. Synthesize（complex のみ）
+
+全 explorer が戻ったら、1 Task で findings を 1 本の説明に合成：
+
+- `subagent_type`: `generalPurpose`
+- `model`: `how explainer` 行、default `claude-opus-5.5-thinking-medium`
+- `readonly`: `true`
+
+`references/explainer-prompt.md` に各 explorer の findings をすべて埋めてプロンプトを組む。
 
 ## Step 4. Present
 
-Present the explainer's output to the user. Light edits for clarity or context from the conversation are fine. Do not substantially rewrite it.
+explainer の出力をユーザーに提示。会話文脈からの軽い編集は可。大幅な書き換えはしない。
 
 ## Output Format
 
-The explanation uses the sections defined in `references/explainer-prompt.md`, dropping any that do not apply: Overview, Key Concepts, How It Works, Where Things Live, Gotchas.
+説明は `references/explainer-prompt.md` で定義されたセクションを使い、当てはまらないものは落とす：Overview、Key Concepts、How It Works、Where Things Live、Gotchas。

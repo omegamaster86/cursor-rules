@@ -1,47 +1,47 @@
-# Prompts worth copying
+# コピー向けプロンプト例
 
-Swap in the real paths, skills, and done checks. Informal wording works.
+実パス・スキル・完了条件に差し替える。くだけた言い回しでよい。
 
-## Understand
+## 理解する
 
-- `/forge-mode read <thread>. restate the underlying issue in your own words, in plain english.`
-- `/forge-mode investigate why <symptom>. give me what we know, what data you used, and your best hypotheses. don't change any code yet.`
-- `use /how to understand <subsystem>. then use /why to find out why it broke recently.`
-- `/recall my work on <topic> from last week, then read <issue>.`
-- `/teach me why you implemented it this way and not <other way>. what did you trade off?`
-- `/forge-mode take over this branch. read the decision log, find what's done, and continue. don't redo finished work.`
+- `/forge-mode <thread> を読んで。根本の問題を自分の言葉で、専門用語なしで言い直して。`
+- `/forge-mode <symptom> の原因を調べて。分かっていること、使ったデータ、有力な仮説を出して。まだコードは変えない。`
+- `/how で <subsystem> の動きを把握して。続けて /why で最近壊れた理由を調べて。`
+- `/recall 先週の <topic> の作業をまとめて。そのあと <issue> を読んで。`
+- `/teach <other way> ではなくこう実装した理由とトレードオフを教えて。`
+- `/forge-mode このブランチを引き継いで。decision log を読み、済みを把握して続けて。済みの作業はやり直さない。`
 
-## Build
+## 作る
 
-- Bug: `/forge-mode <symptom>. repro first, then fix and verify.`
-- Bug in an app: `/forge-mode repro this with /verify-<app>. if it repros on main, fix it and show me a video as proof.`
-- Bug with a cheap test: `/forge-mode repro <bug> first. if there's a cheap test path, /tdd it. then fix and rerun.`
-- Feature: `/forge-mode add <behavior>. <current output> stays byte-identical. verify both.`
-- Refactor: `/forge-mode move <code> into one module, zero behavior change. record the current output first and prove it's unchanged after.`
-- Perf: `/forge-mode <operation> takes <time> on <fixture>. trace it, fix the measured cause, show me before and after.`
+- バグ: `/forge-mode <symptom>。先に repro、そのあと fix と verify。`
+- アプリのバグ: `/forge-mode /verify-<app> で repro。main で repro するなら直して、証明用の video を見せて。`
+- 安いテストがあるバグ: `/forge-mode 先に <bug> を repro。安いテスト経路があれば /tdd してから fix、再実行。`
+- 機能: `/forge-mode <behavior> を追加。<current output> はバイト単位で同一のまま。両方 verify。`
+- リファクタ: `/forge-mode <code> を 1 モジュールに移す。挙動ゼロ変更。移す前の出力を記録し、後で変わっていないことを証明。`
+- 性能: `/forge-mode <fixture> で <operation> が <time>。trace して、測った原因を直し、before/after を見せて。`
 
-## Design and plan
+## 設計と計画
 
-- `/forge-mode prototype a few options for <feature>. take screenshots or videos for me to compare.`
-- `/forge-mode we need <feature>. /architect it first, and answer open questions with prototypes. let me review before proceeding.`
-- `/forge-mode write a tutorial for how i would use <new package> first. then /teach me why it beats the current one.`
-- `ask /multi-agent-candidates (or /architect) for a second opinion on this thread and our approach.`
-- `/forge-mode turn this design into a plan. small verifiable PRs, each with its own verification steps.`
-- `/forge-mode plan the migration of <library> to <target>. small verifiable PRs. the result must match the original exactly, bugs included.`
+- `/forge-mode <feature> の案を数パターン prototype。比較用 screenshot か video を撮って。`
+- `/forge-mode <feature> が必要。先に /architect。未決は prototype で答えて。進む前にレビューさせて。`
+- `/forge-mode 先に <new package> の使い方チュートリアルを書いて。そのあと /teach で現状より良い理由を教えて。`
+- `/multi-agent-candidates`（または `/architect`）でこのスレッドとアプローチの第二意見を聞いて。`
+- `/forge-mode この設計をプランに落とす。小さく検証可能な PR、各 PR に独自の verification。`
+- `/forge-mode <library> を <target> に移行するプラン。小さく検証可能な PR。結果は元と完全一致、バグ込みで。`
 
-## Review and ship
+## レビューと ship
 
-- `/review-orchestrator-triple-hybrid` on the branch, skeptically. Don't change anything yet. Read dismissals too.
-- `/swarm check every package under <dir> against its check script. one worker per package. one report.`
-- `/forge-mode open the pr. small ordered commits, evidence in the description.`
-- `/forge-mode babysit this pr. get it green.` For status only: `/forge-mode check on pr <number>. anything outstanding?`
-- `/forge-mode land the stack.`
+- ブランチで `/review-orchestrator-triple-hybrid`。疑って。まだ変更しない。dismiss も読む。`
+- `/swarm <dir> 下の各 package を check script で確認。package あたり 1 worker。1 本の report。`
+- `/forge-mode PR を開く。小さく順序付き commit、説明に evidence。`
+- `/forge-mode この PR を babysit。green にして。` 状態だけ: `/forge-mode PR <number> の状況は？未処理は？`
+- `/forge-mode スタックを land。`
 
-## Away and back
+## 離席と再開
 
-- `/forge-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
-- `/decision-log catch me up on what you did last night.` Read the **decision-log** skill's Attention section first (Notion 正本; ローカル `decisions.tsv` がある run も同スキルで要約).
-- `/forge-mode full autopilot on this queue. each item is independent.`
-- `/forge-mode autopilot these changes but stack them, don't ship. i'll land the stack.`
-- `/reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.
-- `/bro` restates the last reply in plain words.
+- `/forge-mode 寝る。<base> から新しい worktree で <goal>。完了は <checks>。decision log を残す。commit 前に聞かない。/loop で完了まで。数時間本当に詰まったら止めて理由を書く。`
+- `/decision-log 昨夜やったことを要約して。` 先に **decision-log** スキルの Attention を読む（Notion 正本。ローカル `decisions.tsv` がある run も同スキルで要約）。
+- `/forge-mode このキューを full autopilot。各項目は独立。`
+- `/forge-mode 変更を autopilot するがスタックに積む。ship はしない。スタックは自分で land する。`
+- `/reflect 学びを捕まえて次 run で繰り返さない。` 将来の判断を変える edit だけ承認。
+- `/bro` で直前の返信を平易な言葉で言い直す。

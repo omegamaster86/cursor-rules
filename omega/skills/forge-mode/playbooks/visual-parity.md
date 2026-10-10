@@ -1,11 +1,11 @@
 ### Visual parity
 
-**You own pixel-exact equivalence. The baseline is the spec. You do not touch it.** Equivalence is verified by image diff, not by eye.
+**pixel-exact equivalence を自分が持つ。baseline が spec。触らない。** equivalence は目ではなく image diff で検証。
 
-1. Establish the baseline first, before any migration: a visual regression harness that screenshots the current component across its states, plus the target when matching two implementations. No baseline, no parity claim. A blocking prerequisite, not a follow-up.
-2. Anti-shortcut clauses, stated and held: no harness modifications, no baseline tampering, no component restructuring to make a diff pass. If the baseline looks wrong, stop and ask, don't edit it.
-3. Migrate one component at a time. Parallelize across worktrees, one owner per component (the **separate-before-serializing-shared-state** principle skill). Shared primitives migrate first as a blocking phase.
-4. Verify each component against its baseline via image diff on the matching surface via the control skill. A nonzero diff is a fail. Investigate the pixel delta. `/loop` per component until the diff is zero.
-5. Run **Opening a PR** per component or per safe batch.
+1. migration の前に先に baseline を確立：現 component の各 state を screenshot する visual regression harness、2 実装を合わせるときは target も。baseline なしに parity 主張なし。follow-up ではなく blocking prerequisite。
+2. anti-shortcut 条項を述べて守る：harness 改変なし、baseline 改ざんなし、diff を通すための component 再構成なし。baseline が誤って見えるなら止めて聞く。編集しない。
+3. 1 component ずつ migrate。worktree 間で並列化、component ごとに 1 owner（**separate-before-serializing-shared-state** principle skill）。shared primitive は blocking phase で先に migrate。
+4. control skill で matching surface 上、各 component を baseline に対して image diff で検証。nonzero diff は fail。pixel delta を investigate。component ごとに `/loop` して diff が zero になるまで。
+5. component ごと、または安全な batch ごとに **Opening a PR** を実行。
 
-**Reply:** components migrated, the diff result for each, the baseline harness location, what's left.
+**Reply:** migrate した component、各 diff 結果、baseline harness の場所、残り。

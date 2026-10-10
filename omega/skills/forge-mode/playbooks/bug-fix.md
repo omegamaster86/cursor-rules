@@ -1,15 +1,15 @@
 ### Bug fix
 
-**You own this task. Plan, review, verify.** Delegate investigation and the fix to subagents, stay in the lead.
+**このタスクを自分が持つ。計画、レビュー、検証。** investigation と fix は subagent に委譲し、リードは自分が続ける。
 
-Be scientific. Every shipped line traces to runtime evidence. Belt-and-suspenders that "might help" is a hypothesis, not a fix. It does not ship. When evidence refutes a hypothesis, revert what it motivated. The smallest change the evidence justifies ships, nothing more.
+科学的に。出荷する各行は runtime evidence に辿れる。効く「かも」という belt-and-suspenders は hypothesis であって fix ではない。出荷しない。evidence が hypothesis を否定したら、それを動かした変更は revert。evidence が正当化する最小変更だけ出荷。それ以上はしない。
 
-1. Reproduce it yourself on the matching surface via the control skill (Non-negotiables), even when a debug or instrumentation protocol says to ask the user to reproduce. Ask the user only with a stated, specific reason the control surface cannot reach the target, and only after driving it as far as it goes. If it won't reproduce directly, synthesize the trigger, tighten conditions, or instrument until it fires.
-2. Binary-search the cause. Form the candidate hypotheses, then rule them out until one survives. Seed them with `how` over the affected subsystem and the **why** skill for regression history. Each pass, take the split that cuts the most remaining problem space, get runtime evidence, eliminate. When program state is unclear, add instrumentation or logging and read it as the code runs. Don't guess. Drive a long or stubborn hunt with Cursor's `/loop` command. Confirm the surviving *mechanism* with runtime evidence before the step-3 architect / review-orchestrator-triple-hybrid fan-out.
-3. Plan the fix. If it crosses a function boundary, `architect` first. Delegate implementation to a subagent using your configured bug-fix model (default `cursor-grok-4.6-medium`) with a specific scope.
-4. Verify on the same surface. The original repro now passes. "Inconclusive" or wrong-surface is not a pass. Flag it. Unit tests show branch behavior, not bug absence.
-5. Stage the commits so the failing repro lands before the fix in git history. See the **tdd** skill for the failing-test-first cadence when the bug has a cheap local test path. Skip it when the test would be expensive, integration-heavy, or unclear.
-   This is the canonical **sequence-verifiable-units** principle skill, the failing test first and the fix on top.
-6. Run **Opening a PR**.
+1. control skill（Non-negotiables）で matching surface 上、自分で再現する。debug や instrumentation protocol がユーザー再現を求めても例外なし。control surface がターゲットに届かない具体的理由を述べたうえでだけユーザーに聞く。それも control を限界まで使った後。直接再現できなければ trigger を合成、条件を絞る、または instrument して発火させる。
+2. 原因を binary-search。候補 hypothesis を立て、潰して 1 つ残す。影響 subsystem への `how` と regression 履歴の **why** skill で seed。各 pass で残り problem space を最も切る分割を取り、runtime evidence を得て排除。program state が不明なら instrumentation や logging を足し、実行中に読む。推測しない。長い・粘る hunt は Cursor の `/loop` で回す。step 3 の architect / review-orchestrator-triple-hybrid fan-out の前に、残った *mechanism* を runtime evidence で確認。
+3. fix を計画。function boundary を跨ぐなら先に `architect`。設定済み bug-fix model（デフォルト `cursor-grok-4.6-medium`）の subagent に具体 scope で実装を委譲。
+4. 同じ surface で検証。元の repro が通る。「Inconclusive」や wrong-surface は pass ではない。フラグする。unit test は branch 挙動を示す。bug の不在は示さない。
+5. commit を stage し、git 履歴で failing repro が fix の前に land する。**tdd** skill の failing-test-first cadence（bug に安い local test path があるとき）。test が高コスト・integration 重・不明瞭なら skip。
+   これが canonical **sequence-verifiable-units** principle skill。failing test 先、fix はその上。
+6. **Opening a PR** を実行。
 
-**Reply:** what was broken, root cause, fix, how you verified. Paste failing-then-passing repro output verbatim.
+**Reply:** 何が壊れていた、root cause、fix、検証方法。failing→passing の repro 出力を逐語で貼る。

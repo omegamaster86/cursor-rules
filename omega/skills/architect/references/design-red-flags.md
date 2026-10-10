@@ -1,57 +1,57 @@
 # Design red flags
 
-Screen every candidate before synthesis. A red flag is a reason to revise or reject the shape.
+synthesis 前にすべての candidate をスクリーンする。red flag は形状を見直す・拒否する理由。
 
 ## Shallow module
 
-A shallow module exposes a large interface while hiding little complexity. Judge depth by the capability and policy hidden behind the public surface relative to the size of that surface. Prefer a simple interface backed by substantial behavior.
+shallow module は複雑さをほとんど隠さず大きな interface を露出する。depth は public surface のサイズに対してその背後に隠れた capability と policy で判断する。実質的な振る舞いに支えられた単純な interface を選ぶ。
 
-Do not confuse a deep module with a deep call chain. A deep call chain scatters understanding across layers. A deep module concentrates capability behind one interface.
+deep module と deep call chain を混同しない。deep call chain は理解をレイヤに散らす。deep module は 1 interface の背後に capability を集中させる。
 
-Look for these signs:
+次の兆候を探す:
 
-- Callers coordinate several methods to complete one operation.
-- Public options expose internal stages or implementation choices.
-- Learning the interface does not save the caller from learning the implementation.
+- caller が 1 操作完了のために複数 method を調整する。
+- public option が内部 stage や実装選択を露出する。
+- interface を学んでも caller を実装の学習から救わない。
 
 ## Information leakage
 
-Information leakage makes multiple modules depend on the same internal decision. A representation, policy, or protocol detail appears in more than one place, so changing it requires coordinated edits.
+information leakage は複数 module が同じ内部決定に依存する状態にする。表現・policy・protocol 詳細が複数箇所に現れ、変更に coordinated edit が要る。
 
-Public re-exports of transport or wire types are leakage. Parse external data into domain types behind the interface. Keep storage schemas, framework objects, and protocol details private.
+transport や wire 型の public re-export は leakage。interface の背後で外部データを domain 型に parse する。storage schema、framework オブジェクト、protocol 詳細は private に。
 
 ## Temporal decomposition
 
-Temporal decomposition organizes modules by execution order instead of the knowledge they own. Separate load, validate, transform, and save stages often repeat one representation and its invariants across several boundaries.
+temporal decomposition は所有する知識ではなく実行順で module を組む。load・validate・transform・save を分けると、同じ表現と invariant が複数境界で繰り返されることが多い。
 
-Group code around domain knowledge and ownership. Methods that run at different times can still belong to one module when they protect the same decisions.
+domain 知識と ownership でコードをまとめる。異なる時刻で走る method でも同じ決定を守るなら 1 module に属せる。
 
 ## Pass-through method
 
-A pass-through method forwards the same arguments to another method with the same shape. It adds a layer without hiding complexity.
+pass-through method は同じ形状の別 method に同じ引数をそのまま forward する。複雑さを隠さずレイヤを足すだけ。
 
-Remove it or move responsibility to the module that can complete the operation. Keep a forwarding boundary only when it adds policy, adaptation, or a distinct abstraction.
+除去するか、操作を完了できる module に責務を移す。forward 境界は policy・adaptation・明確な abstraction を足すときだけ残す。
 
 ## Split ownership
 
-More than one module writes the same state or keeps its own copy of it. An agent that edits one writer can't see the others, so their rules diverge.
+複数 module が同じ state を書く、または各自コピーを持つ。1 writer を編集するエージェントは他が見えず、ルールが乖離する。
 
-Give each piece of state one owner. Other modules read it or ask the owner to change it.
+各 state に 1 owner。他 module は読むか owner に変更を依頼する。
 
 ## Two ways to do one task
 
-The design supports more than one way to do the same task. An agent copies whichever way it finds first, so every way keeps gaining callers.
+設計が同じタスクを複数のやり方で支える。エージェントは最初に見つけた方をコピーし、すべての経路に caller が増える。
 
-Keep one way. Move callers off the others and delete them in the same change.
+1 通りだけ残す。他から caller を移し、同じ変更で削除する。
 
 ## Importable internals
 
-A caller can import a module's internals. An agent takes the shortest path that compiles, so it imports them directly and they become part of the interface.
+caller が module の internals を import できる。エージェントはコンパイルが通る最短経路を取り、直接 import して interface の一部にする。
 
-Make internals unreachable from outside the module, so an import from outside fails the build.
+module 外から internals に到達不能にし、外からの import で build を fail させる。
 
 ## Hand-synced list
 
-Two or more places list the same items, and adding an item means editing every list. An agent that sees one list updates only that one.
+2 箇所以上が同じ項目をリストし、項目追加はすべてのリスト編集を意味する。1 リストだけ見たエージェントはそこだけ更新する。
 
-Keep one list and derive the others from it. If a list can't be derived, make the build fail when the lists disagree.
+1 リストを正とし他を derive する。derive できないなら、リスト不一致で build を fail させる。

@@ -1,13 +1,13 @@
 ### Autonomous run
 
-**You own the exit condition. Define done, then drive to it without stopping.**
+**exit condition を自分が持つ。done を定義し、止まらずそこまで drive。**
 
-1. State the exit condition as a checkable predicate before the first iteration (tests green, repro fixed, all N PRs merged, pixel-diff zero).
-2. Pick the wake mechanism using Cursor's `/loop` command (a built-in, not a pstack skill). An event to watch (CI, a merge, a ref advancing) gets a watcher subagent that wakes you on the event, with a long time-based heartbeat as fallback. No event gets a fixed-interval heartbeat sized to when the result is worth re-checking.
-3. Each iteration makes the smallest change the evidence justifies, verifies it against the predicate, commits if it advanced, discards changes that didn't help. Belt-and-suspenders that "might help" gets reverted, not left to ride.
-   Sequence the work via the **sequence-verifiable-units** principle skill, verifying each unit before the next instead of batching checks at the end.
-4. Mid-run discoveries are yours. Address broken skills, related bugs, flaky verifiers, review noise, tooling failures, orphaned follow-ups, and fixable drift yourself via forge-mode. Put out-of-band fixes in their own PR. Do not park reversible work for the human or use `AskQuestion`. Surface only irreversible actions, genuine product or preference calls no experiment can settle, or a real dead end. Keep the predicate as the main drive, and return to it after each side fix.
-5. Checkpoint every iteration via the **decision-log** skill, a row for what changed and whether the predicate moved.
-6. Stop when the predicate is met. A plateau is not a stop, so keep going and pivot your approach to push past it. Surface a genuine dead end rather than spinning, and never relax the predicate to declare victory.
+1. 最初の iteration 前に exit condition を checkable predicate として述べる（tests green、repro fixed、全 N PR merged、pixel-diff zero）。
+2. wake mechanism は Cursor の `/loop` command（組み込み、pstack skill ではない）。watch する event（CI、merge、ref 進行）には event で wake する watcher subagent。長い time-based heartbeat を fallback。event なしは結果を再確認する価値に合わせた fixed-interval heartbeat。
+3. 各 iteration は evidence が justify する最小 change、predicate に対して verify、進んだら commit、役に立たなかった change は discard。belt-and-suspenders の「効くかも」は revert、乗せない。
+   work は **sequence-verifiable-units** principle skill で sequence。終わりに check を batch せず unit ごとに verify。
+4. mid-run discovery は自分のもの。壊れた skill、関連 bug、flaky verifier、review noise、tooling failure、orphaned follow-up、fixable drift は forge-mode で自分で対処。out-of-band fix は独自 PR。reversible work を human に park したり `AskQuestion` はしない。不可逆 action、genuine product か preference call（experiment が settle できない）、real dead end だけ surface。predicate を main drive に保ち、各 side fix の後に戻る。
+5. 各 iteration を **decision-log** skill で checkpoint。何が変わり predicate が動いたかの行。
+6. predicate が満たされたら stop。plateau は stop ではない。continue し approach を pivot して越える。genuine dead end は spin より surface。victory 宣言のため predicate を緩めない。
 
-**Reply:** the exit condition, iterations run, what landed, what was discarded, final predicate state.
+**Reply:** exit condition、iterations、land したもの、discard したもの、final predicate state。
