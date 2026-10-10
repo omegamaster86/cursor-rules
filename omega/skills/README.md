@@ -53,6 +53,9 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `blast-radius` | 変更の影響範囲 |
 | `tdd` | 失敗テスト先行のバグ修正 |
 | `recall` | チャット履歴からコンテキスト再構築 |
+| `teach` | 変更・サブシステムを人が理解できる説明（内部で `how` + `why`） |
+| `automate-me` | チャット履歴と質問から personal `-mode` スキルを起草・更新 |
+| `bro` | 直前のエージェント返信を専門用語なしで言い直す |
 | `daily-chat-digest` | 指定日（JST）のチャットを `.cursor/chat-digest/<日付>/daily-chat.md` に出力（単独利用可） |
 | `engineer-retrospective` | 振り返り入口。`daily-chat.md` が無ければ digest を同一ターンで実行してから批評 |
 | `study-log` | チャットの学習内容をテックブログ形式で `.cursor/study-log/` に記録 |

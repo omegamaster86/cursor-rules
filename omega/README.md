@@ -267,6 +267,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | pstack `interrogate` | 未採用。**`/review-orchestrator-triple-hybrid`** コマンドを使用 |
 | pstack `arena` | 未採用。**`multi-agent-candidates`**（`/architect` 経由可） |
 | pstack `show-me-your-work` | 未採用。**`decision-log`**（Notion）を監査正本 |
+| pstack `teach` / `automate-me` / `bro` | 採用（`omega/skills/teach`、`automate-me`、`bro`） |
 | pstack `correct` / `benchmark-checklist` | 採用（`omega/skills/correct`、`benchmark-checklist`）。原則 **explain-the-number** は `forge-mode/principles/` |
 | `poteto-agent` | **`forge-agent`** にリネーム |
 | `cursor-team-kit`（deslop, control-*） | 未導入時は skip、手動 verify で代替 |

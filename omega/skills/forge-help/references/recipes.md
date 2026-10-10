@@ -25,7 +25,7 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 - `/forge-mode prototype a few options for <feature>. take screenshots or videos for me to compare.`
 - `/forge-mode we need <feature>. /architect it first, and answer open questions with prototypes. let me review before proceeding.`
 - `/forge-mode write a tutorial for how i would use <new package> first. then /teach me why it beats the current one.`
-- `ask /arena for a second opinion on this thread and our approach.`
+- `ask /multi-agent-candidates (or /architect) for a second opinion on this thread and our approach.`
 - `/forge-mode turn this design into a plan. small verifiable PRs, each with its own verification steps.`
 - `/forge-mode plan the migration of <library> to <target>. small verifiable PRs. the result must match the original exactly, bugs included.`
 
@@ -40,7 +40,7 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 ## Away and back
 
 - `/forge-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
-- `/show-me-your-work catch me up on what you did last night.` Read its Attention section first.
+- `/decision-log catch me up on what you did last night.` Read the **decision-log** skill's Attention section first (Notion 正本; ローカル `decisions.tsv` がある run も同スキルで要約).
 - `/forge-mode full autopilot on this queue. each item is independent.`
 - `/forge-mode autopilot these changes but stack them, don't ship. i'll land the stack.`
 - `/reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.
