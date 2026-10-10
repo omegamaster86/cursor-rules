@@ -1,35 +1,35 @@
 # Rationale template
 
-The prose that ships alongside the type sketch. One page. Sentence-case headings, no boilerplate. Replace the italic notes with actual content.
+型スケッチと併送する prose。1 ページ。sentence-case 見出し、boilerplate なし。イタリック注記を実内容に置き換える。
 
 ## Problem
 
-*One paragraph. What we're trying to do, and what about the existing system or constraints makes the shape non-obvious. If [Phase A](../SKILL.md#phase-a-ground-the-problem) surfaced constraints the design must honor (existing types to interop with, callers we can't break, invariants that crossed our boundary), name them here so the reader sees the same constraints you saw.*
+*1 段落。何をしようとしているか、既存システムや constraint の何が形状を non-obvious にするか。[Phase A](../SKILL.md#phase-a-ground-the-problem) で設計が守るべき constraint（interop する既存型、壊せない caller、境界を越えた invariant）が出たらここに名指しし、読者が同じ constraint を見るようにする。*
 
 ## Usage (caller's view)
 
-*Write this first, before the type sketch. Show the README or quickstart the consumer reads, plus two or three realistic call sites in their own code. What they import, what they call, what comes back. The type sketch in [Shape](#shape) is derived from this. The two must agree. When they diverge, reconcile the sketch to the usage, not the reverse. The caller's experience is the spec. The types serve it.*
+*型スケッチより先に書く。consumer が読む README または quickstart と、自分のコード内の 2〜3 の realistic call site。何を import し、何を呼び、何が返るか。[Shape](#shape) の型スケッチはここから導く。両者は一致させる。ずれたら usage に合わせてスケッチを reconcile し、逆はしない。caller の体験が spec。型はそれに従う。*
 
 ## Shape
 
-*The recommended architecture. Data structures first. Then how data flows through the signatures. Name the load-bearing decisions. State which invariants are encoded in types, where validation lives, and what the system deliberately does not do. Judge interface depth explicitly. State what complexity the public surface hides, what remains exposed to callers, and why the interface is no larger than needed. Cite the principle behind each decision (e.g., `per boundary-discipline`). Don't restate it.*
+*推奨 architecture。まず data structure。次に signature を通る data flow。load-bearing 決定を名指し。型に encode された invariant、validation の所在、意図的にしないことを述べる。interface depth を明示的に判断。public surface が隠す複雑さ、caller に残る露出、interface が必要以上に大きくない理由を述べる。各決定の背後の principle を引用（例: `per boundary-discipline`）。restate しない。*
 
 ## Synthesis decision
 
-*Filled in by [arena](../multi-agent-candidates/SKILL.md). Records which candidate became the base and why, what was adapted from each of the others, and what was rejected and why.*
+*[arena](../multi-agent-candidates/SKILL.md) が埋める。どの candidate が base になりなぜ、他から何を adapt し、何を reject しなぜ、を記録。*
 
 ## Tradeoffs accepted
 
-*One bullet per tradeoff the chosen shape makes. Form: "we accept X in exchange for Y." Name anything a future reader might mistake for an oversight, including things that look like premature optimization or premature simplification.*
+*選んだ形状が受け入れる tradeoff を 1 bullet ずつ。形式: 「X を受け入れ Y と引き換えに」。将来の読者が oversight と誤解しうるものを名指し、 premature optimization や premature simplification に見えるものも含む。*
 
 ## Alternatives considered
 
-*Required. Name at least one concrete alternative shape, with one line on why it lost. Judge each alternative on interface depth, not implementation simplicity alone. Name the complexity it exposes to callers and the complexity it hides. Two or three alternatives belong here when the design space had real contenders. One is fine when the constraints forced the answer, with the conclusion phrased as "this was the only viable shape because..." Avoid listing flavors of the same shape. This section covers design alternatives the chosen shape considered and rejected, not other runner candidates.*
+*必須。具体的な代替形状を最低 1 つ、なぜ負けたか 1 行で。各代替を implementation の単純さだけでなく interface depth で判断。caller に露出する複雑さと隠す複雑さを名指し。design space に real contender があったら 2〜3 代替がここに属する。constraint が答を強いたときは 1 つでよく、結論は「viable な形状はこれだけだった理由…」で。同じ形状の flavor 列挙は避ける。ここは選んだ形状が検討して reject した設計代替であり、他 runner candidate ではない。*
 
 ## Open questions and risks
 
-*Things you noticed during the sketch that the human needs to weigh in on, and risks worth flagging before implementation starts. Phrase as questions, not assertions, so the human's answer is the resolution rather than a comment.*
+*スケッチ中に気づき、人が実装前に weigh すべきことと flag すべき risk。assertion ではなく question で書き、人の答えが resolution になるように。*
 
 ## Next implementation step
 
-*The first thing to build against the sketch. One sentence. What you'd start writing immediately after synthesis (or after Phase D sign-off, if a checkpoint was opted into).*
+*スケッチに対して最初に build するもの。1 文。synthesis の直後（checkpoint を opt in したなら Phase D sign-off の後）にすぐ書き始めるもの。*

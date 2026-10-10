@@ -1,14 +1,14 @@
 ### Trace forensics
 
-**You own the diagnosis from the artifact. Load it, shape it, narrow to the cause, attribute to source.**
+**artifact から診断を自分が持つ。load、shape、原因に絞り、source に attribute。**
 
-Distinct from **Runtime forensics**, which instruments the live process. Here the capture already exists. The artifact is a fixed dataset, read it, don't re-run it. Keep tooling generic so the playbook stays portable: a DevTools or trace parser for cpuprofile and `.json.gz`, a text editor for a spindump, your heap tooling for a heapsnapshot.
+**Runtime forensics**（live process を instrument）とは別。ここでは capture は既にある。artifact は固定 dataset。読む。再実行しない。playbook の移植性のため tooling は汎用：cpuprofile と `.json.gz` 用 DevTools や trace parser、spindump 用テキストエディタ、heapsnapshot 用 heap tooling。
 
-1. Identify the format and load it with the right tool. Parse large artifacts in a subagent (the **principle-guard-the-context-window** skill) and keep the reduced finding in the main thread.
-2. Transform the raw artifact into a form you can query. Dump the trace or heap snapshot into sqlite, one row per sample, frame, or node. Reach the queryable shape before you read.
-3. Narrow to the cause. Query for the frames that hold the most time and walk the call tree to the hot path. For a leak, follow the retainer chain from the leaked object to a GC root. For a spindump, find the thread stuck on-CPU or blocked and its wait reason.
-4. Attribute to source. Map the hot frame to file, symbol, and line via the artifact's own symbols. A frame with no source mapping is not yet a diagnosis. Resolve the symbols, or say plainly the artifact does not carry them.
-5. Confirm against a paired capture when you have one. Diff a before and after artifact. Without one, mark the finding as the strongest hypothesis the artifact supports, not a confirmed cause.
-6. Hand back a cited diagnosis, no fix unless asked. Route to Bug fix or Perf issue once the cause is known. Throughput checkpoint stays one line: `throughput checkpoint: n/a, read-only forensics`.
+1. format を特定し、適切な tool で load。大きい artifact は subagent で parse（**principle-guard-the-context-window** skill）。縮約 finding は main thread に残す。
+2. raw artifact を query 可能な形に変換。trace や heap snapshot を sqlite に dump。sample、frame、node ごとに 1 行。読む前に queryable shape に到達。
+3. 原因に絞る。最も時間を占める frame を query し call tree を hot path まで walk。leak なら leaked object から GC root へ retainer chain。spindump なら on-CPU または blocked の thread と wait reason。
+4. source に attribute。hot frame を artifact の symbol で file、symbol、line に写像。source mapping のない frame はまだ diagnosis ではない。symbol を解決するか、artifact に載っていないと明言。
+5. paired capture があるときはそれで確認。before/after artifact を diff。無ければ finding は artifact が支える最強 hypothesis とし、confirmed cause ではないとマーク。
+6. cited diagnosis を返す。求められなければ fix なし。原因が分かったら Bug fix または Perf issue にルート。throughput checkpoint は 1 行：`throughput checkpoint: n/a, read-only forensics`。
 
-**Reply:** the artifact and format, the reduced finding, the source location, the artifact paths, and whether a paired capture confirmed it.
+**Reply:** artifact と format、縮約 finding、source location、artifact paths、paired capture で確認したかどうか。

@@ -1,51 +1,51 @@
 # Word the prompt
 
-A prompt states the intent and the check for done. The playbook supplies the steps, so a few plain sentences beat a spec.
+prompt は intent と done の check を述べる。playbook が step を供するので、plain 数文が spec に勝る。
 
 ## Put in
 
-- The goal. Say what is wrong or what the user wants.
-- The done check. It can pass or fail. "Make it better" and a duration are not checks.
-- The proof to show. Ask for the real command output, a video of the flow, the stored value, or a before and after number.
-- What the user already knows. A symptom, a repro step, a log, or a link saves the agent a search.
-- The real constraints. "repro first", "don't change any code yet", "zero behavior change", and "let me review before proceeding" each change what the agent does.
+- goal。何が誤っているか、ユーザーが何を望むかを言う。
+- done check。pass または fail できる。「make it better」や duration は check ではない。
+- 示す proof。real command 出力、flow の video、保存値、before/after 数値を求める。
+- ユーザーが既に知っていること。symptom、repro step、log、link はエージェントの search を省く。
+- 実 constraint。「repro first」「don't change any code yet」「zero behavior change」「let me review before proceeding」はそれぞれエージェントの行動を変える。
 
 ## Leave out
 
-- The how. Say what to achieve, and leave the agent room to find a better way.
-- A list of skills or steps. A hand-written order drops or reorders steps the playbook keeps. Name a skill only to override one choice.
-- The user's theory of the cause, until the agent restates the problem. A stated guess narrows the search.
+- how。達成することを言い、より良い道を見つける余地を残す。
+- skill や step のリスト。手書き順は playbook が保つ step を落とす・並べ替える。1 選択を override するときだけ skill を名指す。
+- ユーザーの原因 theory は、エージェントが問題を restate するまで。述べた guess は search を狭める。
 
 ## Load the context first
 
-- For a noisy report, ask the agent to restate the underlying issue in its own words and in plain English before it does anything else. A misreading shows up before any code exists.
-- In a fresh chat, `/recall` earlier work on the topic. Old chats hold context that the new agent lacks.
-- Before a change to unfamiliar code, ask `/how` for the mechanics and `/why` for the reasons. An agent with no traced model fixes the symptom at the first plausible spot.
-- Ask `/teach` to make the case for a choice, as in "convince me it fixes the cause and not the symptom". A case is easier to check than a summary.
+- noisy report なら、何かする前に underlying issue を自分の言葉・plain English で restate するようエージェントに求める。misreading は code 前に出る。
+- fresh chat なら `/recall` で topic の過去作業。旧 chat は新エージェントに無い context を持つ。
+- 馴染みのない code を変える前に `/how` で mechanics、`/why` で理由。traced model 無しのエージェントは最初の plausible 箇所で symptom を直す。
+- `/teach` で選択の case を求める、例「cause ではなく symptom を直すと説得して」。summary より case の方が check しやすい。
 
 ## Design before the plan
 
-- Never take the first design. Ask for prototypes of a few options, with screenshots or videos for UI, and pick from the evidence.
-- Let prototypes answer the open questions. Don't review an abstract plan adversarially, because reviewers invent risks that never happen.
-- For a shared package or API, ask for the README or a tutorial first, then work back to the code. The doc becomes the target the agent checks itself against.
-- Ask for the plan only after the design is settled. Each step of the plan ends in a check.
+- 最初の設計を採らない。UI なら screenshot または video 付きで数 option の prototype を求め、evidence から選ぶ。
+- prototype に open question を答えさせる。abstract plan を adversarial に review しない; reviewer は起きない risk を invent する。
+- shared package または API なら README または tutorial を先に、そこから code に戻る。doc がエージェントが自分に対して check する target になる。
+- 設計が settle した後だけ plan を求める。plan の各 step は check で終わる。
 
 ## Follow up short
 
-- "do it", "continue", and "keep going until done" are whole prompts once the chat holds the task.
-- Start with "new task" when the subject changes. Otherwise the mode treats the message as the next step.
+- 「do it」「continue」「keep going until done」は chat が task を持っていれば十分な prompt。
+- subject が変わるときは「new task」で始める。そうでなければ mode は message を次の step として扱う。
 
 ## Before stepping away
 
-- Say "im going to bed" or "im stepping away" so the agent stops asking.
-- Write done as checks every iteration can run, and give `/loop` that predicate.
-- Ask for a fresh worktree off a named base.
-- Pre-answer what the agent would stop for, such as "don't ask me before committing".
-- Ask for a decision log to audit later.
-- Give an exit: "if you're truly stuck after a few hours, stop and write up why".
+- 「im going to bed」「im stepping away」と言いエージェントの質問を止める。
+- done を各 iteration が走らせる check として書き、`/loop` にその predicate を渡す。
+- 名指し base から fresh worktree を求める。
+- commit 前に止まることを事前に答える、例「don't ask me before committing」。
+- 後で監査する decision log を求める。
+- exit を渡す:「数時間 truly stuck なら stop して why を書き上げる」。
 
 ## Steer in one line
 
-- Restate the goal: "i said the goal is to repro. i did not ask for a fix yet."
-- Name the principle: "apply prove it works. show me the real output, not the build log."
-- A principle name works because the agent already read the rule. Its reply names the decision the rule changed.
+- goal を restate:「goal は repro だと言った。fix はまだ求めていない。」
+- principle を名指す:「prove it works を適用。build log ではなく real output を見せて。」
+- principle 名はエージェントが既に rule を読んだから効く。返答は rule が変えた決定を名指す。

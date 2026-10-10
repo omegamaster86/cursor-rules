@@ -1,39 +1,39 @@
 ### Orchestrate
 
-**You own the program, never the code. Author briefs, drain the queue, keep the frontier green, decide.** For a whole project handed to one standing coordinator chat: multi-day, many stacked PRs, dozens to hundreds of subagents, the human checking in twice a day instead of every five minutes. One task driven to a predicate is Autonomous run. One ambitious run needing a bespoke workflow is figure-it-out. Route here when the work outlives any single agent. Work one agent could finish inside the session's budget is not a program.
+**program を自分が持ち、code は never。brief を書き、queue を drain、frontier を green に保ち、decide。** 1 つの standing coordinator chat に whole project を渡すとき: multi-day、many stacked PR、dozens から hundreds の subagent。human は 5 分ごとではなく 1 日 2 回 check-in。1 task を predicate まで drive は Autonomous run。1 ambitious run で bespoke workflow が要るのは figure-it-out。work が single agent を超えて生き続けるときここに route。session budget 内で 1 agent が finish できる work は program ではない。
 
-Ceremony must scale with the program. On cheap near-identical units, collapse it as each section directs.
+ceremony は program に scale。cheap で near-identical unit では各 section が指示するところで collapse。
 
-Three rules carry the rest.
+残りを担う 3 rule。
 
-- Completions are queue events, not interrupts.
-- Every spawn and every resume carries the standing orders verbatim.
-- The brief is the product. A vague brief fails quietly, because a worker cannot ask you a question.
+- completion は interrupt ではなく queue event。
+- 各 spawn と各 resume は standing orders を verbatim で carry。
+- brief が product。vague brief は静かに fail。worker は質問できない。
 
 #### Roles and placement
 
-- **Coordinator (this chat).** Local. Frames, authors briefs, drains the inbox, owns the human report, makes judgment calls. It never authors or edits code. Conflicted merges, restacks, and code changes are always tasks. Mechanically landing a verified unit (fast-forward or clean cherry-pick of a worker's commit, then push) is bookkeeping the coordinator may do itself on repos where local git is cheap. Queueing finished work behind an idle stacker is how a deadline harvests nothing. The loop is agentic end to end. Agents are spawned, resumed, and drained only through the Task tool. State reads and writes go through `scripts/orch/orch.ts` at drain points, one command in and one line out. The CLI never spawns, waits, or wakes anything.
-- **Sub-coordinator.** Always local, durable, one per track, and only when the program exceeds what one coordinator's drains can manage. A track the coordinator can drain itself needs no middle layer. Each nested layer re-pays a full orientation preamble, and a blocking sub-coordinator hides its children while the parent idles. Owns its track's units and boards, authors its workers' briefs, spawns its own workers and verifiers (nesting works to depth 3, and a nested spawn has the full Task schema including `environment`). Rolls up aggregates at wave boundaries. Never forwards raw child reports. Cap in-flight children at what one drain can process, roughly ten, as a rolling window. Never as blocking batches, which cost the slowest child of every batch.
-- **Worker / verifier.** Always `environment: "cloud"` unless the task needs this machine: `control-ui` or `control-cli` runtime verification (from `cursor-team-kit`). Reading local transcripts under `agent-transcripts/`. Simulators and local IDE state. Auth that exists only here. Cloud agents cannot read the local store, so their briefs inline what they need or point at repo paths. Prefer fewer, broader workers. One writer per worktree or branch (principle-separate-before-serializing-shared-state). Run a unit's verifier on a different model family from its worker.
+- **Coordinator（この chat）。** local。frame、brief 作成、inbox drain、human report own、judgment call。code を author/edit しない。conflicted merge、restack、code change は常に task。verified unit の mechanical land（worker commit の fast-forward か clean cherry-pick、その後 push）は local git が cheap な repo で coordinator 自身ができる。finished work を idle stacker の後ろに queue すると deadline は何も harvest しない。loop は end-to-end agentic。agent は Task tool だけで spawn、resume、drain。state read/write は drain point で `scripts/orch/orch.ts`、in/out 各 1 command 1 line。CLI は spawn、wait、wake しない。
+- **Sub-coordinator。** 常に local、durable、track あたり 1、program が 1 coordinator の drain を超えるときだけ。coordinator が自分で drain できる track は middle layer 不要。nested layer ごとに full orientation preamble を再支払い。blocking sub-coordinator は parent が idle の間 child を隠す。track の unit と board を own。worker brief を書き、自分の worker と verifier を spawn（nesting は depth 3、nested spawn は `environment` 含む full Task schema）。wave boundary で aggregate を rollup。raw child report を forward しない。in-flight child は 1 drain が処理できる量（おおよそ 10）を rolling window で cap。blocking batch ではない。毎 batch の slowest child のコスト。
+- **Worker / verifier。** 常に `environment: "cloud"`。task がこの machine を要する場合以外: `cursor-team-kit` の `control-ui` か `control-cli` runtime verification。local `agent-transcripts/` の読み。simulator と local IDE state。ここにしかない auth。cloud agent は local store を読めない。brief は必要なものを inline か repo path を指す。fewer で broader worker を prefer。worktree か branch あたり 1 writer（principle-separate-before-serializing-shared-state）。unit の verifier は worker と別 model family。
 
-Depth stays at coordinator, track, worker. Author the track decomposition per project (build, landing, and verification are common cuts, not a required shape). Hard-coded swarm trees were tried and parked as too rigid.
+depth は coordinator、track、worker。track decomposition は project ごとに author（build、landing、verification は common cut、必須 shape ではない）。hard-coded swarm tree は試して rigid すぎて park。
 
 #### Store layout
 
-Create `orchestrate/<project-slug>/` in the current agent's store (path in the system prompt). Every file has exactly one writer. Owners publish facts, readers aggregate at read time. Use `bun scripts/orch/orch.ts` for bookkeeping, written below as `orch`, while its canonical plain TSV and JSON stay readable without the CLI.
+current agent の store（system prompt の path）に `orchestrate/<project-slug>/` を create。file は writer 1 つだけ。owner は fact を publish、reader は read time で aggregate。`bun scripts/orch/orch.ts` で bookkeeping。下では `orch`。canonical plain TSV と JSON は CLI なしでも読める。
 
-- `preferences.md` is the standing-orders register: numbered lines, one constraint each (model policy, stack shape and count, verification bar, forbidden paths, escalation policy). Paste it verbatim into every spawn and every resume. Directives decay across resumes, and each dropped one costs a human turn. When you catch yourself restating an instruction, append the line before you act (principle-encode-lessons-in-structure).
-- `overview.md` is the durable PR and issue DB. Append. Never rewrite wholesale per event.
-- `units.tsv` has one row per unit: id, track, state, branch, PR, head SHA, brief path. Update rows in place.
-- `frontier.json` is the computed merge frontier, per Stack safety.
-- `ledger.tsv` is the verification ledger, per Verification.
-- `inbox/` holds completion pointers. `gates.md` parks human gates (question, options, default on no answer).
-- `decisions.tsv` is the trail via the decision-log skill.
-- `status.md` is derived from `units.tsv` and `ledger.tsv` at each drain, never hand-maintained. Regenerate it from the tables instead of narrating events into it.
+- `preferences.md` は standing-orders register: 番号付き行、constraint 1 つずつ（model policy、stack shape と count、verification bar、forbidden path、escalation policy）。各 spawn と各 resume に verbatim paste。directive は resume 間で decay。落とした 1 つが human turn のコスト。instruction を restate しそうになったら act 前に行を append（principle-encode-lessons-in-structure）。
+- `overview.md` は durable PR と issue DB。append。event ごとに wholesale rewrite しない。
+- `units.tsv` は unit 1 行: id、track、state、branch、PR、head SHA、brief path。行は in-place update。
+- `frontier.json` は computed merge frontier。Stack safety 参照。
+- `ledger.tsv` は verification ledger。Verification 参照。
+- `inbox/` は completion pointer。`gates.md` は human gate を park（question、options、no answer 時 default）。
+- `decisions.tsv` は decision-log skill 経由の trail。
+- `status.md` は各 drain で `units.tsv` と `ledger.tsv` から derive。手 maintain しない。event を narrative せず table から regenerate。
 
 #### The brief
 
-Your prompts to agents are your only product, and a sloppy brief compounds into slop across the whole tree. Every spawn carries all of it. A field you cannot fill is a unit you have not scoped yet.
+agent への prompt が唯一の product。sloppy brief は tree 全体に slop として compound。各 spawn は全部 carry。埋められない field はまだ scope していない unit。
 
 ```
 GOAL         one sentence, the outcome, executable by a stranger with no chat access
@@ -49,63 +49,63 @@ REPORT       status, branch, head SHA, PRs, verdict, what you actually ran, devi
 STANDING     <preferences.md pasted verbatim>
 ```
 
-Size the brief to the unit. A one-command unit gets the template collapsed to a paragraph that still names goal, scope, the verify command, and the report shape. A 4KB scaffold around a two-line edit costs more to write and obey than the edit. Local spawns may reference the standing-orders file by store path. Verbatim paste is for cloud spawns and every resume.
+brief を unit に scale。1-command unit は template を paragraph に collapse。goal、scope、verify command、report shape はまだ名指す。2 行 edit 周りの 4KB scaffold は edit より書いて obey するコストが大きい。local spawn は standing-orders file を store path で参照可。verbatim paste は cloud spawn と全 resume。
 
-A sub-coordinator brief adds its track boundary and unit list, its spawn budget with the cloud default and the local exception list, the drain protocol, and the rollup format (per child: name, status, PR, head SHA, verdict, one line, plus track status and frontier delta).
+sub-coordinator brief は track boundary と unit list、spawn budget（cloud default と local exception list）、drain protocol、rollup format（child ごと: name、status、PR、head SHA、verdict、1 行、plus track status と frontier delta）を追加。
 
-A dependency is a context relay, not just ordering. Undeclared upstream context makes the worker guess. Missing fields are a refuse-to-spawn condition. Audit one sampled worker brief per sub-coordinator per wave, concurrently with the wave it samples, never as a gate in front of it. A failing brief stops that track and fixes the sub-coordinator's instructions, not just the worker, because brief quality decays late in a run. Never resume-chain a brief. Respawn fresh with consolidated scope.
+dependency は ordering だけではなく context relay。undeclared upstream context は worker を guess させる。missing field は refuse-to-spawn。sub-coordinator ごと wave ごとに sampled worker brief を 1 つ audit。sample する wave と concurrent。その前の gate ではない。fail brief はその track を stop し sub-coordinator の instruction を fix。worker だけではない。brief quality は run 後半で decay。brief を resume-chain しない。consolidated scope で fresh respawn。
 
 #### Steps
 
-1. **Frame.** State the done predicate as something countable ("all 126 units merged, each ledger-verified `unit-test-verified` or better"). Quantify scope: units, rough effort, expected stacks, and the wall-clock budget. If one agent could finish inside that budget, stop here and run Autonomous run instead. Collapsing must not depend on another document being present. It means do the work directly in this session, plain workers where they help, verification inline, landing as you go, and none of the store, register, or pilot machinery below. Schedule landing against the budget. By roughly 70% of it, stop spawning and land what is verified. Name the tracks per project. A contested decomposition or one-way door goes through the multi-agent-candidates skill before the pilot. Present the framing once. Reversible prep proceeds without waiting.
-2. **Install the runtime.** Run `orch init`. Open the trail via the decision-log skill, write the standing orders before any spawn, and seed `frontier.json` from existing PRs with `orch frontier set --repo <repo-dir>`.
-3. **Pilot.** Push one unit through the whole path: brief, worker, verification, stack entry, ledger row, merge. The pilot exists to falsify the brief template, the verify recipe, and the unit size while that costs one agent instead of fifty. Fix the contract from pilot evidence before any fan-out. Scale the pilot to the unit. On programs of near-identical cheap units, the first unit is the pilot, run as a normal unit with its verify command inline, and fan-out starts the moment it lands. The dedicated pilot pipeline (separate verifier agent, audit gate) is for expensive or novel unit shapes, not for clone-units where a serialized pilot has nothing to falsify.
-4. **Scale.** Spawn a rolling window of workers up to the in-flight cap, refilling as children finish. Blocking batches pay the slowest child of every batch. Spawn track sub-coordinators only past the one-drain threshold in Roles. Recompute ready work after each drain. Relay upstream reports into downstream briefs. Keep sibling communication upward only. The sampled brief audit runs alongside the wave it samples and stops the next refill on failure, not the current one.
-5. **Drain.** Run the queue discipline below at every drain point.
-6. **Land.** Landing is continuous, never a terminal phase. Integration starts with the first verified unit and runs alongside the remaining waves. On heavy repos the stacker is a standing role from wave one, integrating as units verify. On repos where local git is cheap, the coordinator lands verified units itself per Roles. Keep the frontier green before upper-stack work. Stack safety governs. Advance `frontier.json` only on merge or reported new head SHAs.
-7. **Close.** Drain the final inbox, reconcile every spawned agent to a terminal row (done, abandoned, zombie-reconciled), confirm the predicate on the real artifact, confirm every landed PR has a verdict for its current head SHA, audit the trail per decision-log including its cross-model review, encode recurring corrections into `preferences.md` or the brief template. Leave the store intact. It is the postmortem.
+1. **Frame.** done predicate を countable に述べる（「126 unit すべて merged、各 ledger-verified `unit-test-verified` 以上」）。scope を quantify: unit、rough effort、expected stack、wall-clock budget。1 agent がその budget 内で finish できるならここで stop し Autonomous run。collapse は別 document の存在に依存しない。この session で直接 work、plain worker で助け、verification inline、land しながら、下の store、register、pilot machinery なし。landing を budget に対して schedule。おおよそ 70% で spawn を止め verified を land。track を project ごとに名指す。contested decomposition か one-way door は pilot 前に multi-agent-candidates skill。framing を 1 回 present。reversible prep は待たず proceed。
+2. **Install the runtime.** `orch init`。decision-log skill で trail を開き、spawn 前に standing orders を書き、既存 PR から `orch frontier set --repo <repo-dir>` で `frontier.json` を seed。
+3. **Pilot.** 1 unit を path 全体に: brief、worker、verification、stack entry、ledger row、merge。pilot は brief template、verify recipe、unit size を falsify するため。50 ではなく 1 agent のコストのとき。pilot evidence から contract を fix して fan-out 前。pilot を unit に scale。near-identical cheap unit の program では first unit が pilot。verify command inline の normal unit として走らせ、land した瞬間 fan-out。dedicated pilot pipeline（別 verifier agent、audit gate）は expensive か novel unit shape 向け。serialized pilot が falsify するものがない clone-unit 向けではない。
+4. **Scale.** in-flight cap まで worker の rolling window を spawn。child finish で refill。blocking batch は毎 batch の slowest child を支払う。Roles の one-drain threshold を超えたら track sub-coordinator を spawn。各 drain の後 ready work を recompute。upstream report を downstream brief に relay。sibling communication は上向きのみ。sampled brief audit は sample する wave と並行。fail は次 refill を stop。current は止めない。
+5. **Drain.** 各 drain point で下の queue discipline。
+6. **Land.** landing は continuous。terminal phase ではない。integration は first verified unit から。残 wave と並行。heavy repo では stacker は wave 1 から standing role。unit verify しながら integrate。local git が cheap な repo では Roles に従い coordinator が verified unit を自分で land。upper-stack work の前に frontier green。Stack safety が govern。merge か reported new head SHA だけで `frontier.json` を advance。
+7. **Close.** final inbox drain。spawn した全 agent を terminal row に reconcile（done、abandoned、zombie-reconciled）。real artifact で predicate 確認。land した全 PR に current head SHA の verdict 確認。decision-log に cross-model review 含め trail audit。recurring correction を `preferences.md` か brief template に encode。store は intact 残す。postmortem。
 
 #### Queue and drain
 
-- On a completion notification, run `orch inbox push <agent> <unit> <status> [--report PATH]` and return to what you were doing. Never deep-review inline. A completion that needs review becomes a verifier unit. Never review a diff inside a drain.
-- Drain in batches at four points: the end of a critical section, a track rollup, a frontier watcher wake (arm it via the loop skill, with a long heartbeat fallback), and before a human report. Begin each batch with `orch inbox drain`. Arrivals during a drain wait for the next one.
-- Critical sections you finish first: authoring a brief, a stack operation, a conflict decision, writing a gate, updating ledger or frontier.
-- Each drain classifies every pointer (landed, needs-verify, failed, zombie, noise), writes the resulting rows through `orch unit add`, `orch unit set`, and `orch ledger record`, runs `orch status`, then spawns the next wave in one message.
-- Account for every spawned child at its track's rollup: arrived, respawned, or its scope explicitly absorbed. Silently redoing a missing child's work hides both the wasted spend and the coverage gap its result existed to close.
-- A drain turn ends with the three lines from `orch status`: counts against the states, what changed, gates open. Detail lives in `status.md`. The full reply contract applies at checkpoints and close.
+- completion notification で `orch inbox push <agent> <unit> <status> [--report PATH]` を走らせ、していたことに戻る。inline deep-review しない。review が要る completion は verifier unit になる。drain 内で diff review しない。
+- 4 point で batch drain: critical section 終わり、track rollup、frontier watcher wake（loop skill で arm、long heartbeat fallback）、human report 前。各 batch は `orch inbox drain` で始める。drain 中の arrival は次を待つ。
+- 先に finish する critical section: brief 作成、stack operation、conflict decision、gate 書き、ledger か frontier update。
+- 各 drain は全 pointer を classify（landed、needs-verify、failed、zombie、noise）。結果行を `orch unit add`、`orch unit set`、`orch ledger record` で書き、`orch status`、1 message で次 wave spawn。
+- track rollup で spawn した全 child を account: arrived、respawned、scope が明示 absorb。missing child の work を黙って redo すると wasted spend とその result が閉じる coverage gap を隠す。
+- drain turn は `orch status` の 3 行で終わる: state に対する count、what changed、gates open。detail は `status.md`。full reply contract は checkpoint と close。
 
 #### Stack safety
 
-- The frontier is a computed object, never narrative. Recompute `frontier.json` from `gt` after every merge and stack mutation because GitHub base refs drift mid-restack while gt tracking is authoritative: ordered PR list, branch names, head SHAs, a generation number, the lowest unmerged PR. Resolve it where gt knows the stack, normally the stacker's clone. A checkout whose gt metadata never saw the submits reports no PRs and the command errors rather than guessing.
-- Exactly one stacker per stack may run `gt`, serialized within its stack. Record the holder in the standing orders. Restacks run in cloud. A local restack at this scale takes the laptop down.
-- Workers never rebase and never run `gt`. Babysitters follow `playbooks/babysit.md`, one per stack, scoped to one immutable frontier generation. They report conflicts to the stacker rather than restacking.
-- PR closes and retargets go through the stacker only. Closing a base PR orphans every chain above it. Merges and stack surgery are units with briefs like any other.
-- One retro watcher follows merged PRs for reverts, post-merge CI breaks, and orphaned follow-ups.
+- frontier は computed object。narrative ではない。各 merge と stack mutation の後 `gt` から `frontier.json` を recompute。GitHub base ref は mid-restack で drift、gt tracking が authoritative: ordered PR list、branch name、head SHA、generation number、lowest unmerged PR。gt が stack を知る場所で resolve。通常 stacker の clone。gt metadata が submit を見ていない checkout は PR なしを報告し guess せず error。
+- stack あたり stacker は 1 つだけ `gt` を走らせ、stack 内 serialize。holder を standing orders に記録。restack は cloud。この scale の local restack は laptop を落とす。
+- worker は rebase も `gt` もしない。babysitter は `playbooks/babysit.md`、stack あたり 1、immutable frontier generation に scope。conflict は restack せず stacker に report。
+- PR close と retarget は stacker だけ。base PR を close すると上の全 chain が orphan。merge と stack surgery は他と同様 brief 付き unit。
+- merged PR を follow する 1 retro watcher: revert、post-merge CI break、orphaned follow-up。
 
 #### Verification
 
-Scale verification to the unit. When VERIFY is a single cheap command, the worker runs it and reports the output, and the coordinator spot-checks receipts. A dedicated verifier agent (on a different model family than the worker) is for units whose verification is expensive, judgment-laden, or high-blast-radius. A verifier agent whose entire product would be rerunning one command is ceremony, not verification.
+verification を unit に scale。VERIFY が single cheap command なら worker が走らせ output を report。coordinator が receipt を spot-check。dedicated verifier agent（worker と別 model family）は verification が expensive、judgment-laden、high-blast-radius の unit 向け。product 全体が 1 command の rerun だけの verifier agent は ceremony で verification ではない。
 
-Write ledger rows with `orch ledger record`. Check the current PR and head SHA with `orch ledger check`. `ledger.tsv`, one row per verdict, keyed by PR number plus head SHA: `live-ui-verified | unit-test-verified | type-check-only | verifier-blocked | verifier-failed`. CI green is an input to a verdict, not a verdict. Behavioral work needs better than `type-check-only`. `verifier-blocked` is not a pass. Respawn when the environment heals. `verifier-failed` gets a fix unit, not a re-verify. A worker may self-report. A verifier overrides it on the same key. A new head SHA voids the row, so re-verify after restack. The ledger answers "was this verified", not memory and not the transcript.
+`orch ledger record` で ledger 行。`orch ledger check` で current PR と head SHA。`ledger.tsv`、verdict 1 行、PR number + head SHA key: `live-ui-verified | unit-test-verified | type-check-only | verifier-blocked | verifier-failed`。CI green は verdict の input で verdict ではない。behavioral work は `type-check-only` より要る。`verifier-blocked` は pass ではない。environment heal で respawn。`verifier-failed` は fix unit で re-verify ではない。worker は self-report 可。verifier が同 key で override。新 head SHA は行を void。restack 後 re-verify。ledger は「verified だったか」に答える。memory でも transcript でもない。
 
-A unit is not done until its output is externalized the moment it lands, never batched to the end of the run. A worker pushes its branch, a verifier writes its ledger row, receipts land in the store. Work that exists only on one VM when that VM dies was never done.
+unit は output が land した瞬間 externalize されるまで done ではない。run 終わりに batch しない。worker は branch push、verifier は ledger row、receipt は store に。1 VM にだけ存在しその VM が死んだ work は never done。
 
 #### Liveness and failure
 
-- Never resume an agent to check on it. A resume restarts an idle agent. Probe read-only: the ledger, `units.tsv`, `gh`, pushed branches, the cloud agent's status in the Cursor dashboard. Transcript mtime is not liveness.
-- A silent death gets a synthetic postmortem row in the inbox (unit, failure mode, last evidence, options). Replan on evidence as it arrives. Never wait for full quiescence.
-- Retry by mode: cap-hit or oom, respawn with smaller scope. Network-drop, retry as-is. Tool-error, retry on a different model. Unknown, retry once. Two retries, then abandon the unit and replan around it.
-- A zombie that returns hours late reconciles against the current frontier and ledger before anything is accepted. Salvage unique findings through a fresh unit, never a blind merge.
-- When continued spawning would produce garbage tree-wide (bad upstream output, broken acceptance, dead infra), write a stop line at the top of the standing orders, let in-flight work finish, fix the cause, clear it.
-- Bound your own infra retries the same way you bound a child's. After a few consecutive tool aborts, stop retrying. Write a terminal handoff to durable state (what is done, where it lives, the exact command to resume) and end the run.
-- After a Cursor restart: local agents are dead, cloud work is not. Re-read the standing orders and `units.tsv`, recompute the frontier, reattach cloud work by PR and branch rather than agent id, respawn one sub-coordinator per track from its stored brief plus current state, drain, resume. The dead session's store lock clears itself on the next write. `orch` replaces a lock whose holder pid is gone.
+- liveness check のため agent を resume しない。resume は idle agent を restart。read-only probe: ledger、`units.tsv`、`gh`、pushed branch、Cursor dashboard の cloud agent status。transcript mtime は liveness ではない。
+- silent death は inbox に synthetic postmortem 行（unit、failure mode、last evidence、options）。evidence 到着に replan。full quiescence を待たない。
+- mode で retry: cap-hit か oom、smaller scope で respawn。network-drop、as-is retry。tool-error、別 model で retry。unknown、1 回 retry。2 retry で unit abandon し周りを replan。
+- 遅れて返る zombie は accept 前に current frontier と ledger に reconcile。unique finding は fresh unit で salvage。blind merge しない。
+- spawn 続行が tree-wide garbage になるとき（bad upstream output、broken acceptance、dead infra）、standing orders 先頭に stop 行、in-flight は finish、原因 fix、clear。
+- 自分の infra retry も child と同様 bound。連続 tool abort が数回で retry stop。durable state に terminal handoff（done、所在、resume する exact command）を書き run 終了。
+- Cursor restart 後: local agent は dead、cloud work は not。standing orders と `units.tsv` を再読、frontier recompute、agent id ではなく PR と branch で cloud work reattach、stored brief + current state から track ごと sub-coordinator 1 つ respawn、drain、resume。dead session の store lock は次 write で clear。holder pid が gone の lock は `orch` が replace。
 
 #### Escalation
 
-Reaches the human, batched into the status page rather than per item: irreversible actions (force-push to shared branches, deploys, deletions, closing someone else's PR), genuine product or preference calls no experiment settles, a standing order that contradicts observed reality, a program-level dead end that survived a replan. Park each as a `gates.md` entry before asking, and route work around it.
+human に届く。status page に batch。per item ではない: 不可逆 action（shared branch への force-push、deploy、deletion、他人の PR close）、experiment が settle しない genuine product か preference call、standing order が observed reality と矛盾、replan 後も残る program-level dead end。各々 `gates.md` entry に park してから ask。周りを route。
 
-Never reaches the human: frontier nudges, restack mechanics, retries, CI flake triage, review-thread triage, format fixes, scope the brief already forbids (refuse and continue), and "should I keep going". When in doubt, act and log.
+human に届けない: frontier nudge、restack mechanics、retry、CI flake triage、review-thread triage、format fix、brief が既に forbid する scope（refuse して continue）、「keep going すべきか」。doubt なら act して log。
 
-Mid-run discoveries fix only what blocks the frontier. Everything else parks in follow-ups. At this fan-out a small scope leak multiplies into PRs nobody asked for.
+mid-run discovery は front を block するものだけ fix。他は follow-up に park。この fan-out で小さな scope leak は誰も求めなかった PR に multiply。
 
-**Reply:** at checkpoints and close: the predicate and the count against it from `units.tsv` and `ledger.tsv`, tracks and what each landed, the frontier (PR list plus SHAs), verdicts summary, what was abandoned and why, gates awaiting the human (the only asks), the store path, and the trail path. Numbers from the tables, not narrative. Include PR links.
+**Reply:** checkpoint と close で: predicate と `units.tsv` と `ledger.tsv` からの count、track と各々 land したもの、frontier（PR list + SHA）、verdict summary、abandon と理由、human 待ち gate（唯一の ask）、store path、trail path。table からの数字で narrative ではない。PR link を含む。

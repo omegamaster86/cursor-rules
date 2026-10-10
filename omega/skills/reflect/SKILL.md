@@ -1,36 +1,36 @@
 ---
 name: reflect
-description: Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
+description: "アクティブ transcript 上で 3 つの parallel review サブエージェントを spawn し、学びを surface し、各件を既存スキルへの具体 edit にルーティング。ユーザーが reflect と言ったときに使用。"
 disable-model-invocation: true
 ---
 
 # Reflect
 
-Mine the current conversation for durable learnings, then route them into skill edits.
+現在の会話から durable な学びを mining し、skill edit にルーティングする。
 
 ## When to invoke
 
-Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
+ユーザーが「reflect」または `/reflect` と言ったとき起動。会話が trivial、off-topic、親が既存スキルを正しく踏んでいる場合はスキップ。一回限りは学びではない。
 
 ## Process
 
 ### 1. Locate the active transcript
 
-The parent finds its own transcript file before fanning out. The system prompt names the active workspace's `agent-transcripts/` directory. Use that path. Do not glob across `~/.cursor/projects/*/`. That crosses workspace boundaries and reads private chats from unrelated projects.
+fan-out 前に親が自分の transcript file を特定。system prompt がアクティブ workspace の `agent-transcripts/` を名指す。その path を使う。`~/.cursor/projects/*/` を glob しない。workspace 境界を越え、無関係 project の private チャットを読む。
 
 ```bash
 ls -t <agent-transcripts>/*.jsonl <agent-transcripts>/*/*.jsonl <agent-transcripts>/*/subagents/*.jsonl 2>/dev/null | head -10
 ```
 
-Three transcript layouts: legacy flat (`<id>.jsonl`), current nested (`<id>/<id>.jsonl`), and subagent (`<parent>/subagents/<child>.jsonl`).
+3 つの transcript レイアウト：legacy flat（`<id>.jsonl`）、current nested（`<id>/<id>.jsonl`）、subagent（`<parent>/subagents/<child>.jsonl`）。
 
-For each candidate, read the first JSONL line and check that `message.content[0].text` contains the conversation's opening user prompt. Take the matching path. If no path resolves, write a tight digest of the session and pass that instead.
+各候補で JSONL 先頭行を読み、`message.content[0].text` に会話の opening user prompt が含まれるか確認。マッチする path を採用。path が解決しなければセッションの tight digest を書きそれを渡す。
 
 ### 2. Spawn three reviewers in parallel
 
-One message, three `Task` calls, `subagent_type: generalPurpose`, with `model` set as below, agent mode (`readonly: false`). Reviewers need MCP access for context lookups (tickets, chat threads, observability traces referenced in the transcript). Readonly strips MCPs.
+1 メッセージ、3 `Task` 呼び出し、`subagent_type: generalPurpose`、`model` は下記、agent mode（`readonly: false`）。reviewer は transcript で参照された ticket、チャット thread、observability trace の context lookup に MCP が要る。readonly は MCP を剥がす。
 
-Each reviewer and the synthesizer name a role line in the `forge-models.mdc` rule and a default. Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `inherit`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message.
+各 reviewer と synthesizer は `forge-models.mdc` ルールの role 行と default を名指す。`model` はその行の値、ルールや行が無ければ default。値が `inherit` なら `model` は未設定。Task ツールが slug を拒否したら default を使い、その旨を述べる。default も拒否されたらエラーメッセージから同族の最も近い有効 slug を使う。
 
 | Lens | Role line | Default `model` | Prompt template |
 |---|---|---|---|
@@ -38,36 +38,36 @@ Each reviewer and the synthesizer name a role line in the `forge-models.mdc` rul
 | Tooling | `reflect tooling` | `cursor-grok-4.6-medium` | `references/tooling-reviewer.md` |
 | Divergent | `reflect judgment, divergent, synthesizer` | `claude-opus-5.5-thinking-medium` | `references/divergent-reviewer.md` |
 
-Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the `Task` response body.
+各 template をそのまま渡し、マーク箇所を transcript path または digest に置換。reviewer は `Task` 応答本文で findings を返す。
 
 ### 3. Synthesize
 
-One `Task` call, `subagent_type: generalPurpose`, with `model` from the `reflect judgment, divergent, synthesizer` line (default `claude-opus-5.5-thinking-medium`), agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access. Readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
+1 `Task` 呼び出し、`subagent_type: generalPurpose`、`model` は `reflect judgment, divergent, synthesizer` 行（default `claude-opus-5.5-thinking-medium`）、agent mode（`readonly: false`）。synthesizer の quality check は citation spot 検証で MCP が要る場合がある。readonly は MCP を剥がす。`references/synthesizer.md` をそのまま使い、マーク箇所に各 reviewer の full output をインライン。synthesizer は構造化 Accepted / Rejected / Backlog リストを返す。
 
 ### 4. Structural enforcement check
 
-Sanity-check the synthesizer's Accepted list. For any item that would be enforced more reliably by a lint rule, script, metadata flag, or runtime check, move it from Accepted to Backlog. See the **encode-lessons-in-structure** principle skill.
+synthesizer の Accepted リストを sanity-check。lint rule、script、metadata flag、runtime check でより確実に強制できる項目は Accepted から Backlog に移す。**encode-lessons-in-structure** principle スキルを参照。
 
 ### 5. Apply
 
-Before applying any Accepted edit, present the synthesizer's full Accepted/Rejected/Backlog output to the user and wait for explicit approval. The user picks which subset to apply and may redirect routings. Skill changes affect every future agent in the org. Do not auto-apply.
+Accepted edit を適用する前に、synthesizer の full Accepted/Rejected/Backlog 出力をユーザーに提示し、明示承認を待つ。ユーザーが適用 subset を選び、routing を差し替え可能。skill 変更は org の将来の全 agent に効く。auto-apply しない。
 
-Backlog items file to whatever devex / backlog tracker your team uses automatically. Only the Accepted list waits for approval.
+Backlog 項目はチームの devex / backlog tracker に自動 filing。承認待ちは Accepted リストだけ。
 
-For each approved Accepted item, follow the Routing field exactly:
+承認された Accepted 項目ごとに Routing field を厳守：
 
-- Trivial existing-skill edit (a one-line bullet, a tightened sentence, a stale fact corrected): parent does directly.
-- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): hand to Cursor's built-in `create-skill` skill and run its draft / test / iterate loop.
-- `tune description: <skill path>` (the skill exists but didn't trigger when it should have): hand to `create-skill` and run its description-optimization loop.
-- `new skill via create-skill: <kebab-name>`: hand creation to `create-skill`. Do not invent the shape ad hoc.
+- Trivial 既存スキル edit（1 行 bullet、文の tighten、古い fact 修正）：親が直接。
+- Substantive 既存スキル edit（新 section、新 pattern 表、~10 行超）：Cursor 組み込み `create-skill` に渡し draft / test / iterate loop。
+- `tune description: <skill path>`（スキルはあるが trigger すべきとき踏まなかった）：`create-skill` の description 最適化 loop。
+- `new skill via create-skill: <kebab-name>`：作成は `create-skill`。形を ad hoc で発明しない。
 
-If your environment ships a SKILL.md validator, run it on every touched skill before declaring done. Skip this step if it doesn't.
+環境に SKILL.md validator があれば、触った skill ごとに完了宣言前に実行。なければスキップ。
 
 ### 6. Summarize for the user
 
-Short list, no preamble:
+短いリスト、前置きなし：
 
-- Edits applied: `<skill path>`. What changed, one line each.
-- New skills created: `<skill path>`. One line each (rare).
-- Backlog filed to the devex tracker: `<issue title>` (`<tags>`). One line each.
-- Dropped: one line per rejected finding + reason from the synthesizer.
+- Edits applied: `<skill path>`. 各 1 行で何が変わった。
+- New skills created: `<skill path>`. 各 1 行（稀）。
+- Backlog filed to the devex tracker: `<issue title>`（`<tags>`）。各 1 行。
+- Dropped: synthesizer の rejected finding ごとに 1 行 + 理由。

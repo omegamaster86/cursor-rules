@@ -1,25 +1,25 @@
 ### Eval
 
-**You own the experiment design. Plan, blind, run, synthesize.**
+**実験設計を自分が持つ。計画、blind、実行、合成。**
 
-**Non-negotiables for blinding:**
+**blinding の Non-negotiables:**
 
-- No `eval`, `test`, `judge`, `experiment`, `rubric`, `score`, `compare`, `benchmark`, `candidate`, or `multi-agent-candidates` in any directory, file, or prompt the candidate sees.
-- The candidate prompt looks like an organic user request. State the goal, not the meta.
-- No chain-eliciting cues. Don't ask the candidate to list which skills, principles, or files they applied. Ask for design notes generally and grade chain-following from code shape, not self-report.
-- Sanitize directory and slug names. Use project-shaped names a user might pick.
-- Don't tell the candidate other candidates exist.
-- The judge can know it's judging but sees outputs by sanitized label only, never by model name.
-- Comparing two variants: one judge scores both sets in a single pass on one scale, blind to which set each came from.
+- candidate が見る directory、file、prompt に `eval`、`test`、`judge`、`experiment`、`rubric`、`score`、`compare`、`benchmark`、`candidate`、`multi-agent-candidates` を入れない。
+- candidate prompt は organic user request に見える。goal を述べ、meta は述べない。
+- chain-eliciting cue なし。どの skill、principle、file を適用したか列挙させない。design notes は一般に求め、chain-following は code shape から grade。self-report からではない。
+- directory と slug 名を sanitize。ユーザーが選びそうな project 形の名前。
+- candidate に他 candidate の存在を言わない。
+- judge は judging だと知ってよいが、出力は sanitized label だけ。model 名は見ない。
+- 2 variant 比較：1 judge が 1 scale で両 set を single pass で score。どちらの set か blind。
 
 **Steps:**
 
-1. **Frame.** State what variant is under test and what behavior counts as success. Write the rubric (3-6 concrete criteria) for the judge only. Hold it back from candidates.
-2. **Set up sanitized environments.** Per-candidate working dir with the variant in place. Plant any context an organic task would have: a project skeleton, the skills the candidate would naturally read.
-3. **Author one organic prompt.** What a user would type. No leakage of what's being measured.
-4. **Spawn N parallel candidates** on different models per the **multi-agent-candidates** skill's Phase B. Each works in its own sanitized dir. Same prompt to each.
-5. **Spawn one blinded judge** on a different model family per the **multi-agent-candidates** skill's Phase C. Judge sees outputs by sanitized label and the rubric, never a model name.
-6. **Verify the chain from transcripts, not self-report.** Read each candidate's local transcript under the active workspace's `agent-transcripts/` directory (the system prompt names this path). Do not glob across `~/.cursor/projects/*/`. That crosses workspace boundaries and reads private chats from unrelated projects. Look at which files each candidate actually opened. Grade chain-following from the files it really read plus the shape of the code, never from the candidate's own claims.
-7. **Read every candidate output yourself** end to end. Compare to the judge's verdict. Disagreement means a model is biased or the rubric is ambiguous. Synthesize.
+1. **Frame.** テスト中の variant と success とする挙動を述べる。judge 用 rubric（3–6 の concrete criteria）を書く。candidate からは伏せる。
+2. **Set up sanitized environments.** variant を入れた candidate ごとの working dir。organic task が持つ context を植える：project skeleton、candidate が自然に読む skill。
+3. **1 つの organic prompt を書く。** ユーザーが打つ内容。何を測っているかの leakage なし。
+4. **multi-agent-candidates** skill の Phase B に沿い、異なる model で N 並列 candidate を spawn。各々独自 sanitized dir。同一 prompt。
+5. **multi-agent-candidates** skill の Phase C に沿い、別 model family で 1 blinded judge を spawn。judge は sanitized label と rubric だけ。model 名は見ない。
+6. **transcript から chain を検証。self-report ではない。** 各 candidate の local transcript を active workspace の `agent-transcripts/` 下で読む（system prompt がこの path を名指す）。`~/.cursor/projects/*/` を glob しない。workspace 境界を越え unrelated project の private chat を読む。各 candidate が実際に開いた file を見る。chain-following は本当に読んだ file と code shape から grade。candidate 自身の主張からはしない。
+7. **全 candidate 出力を end to end で自分で読む。** judge verdict と比較。不一致は model bias または rubric の曖昧さ。合成。
 
-**Reply:** variant under test, rubric, per-candidate notes, judge's verdict, your synthesis, and a recommendation for whether to promote the variant.
+**Reply:** テスト中 variant、rubric、candidate ごとの notes、judge verdict、合成、variant を promote すべきかの recommendation。

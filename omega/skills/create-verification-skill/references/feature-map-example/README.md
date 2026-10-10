@@ -1,47 +1,47 @@
 # Notes verification map
 
-This directory is the maintained source for verifying the user-facing behavior of Notes. Read the index before driving the app, then use the matching feature file as the recipe.
+この directory は Notes の user-facing 振る舞いを verify する maintained source。app を drive する前に index を読み、該当 feature file を recipe として使う。
 
 ## Baseline preconditions
 
-- Launch Notes at `http://127.0.0.1:4173` with a disposable data directory.
-- Set `NOTES_DATA_DIR=/tmp/notes-verify-$RUN_ID` so concurrent runs do not share state.
-- Seed notes titled `Quarterly plan` and `Grocery list`.
-- Put `control-notes` and the `notes` CLI on `PATH`.
-- Run `control-notes doctor` and require the expected URL, data directory, and build revision.
-- Never drive an instance that was not started by this verification run.
+- disposable data directory で Notes を `http://127.0.0.1:4173` で起動。
+- 並行 run が state を共有しないよう `NOTES_DATA_DIR=/tmp/notes-verify-$RUN_ID` を設定。
+- タイトル `Quarterly plan` と `Grocery list` の note を seed。
+- `control-notes` と `notes` CLI を `PATH` に。
+- `control-notes doctor` を走らせ、期待 URL、data directory、build revision を要求。
+- この verification run が起動していない instance は drive しない。
 
 ## Driving conventions
 
-- Start every recipe from the baseline state unless its preconditions say otherwise.
-- Prefer ARIA roles and accessible names over CSS selectors or DOM position.
-- Treat every command as literal. Keep quoted names and flags unchanged.
-- Run browser actions through `control-notes browser`.
-- Run terminal actions through `control-notes cli -- <command>`.
-- Restore seeded data after a mutation. Do not remove proof artifacts during cleanup.
+- precondition が別に言う場合を除き、各 recipe は baseline state から開始。
+- CSS selector や DOM 位置より ARIA role と accessible name を優先。
+- 各 command を literal として扱う。引用名と flag は変えない。
+- browser action は `control-notes browser` 経由。
+- terminal action は `control-notes cli -- <command>` 経由。
+- mutation 後は seed data を復元。cleanup で proof artifact は除去しない。
 
 ## Proof and skip reporting
 
-- Capture the user action and the resulting state, not only the final screen.
-- UI proof includes an ARIA snapshot and a screenshot with the app identity visible.
-- CLI proof includes the command, stdout, stderr, and exit code.
-- Mutation proof includes a read-only second view of the stored value.
-- Record the feature ID and entry point used with every artifact.
-- Report an unreachable path with the attempted command and the unmet precondition.
-- Do not report a skipped entry point as verified through a different path.
+- 最終画面だけでなく user action と結果 state を capture。
+- UI proof は ARIA snapshot と app identity が見える screenshot を含む。
+- CLI proof は command、stdout、stderr、exit code を含む。
+- mutation proof は保存値の read-only 2 番目の view を含む。
+- 各 artifact に feature ID と使った entry point を記録。
+- 到達不能 path は試した command と満たされなかった precondition で report。
+- 別 path で verified と報告しないで skip した entry point を報告しない。
 
 ## Feature entry contract
 
-Each feature file starts with an H1 title and one paragraph describing the user-visible behavior. It then uses exactly four H2 sections in this order.
+各 feature file は H1 タイトルと user-visible 振る舞いを述べる 1 段落で始める。次にこの順で exactly 4 つの H2 節。
 
-1. `Sub-features` lists short IDs with one line for each behavior.
-2. `How to get to it (user POV)` lists every user entry point.
-3. `Driving it with <harness>` starts with `Preconditions:` and uses labeled bullets that pair each user action with an exact command and observable result.
-4. `Gotchas` lists traps that can waste or invalidate a verification run.
+1. `Sub-features` は各振る舞い 1 行の短い ID を列挙。
+2. `How to get to it (user POV)` はすべての user entry point を列挙。
+3. `Driving it with <harness>` は `Preconditions:` で始め、各 user action を exact command と observable result の labeled bullet で pair。
+4. `Gotchas` は verification run を浪費または無効化しうる trap を列挙。
 
-Keep implementation details out of the map. Name only user paths, stable handles, required state, commands, and observable proof.
+map から implementation 詳細を除く。user path、stable handle、必要 state、command、observable proof だけを名指す。
 
 ## Features
 
-- [Create a note](./create-note.md) covers browser and CLI creation, cancellation, persistence, and cleanup.
-- [Search notes](./search.md) covers toolbar, keyboard, and CLI search with matching, empty, and clear states.
+- [Create a note](./create-note.md) は browser/CLI 作成、cancel、persistence、cleanup を cover。
+- [Search notes](./search.md) は toolbar、keyboard、CLI search と match、empty、clear state を cover。

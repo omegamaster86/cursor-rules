@@ -1,16 +1,16 @@
 ---
 name: architect
-description: "Sketch types, signatures, and module structure before code, then stay in the loop while implementation fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to code would lock in the wrong shape."
+description: "実装前に型・シグネチャ・モジュール構造をスケッチし、実装が埋まる間もループに留まる。/architect、'architect this'、'design this'、コードに飛ぶと間違った形が固定される非 trivial 作業向け。"
 disable-model-invocation: true
 ---
 
 # Architect
 
-Design before implementing. Sketch types, function signatures, class shapes, and module boundaries with `not implemented` bodies and pseudocode. Synthesize across multiple model perspectives, then fill in code against the chosen sketch. If implementation proves the sketch wrong, throw it out and redesign.
+実装前に設計する。`not implemented` 本体と pseudocode で型、関数シグネチャ、クラス形状、モジュール境界をスケッチする。複数モデル視点を統合し、選んだスケッチに対してコードを埋める。実装がスケッチの誤りを示したら捨てて再設計する。
 
 ## Start
 
-Open a todolist with one entry per phase before starting.
+着手前にフェーズごとに 1 エントリの todolist を開く。
 
 1. Ground
 2. Sketch
@@ -20,64 +20,64 @@ Open a todolist with one entry per phase before starting.
 
 ## Phase A: Ground the problem
 
-Build a real mental model of every system the new code touches. Run the **how** skill over the relevant subsystems.
+新コードが触れるすべてのシステムの実 mental model を組む。関連サブシステムに **how** スキルを走らせる。
 
-Naming a file isn't grounding. Produce the traced model `how` prescribes. If the design redefines ownership or layering, also run the **why** skill on the existing shape so the rationale becomes a constraint, not a guess.
+ファイル名を挙げるだけは grounding ではない。`how` が求める traced model を出す。設計が ownership やレイヤリングを再定義するなら、既存形状に **why** スキルも走らせ、rationale を guess ではなく constraint にする。
 
-Skip Phase A only when the work is genuinely greenfield with no surrounding system to integrate.
+周囲に統合すべきシステムがない真の greenfield だけ Phase A をスキップする。
 
 ## Phase B: Sketch
 
-Run the **multi-agent-candidates** skill with the design-sketch task and the Phase A grounding artifacts. Pass `references/runner-prompt.md` as each runner's prompt. Each candidate produces a design package shaped per `references/rationale-template.md`.
+design-sketch タスクと Phase A の grounding artifact で **multi-agent-candidates** スキルを走らせる。各 runner の prompt に `references/runner-prompt.md` を渡す。各 candidate は `references/rationale-template.md` の形の design package を出す。
 
-Take the runners from the `architect runners` line in the `forge-models.mdc` rule, in place of the `multi-agent-candidates runners` line. If the rule or that line is missing, use `claude-opus-5.5-thinking-medium` and `cursor-grok-4.6-medium`. Alias and rejected entries follow the runner rules in the **multi-agent-candidates** skill's Phase A.
+`forge-models.mdc` ルールの `architect runners` 行から runner を取り、`multi-agent-candidates runners` 行の代わりに使う。ルールまたはその行が無ければ `claude-opus-5.5-thinking-medium` と `cursor-grok-4.6-medium`。alias と rejected エントリは **multi-agent-candidates** スキルの Phase A の runner ルールに従う。
 
-Design it twice. Require at least two structurally distinct candidates before synthesis, even when the first looks sufficient. This is the **exhaust-the-design-space** principle skill made concrete. Whole-shape alternatives, not point fixes inside one shape.
+2 回設計する。最初が十分に見えても synthesis 前に構造的に異なる candidate を最低 2 つ要求する。これは **exhaust-the-design-space** principle スキルの具体化。1 形状内の点修正ではなく、形状全体の代替。
 
-Screen every candidate against [`references/design-red-flags.md`](references/design-red-flags.md) before synthesis. Assume the next contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Prefer the design where a change that looks right from one file is right for the whole repo.
+synthesis 前にすべての candidate を [`references/design-red-flags.md`](references/design-red-flags.md) でスクリーンする。次の contributor は、開いたファイルだけ見て、最寄りの例をコピーし、コンパイルが通る最短経路を取るエージェントと仮定する。1 ファイルから正しく見える変更が repo 全体で正しい設計を選ぶ。
 
-Compare viable candidates on interface depth. Prefer the design that hides more complexity behind a smaller, simpler public surface. A rich interface can keep call chains short by concentrating capability instead of scattering it across layers.
+viable candidate を interface depth で比較する。より小さく単純な public surface の背後に複雑さを隠す設計を選ぶ。rich interface は capability をレイヤに散らさず集中させ、call chain を短く保てる。
 
-Arena returns one synthesized design package. The synthesis decision populates the rationale's "Synthesis decision" section.
+Arena は 1 つの synthesized design package を返す。synthesis 決定が rationale の「Synthesis decision」節を埋める。
 
-## Phase C: Agree (opt-in)
+## Phase C: Agree（opt-in）
 
-Default: proceed directly to implementation with the synthesized design. No human checkpoint.
+デフォルト: synthesized design で実装に直行。人の checkpoint なし。
 
-Opt in to a checkpoint when the invoker explicitly asks: "/architect with checkpoint," "stop and show me before implementing," or similar. Then surface the synthesized design and pause for sign-off.
+invoker が明示的に求めたときだけ checkpoint に opt in: 「/architect with checkpoint」「stop and show me before implementing」など。synthesized design を出して sign-off まで pause。
 
-The synthesis can ship as its own commit either way, as the "scaffold first" mode of the **foundational-thinking** principle skill. Planned and scoped breakage during fill-in is fine, per the **outcome-oriented-execution** principle skill. For adversarial pressure on the design before implementing, run the **review-orchestrator-triple-hybrid** skill on the synthesized sketch.
+synthesis はどちらでも単独 commit として ship できる。**foundational-thinking** principle スキルの「scaffold first」モード。fill-in 中の計画・スコープ済み breakage は **outcome-oriented-execution** principle スキルに従い問題ない。実装前に設計へ adversarial 圧力をかけるなら、synthesized sketch に **review-orchestrator-triple-hybrid** スキルを走らせる。
 
-If the human pushes back on the shape (in a checkpoint or after the fact), treat that as Phase A evidence. Re-ground and re-run Phase B before writing more code.
+人が形状を push back したら（checkpoint 中または後から）Phase A の evidence として扱う。さらにコードを書く前に re-ground して Phase B を再実行。
 
 ## Phase D: Implement against the sketch
 
-Replace `not implemented` bodies with code, pseudocode with logic. The synthesized sketch is the contract.
+`not implemented` 本体をコードに、pseudocode を logic に置き換える。synthesized sketch が contract。
 
-Deviations from the sketch are signal worth surfacing, not friction to absorb silently. If a function needs a parameter the sketch didn't anticipate, ask whether the sketch was wrong, the requirement was missed, or the implementation is overreaching.
+スケッチからの逸脱は黙って吸収する friction ではなく、surface する signal。スケッチが想定しなかった parameter が関数に要るなら、スケッチが誤りか、要件の見落としか、実装の overreach かを問う。
 
 ## Phase E: Scrap when the architecture is wrong
 
-If implementation keeps producing friction the sketch can't absorb, throw the sketch out. Don't bolt fixes onto a wrong design, per the **redesign-from-first-principles** and **fix-root-causes** principle skills.
+実装がスケッチが吸収できない friction を繰り返し出すならスケッチを捨てる。誤設計に fix を bolt しない。**redesign-from-first-principles** と **fix-root-causes** principle スキルに従う。
 
-The signal is a *pattern*, not single instances. Tells:
+signal は単発ではなく *pattern*。兆候:
 
-- The same shape of workaround appearing repeatedly across unrelated code.
-- Multiple unrelated edge cases that all need special-case branches.
-- Types that need escape hatches (`any`, casts, optional fields always set in practice) to compile.
-- The "we need a lock" reflex when the sketch said the state wasn't shared.
-- Callers having to know the abstraction's internal rules to use it.
-- Two or more independent Phase D deviations of the same shape across the implementation.
+- 無関係なコード横断で同じ形状の workaround が繰り返し出る。
+- 複数の無関係 edge case がすべて special-case branch を要る。
+- コンパイルに escape hatch（`any`、cast、実際は常に set される optional field）が要る型。
+- スケッチは state が shared でないと言ったのに「lock が要る」反射。
+- caller が abstraction の内部ルールを知らないと使えない。
+- 実装横断で同じ形状の Phase D 逸脱が 2 つ以上独立に起きる。
 
-Use judgment. A few edge cases don't condemn an architecture. Some problems are legitimately complex. Complexity in the data is not complexity in the design.
+判断を使う。少数の edge case で architecture を断罪しない。正当に complex な問題もある。データの複雑さは設計の複雑さではない。
 
-When you scrap:
+scrap するとき:
 
-1. Re-run the **how** skill over what's been built.
-2. Redesign as if the new constraints had been day-one assumptions, per redesign-from-first-principles.
-3. Subtract before adding, per the **subtract-before-you-add** principle skill. The new sketch should be smaller than the old one before it grows.
-4. Return to Phase B and re-run multi-agent-candidates.
+1. 構築済みに **how** スキルを再実行。
+2. 新 constraint が day-one 前提だったかのように redesign-from-first-principles で再設計。
+3. **subtract-before-you-add** principle スキルに従い足す前に引く。新スケッチは伸びる前に旧より小さく。
+4. Phase B に戻り multi-agent-candidates を再実行。
 
 ## Outputs
 
-The caller's usage is written first and the type sketch derived from it. One file with new types and signatures for small changes. Module map plus type definitions for larger work. The rationale ships alongside, shaped per `references/rationale-template.md`, including the usage sketch and the synthesis decision.
+caller の usage を先に書き、型スケッチはそこから導く。小変更は新型・シグネチャ 1 ファイル。大きい作業は module map 加 type definitions。rationale は `references/rationale-template.md` の形で併送し、usage スケッチと synthesis 決定を含む。
