@@ -28,3 +28,7 @@ echo "$NEW" > mattpocock-skills/UPSTREAM_COMMIT
 omega/skills/grilling/scripts/sync-from-upstream.sh
 # 手動: 上流 grilling の英語差分を omega/skills/grilling/SKILL.md にマージ（日本語・forge 連携節は維持）
 ```
+
+## 上流 SHA（omega スキル最終同期）
+
+`49dd158d1076134a641b33efb035946536778336`（`references/grilling-upstream.en.md` に英語正本コピー）
