@@ -57,6 +57,7 @@ disable-model-invocation: true
 | コードの動き・配置 | [`/how`](../how/SKILL.md) |
 | 設計 rationale・経緯 | [`/why`](../why/SKILL.md) |
 | 最近のチャットから文脈 | [`/recall`](../recall/SKILL.md) |
+| このチャットで最後の自分のメッセージ以降をキャッチアップ（各 action item の判断材料付き） | [`/ketchup`](../ketchup/SKILL.md) |
 | 仕組み・経緯を人向けに説明 | [`/teach`](../teach/SKILL.md)（`how` + `why`） |
 | 個人の `-mode` スキルを生成・更新 | [`/automate-me`](../automate-me/SKILL.md) |
 | 直前の返信を平易に言い直す | [`/bro`](../bro/SKILL.md) |
@@ -77,6 +78,8 @@ disable-model-invocation: true
 | 案内 | `/forge-help` |
 
 原則は `forge-mode/principles/`。ユーザーは名前で steer（例: prove it works）。[ガイド 08](../../docs/guide/08-principles.md)。
+
+- `/recall` は最近の複数チャットから topic の文脈を再構築する。`/ketchup` はこのチャットだけで、ユーザー最後のメッセージ以降を扱う。特定チャットや branch の再開は Session pickup プレイブック。
 
 ## プレイブック
 

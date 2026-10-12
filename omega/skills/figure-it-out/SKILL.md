@@ -1,6 +1,6 @@
 ---
 name: figure-it-out
-description: "狭い playbook が合わないときに監査可能な playbook を設計: 大規模 migration、野心のある multi-part 変更、離席後に人がレビューする作業。タスクに rigor をスケール、仮説ループを走らせ、decision-log で決定を記録。/figure-it-out、'figure it out'、大 migration、狭い playbook が無いとき。"
+description: "狭い playbook が合わないときに監査可能な playbook を設計: 大規模 migration、野心のある multi-part 変更、離席後に人がレビューする作業。タスクに rigor をスケール、仮説ループを走らせ、決定を記録。/figure-it-out または 'figure it out'。"
 disable-model-invocation: true
 ---
 
@@ -31,12 +31,11 @@ atomic で独立に land できる単位に分解。riskiest-unknown-first で�
 - 何を fan out するか決める。seam 横だけ parallelize し、各 worker に独自 worktree または branch（**separate-before-serializing-shared-state** principle スキル）。過剰 fan はしない。
 - 設計した phase リストを書き留める。人がレビューするのはそのリスト。
 
-次に設計を実行。Phase C エントリの後・Phase D の前に todolist に具体 step を追加。各 step を Phase C loop discipline で走らせ、Phase D log を step が land するたびに 1 行織り込み、trail 全体を最後に溜めない。
+次に設計を実行。Phase C と Phase D の todo エントリの間に具体 step を todolist に追加。各 step を Phase C loop discipline で走らせ、Phase D log を step が land するたびに 1 行織り込み、trail 全体を最後に溜めない。
 
 ## Phase C: Run the loop
 
-各単位は experiment。仮説を述べ、最小変更、real artifact で predicate を measure、進めたら keep、しなければ revert。
-**sequence-verifiable-units** principle スキルに従い、次を始める前に各単位を verify し、最後に check を batch しない。
+各単位は experiment。仮説を述べ、最小変更、real artifact で predicate を measure、進めたら keep、しなければ revert。**sequence-verifiable-units** principle スキルに従い、次を始める前に各単位を verify し、最後に check を batch しない。
 
 - artifact を inspect して verify、self-report はしない。簡単に pass しすぎるときは system より observation 方法を疑う。
 - 委譲作業に judge を pair。worker が gate を game したら reset して contract を harden。gate 自体が誤りなら gate を単独変更で直し、迂回しない。

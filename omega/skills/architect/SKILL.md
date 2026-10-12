@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Architect
 
-実装前に設計する。`not implemented` 本体と pseudocode で型、関数シグネチャ、クラス形状、モジュール境界をスケッチする。複数モデル視点を統合し、選んだスケッチに対してコードを埋める。実装がスケッチの誤りを示したら捨てて再設計する。
+`not implemented` 本体と pseudocode で型、関数シグネチャ、クラス形状、モジュール境界をスケッチする。複数モデル視点を統合し、選んだスケッチに対してコードを埋める。
 
 ## Start
 
@@ -20,15 +20,13 @@ disable-model-invocation: true
 
 ## Phase A: Ground the problem
 
-新コードが触れるすべてのシステムの実 mental model を組む。関連サブシステムに **how** スキルを走らせる。
-
-ファイル名を挙げるだけは grounding ではない。`how` が求める traced model を出す。設計が ownership やレイヤリングを再定義するなら、既存形状に **why** スキルも走らせ、rationale を guess ではなく constraint にする。
+新コードが触れるすべてのシステムの実 mental model を組む。関連サブシステムに **how** スキルを走らせる。ファイル名を挙げるだけは grounding ではない。`how` が求める architectural explanation を出す。設計が ownership やレイヤリングを再定義するなら、既存形状に **why** スキルも走らせ、rationale を guess ではなく constraint にする。
 
 周囲に統合すべきシステムがない真の greenfield だけ Phase A をスキップする。
 
 ## Phase B: Sketch
 
-design-sketch タスクと Phase A の grounding artifact で **multi-agent-candidates** スキルを走らせる。各 runner の prompt に `references/runner-prompt.md` を渡す。各 candidate は `references/rationale-template.md` の形の design package を出す。
+design-sketch タスクと Phase A の grounding artifact で **multi-agent-candidates** スキルを走らせる。各 runner の prompt に `references/runner-prompt.md` を渡す。
 
 `forge-models.mdc` ルールの `architect runners` 行から runner を取り、`multi-agent-candidates runners` 行の代わりに使う。ルールまたはその行が無ければ `claude-opus-5.5-thinking-medium` と `cursor-grok-4.6-medium`。alias と rejected エントリは **multi-agent-candidates** スキルの Phase A の runner ルールに従う。
 
@@ -38,7 +36,7 @@ synthesis 前にすべての candidate を [`references/design-red-flags.md`](re
 
 viable candidate を interface depth で比較する。より小さく単純な public surface の背後に複雑さを隠す設計を選ぶ。rich interface は capability をレイヤに散らさず集中させ、call chain を短く保てる。
 
-Arena は 1 つの synthesized design package を返す。synthesis 決定が rationale の「Synthesis decision」節を埋める。
+Arena は 1 つの synthesized design package を返す。その synthesis 決定が rationale の「Synthesis decision」節を埋める。
 
 ## Phase C: Agree（opt-in）
 

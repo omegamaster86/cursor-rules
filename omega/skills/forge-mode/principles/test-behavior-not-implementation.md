@@ -1,20 +1,15 @@
 # 振る舞いをテストし、実装をテストしない
 
-テストは**ユーザーと同じ呼び方**でコードを呼び、観測結果を**リテラル expected** と assert する。import 先がすべて `undefined` でも pass するテストは、振る舞いを観測していない — assertion を書き直すか削除。
+テストはユーザーがコードを呼び出し、観察する **正確な結果** をリテラルに assert する。import 先がすべて `undefined` を返しても通るテストは書き直すか削除する。
 
-**適用:** テストを書く・変える・残すとき。`tdd` スキルとセット。
+次の形はそのチェックに失敗する:
 
-**理由:** 欠陥で fail できないテストは CI と review のコストだけ消費する。定数 pin は定数や prompt を編集する正常変更でも fail する。
+- 弱い / 無 assert: `toBeDefined`、`toBeTruthy`、`not.toThrow`、`toBeGreaterThan(0)`。
+- 呼び出し / 不在だけ: `toHaveBeenCalled`、`not.toHaveBeenCalled`、`toBeUndefined`、`toEqual([])`。
+- 被テストコードで計算した期待値: `expect(f(a)).toBe(f(a))`。
+- 手保守 constant、config default、table 行、prompt 文字列の再掲。
+- 被テストを呼ばず、テストが組んだデータだけを assert。
 
-**undefined でも pass しうる 5 形:**
-- **弱い / 無 assertion:** `toBeDefined`、`toBeTruthy`、`not.toThrow` のみ 等
-- **mock / 不在のみ:** `toHaveBeenCalled`、`toBeUndefined`、`toEqual([])` のみ 等
-- **自己参照:** `expect(f(a)).toBe(f(a))`、被験コードから expected を組み立て
-- **定数 pin:** `expect(LIMITS.max).toBe(8)`、prompt 文字列の contain のみ
-- **fixture が fixture を assert:** 被験が body 内で走らない
+修正: テスト本体で被テストを 1 つの具体 input で呼び、リテラル output または効果を assert する。
 
-**直し方:** body 内で被験を 1 入力で呼び、リテラル出力または observable effect を assert。mock なら payload か呼び出し後 state。定数なら読み取り mechanism を 1 入力で test。assert 不能なら削除。
-
-**残す:** テーブル間の関係（キーの存在整合）、`*.test-d.ts` の compile-time check。
-
-genai の mock-store / Server Action テストでは、HTTP 契約とユーザー可視結果を優先する（`web-coding-standards` の testing 規約を参照）。
+table 行をまたぐ関係（2 table に同じ key、存在する parent）と `*.test-d.ts` の型のみチェックは残してよい。
