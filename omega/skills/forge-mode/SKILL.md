@@ -189,33 +189,33 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Playbooks
 
-最初の todolist アクションは Principles インデックス。次は **Intent gate**。`blocked` ならプレイブックをコピーせず終了する。gate 通過後、タスク固有 todo やタスクについて推論する前に、マッチしたプレイブックのステップを verbatim でコピーすること。失敗モードはプレイブックを読んでから named ステップ（`architect`、throughput checkpoint）を drop した独自プランを書くこと。やらないステップもリストに残し、1行 `skip: <reason>`。黙って skip は不可。下からタスクにマッチさせ、ファイルを開き、ステップを verbatim でコピー。
+最初の todolist アクションは Principles インデックス。次は **Intent gate**。`blocked` ならプレイブックをコピーせず終了する。gate 通過後、タスク固有 todo やタスクについて推論する前に、マッチしたプレイブックのステップを verbatim でコピーすること。失敗モードはプレイブックを読んでから named ステップ（`architect`、throughput checkpoint）を drop した独自プランを書くこと。やらないステップもリストに残し、1行 `skip: <reason>`。黙って skip は不可。下からタスクにマッチさせ、完全なステップは `playbooks/<title>.md` を開く（title は kebab-case、ハイフンは保持し他の句読点は落とす。エントリがファイルを明示する場合はそちら）。ステップを verbatim でコピー。
 
 大きいまたは横断的な努力（多数 call site のマイグレーション、野心的な多部分変更）、またはユーザーが後で信頼するために離れる作業は、Feature のような狭いプレイブックが合っても **figure-it-out** スキルにルート。バンドルプレイブックが合わないときは常に **figure-it-out**。タスク向けの bespoke で厳密なプレイブックを設計する。
 
-- **Investigation.** 読み取り専用質問：X はどう動くか、Y はなぜこう作られたか、Z について本当に確かか、X か Y か。`playbooks/investigation.md`。
-- **Bug fix.** 報告された欠陥を再現、根本原因特定、ランタイム証拠で修正。`playbooks/bug-fix.md`。
-- **Perf issue.** 計測された遅さをトレースしベースラインに対して改善。`playbooks/perf-issue.md`。
-- **Hillclimb.** 1メトリクスを目標に対して持続的・科学的改善：before/after 計測、decision log、採用 win ごとに1コミットの仮説ループ。1回限り修正の Perf issue とは別。`playbooks/hillclimb.md`。
-- **Runtime forensics.** ライブ計装からランタイム症状（リーク、idle-CPU スピン、グリッチ）を診断。成果物は診断であり fix ではない。`playbooks/runtime-forensics.md`。
-- **Trace forensics.** 事後に渡されたキャプチャプロファイリング成果物（cpuprofile、trace、spindump、heap snapshot）を診断。成果物は診断であり fix ではない。`playbooks/trace-forensics.md`。
-- **Feature.** 名前付きデータ形状から構築する新規または変更動作。`playbooks/feature.md`。
-- **Refactoring.** 構造または形状への動作保存変更（rename、extract、inline、dedupe、move）。`playbooks/refactoring.md`。
-- **Prototype.** 設計または動作判断を安くする使い捨てスケッチ、または人間に聞く代わりに観察で経験的分岐を決める（「prototype」「mock it up」「try this layout」「sketch it to decide」）。`playbooks/prototype.md`。
-- **Visual parity.** ピクセル完全一致 UI 等価性：2実装の一致またはスタイリングシステム移行。`playbooks/visual-parity.md`。
-- **Authoring or modifying a skill.** SKILL.md の作成または編集。`playbooks/authoring-a-skill.md`。
-- **Eval.** 昇格前にスキル、構造、プロンプト変更がエージェント動作に与える影響をテスト。`playbooks/eval.md`。
-- **Autonomous run.** 止まらず完了まで推進する長いタスク（「完了まで走れ」「/loop until X」）。`playbooks/autonomous-run.md`。
-- **Session pickup.** トランスクリプト、cloud-agent URL、push 済みブランチから以前エージェントの進行中作業を再開または引き継ぎ。`playbooks/session-pickup.md`。
-- **Pause safely.** 明示 pause、オフライン、Cursor 再起動、差し迫った context compaction で、後で再開できるよう進行中作業をきれいに中断。Session pickup の補完。完全ステップ：`playbooks/pause-safely.md`。
-- **Multi-phase or multi-PR plan.** フェーズまたはスタック PR にまたがる作業。`playbooks/multi-phase-plan.md`（図は `references/plan-diagrams.md`）。
-- **Opening a PR.** 他のすべてのプレイブック末尾で呼び出し。`playbooks/opening-a-pr.md`。
-- **Babysit.** PR を merge-ready まで（CI、レビュー、Bugbot）。`playbooks/babysit.md`。
-- **Shipping.** 独立検証済みスタックを root から land。`playbooks/shipping.md`。
-- **Orchestrate.** 多日・多 stacked PR のコーディネーター。`playbooks/orchestrate.md`。
-- **Autopilot-stack.** 検証済み linear stack を構築しオペレーターに渡す。`playbooks/autopilot-stack.md`。
-- **Autopilot-full.** PR ごと 1 owner、swarm 検証後 merge。`playbooks/autopilot-full.md`。
-- **Worktree cleanup.** マージ済み / 放棄 worktree とシミュレータの安全な削除。`playbooks/worktree-cleanup.md`。
+- **Investigation.** 読み取り専用質問：X はどう動くか、Y はなぜこう作られたか、Z について本当に確かか、X か Y か。
+- **Bug fix.** 報告された欠陥を再現、根本原因特定、ランタイム証拠で修正。
+- **Perf issue.** 計測された遅さをトレースしベースラインに対して改善。
+- **Hillclimb.** 1メトリクスを目標に対して持続的・科学的改善：before/after 計測、decision log、採用 win ごとに1コミットの仮説ループ。1回限り修正の Perf issue とは別。
+- **Runtime forensics.** ライブ計装からランタイム症状（リーク、idle-CPU スピン、グリッチ）を診断。成果物は診断であり fix ではない。
+- **Trace forensics.** 事後に渡されたキャプチャプロファイリング成果物（cpuprofile、trace、spindump、heap snapshot）を診断。成果物は診断であり fix ではない。
+- **Feature.** 名前付きデータ形状から構築する新規または変更動作。
+- **Refactoring.** 構造または形状への動作保存変更（rename、extract、inline、dedupe、move）。
+- **Prototype.** 設計または動作判断を安くする使い捨てスケッチ、または人間に聞く代わりに観察で経験的分岐を決める（「prototype」「mock it up」「try this layout」「sketch it to decide」）。
+- **Visual parity.** ピクセル完全一致 UI 等価性：2実装の一致またはスタイリングシステム移行。
+- **Authoring or modifying a skill.** SKILL.md の作成または編集。ファイル: `playbooks/authoring-a-skill.md`。
+- **Eval.** 昇格前にスキル、構造、プロンプト変更がエージェント動作に与える影響をテスト。
+- **Babysit.** PR または stack を merge-ready まで：conflicts、review threads、CI。
+- **Shipping.** Babysit の後半。green stack を独立検証し、root から連続 verified run を land。
+- **Autonomous run.** 止まらず完了まで推進する長いタスク（「完了まで走れ」「/loop until X」）。
+- **Orchestrate.** 多日・多 stacked PR・大量サブエージェントの standing プロジェクト（Autonomous run は 1 タスクの predicate まで）。
+- **Autopilot-full.** 独立 PR キューを full autonomy で merged まで（1 owner / PR、root が swarm 検証）。
+- **Autopilot-stack.** full autonomy で構築・検証し、operator が land する linear stack として渡す。
+- **Session pickup.** トランスクリプト、cloud-agent URL、push 済みブランチから進行中作業を再開または引き継ぎ。
+- **Pause safely.** 明示 pause、オフライン、再起動、差し迫った compaction で進行中作業をきれいに中断（Session pickup の補完）。
+- **Multi-phase or multi-PR plan.** フェーズまたはスタック PR にまたがる作業。ファイル: `playbooks/multi-phase-plan.md`（図は `references/plan-diagrams.md`）。
+- **Worktree and simulator cleanup.** マージ済み / 放棄 worktree と stale シミュレータのディスク回収。ファイル: `playbooks/worktree-cleanup.md`。
+- **Opening a PR.** 他のすべてのプレイブック末尾で呼び出し。
 
 実装系プレイブック（Feature / Bug fix / Refactoring）と Multi-phase plan は、実装前に **File change map** と **Data flow** の Mermaid を出す（Cursor Plan モード互換。詳細は `references/plan-diagrams.md`）。
 

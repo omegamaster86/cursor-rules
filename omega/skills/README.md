@@ -55,6 +55,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `diagnosing-bugs` | 難しいバグ・性能退行の診断ループ（feedback loop 優先） |
 | `domain-modeling` | `GLOSSARY.md` / ADR でドメインモデルを能動的に磨く |
 | `recall` | チャット履歴からコンテキスト再構築 |
+| `ketchup` | このチャットでユーザー最後のメッセージ以降を平易にキャッチアップ（action item ごとに判断材料） |
 | `teach` | 学習ワークスペース（lessons）または変更・サブシステムの説明（`how` + `why`） |
 | `automate-me` | チャット履歴と質問から personal `-mode` スキルを起草・更新 |
 | `bro` | 直前のエージェント返信を専門用語なしで言い直す |
