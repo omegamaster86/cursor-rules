@@ -34,7 +34,9 @@ def main() -> None:
     # Scripts
     src = PSTACK / "skills/poteto-mode/scripts/orch/orch.test.ts"
     dst = OMEGA / "skills/forge-mode/scripts/orch/orch.test.ts"
-    write_ported(src, dst)
+    text = port_text(src.read_text(encoding="utf-8"))
+    text = text.replace("poteto/u", "forge/u")
+    dst.write_text(text, encoding="utf-8")
 
     # Ketchup (new)
     ketchup_src = PSTACK / "skills/ketchup/SKILL.md"

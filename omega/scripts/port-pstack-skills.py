@@ -19,6 +19,7 @@ REPLACEMENTS: list[tuple[str, str]] = [
     (r"setup-pstack", "setup-forge"),
     (r"poteto-mode", "forge-mode"),
     (r"poteto-agent", "forge-agent"),
+    (r"poteto/u", "forge/u"),
     (r"principle-explain-the-number", "principles/explain-the-number.md"),
     (r"\*\*arena\*\*", "**multi-agent-candidates**"),
     (r"`arena`", "`multi-agent-candidates`"),
