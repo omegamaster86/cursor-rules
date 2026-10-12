@@ -2,21 +2,23 @@
 
 | 役割 | パス |
 |------|------|
-| 上流正本 | [mattpocock/skills](https://github.com/mattpocock/skills) `skills/productivity/teach` |
-| omega 採用 | `omega/skills/teach/` |
+| 上流追跡 | `cursor-rules/mattpocock-skills/productivity/teach/` |
+| Cursor が読む抜粋 | `omega/skills/teach/` |
 
 ## omega に含めるもの
 
-- `SKILL.md` — 上流 teach を日本語化 + **コード・変更の説明** 節（pstack / `how`+`why`）を維持
+- `SKILL.md` — 上流 `productivity/teach`（学習ワークスペース）を日本語化し、**コードと変更の説明** 節（pstack / `how`+`why`）を併記
 - `*-FORMAT.md` — 上流と同一（英語テンプレ）
-- `GLOSSARY-FORMAT.md` — ワークスペース内 glossary（repo ルート `GLOSSARY.md` とは別）
 
-## 上流で確認した変更（49dd158）
+## omega のカスタム
 
-- ワークスペースパスは `/teach` 実行ディレクトリ基準。`*-FORMAT.md` だけスキルフォルダ基準
-- Quiz：選択肢の語数揃え、正解位置を問ごとに変える
-- `CONTEXT.md` → ワークスペース／repo 用語は **`GLOSSARY.md`** 命名（`GLOSSARY-FORMAT.md`）
+- `/teach` 実行ディレクトリ基準のワークスペース path（`*-FORMAT.md` だけスキルフォルダ基準）は上流どおり SKILL に明記
+- クイズ正解位置のばらつきは上流どおり
+- README 上の teach 用途（変更説明）は **コードと変更の説明** 節が正本
 
-## 上流 SHA（最終同期）
+## 上流を更新する
 
-`49dd158d1076134a641b33efb035946536778336`
+```bash
+cp /tmp/mattpocock-skills/skills/productivity/teach/*-FORMAT.md omega/skills/teach/
+# 手動: 上流 SKILL.md → 学習ワークスペース節へマージ（日本語・omega 節は維持）
+```

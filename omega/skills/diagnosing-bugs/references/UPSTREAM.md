@@ -2,14 +2,18 @@
 
 | 役割 | パス |
 |------|------|
-| 上流正本 | [mattpocock/skills](https://github.com/mattpocock/skills) `skills/engineering/diagnosing-bugs` |
-| omega 採用 | `omega/skills/diagnosing-bugs/`（日本語 `SKILL.md`、`scripts/hitl-loop.template.sh`） |
+| 上流追跡 | `cursor-rules/mattpocock-skills/engineering/diagnosing-bugs/` |
+| Cursor が読む抜粋 | `omega/skills/diagnosing-bugs/` |
 
-## omega 方針
+## omega に含めるもの
 
-- `GLOSSARY.md` / ADR 参照は上流どおり。
-- `disable-model-invocation: true`（omega の他エンジニアリングスキルに合わせる）。
+- `SKILL.md` — 上流を日本語化
+- `scripts/hitl-loop.template.sh` — 上流と同一
 
-## 上流 SHA（最終同期）
+## 上流を更新する
 
-`49dd158d1076134a641b33efb035946536778336`
+```bash
+cp /tmp/mattpocock-skills/skills/engineering/diagnosing-bugs/scripts/hitl-loop.template.sh \
+  omega/skills/diagnosing-bugs/scripts/
+# 手動: SKILL.md をマージ
+```

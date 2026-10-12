@@ -51,11 +51,11 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `swarm` | カバレッジ分割・レース・探索の N 並列ワーカー |
 | `setup-forge` | `forge-models.mdc` のインタラクティブ設定 |
 | `blast-radius` | 変更の影響範囲 |
-| `tdd` | red-green の TDD 参照（seam 合意・反パターン）+ forge 向け failing-test-first bug fix |
-| `diagnosing-bugs` | 難 bug / perf 退行のフィードバックループ診断（mattpocock 由来） |
-| `domain-modeling` | `GLOSSARY.md` / ADR の能動的構築・更新（mattpocock 由来） |
+| `tdd` | TDD ループ参照 + 失敗テスト先行のバグ修正（seam 合意・`GLOSSARY.md`） |
+| `diagnosing-bugs` | 難しいバグ・性能退行の診断ループ（feedback loop 優先） |
+| `domain-modeling` | `GLOSSARY.md` / ADR でドメインモデルを能動的に磨く |
 | `recall` | チャット履歴からコンテキスト再構築 |
-| `teach` | ワークスペース教學（レッスン・MISSION）+ 変更説明（内部で `how` + `why`） |
+| `teach` | 学習ワークスペース（lessons）または変更・サブシステムの説明（`how` + `why`） |
 | `automate-me` | チャット履歴と質問から personal `-mode` スキルを起草・更新 |
 | `bro` | 直前のエージェント返信を専門用語なしで言い直す |
 | `daily-chat-digest` | 指定日（JST）のチャットを `.cursor/chat-digest/<日付>/daily-chat.md` に出力（単独利用可） |
@@ -160,5 +160,6 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 |--------|------|
 | `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ（`~/.cursor/product-design/`）前提 |
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
+
 
 
