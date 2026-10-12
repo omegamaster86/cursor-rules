@@ -1,10 +1,103 @@
 ---
 name: teach
-description: "作業内容を平易に説明し、相手が本当に理解できるようにする。`how` と `why` スキルを実行し、得た内容を 1 本の明確な説明に織り込む。「これを教えて」「X をちゃんと理解したい」「この変更やサブシステムを説明して」に使用。"
+description: "トピックを複数セッションで学ぶ（lessons ワークスペース）、または作業内容・変更・サブシステムを平易に説明する（how + why）。「これを教えて」「X をちゃんと理解したい」「この変更を説明して」、学習ミッションの開始に使用。"
 disable-model-invocation: true
+argument-hint: "何について学びたいですか？ / 何を説明してほしいですか？"
 ---
 
 # Teach
+
+## ルーティング
+
+| ユーザーの意図 | セクション |
+|----------------|------------|
+| 新しいスキル・概念を **このワークスペースで継続学習**（lessons、MISSION、クイズ） | [学習ワークスペース](#学習ワークスペース) |
+| **既存の変更・サブシステム**を理解したい（レビュー前、デバッグ、初見） | [コードと変更の説明（omega）](#コードと変更の説明omega) |
+
+両方が混ざるときは、学習が主ならワークスペース、説明が主なら omega 節を先に。
+
+---
+
+## 学習ワークスペース
+
+ユーザーは何かを **複数セッションで学ぶ** 意図がある。状態はディレクトリに残す。
+
+### Teaching Workspace
+
+**現在のディレクトリを学習ワークスペースとみなす。** ワークスペース上のパス（`./lessons/` など）は **`/teach` を実行したディレクトリ** から解決する。`*-FORMAT.md` へのリンクだけが **本スキルフォルダ** 基準。
+
+学習状態は次のファイルに載る：
+
+- `MISSION.md`: ユーザーがこのトピックに興味を持つ **理由**。すべての教育判断の根。形式は [MISSION-FORMAT.md](./MISSION-FORMAT.md)。
+- `./reference/*.html`: リファレンス素材（レッスンから圧縮した cheat sheet、アルゴリズム、構文、用語集など）。印刷に耐える美しいクイックリファレンス。
+- `RESOURCES.md`: 文脈知識・信頼できる情報源のリスト。形式は [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md)。
+- `./learning-records/*.md`: 学習記録（ADR に近い）。非自ら明な学びと洞察。`0001-<dash-case-name>.md` で番号増分。形式は [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md)。
+- `./lessons/*.html`: **レッスン** — ミッションに結びついた 1 つの狭い単位の自己完結 HTML。
+- `./assets/*`: レッスン間で再利用する **コンポーネント**。 [Assets](#assets)。
+- `NOTES.md`: ユーザー嗜好や作業メモ。
+
+### Philosophy
+
+深く学ぶには三つ：
+
+- **Knowledge** — 高品質・高信頼のリソースから
+- **Skills** — あなたが設計するインタラクティブレッスンで
+- **Wisdom** — 他の学習者・実務者との交流から
+
+`RESOURCES.md` がまだ薄いときは、信頼できるリソース探索を優先。パラメトリック知識だけを信じない。
+
+トピックによって knowledge 偏重（理論物理）や skills 偏重（ヨガ）がある。
+
+#### Fluency vs Storage Strength
+
+- **Fluency strength**: その場での想起
+- **Storage strength**: 長期保持（本当の目標）
+
+Fluency はマスターの幻覚を与える。**desirable difficulty** で storage を狙う： retrieval practice、spacing、interleaving（スキル練習のみで関連トピックを混ぜる）。
+
+### Lessons
+
+主な成果物。`./lessons/0001-<dash-case-name>.html` で保存。短く、すぐ終わる。**1 回の tangible win**。ミッションと **zone of proximal development** に直結。
+
+美しいタイポグラフィ（Tufte 的）。可能なら CLI でレッスンを開く。HTML アンカーで他レッスン・リファレンスへリンク。各レッスンに **最も信頼できる一次ソース** を推奨。不明点はエージェントに follow-up を促す文言を入れる。
+
+### Assets
+
+`./assets/` に stylesheet、クイズ widget、シミュレータなど。**再利用がデフォルト。** レッスン前に `./assets/` を読む。新規で再利用可能なものはコンポーネントとして `assets/` に置き、インライン複製しない。共有 stylesheet は最初のコンポーネント。
+
+### The Mission
+
+各レッスンはミッションに結ぶ。`MISSION.md` が空なら、**なぜ学ぶか** を先にインタビュー。ミッション変更は普通 — `MISSION.md` を更新し learning record を残す。変更前にユーザー確認。
+
+### Zone Of Proximal Development
+
+常に「ちょうどよい」難易度。`learning-records` を読み、ミッションから次に教えることを選ぶ。
+
+### Knowledge
+
+レッスンは **学ぶスキル** 中心。知識はそのスキルに必要な分だけ。trusted resources から集め、レッスンに citation を散らす。難易度は working memory の敵。
+
+### Skills
+
+知識の定着と柔軟性。**難易度は道具。** インタラクティブレッスンと **tight feedback loop**。
+
+クイズでは各選択肢の **語数を揃える**（可能なら文字数も）。**正解の位置を問ごとに変える。** フォーマットや並びから答えが漏れないようにする。
+
+### Acquiring Wisdom
+
+実世界の試行が wisdom。フォーラム・コミュニティを探す。ユーザーが拒否すれば尊重。
+
+### Reference Documents
+
+レッスンと並行してリファレンスを作る。レッスンより **後から参照される**。用語集（glossary）は特に重要 — 作ったら全レッスンで遵守。レッスン用 glossary の形式は [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md)（プロジェクトルートの `GLOSSARY.md` とは別物）。
+
+### `NOTES.md`
+
+教育の好みを記録。
+
+---
+
+## コードと変更の説明（omega）
 
 **何であるか、どう動くか、なぜそう作られているかを、相手のペースで 1 本の平易な説明にまとめる。目的は理解であり、何かを変えることではない。**
 
@@ -19,3 +112,7 @@ disable-model-invocation: true
 プロジェクトに **unslop** スキルがあるときは毎回それを通して書く。なければ同じ規律（平易な口語、引き締め、具体の mechanism、 filler なし）。通常の文の大文字小文字。em dash なし。コンマより句点。1 文はコンマ 1〜2 個まで。節が積むなら文を分ける。概念には 1 つの名前を付けて維持。鏡文やきれいな締めは避ける。この手順の語はあなたへの指示であり、印刷するラベルではない。構造を見出しや決まり文句としてエコーしない。
 
 **Reply:** 説明そのもの。何をした・届けたという報告はしない。主点を先に、次に何か・どう動くか・なぜ、そして `how` や `why` で追うに値する筋。
+
+## 上流
+
+学習ワークスペースの正本: [mattpocock/skills — productivity/teach](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach)。コード説明節は pstack / omega 独自。同期メモ: `references/UPSTREAM.md`。

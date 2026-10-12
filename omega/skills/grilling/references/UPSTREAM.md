@@ -13,7 +13,7 @@
 
 ## omega に含めないもの
 
-上流の `engineering/*` 一式（code-review, implement, tdd 等）は pstack / genai と役割が重なるため未採用。方針は `omega/README.md` の統合表。
+上流の `engineering/*` の多く（code-review, implement 等）は pstack / genai と役割が重なるため未採用。omega 採用の mattpocock エンジニアリング系は **`tdd`**（bug-fix 向けにカスタム）、**`diagnosing-bugs`**、**`domain-modeling`**。方針は `omega/README.md` の統合表。
 
 ## 上流を更新する
 
