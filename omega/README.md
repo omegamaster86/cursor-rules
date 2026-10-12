@@ -284,7 +284,7 @@ Dashboard または Agents Window から環境を再 Build する。
 - `genai/` — Next.js / Supabase コーディング規約
 - `plugins-main/pstack/` — エンジニアリングワークフロー（[cursor/plugins](https://github.com/cursor/plugins) のミラー **0.15.15**、`poteto-*` は `forge-*` に改名）。omega の forge 系は **0.15.15 相当**を統合方針に沿って port（genai 差し替え・Intent gate・日本語ガイドは omega 独自）
 - `yomiyasu/` — AI 生成日本語の推敲（[nanaism/yomiyasu](https://github.com/nanaism/yomiyasu) を **git submodule**）。Cursor 向けは `omega/skills/yomiyasu/` に抜粋同梱。同期: `scripts/sync-from-upstream.sh`（[README.md](../README.md)）
-- `mattpocock-skills/` — [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills) の `skills/` ミラー。omega 採用分は **`grilling`**（`plan-interview` 委譲）と互換 **`grill-me`**。同期: `omega/skills/grilling/scripts/sync-from-upstream.sh`
+- `mattpocock-skills/` — [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills) の `skills/` ミラー（repo 直下。omega 更新は上流 main を直接参照可）。omega 採用: **`grilling`** / **`grill-me`**、`tdd`、`teach`（ワークスペース部）、**`diagnosing-bugs`**、**`domain-modeling`**。grilling 同期: `omega/skills/grilling/scripts/sync-from-upstream.sh` + 各スキル `references/UPSTREAM.md`
 
 参考
 https://github.com/mattpocock/skills/tree/main/skills 
