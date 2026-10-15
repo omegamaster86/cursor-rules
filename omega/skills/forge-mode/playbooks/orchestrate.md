@@ -58,7 +58,7 @@ dependency は ordering だけではなく context relay。undeclared upstream c
 #### Steps
 
 1. **Frame.** done predicate を countable に述べる（「126 unit すべて merged、各 ledger-verified `unit-test-verified` 以上」）。scope を quantify: unit、rough effort、expected stack、wall-clock budget。1 agent がその budget 内で finish できるならここで stop し Autonomous run。collapse は別 document の存在に依存しない。この session で直接 work、plain worker で助け、verification inline、land しながら、下の store、register、pilot machinery なし。landing を budget に対して schedule。おおよそ 70% で spawn を止め verified を land。track を project ごとに名指す。contested decomposition か one-way door は pilot 前に multi-agent-candidates skill。framing を 1 回 present。reversible prep は待たず proceed。
-2. **Install the runtime.** `orch init`。decision-log skill で trail を開き、spawn 前に standing orders を書き、既存 PR から `orch frontier set --repo <repo-dir>` で `frontier.json` を seed。
+2. **Install the runtime.** `orch init`。decision-log skill で trail を開き、spawn 前に standing orders を書き、既存 PR から `orch frontier set --repo <repo-dir>` で `frontier.json` を seed。forge が Origin なら `--forge origin` を付ける。
 3. **Pilot.** 1 unit を path 全体に: brief、worker、verification、stack entry、ledger row、merge。pilot は brief template、verify recipe、unit size を falsify するため。50 ではなく 1 agent のコストのとき。pilot evidence から contract を fix して fan-out 前。pilot を unit に scale。near-identical cheap unit の program では first unit が pilot。verify command inline の normal unit として走らせ、land した瞬間 fan-out。dedicated pilot pipeline（別 verifier agent、audit gate）は expensive か novel unit shape 向け。serialized pilot が falsify するものがない clone-unit 向けではない。
 4. **Scale.** in-flight cap まで worker の rolling window を spawn。child finish で refill。blocking batch は毎 batch の slowest child を支払う。Roles の one-drain threshold を超えたら track sub-coordinator を spawn。各 drain の後 ready work を recompute。upstream report を downstream brief に relay。sibling communication は上向きのみ。sampled brief audit は sample する wave と並行。fail は次 refill を stop。current は止めない。
 5. **Drain.** 各 drain point で下の queue discipline。
@@ -76,9 +76,9 @@ dependency は ordering だけではなく context relay。undeclared upstream c
 
 #### Stack safety
 
-- frontier は computed object。narrative ではない。各 merge と stack mutation の後 `gt` から `frontier.json` を recompute。GitHub base ref は mid-restack で drift、gt tracking が authoritative: ordered PR list、branch name、head SHA、generation number、lowest unmerged PR。gt が stack を知る場所で resolve。通常 stacker の clone。gt metadata が submit を見ていない checkout は PR なしを報告し guess せず error。
-- stack あたり stacker は 1 つだけ `gt` を走らせ、stack 内 serialize。holder を standing orders に記録。restack は cloud。この scale の local restack は laptop を落とす。
-- worker は rebase も `gt` もしない。babysitter は `playbooks/babysit.md`、stack あたり 1、immutable frontier generation に scope。conflict は restack せず stacker に report。
+- frontier は computed object。narrative ではない。各 merge と stack mutation の後 `frontier.json` を recompute: ordered PR list、branch name、head SHA、generation number、lowest unmerged PR。コマンドは checkout の current branch から PR base chain を歩き、chain 順と PR state は forge から取る。default は `gh`。program が Origin を resolve したら `--forge origin`。head SHA は local branch ref から。stacker の clone から resolve。PR の無い branch は guess せず error。
+- stack あたり topology を mutate できる stacker は 1 つ（chain rebase、force-push、base retarget、merge）。stack 内 serialize。holder を standing orders に記録。chain rebase は cloud。この scale の local restack は laptop を落とす。
+- worker は rebase も PR retarget / merge もしない。babysitter は `playbooks/babysit.md`、stack あたり 1、immutable frontier generation に scope。conflict は rebasing せず stacker に report。
 - PR close と retarget は stacker だけ。base PR を close すると上の全 chain が orphan。merge と stack surgery は他と同様 brief 付き unit。
 - merged PR を follow する 1 retro watcher: revert、post-merge CI break、orphaned follow-up。
 
