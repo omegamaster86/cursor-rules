@@ -537,6 +537,11 @@
       "name": "highlevel",
       "source": "third_party/highlevel",
       "description": "Work with contacts, conversations, opportunities, calendars, and payments."
+    },
+    {
+      "name": "finary",
+      "source": "third_party/finary",
+      "description": "Read your net worth, accounts, holdings, spending, and budgets."
     }
   ]
 }
