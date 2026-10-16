@@ -519,6 +519,11 @@
       "description": "Look up workers, organizations, time off, payroll, and recruiting data in Workday."
     },
     {
+      "name": "whatsapp-business",
+      "source": "third_party/whatsapp-business",
+      "description": "Send messages and manage templates, contacts, and phone numbers in WhatsApp Business."
+    },
+    {
       "name": "square",
       "source": "third_party/square",
       "description": "Work with payments, orders, catalog, customers, and invoices."
