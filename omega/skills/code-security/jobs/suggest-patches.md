@@ -1,4 +1,4 @@
-# Job: suggest patches（claude-security）
+# Job: suggest patches
 
 `CODE-SECURITY-*/findings.jsonl` の verified finding から、**適用はユーザー任せ**の `.patch` を生成。
 

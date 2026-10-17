@@ -1,4 +1,4 @@
-# Verifier パネル（claude-security 流）
+# Verifier パネル（panel 方式ジョブ）
 
 各 candidate finding に対し、**3 つの独立 verifier**（Task で並列）を走らせる。2/3 以上が accept なら `confidence: verified` でレポートに載せる。
 

@@ -30,7 +30,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `nextjs-code-review` | Next.js PR レビューチェックリスト |
 | `supabase-implementation` | DB、Edge Functions、RLS、型生成 |
 | `supabase-code-review` | Supabase PR レビューチェックリスト |
-| `code-security` | 統合セキュリティ監査（配下 `codex-security/` + `claude-security/`。**明示依頼時**） |
+| `code-security` | セキュリティ監査・パッチ提案（`jobs/` 内の手順。**明示依頼時**） |
 | `mock-store-guide` | DB 前のモックストアパターン |
 
 ---

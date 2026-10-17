@@ -1,6 +1,6 @@
-# Job: scan repository（codex-security）
+# Job: scan repository（investigator 方式）
 
-リポジトリ全体、または `--scope` で指定したディレクトリ。コミット済みツリーを読む（未コミットのみのレビューは [../claude-security/scan-changes.md](../claude-security/scan-changes.md) か、先にコミット）。
+リポジトリ全体、または `--scope` で指定したディレクトリ。コミット済みツリーを読む（未コミットのみは [scan-changes](scan-changes.md) か、先にコミット）。
 
 ## 引数
 
@@ -24,10 +24,10 @@
 2. `date -u +%Y%m%d-%H%M%S` で `CODE-SECURITY-<ts>/` と `.code-security-run/` を作成（[../references/artifacts.md](../references/artifacts.md)）
 3. `GIT_CONFIG_GLOBAL=/dev/null GIT_TERMINAL_PROMPT=0 git -C <root> rev-parse HEAD` で commit を stamp に記録。`git status --porcelain` が空でなければ `dirty: true` とし、パッチジョブには使えない旨を RESULTS に書く
 4. 大きいツリーでは `attack-surface` フォーカス: テスト・生成物・fixture は二次参照のみ（秘密の埋め込みチェックは fixture も見る）
-5. [core-audit.md](core-audit.md) を実行
+5. [core-audit.md](core-audit.md) を実行。stamp の `job`: `scan-repository`
 6. 成果物を finalize し `.code-security-run/` を削除
 7. ユーザーへ: パス、finding 数、coverage の要約、パッチ希望の可否
 
 ## 完了条件
 
-`CODE-SECURITY-<ts>/RESULTS.md` と `findings.jsonl` が存在し、stamp の `engine` が `codex-security`。
+`CODE-SECURITY-<ts>/RESULTS.md` と `findings.jsonl` が存在する。

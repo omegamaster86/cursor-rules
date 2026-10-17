@@ -1,4 +1,4 @@
-# Job: scan codebase（claude-security）
+# Job: scan codebase（panel 方式）
 
 リポジトリ全体または `--scope`。Security Lead は [../references/security-lead.md](../references/security-lead.md)。
 
@@ -8,7 +8,7 @@
 - `--scope dirs`
 - `--effort low|medium|high`（既定 medium）
 
-## Effort（omega 実装）
+## Effort
 
 | tier | 流れ |
 |------|------|
@@ -20,7 +20,7 @@
 
 1. **スコープ確認** — 大規模で scope なしなら 1 問（全体 vs 領域）。`GIT_CONFIG_GLOBAL=/dev/null GIT_TERMINAL_PROMPT=0 git -C <root> ls-files | wc -l` でサイズ感
 2. **コスト確認** — 未承諾なら 1 回だけ
-3. **成果物ディレクトリ** — [../references/artifacts.md](../references/artifacts.md)。`engine: claude-security`, `mode: scan`
+3. **成果物ディレクトリ** — [../references/artifacts.md](../references/artifacts.md)。stamp の `job`: `scan-codebase`, `mode`: `scan`
 4. **Inventory Task**（low 以外）— トップレベルディレクトリをコンポーネントに分割。未割当ディレクトリがあれば coverage に記録
 5. **Threat model** — [../references/threat-model.md](../references/threat-model.md)
 6. **Researchers** — 並列 Task。各 scope で脆弱性 candidate を JSON 配列で返す（id はまだ仮 `C1` 可）

@@ -1,6 +1,6 @@
-# Core audit（リポジトリ / スコープ）
+# Core audit（investigator 方式の中核）
 
-codex-security 統合ジョブの中核。authorized scope を広げない。現リビジョンのソースのみ（必要なら `git show`）。アプリコードの実行・外向きネットワークはしない。
+authorized scope を広げない。現リビジョンのソースのみ（必要なら `git show`）。アプリコードの実行・外向きネットワークはしない。
 
 ## フェーズ
 
@@ -37,8 +37,8 @@ codex-security 統合ジョブの中核。authorized scope を広げない。現
 ### 7. 出力
 
 - `.code-security-run/findings-merged.json`
-- 親が [../references/report-format.md](../references/report-format.md) と findings.jsonl を書き、`engine: codex-security` を stamp に入れる
+- 親が [../references/report-format.md](../references/report-format.md) と findings.jsonl を書く
 
 ## Diff 限定モード
 
-`scan-diff.md` から呼ばれたときは、変更ファイルを中心に読み、**変更が関与しない既存バグ**は `preExisting` として coverage に記録し finding には載せない（codebase スキャン向け）。
+[scan-diff.md](scan-diff.md) から呼ばれたときは、変更ファイルを中心に読み、**変更が関与しない既存バグ**は `preExisting` として coverage に記録し finding には載せない。
