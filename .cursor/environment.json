@@ -1,0 +1,4 @@
+{
+  "user": "ubuntu",
+  "install": "bash .cursor/install-submodules.sh"
+}

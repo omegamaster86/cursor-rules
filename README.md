@@ -8,6 +8,7 @@ Cursor 用ルール・スキル・omega の正本リポジトリ。
 |------|------|------------------|
 | `supabase-skills/` | [omegamaster86/agent-skills](https://github.com/omegamaster86/agent-skills) | （別用途） |
 | `yomiyasu/` | [nanaism/yomiyasu](https://github.com/nanaism/yomiyasu) | 上流全文。Cursor 用は `omega/skills/yomiyasu/` に**抜粋**（`references/UPSTREAM.md`） |
+| `openai-plugins/` | [openai/plugins](https://github.com/openai/plugins)（Codex プラグイン正本） | 参照用。プラグイン本体は `openai-plugins/plugins/`（[main/plugins](https://github.com/openai/plugins/tree/main/plugins)）。Cursor 向けミラーは別途 `plugins-main/`（[cursor/plugins](https://github.com/cursor/plugins)） |
 
 初回 clone 後:
 
@@ -26,6 +27,13 @@ git submodule foreach 'git fetch origin 2>/dev/null; echo "=== $name ==="; git -
 ```bash
 git -C yomiyasu fetch origin
 git -C yomiyasu log --oneline HEAD..origin/main
+```
+
+`openai-plugins` だけ:
+
+```bash
+git -C openai-plugins fetch origin
+git -C openai-plugins log --oneline HEAD..origin/main
 ```
 
 ### 上流を取り込む（cursor-rules 側で pin を進める）
@@ -47,6 +55,14 @@ omega/skills/yomiyasu/scripts/sync-from-upstream.sh
 # 必要なら omega/skills/yomiyasu/SKILL.md と references/writing-rules.md を手マージ
 git add yomiyasu omega/skills/yomiyasu
 git commit -m "chore: bump yomiyasu upstream and sync omega excerpt"
+```
+
+`openai-plugins` だけ:
+
+```bash
+git submodule update --remote openai-plugins
+git add openai-plugins
+git commit -m "chore: bump openai-plugins submodule"
 ```
 
 特定コミットに pin する場合:
