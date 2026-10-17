@@ -10,6 +10,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PSTACK = ROOT / "plugins-main/pstack/skills"
 OMEGA = ROOT / "omega/skills"
+# Upstream uses poteto-mode; omega uses forge-mode.
+MODE_UPSTREAM = "poteto-mode"
+MODE_OMEGA = "forge-mode"
 
 REPLACEMENTS: list[tuple[str, str]] = [
     (r"~/.cursor/rules/pstack-models\.mdc", "~/.cursor/rules/forge-models.mdc"),
@@ -47,22 +50,8 @@ REPLACEMENTS: list[tuple[str, str]] = [
 
 SKIP_PLAYBOOKS = {"opening-a-pr.md"}
 
-WORKFLOW_SKILLS = [
-    "architect",
-    "swarm",
-    "how",
-    "why",
-    "reflect",
-    "recall",
-    "teach",
-    "automate-me",
-    "bro",
-    "figure-it-out",
-    "tdd",
-    "blast-radius",
-    "maintain-verification-skill",
-    "create-verification-skill",
-]
+# omega ワークフロー SKILL.md は日本語を正とする。上流からの SKILL 本文は手マージ（本スクリプトでは上書きしない）。
+WORKFLOW_SKILLS: list[str] = []
 
 
 def port_text(text: str) -> str:
@@ -85,16 +74,16 @@ def copy_ported(src: Path, dst: Path) -> None:
 
 def main() -> None:
     # Playbooks (except opening-a-pr)
-    pb_src = PSTACK / "forge-mode/playbooks"
-    pb_dst = OMEGA / "forge-mode/playbooks"
+    pb_src = PSTACK / MODE_UPSTREAM / "playbooks"
+    pb_dst = OMEGA / MODE_OMEGA / "playbooks"
     for path in sorted(pb_src.glob("*.md")):
         if path.name in SKIP_PLAYBOOKS:
             continue
         copy_ported(path, pb_dst / path.name)
 
     # Scripts tree
-    scripts_src = PSTACK / "forge-mode/scripts"
-    scripts_dst = OMEGA / "forge-mode/scripts"
+    scripts_src = PSTACK / MODE_UPSTREAM / "scripts"
+    scripts_dst = OMEGA / MODE_OMEGA / "scripts"
     if scripts_src.is_dir():
         for path in scripts_src.rglob("*"):
             if path.is_dir():
@@ -106,7 +95,6 @@ def main() -> None:
     for ref in (PSTACK / "architect/references").glob("*.md"):
         copy_ported(ref, OMEGA / "architect/references" / ref.name)
 
-    # Workflow SKILL.md files
     for name in WORKFLOW_SKILLS:
         src = PSTACK / name / "SKILL.md"
         if src.is_file():
