@@ -176,7 +176,7 @@
     {
       "name": "x",
       "source": "third_party/x",
-      "description": "Search posts, read timelines, pull trends, manage bookmarks, and access X Chat."
+      "description": "Search posts, read timelines, pull trends, manage bookmarks, access X Chat, and schedule X calls."
     },
     {
       "name": "clay",
@@ -547,6 +547,16 @@
       "name": "finary",
       "source": "third_party/finary",
       "description": "Read your net worth, accounts, holdings, spending, and budgets."
+    },
+    {
+      "name": "tiktok-for-business",
+      "source": "third_party/tiktok-for-business",
+      "description": "Manage TikTok ad campaigns, ad groups, ads, audiences, creatives, and reports."
+    },
+    {
+      "name": "gusto",
+      "source": "third_party/gusto",
+      "description": "Work with payroll, employees, contractors, time off, and reports."
     }
   ]
 }
