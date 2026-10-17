@@ -30,7 +30,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `nextjs-code-review` | Next.js PR レビューチェックリスト |
 | `supabase-implementation` | DB、Edge Functions、RLS、型生成 |
 | `supabase-code-review` | Supabase PR レビューチェックリスト |
-| `code-security` | 横断セキュリティスキャン（**codex-security** / **claude-security** 委譲 + Cursor チェックリスト。**明示依頼時**） |
+| `code-security` | 統合セキュリティ監査（配下 `codex-security/` + `claude-security/`。**明示依頼時**） |
 | `mock-store-guide` | DB 前のモックストアパターン |
 
 ---
@@ -164,7 +164,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 |--------|------|
 | `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ（`~/.cursor/product-design/`）前提 |
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
-| `code-security` | 公式スキャナ委譲手順。明示依頼時のみ（上表） |
+| `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
 
 
 
