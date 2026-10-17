@@ -165,6 +165,8 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 **すべての `Task` 呼び出しのデフォルト。** `run_in_background: true`、agent mode（readonly は MCP を strip）、インライン context ではなく file pointer、ロールごとの明示的 model（`/setup-forge` または `forge-models.mdc`。行を削除するとスキル内デフォルトにフォールバック。デフォルト: コード系は `cursor-grok-4.6-medium`、散文・判断は `claude-opus-5.5-thinking-medium`）。難度で tier 分け。横断設計・並行・微妙なアルゴリズムは **`hardest tasks`** 行（無ければ judgment と同じ）。些末な mechanical 編集は fast コードモデル。ルーティングスキル（`how`、`why`、`reflect`、`swarm`、`architect`）は各 SKILL のロール行が `forge-models.mdc` を上書き。`inherit` のロールは Task の `model` を省略し親モデルで走る。
 
+**仕事に合わせて model を選ぶ。** 各 spawn の前にロール行または default から始め、仕事に要る reasoning level と fast / standard を選ぶ。`/setup-forge` の budget は各ロールの開始 level（default xhigh）。最難・最微妙な work は 1 段上げ（max まで）。判断は 1 段下げ、ルーティンは 2 段以上下げ。fast mode は urgent だけ（CI か trunk が赤、人が結果で止まっている）。それ以外は standard（同 family で `-fast` なし）。verification は例外で `swarm workers` の model と speed を維持。変えるのは effort level と fast かどうかだけ。family はロールが名指すものを保ち diverse panel は diverse のまま。level と speed に slug が無ければ最も近い slug。`inherit` は親 model のまま。Task が調整後 slug を拒否したら別の調整 slug は試さない。ロール行または default に戻しそう言う。
+
 サブエージェントの作業はすべて自分が所有する。diff をレビューし自分の要約を書く。言ったことをそのまま通さない。セカンドオピニオンは別モデルに同じプロンプト。一致は high-signal。
 
 **デフォルトは fresh subagent。** 新しい work は consolidated scope（元 brief、後続 directive、前 agent の report と branch）を渡した fresh subagent に任せる。fix round、follow-up、retry、次の queue 項目も同様。既存 subagent の resume / message / queue follow-up は、移すコストが高い state だけ（local checkout、未 commit 変更、その agent がまだ動かす process：dev server、simulator、babysit watcher）。running agent への stop / hold は reuse ではない。PR owner などの role は agent より長生きし、return 後は fresh agent が次の round を取る。interrupt 連鎖 resume は directive を黙って drop するので、「完了」要約を信じず fresh を起動する。
