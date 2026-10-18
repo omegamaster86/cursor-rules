@@ -53,6 +53,8 @@ SKIP_PLAYBOOKS = {"opening-a-pr.md"}
 # omega ワークフロー SKILL.md は日本語を正とする。上流からの SKILL 本文は手マージ（本スクリプトでは上書きしない）。
 WORKFLOW_SKILLS: list[str] = []
 
+# 単体スキル（unslop / no-comments / technical-writing）は playbook 参照があるため omega 同梱。上流 diff は手マージ。
+
 
 def port_text(text: str) -> str:
     for pattern, repl in REPLACEMENTS:
@@ -117,3 +119,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+

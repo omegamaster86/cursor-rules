@@ -48,3 +48,5 @@ argument-hint: "ジョブ（codebase / repository / changes / diff / patches）�
 ## 限界
 
 補助監査。SAST/DAST・依存スキャン・ペンテスト・人間レビューの代替ではない。
+
+上流との対応は [references/upstream.md](references/upstream.md)（メンテ用）。

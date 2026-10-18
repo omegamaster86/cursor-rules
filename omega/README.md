@@ -250,6 +250,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | 完了前検証 | `/verify-done` |
 | PJ の動作確認レシピ | `/create-verification-skill`（初回） / `/maintain-verification-skill`（更新） |
 | PR レビュー | `/review-orchestrator-triple-hybrid` |
+| セキュリティ監査（明示依頼） | `/code-security` |
 | モデル設定 | `rules/forge-models.mdc` を編集 |
 
 ## モードの関係
@@ -293,6 +294,7 @@ https://github.com/mattpocock/skills/tree/main/skills
 https://github.com/cursor/plugins/tree/main/pstack 
 https://github.com/openai/plugins/tree/main/plugins
 https://github.com/nanaism/yomiyasu
+
 
 
 
