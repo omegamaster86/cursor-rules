@@ -38,6 +38,7 @@ Next.js Web アプリのコーディング規約。型定義・Tailwind・Supaba
 - [ts-type-vs-interface](rules/ts-type-vs-interface.md) - type と interface の使い分け
 - [ts-type-location](rules/ts-type-location.md) - 型定義の配置場所
 - [ts-database-types](rules/ts-database-types.md) - database.types.ts の活用
+- [ts-boundary-patterns](rules/ts-boundary-patterns.md) - brand・discriminated union（境界 parse）
 
 ### 2. Tailwind CSS (MEDIUM)
 

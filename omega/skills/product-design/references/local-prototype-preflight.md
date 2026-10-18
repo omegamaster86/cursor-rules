@@ -28,5 +28,3 @@ node /absolute/path/to/cursor-rules/omega/skills/product-design/scripts/bootstra
 アプリ固有 UI は `src/Prototype.tsx` と `src/prototype.css` に組む。`src/App.tsx`、`src/main.tsx`、`src/styles.css`、`src/mobile/`、`public/assets/iphone/`、`public/assets/android/`、`public/assets/status/`、`vite.config.ts`、`worker/index.js`、`scripts/prepare-sites-build.mjs` は保護ランタイムとして扱う。プレビューまたは引き渡し前に `npm run check:runtime` を実行する。失敗したらランタイムを復元する。
 
 Sites ホスティングではモバイルプロジェクトをそのまま保持する。`npm run build` の出力構成は上記と同じ。Sites に渡す前に `npm run test:sites` を実行する。`init-site.sh` や Vinext スタータへの置き換えはしない。
-
-

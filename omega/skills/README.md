@@ -74,6 +74,9 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `decision-log` | 長時間 run の監査証跡（Notion DB 正本。forge プレイブック・figure-it-out からルーティング） |
 | `create-verification-skill` | PJ 固有の動作確認スキルと feature map を生成 |
 | `maintain-verification-skill` | 上記のソース読み + ライブ drive によるメンテ |
+| `unslop` | AI tell・ filler の除去（playbook・`teach` / `automate-me` から参照） |
+| `technical-writing` | Diátaxis + 開発者文体（`multi-phase-plan` 等） |
+| `no-comments` | Comment Sicko によるコメント整理（review 前） |
 
 ### 設定（rules/）
 
@@ -152,6 +155,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `create-verification-skill` | 対象 PJ に `verify-<app>` を生成 |
 | `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
 | `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
+| `code-security` | セキュリティ監査・パッチ提案（**明示依頼時**） |
 | `deep-review-*` | 上記 orchestrator のサブエージェント用 |
 
 ---
@@ -165,6 +169,3 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ（`~/.cursor/product-design/`）前提 |
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
 | `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
-
-
-

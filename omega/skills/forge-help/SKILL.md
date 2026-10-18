@@ -44,7 +44,7 @@ disable-model-invocation: true
 - Enter 一度きりの `/forge-mode` は会話が進むと薄れる。
 - Custom Mode にするとターンごとに残る（Cursor の Agents / CLI ドキュメントを参照）。
 
-サブエージェントは `subagent_type: "forge-agent"`。[ガイド 02](../../docs/guide/02-forge-mode.md) に例。
+サブエージェントは `subagent_type: "forge-agent"`。[ガイド 02](../../docs/guide/02-align-and-forge.md) に例。
 
 ## スキルを選ぶ
 
@@ -72,6 +72,10 @@ disable-model-invocation: true
 | TS/React/Supabase の書き方 | [`/web-coding-standards`](../web-coding-standards/SKILL.md) |
 | 動作証明レシピの生成 | [`/create-verification-skill`](../create-verification-skill/SKILL.md) |
 | perf 数字の vet | [`/benchmark-checklist`](../benchmark-checklist/SKILL.md) |
+| セキュリティ監査・パッチ提案（明示依頼） | [`/code-security`](../code-security/SKILL.md) |
+| 文体の推敲（AI tell 除去） | [`/unslop`](../unslop/SKILL.md) |
+| ドキュメント・PR 本文の技術文 | [`/technical-writing`](../technical-writing/SKILL.md) |
+| コメント整理（review 前） | [`/no-comments`](../no-comments/SKILL.md) |
 | 大規模・横断変更のプラン | [`/figure-it-out`](../figure-it-out/SKILL.md) |
 | 長時間 run の監査 | [`/decision-log`](../decision-log/SKILL.md) |
 | ロール別モデル | [`/setup-forge`](../setup-forge/SKILL.md) |
@@ -85,7 +89,7 @@ disable-model-invocation: true
 
 ## プレイブック
 
-スラッシュは無い。`/forge-mode` 内でタスク記述が選ぶ。例: babysit / shipping / session pickup / autopilot-stack / autopilot-full。一覧は [`forge-mode`](../forge-mode/SKILL.md) の Playbooks。[ガイド 06](../../docs/guide/06-verify-and-ship.md)。
+スラッシュは無い。`/forge-mode` 内でタスク記述が選ぶ。例: babysit / shipping / session pickup / autopilot-stack / autopilot-full。一覧は [`forge-mode`](../forge-mode/SKILL.md) の Playbooks。[ガイド 05](../../docs/guide/05-build-and-verify.md) / [06](../../docs/guide/06-ship-pr.md)。
 
 ## うまくいかないとき
 
@@ -97,7 +101,7 @@ disable-model-invocation: true
 | 並列が上書き | worktree 分離または cloud ワーカー |
 | 夜間で進捗ゼロ | `/loop` は完了 predicate が必要（[ガイド 07](../../docs/guide/07-overnight.md)） |
 
-[`references/prompting.md`](references/prompting.md)、[ガイド 10](../../docs/guide/10-recipes-and-pitfalls.md)。
+[`references/prompting.md`](references/prompting.md)、[ガイド 10](../../docs/guide/10-recipes.md)。
 
 ## 返信
 
