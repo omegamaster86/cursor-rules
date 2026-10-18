@@ -524,6 +524,21 @@
       "description": "Send messages and manage templates, contacts, and phone numbers in WhatsApp Business."
     },
     {
+      "name": "zoho-crm",
+      "source": "third_party/zoho-crm",
+      "description": "Work with leads, contacts, accounts, deals, and other Zoho CRM records."
+    },
+    {
+      "name": "zoho-desk",
+      "source": "third_party/zoho-desk",
+      "description": "Work with tickets, contacts, tasks, and knowledge base articles in Zoho Desk."
+    },
+    {
+      "name": "zoho-books",
+      "source": "third_party/zoho-books",
+      "description": "Work with contacts, invoices, estimates, and items in Zoho Books."
+    },
+    {
       "name": "square",
       "source": "third_party/square",
       "description": "Work with payments, orders, catalog, customers, and invoices."
@@ -531,7 +546,7 @@
     {
       "name": "tailscale",
       "source": "third_party/tailscale",
-      "description": "Let Grok Bot reach MCP servers on your private Tailscale network. Sign in to Tailscale to connect your tailnet; Grok Bot joins it as one tagged device and only reaches the hosts you grant to tag:grokbot.",
+      "description": "Let Grok Bot reach MCP servers on your private Tailscale network. On your own tailnet it joins as one tag:grokbot device; on your team's company tailnet, turned on by a team admin, it uses each member's own device.",
       "minClientVersions": {
         "cursor": "never",
         "grokbot": "0.49.0",
