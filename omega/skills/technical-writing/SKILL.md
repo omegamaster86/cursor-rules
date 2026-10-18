@@ -96,8 +96,8 @@ Explanation は bounded topic。設計判断・歴史・代替。意見はここ
 
 Before:
 
-> Configuration of the proto import ratchet budget script parameters is performed via budget.json. Note that it's important to remember that running with --write, which updates the committed budget to reflect the current count, should only be done when lowering it. If exceeded, CI fails.
+> proto import の ratchet budget スクリプトのパラメータ設定は `budget.json` 経由で行われる。覚えておくことが重要なのは、`--write` で実行するとコミット済みの budget が現在の件数に合わせて更新されるが、これは下げるときだけ行うべきだという点である。超過すると CI は失敗する。
 
 After:
 
-> `budget.mjs` reads the committed budget from `budget.json` and counts the files that import protos. If the count exceeds the budget, CI fails. Run `budget.mjs --write` only to lower the budget.
+> `budget.mjs` は `budget.json` からコミット済みの budget を読み取り、proto を import しているファイル数を数える。件数が budget を超えたら CI は失敗する。budget を下げるときだけ `budget.mjs --write` を実行する。

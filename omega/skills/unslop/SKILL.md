@@ -8,55 +8,55 @@ disable-model-invocation: true
 
 意味とトーンを保ちつつ、下のパターンを探して書き直す。
 
-## Patterns to detect and fix
+## 検出して直すパターン
 
-Rule numbers are stable ids that other skills cite. A removed rule leaves a gap.
+ルール番号は他スキルが参照する安定 ID。削除したルールの番号は空番にする。
 
-### Content
+### 内容
 
-3. **Superficial -ing phrases.** "highlighting...", "ensuring...", "reflecting...", "showcasing...", "fostering...". Delete or expand with real sources.
-5. **Vague attributions.** "Experts believe", "Industry reports suggest", "Some critics argue". Name the source or delete.
+3. **表面的な -ing 句。** "highlighting...", "ensuring...", "reflecting...", "showcasing...", "fostering..." など。削除するか、根拠となる具体に展開する。
+5. **曖昧な出所。** "Experts believe", "Industry reports suggest", "Some critics argue" など。出典を書くか削除する。
 
-### Language
+### 語彙・表現
 
-7. **AI vocabulary.** Additionally, crucial, delve, enduring, enhance, fostering, garner, interplay, intricate, landscape (abstract), pivotal, showcase, tapestry (abstract), testament, underscore, vibrant. Replace with plain words.
-8. **Fancy ways to say "is".** "serves as", "stands as", "boasts", "features". Say "is" or "has".
-9. **"Not just X, but Y."** State the point directly instead.
-10. **Rule of three.** Don't force ideas into groups of three. Use the natural number.
-11. **Synonym cycling.** Protagonist, main character, central figure, hero all in one paragraph. Pick one, repeat it.
-12. **False ranges.** "from X to Y" where X and Y aren't on a meaningful scale. List topics directly.
+7. **AI 語彙。** Additionally, crucial, delve, enduring, enhance, fostering, garner, interplay, intricate, landscape（抽象用法）, pivotal, showcase, tapestry（抽象用法）, testament, underscore, vibrant など。平易な語に置き換える。
+8. **「is」の回りくどい言い方。** "serves as", "stands as", "boasts", "features" など。"is" か "has" にする。
+9. **「Not just X, but Y.」** 比較枠を外し、要点だけ述べる。
+10. **三つ揃え。** 無理に 3 つにまとめない。自然な数にする。
+11. **同義語のローテーション。** 同じ段落で protagonist, main character, central figure, hero を行き来しない。一つ選んで繰り返す。
+12. **偽のレンジ。** X と Y が意味のある尺度上にない "from X to Y"。トピックを直接列挙する。
 
-### Style
+### スタイル
 
-13. **Em dash overuse.** Avoid em dashes entirely. Use periods or commas only (no parentheses, no en dashes, no hyphen-as-dash substitutes). If a thought needs separation, end the sentence or use a comma.
-14. **Colon overuse.** Colons are fine before a list or example, not as mid-sentence connectors. "If you're coming from traditional automation: instead of registering event handlers, you describe conditions" adds nothing with the colon. Rewrite to let the point stand on its own without comparison framing. "Describing when the scheduler should fire works best as plain English." Same meaning, no crutch punctuation.
-15. **Boldface overuse.** Don't bold every proper noun or acronym.
-16. **Inline-header lists.** The tell is a bold label and colon that restates the line: "**Performance:** Performance improved...". Convert those to prose. A bold lead-in that ends in a period, names the item, and is followed by genuinely new detail ("**Schema in TypeScript.** Tables live in one file.") is fine, not a tell.
-17. **Title case headings.** Use sentence case.
-18. **Decorative emojis.** Remove from headings and bullets.
-19. **Curly quotes.** Use straight quotes.
+13. **em dash の多用。** em dash は使わない。句点かコンマだけ（括弧・en dash・ハイフン代用のダッシュも不可）。区切りが要るなら文を終えるかコンマにする。
+14. **コロンの多用。** リストや例の前のコロンは可。文中の接続としてのコロンは不可。「If you're coming from traditional automation: instead of registering event handlers, you describe conditions」のコロンは何も足していない。比較枠なしで要点だけ立たせる。「Describing when the scheduler should fire works best as plain English。」同じ意味で句読点の crutch がない。
+15. **太字の多用。** 固有名詞や略語をすべて太字にしない。
+16. **インラインヘッダー風リスト。** 太字ラベル＋コロンで行を言い換えているのが tell 例: "**Performance:** Performance improved..."。散文に直す。太字の導入がピリオドで終わり項目名になり、その後に本当に新しい情報が続く形（"**Schema in TypeScript.** Tables live in one file."）は tell ではない。
+17. **見出しの Title Case。** sentence case を使う。
+18. **装飾用 emoji。** 見出しや箇条書きから外す。
+19. **曲がった引用符。** 直線の引用符を使う。
 
-### Communication artifacts
+### コミュニケーションの型
 
-20. **Chatbot phrases.** "I hope this helps!", "Let me know if...", "Of course!", "Certainly!", "Found the smoking gun!" Remove.
-22. **Sycophantic tone.** "Great question! You're absolutely right!" Respond directly.
+20. **チャットボット定型。** "I hope this helps!", "Let me know if...", "Of course!", "Certainly!", "Found the smoking gun!" などは削除。
+22. **へつらい口調。** "Great question! You're absolutely right!" など。要点に直接答える。
 
 ### Filler
 
-23. **Filler phrases.** "In order to" becomes "To". "Due to the fact that" becomes "Because". Delete "It is important to note that".
-24. **Excessive hedging.** "could potentially possibly be argued that it might" becomes "may".
-25. **Generic conclusions.** "The future looks bright." State specific plans or facts.
+23. **Filler 句。** "In order to" は "To"。"Due to the fact that" は "Because"。"It is important to note that" は削除。
+24. **過剰なヘッジ。** "could potentially possibly be argued that it might" は "may" 程度にする。
+25. **汎用の結び。** "The future looks bright." など。具体的な計画や事実を書く。
 
-### Jargon
+### 隠語
 
-26. **Abstract metaphor nouns.** Substrate (base), wedge, wedge in (add), vector (way, method), locus, vantage, nexus, primitive as a noun, harness as a metaphor, surface as in "API surface", bedrock, scaffolding as a metaphor, modality, paradigm, gold-plating (more than the job needs), ratchet as a metaphor (the mechanism's real name, or a limit that only tightens), evacuate for moving code (move out), endgame (the last phase), north star, flywheel. These read as technical but usually have a plainer concrete word. Pick the concrete word.
+26. **抽象比喩名詞。** substrate（基盤）、wedge、wedge in（追加）、vector（方法）、locus、vantage、nexus、primitive（名詞用法）、harness（比喩）、surface（"API surface" など）、bedrock、scaffolding（比喩）、modality、paradigm、gold-plating（必要以上）、ratchet（比喩。実機構の名前か、締まるだけの上限）、evacuate（コード移動は move out）、endgame（最終段階）、north star、flywheel など。技術っぽく見えるが多くはもっと具体の語がある。具体語を選ぶ。
 
-### Plain speech
+### 平易な言い方
 
-27. **Say what it does, not how it feels.** "the database stays close at hand", "SQL you can read", "types that follow your schema" name a feeling. The fix names the mechanism or a number: "`.toSQL()` returns the exact string sent to the database", "a column rename fails the build". Ask what the sentence tells the reader to do or know, then write that. If you can't restate it as a concrete instruction, fact, or number, cut it. One more check: if the sentence could appear unchanged in another project's docs, it says nothing about this one. Cut it.
-28. **Shorten or split dense sentences.** If the reader has to backtrack to parse a sentence, break it in two or drop clauses. One idea per sentence.
-29. **Active voice.** Prefer it. Catch "is/are/was/were + past participle" and name the actor: "queries are validated" becomes "the compiler validates queries", "the file is parsed by the loader" becomes "the loader parses the file". Passive is fine only when the actor is unknown or genuinely doesn't matter.
-30. **Cut adverbs, or use a stronger verb.** "runs quickly" becomes "is fast" or the number, and "significantly improves" becomes the measured delta. An adverb propping up a weak verb means the verb is wrong.
-31. **Prefer the plain word.** "utilize" and "leverage" become "use", "facilitate" becomes "help", "numerous" becomes "many", "in the event that" becomes "if". The fancier synonym is rarely clearer.
-32. **Mannered prose.** Metaphor or flourish where a literal phrase exists: aphorisms ("wire it or delete it"), rhetorical fragments for effect, personified code ("the plan holds it"), figurative verbs ("rides along", "stands on"), stock framing phrases. "A dial worth turning" becomes "a parameter worth varying". Say what you mean. Rule 26 covers the metaphor nouns.
-33. **Over-compression.** Dropped articles, verbless fragments, symbol-speak, and abbreviations that make the reader decode instead of read. "Parser rejects bad date → exit 2, no write" becomes "The parser rejects a bad date, exits with code 2, and writes nothing." Write whole sentences with their articles and verbs, and spell out arrows and abbreviations.
+27. **感じ方ではなく、何をするか。** "the database stays close at hand", "SQL you can read", "types that follow your schema" は感覚の名前。直し方は機構か数値: "`.toSQL()` returns the exact string sent to the database", "a column rename fails the build"。読者に何をすべきか・知るべきかを書き、それを具体の指示・事実・数値で書く。そう言い換えられなければ削る。もう一つのチェック: 文が他プロジェクトのドキュにそのまま載せられるなら、このプロジェクトについて何も言っていない。削る。
+28. **詰まった文は短くまたは分割。** 読者が戻って解析するなら二文に分けるか節を落とす。一文一アイデア。
+29. **能動態。** 優先する。"is/are/was/were + 過去分詞" は actor を出す: "queries are validated" → "the compiler validates queries"、"the file is parsed by the loader" → "the loader parses the file"。受動は actor が不明か本当に不要なときだけ。
+30. **副詞を削るか、動詞を強くする。** "runs quickly" は "is fast" か数値、"significantly improves" は測定した差分。弱い動詞を副詞で支えているなら動詞が間違っている。
+31. **平易な語を選ぶ。** "utilize" と "leverage" は "use"、"facilitate" は "help"、"numerous" は "many"、"in the event that" は "if"。上品な同義語のほうが明確になることは稀。
+32. **作り物の文体。** 直訳できるのに比喩や装い: 警句（"wire it or delete it"）、効果のための修辞的断片、コードの人格化（"the plan holds it"）、比喩動詞（"rides along", "stands on"）、定型の枠組み。「A dial worth turning」は "a parameter worth varying"。言いたいことをそのまま書く。比喩名詞はルール 26。
+33. **過剰な圧縮。** 冠詞や動詞の脱落、無動詞断片、記号語、読者にデコードさせる略語。「Parser rejects bad date → exit 2, no write」は "The parser rejects a bad date, exits with code 2, and writes nothing." 冠詞と動詞のある完全な文にし、矢印と略語は書き出す。
