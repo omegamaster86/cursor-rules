@@ -1,5 +1,7 @@
 # Job: scan diff（investigator 方式）
 
+Task の `model`: [../references/task-models.md](../references/task-models.md)（`code security workers`。[core-audit](core-audit.md)）。
+
 **コミット済み**の変更のみ。`git diff <merge-base>..HEAD` または単一コミット `parent..commit`。
 
 ## 引数
@@ -21,3 +23,5 @@
 8. レポート提出
 
 変更が 300 ファイル超（high では 600）なら、[scan-codebase](scan-codebase.md) または [scan-repository](scan-repository.md) を推奨する一文を RESULTS に入れる。
+
+

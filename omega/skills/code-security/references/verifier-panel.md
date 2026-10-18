@@ -1,6 +1,6 @@
 # Verifier パネル（panel 方式ジョブ）
 
-各 candidate finding に対し、**3 つの独立 verifier**（Task で並列）を走らせる。2/3 以上が accept なら `confidence: verified` でレポートに載せる。
+各 candidate finding に対し、**3 つの独立 verifier**（Task で並列）を走らせる。2/3 以上が accept なら `confidence: verified` でレポートに載せる。各 Task の `model` は [task-models.md](task-models.md) の `code security verifier panel` 行（finding 用の 3 体割当）。**patch-verifier** は同じ行の **2 番目の slug**（1 件だけならそれ）。
 
 ## Verifier への入力
 
@@ -23,3 +23,5 @@ patch-verifier は次を JSON で返す:
 - `REVIEWED_PATHS`, 実行したテスト
 
 並列で **adversarial researcher**（diff のみスコープ）に「この変更で新たに開いた経路、または finding の別経路が残るか」を聞く。1 回だけ revision ラウンド可。
+
+

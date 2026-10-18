@@ -28,6 +28,7 @@ argument-hint: "ジョブ（codebase / repository / changes / diff / patches）�
 
 ## 共通
 
+- Task の `model`: [references/task-models.md](references/task-models.md)（`forge-models.mdc` の role 行で上書き）
 - Lead: [references/security-lead.md](references/security-lead.md)
 - 成果物: `CODE-SECURITY-<UTC>/` — [references/artifacts.md](references/artifacts.md)
 - レポート: [references/report-format.md](references/report-format.md)

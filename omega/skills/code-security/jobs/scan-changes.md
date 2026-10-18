@@ -1,5 +1,7 @@
 # Job: scan changes（panel 方式）
 
+Task の `model`: [../references/task-models.md](../references/task-models.md)（workers / verifier panel）。
+
 ブランチ差分、PR 相当の diff、または単一コミット。**未コミットの作業ツリーは含めない**。
 
 ## 引数
@@ -33,3 +35,5 @@
 ## キックオフ文に含めるもの
 
 ベース ref、変更ファイル数、effort、パネル完了まで離席可、checkout を変えないでほしい旨。
+
+

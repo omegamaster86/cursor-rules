@@ -1,5 +1,7 @@
 # Core audit（investigator 方式の中核）
 
+Task の `model`: [../references/task-models.md](../references/task-models.md) の `code security workers`。
+
 authorized scope を広げない。現リビジョンのソースのみ（必要なら `git show`）。アプリコードの実行・外向きネットワークはしない。
 
 ## フェーズ
@@ -42,3 +44,5 @@ authorized scope を広げない。現リビジョンのソースのみ（必要
 ## Diff 限定モード
 
 [scan-diff.md](scan-diff.md) から呼ばれたときは、変更ファイルを中心に読み、**変更が関与しない既存バグ**は `preExisting` として coverage に記録し finding には載せない。
+
+

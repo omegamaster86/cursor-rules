@@ -1,5 +1,7 @@
 # Job: scan repository（investigator 方式）
 
+Task の `model`: [../references/task-models.md](../references/task-models.md)（`code security workers`。[core-audit](core-audit.md)）。
+
 リポジトリ全体、または `--scope` で指定したディレクトリ。コミット済みツリーを読む（未コミットのみは [scan-changes](scan-changes.md) か、先にコミット）。
 
 ## 引数
@@ -31,3 +33,5 @@
 ## 完了条件
 
 `CODE-SECURITY-<ts>/RESULTS.md` と `findings.jsonl` が存在する。
+
+

@@ -1,5 +1,7 @@
 # Job: scan codebase（panel 方式）
 
+Task の `model`: [../references/task-models.md](../references/task-models.md)（workers / verifier panel）。
+
 リポジトリ全体または `--scope`。Security Lead は [../references/security-lead.md](../references/security-lead.md)。
 
 ## 引数
@@ -32,3 +34,5 @@
 ## ユーザーへの締め
 
 finding 数、レポートパス、verified か、fixes 希望の質問（finding があるときのみ）。
+
+

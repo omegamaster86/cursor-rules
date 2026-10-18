@@ -1,5 +1,7 @@
 # Job: suggest patches
 
+Task の `model`: [../references/task-models.md](../references/task-models.md)（workers＝generator・adversarial、patch-verifier＝verifier panel 2 番目）。
+
 `CODE-SECURITY-*/findings.jsonl` の verified finding から、**適用はユーザー任せ**の `.patch` を生成。
 
 ## 前提
@@ -31,3 +33,5 @@
 ## 締め
 
 パッチ一覧、apply はユーザー判断。「適用してほしければ指示して」と 1 行。
+
+
