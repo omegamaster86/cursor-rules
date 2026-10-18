@@ -39,4 +39,3 @@ Vite が親ディレクトリのファイルを拒否したら、当該プロト
 | --- | --- |
 | `.cursor/assets/` | 本セッションの Image Gen 出力（ideate / 実装アセット） |
 | `.cursor/product-design/assets/` または `~/.cursor/product-design/assets/` | user-context に保存する参照スクショ・ブランド素材 |
-

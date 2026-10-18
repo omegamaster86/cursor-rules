@@ -14,4 +14,3 @@ argument-hint: "ジョブ（codebase / repository / changes / diff / patches）�
 - スコープはユーザー承認分のみ。秘密は redact。パッチ適用・push・PR はユーザー指示までしない。
 
 引数がなければ SKILL の「既定の選び方」に従い 1 問だけ確認する。
-
