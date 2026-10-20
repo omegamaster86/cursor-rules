@@ -2,7 +2,7 @@
 
 Task の `model`: [../references/task-models.md](../references/task-models.md)（workers＝generator・adversarial、patch-verifier＝verifier panel 2 番目）。
 
-`.cursor/CODE-SECURITY-*/findings.jsonl` の verified finding から、**適用はユーザー任せ**の `.patch` を生成。
+`<scanRoot>/.cursor/CODE-SECURITY-*/findings.jsonl` の verified finding から、**適用はユーザー任せ**の `.patch` を生成。
 
 ## 前提
 
@@ -18,7 +18,7 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 
 ## 手順
 
-1. 最新の `.cursor/CODE-SECURITY-*` を選ぶ（ユーザー指定がなければ newest）
+1. 最新の `<scanRoot>/.cursor/CODE-SECURITY-*` を選ぶ（ユーザー指定がなければ newest、`stamp.json` の `artifactDir` を優先）
 2. selection を解決。finding id は `^F[0-9]{1,9}$` のみ信頼
 3. `.cursor/CODE-SECURITY-<ts>/patches/` を用意（同じ report ディレクトリ内）
 4. **4 finding ずつ wave**:
@@ -33,7 +33,3 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 ## 締め
 
 パッチ一覧、apply はユーザー判断。「適用してほしければ指示して」と 1 行。
-
-
-
-
