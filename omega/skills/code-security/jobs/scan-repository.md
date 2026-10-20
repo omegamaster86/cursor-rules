@@ -23,7 +23,7 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 ## 手順
 
 1. スキャンルートを絶対パスにする
-2. `date -u +%Y%m%d-%H%M%S` で `CODE-SECURITY-<ts>/` と `.code-security-run/` を作成（[../references/artifacts.md](../references/artifacts.md)）
+2. `date -u +%Y%m%d-%H%M%S` で `.cursor/CODE-SECURITY-<ts>/` と `.code-security-run/` を作成（[../references/artifacts.md](../references/artifacts.md)）
 3. `GIT_CONFIG_GLOBAL=/dev/null GIT_TERMINAL_PROMPT=0 git -C <root> rev-parse HEAD` で commit を stamp に記録。`git status --porcelain` が空でなければ `dirty: true` とし、パッチジョブには使えない旨を RESULTS に書く
 4. 大きいツリーでは `attack-surface` フォーカス: テスト・生成物・fixture は二次参照のみ（秘密の埋め込みチェックは fixture も見る）
 5. [core-audit.md](core-audit.md) を実行。stamp の `job`: `scan-repository`
@@ -32,6 +32,8 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 
 ## 完了条件
 
-`CODE-SECURITY-<ts>/RESULTS.md` と `findings.jsonl` が存在する。
+`.cursor/CODE-SECURITY-<ts>/RESULTS.md` と `findings.jsonl` が存在する。
+
+
 
 

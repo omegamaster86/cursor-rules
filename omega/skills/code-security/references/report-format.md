@@ -1,6 +1,6 @@
 # 統一セキュリティレポート形式
 
-`CODE-SECURITY-<timestamp>/RESULTS.md` の形。
+`.cursor/CODE-SECURITY-<timestamp>/RESULTS.md` の形。
 
 ```markdown
 ## セキュリティレビュー結果
@@ -33,3 +33,4 @@
 ```
 
 `findings.jsonl` が機械可読の正本。重大度: [severity.md](severity.md)
+

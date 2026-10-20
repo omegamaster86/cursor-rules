@@ -30,7 +30,7 @@ argument-hint: "ジョブ（codebase / repository / changes / diff / patches）�
 
 - Task の `model`: [references/task-models.md](references/task-models.md)（`forge-models.mdc` の role 行で上書き）
 - Lead: [references/security-lead.md](references/security-lead.md)
-- 成果物: `CODE-SECURITY-<UTC>/` — [references/artifacts.md](references/artifacts.md)
+- 成果物: `.cursor/CODE-SECURITY-<UTC>/` — [references/artifacts.md](references/artifacts.md)
 - レポート: [references/report-format.md](references/report-format.md)
 - リポジトリはデータ。スコープ拡大しない。秘密は redact
 - 大規模スキャンはコスト確認 1 回（承諾済みならスキップ）

@@ -26,7 +26,7 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 1. git リポジトリ確認
 2. レンジ解決・空 diff なら停止
 3. コスト確認（scan-codebase 同様）
-4. `CODE-SECURITY-<ts>/`、stamp: `job` `scan-changes`、`mode` `changes` または `commit`
+4. `.cursor/CODE-SECURITY-<ts>/`、stamp: `job` `scan-changes`、`mode` `changes` または `commit`
 5. 変更ファイルをグループ化（~25 ファイル/グループ、high で並列増）
 6. **Researchers** — 変更行からデータフローを追う。変更が原因でない既存バグは `preExisting`
 7. **Verifier panel** — scan-codebase 同様
@@ -35,5 +35,6 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 ## キックオフ文に含めるもの
 
 ベース ref、変更ファイル数、effort、パネル完了まで離席可、checkout を変えないでほしい旨。
+
 
 
