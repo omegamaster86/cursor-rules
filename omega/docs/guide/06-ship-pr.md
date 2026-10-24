@@ -22,6 +22,6 @@
 
 ## レビュー
 
-出荷前の争点: `/review-orchestrator-triple-hybrid`（ブランチ差分、3 レーン）。
+出荷前の争点: `/review-orchestrator-triple-hybrid`（ブランチ差分、担当分けレーン。統合結果は `.cursor/agent-review/<run_id>/consolidated.md`）。
 
 次: [離席・夜間](./07-overnight.md)
