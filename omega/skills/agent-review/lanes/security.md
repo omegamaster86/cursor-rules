@@ -13,8 +13,8 @@
 ```text
 Full Repository Path: <対象 PJ の git ルート絶対パス>
 Diff: branch changes
-Base Branch: <orchestrator が解決した base（例: origin/main）>
-Custom Instructions: コミット済み差分のみを正とする。orchestrator の base と merge-base を揃える。セキュリティ finding のみ。一般バグ・リファクタは報告しない。
+Base Branch: <orchestrator が解決した base_branch（HEAD を切ったブランチ）>
+Custom Instructions: コミット済み差分のみを正とする。上記 Base Branch を使い `git diff <base>...HEAD` と同じ範囲に揃える。セキュリティ finding のみ。一般バグ・リファクタは報告しない。
 ```
 
 親は diff を事前計算しない（security-review がローカル diff を計算する）。

@@ -17,6 +17,7 @@ disable-model-invocation: true
 | フェーズ | reference |
 |----------|-----------|
 | 0 成果物 | [artifacts.md](references/artifacts.md) |
+| 1 base・差分 | [base-resolution.md](references/base-resolution.md) |
 | 0.3 Router | [dimension-router.md](references/dimension-router.md) |
 | 0.5 構造 | [structural-audit.md](references/structural-audit.md) |
 | 2 統合 | [consolidation.md](references/consolidation.md)、[consolidated-output-format.md](references/consolidated-output-format.md) |

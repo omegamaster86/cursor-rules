@@ -2,7 +2,7 @@
 推測レビューは禁止し、現在ブランチ（HEAD）に含まれるコミット差分のみを対象にレビューします。
 
 ## 入力
-- `base_branch`: 比較基準ブランチ（例: `origin/main`）
+- `base_branch`: 比較基準ブランチ（HEAD を切ったブランチ。`base-resolution.md`）
 - `changed_files`: `git diff --name-only <base>...HEAD` の結果
 - `diff_patch`: `git diff <base>...HEAD` の結果
 - `diff_stat`: `git diff --stat <base>...HEAD` の結果

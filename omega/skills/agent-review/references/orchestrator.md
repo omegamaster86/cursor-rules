@@ -49,20 +49,7 @@
 
 ## 1 base 解決と差分取得（親）
 
-`@{upstream}` は使わない。優先順:
-
-1. `change_scope.base_branch`
-2. Open PR の `baseRefName`
-3. `origin/develop`、なければ `origin/main`
-
-取得:
-
-- `git diff --name-only <base>...HEAD`
-- `git diff <base>...HEAD`
-- `git diff --stat <base>...HEAD`
-- `git status --short`（未コミットは対象外の確認のみ）
-
-**レビュー対象はコミット済み差分のみ。**
+[base-resolution.md](base-resolution.md) に従い `base_branch` を決め、差分を取得する。
 
 共通コンテキスト: `base_branch` / `changed_files` / `diff_patch` / `diff_stat` / `artifact_dir` / `active_lanes` / `security_depth: delegated`
 
