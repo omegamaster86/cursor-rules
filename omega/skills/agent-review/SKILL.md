@@ -1,12 +1,12 @@
 ---
 name: agent-review
-description: "担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。`/review-orchestrator-triple-hybrid` の正本。成果物は PJ の `.cursor/agent-review/<run_id>/`。"
+description: "担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。争点あるブランチ・PR で `/agent-review` を明示起動。成果物は `.cursor/agent-review/<run_id>/`。"
 disable-model-invocation: true
 ---
 
 # Agent review
 
-`/review-orchestrator-triple-hybrid` の単一スキル入口。手順は [references/](references/) と [lanes/](lanes/) に分割する。
+**起動:** ユーザーが `/agent-review` で明示依頼したときのみ（omega `commands/` には載せない）。手順は [references/](references/) と [lanes/](lanes/) に分割する。
 
 ## 親（オーケストレーター）
 

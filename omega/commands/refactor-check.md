@@ -128,7 +128,7 @@ description: ユーザーがリファクタを指示したとき、削減・簡�
 
 ### 関連コマンド
 - 流用・二重定義: `/reuse-check` の結果（あれば要約）
-- PR 監査: `deep-review-code-quality`
+- PR 監査: `agent-review`（Quality レーン）または `/agent-review`
 
 ### 探索ログ（簡潔）
 - git / grep パターン / codebase_search クエリ
@@ -145,4 +145,4 @@ description: ユーザーがリファクタを指示したとき、削減・簡�
 ## 注意
 
 - 本コマンドは **調査と提案** のみ。実装はユーザーの明示指示後に行う。
-- セキュリティ・コーディング規約の総合レビューは範囲外。必要なら `review-orchestrator-triple-hybrid` 等を使う。
+- セキュリティ・コーディング規約の総合レビューは範囲外。必要なら `/agent-review` を使う。

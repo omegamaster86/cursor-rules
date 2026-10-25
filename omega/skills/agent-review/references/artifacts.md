@@ -1,6 +1,6 @@
 # Agent review artifacts
 
-`review-orchestrator-triple-hybrid` 実行時、**対象 PJ のリポジトリルート**に次を作る。
+`agent-review` スキル（`/agent-review` 明示起動）実行時、**対象 PJ のリポジトリルート**に次を作る。
 
 ## ルート
 
