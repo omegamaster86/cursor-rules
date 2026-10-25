@@ -91,7 +91,7 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 
 ## 2 サブエージェント並列起動
 
-[models.md](models.md) のモデル割当。
+起動前に `.cursor/rules/forge-models.mdc` を読み、[models.md](models.md) で **レーンごとの `subagent_type` と `model`** を解決する。各 Task に必ず渡す。
 
 同一メッセージで **A/B/C/D を必ず同時起動**（`run_in_background: true`）。`launch_blast_radius` なら **E も同時**。
 

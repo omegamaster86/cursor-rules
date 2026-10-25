@@ -3,6 +3,7 @@
 ## 起動
 
 - `subagent_type`: `security-review`
+- `model`: [../references/models.md](../references/models.md) のレーン D（`review orchestrator security`）。Task が受け付けないときは省略。
 - `description`: `Security Review`
 - `run_in_background`: true（orchestrator 並列時）。単体起動時は false が既定。
 - `readonly`: true
