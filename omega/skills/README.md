@@ -154,9 +154,9 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `create-verification-skill` | 対象 PJ に `verify-<app>` を生成 |
 | `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
-| `review-orchestrator-triple-hybrid` | 3モデル並列 PR レビュー |
-| `code-security` | セキュリティ監査・パッチ提案（**明示依頼時**） |
-| `deep-review-*` | 上記 orchestrator のサブエージェント用 |
+| `review-orchestrator-triple-hybrid` | 担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。成果物は PJ の `.cursor/agent-review/<run_id>/` |
+| `code-security` | セキュリティ監査・パッチ提案（**明示依頼時**。orchestrator 内では Security レーンが担当） |
+| `deep-review-*` / `lane-review-*` | orchestrator のサブエージェント用 |
 
 ---
 
