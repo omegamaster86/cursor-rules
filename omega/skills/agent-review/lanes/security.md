@@ -3,7 +3,7 @@
 ## 起動
 
 - `subagent_type`: `security-review`
-- `model`: [../references/models.md](../references/models.md) のレーン D（`review orchestrator security`）。Task が受け付けないときは省略。
+- `model`: [../references/models.md](../references/models.md) のレーン D（既定 `claude-sonnet-5-5-high`、`review orchestrator security` で上書き可）。他レーンと同様に必ず渡す。Task が拒否したときだけ省略し、その旨を記録する。
 - `description`: `Security Review`
 - `run_in_background`: true（orchestrator 並列時）。単体起動時は false が既定。
 - `readonly`: true

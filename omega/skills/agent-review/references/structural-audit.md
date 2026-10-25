@@ -11,6 +11,6 @@
 | レイヤー違反 | `.cursor/rules`・skills・PJ 境界 |
 | 複雑度の急増 | 大きな関数・分岐 |
 
-`structural_audit_summary` を作り **`artifact_dir/structural-audit.md` に全文保存**。`reuse_hints` は Quality レーン（C）に渡す。
+`structural_audit_summary` を親のコンテキストに保持する（**成果物ファイルは書かない**）。統合時は `consolidated.md` の Structural Audit セクションに載せる。`reuse_hints` は Quality レーン（C）に渡す。
 
 クローン候補の行は `reuse_hints` として別途保持する。

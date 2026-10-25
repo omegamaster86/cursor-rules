@@ -43,8 +43,7 @@
 
 1. `run_id` = `date -u +%Y%m%dT%H%M%SZ`-`git rev-parse --short HEAD`
 2. `artifact_dir` = `<PJルート>/.cursor/agent-review/<run_id>/`
-3. ディレクトリを作成し、直ちに `inputs.md` と `manifest.json` 骨子を書く。
-4. 完了後 `manifest.json` を最終更新する。
+3. ディレクトリを作成する（[artifacts.md](artifacts.md) のファイル以外は書かない）。
 
 ---
 
@@ -71,7 +70,7 @@
 
 ## 0.3 Dimension Router（親）
 
-[dimension-router.md](dimension-router.md) に従い `dimension-router.md` を `artifact_dir` に保存。
+[dimension-router.md](dimension-router.md) に従い Router を実行し、結果を親のコンテキストに保持する（成果物ファイルは書かない）。
 
 `launch_blast_radius` が true のとき `active_lanes` に `blast` を含める。
 
@@ -137,7 +136,7 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 
 各レーン完了時、親は直ちに `artifact_dir` の対応 `lane-*.md` に **全文転記**。
 
-失敗時のみ `Status: Failed` と parent fallback を manifest に記載。
+失敗時は `consolidated.md` の該当レーン要約に `Status: Failed` と parent fallback を記載する。
 
 ---
 

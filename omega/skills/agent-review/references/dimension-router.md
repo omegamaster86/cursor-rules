@@ -31,8 +31,10 @@
 - **Quality レーン**: 常に起動。
 - **Correctness A/B**: 常に起動（挙動・回帰のみ。セキュリティ深掘りは委譲）。
 
-## dimension_router.md に書く内容
+## 親が保持する内容（ファイルに書かない）
 
 - blast_score と加点理由（トリガー列）
 - launch_blast_radius
 - tier（S: ≤10 files / M: 11–49 / L: ≥50 または migration +2 あり）
+
+統合時は `consolidated.md` の Dimension Router セクションに載せる。

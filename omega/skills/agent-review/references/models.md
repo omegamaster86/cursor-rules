@@ -10,9 +10,9 @@
 | A Correctness（1本目） | `review orchestrator grok` | `gpt-5.3-codex` | `generalPurpose` |
 | B Correctness | `review orchestrator sonnet correctness` | `claude-4.6-sonnet-medium-thinking` | `generalPurpose` |
 | C Quality | `review orchestrator sonnet quality` | `claude-4.6-sonnet-medium-thinking` | `generalPurpose` |
-| D Security | `review orchestrator security` | （行なしなら `model` 省略 — `security-review` 既定） | `security-review` |
+| D Security | `review orchestrator security` | `claude-sonnet-5-5-high` | `security-review` |
 | E Blast radius | `review orchestrator blast radius` | `claude-4.6-sonnet-medium-thinking` | `generalPurpose` |
 
 すべて `readonly: true`。orchestrator 並列時は `run_in_background: true`。
 
-**D:** `subagent_type: security-review` が `model` を無視する環境では、forge 行は記録用。Task が受け付けるときだけ `model` を渡す。
+**D:** 他レーンと同様、解決した `model` を Task に渡す。`security-review` が `model` を拒否したときだけ省略し、チャットに記録する。

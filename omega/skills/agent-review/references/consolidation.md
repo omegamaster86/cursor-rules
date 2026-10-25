@@ -29,7 +29,7 @@
 - Overall `Block`: Correctness CRITICAL、Structural ビルド破綻、Security Critical
 - `Approve with conditions`: QUALITY-BLOCKER、Security High、blast unproven（tier L）
 
-統合全文を **`consolidated.md`** に書き、`manifest.json` を更新。
+統合全文を **`consolidated.md`** に書く。
 
 ## 共通ポリシー
 

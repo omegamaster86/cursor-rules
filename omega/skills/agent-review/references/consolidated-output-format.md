@@ -6,7 +6,6 @@
 
 - Run ID:
 - Directory: `.cursor/agent-review/<run_id>/`
-- Manifest: `manifest.json`
 
 ## Inputs
 
@@ -20,7 +19,7 @@
 
 ## Structural Audit（差分スコープ）
 
-（要約。全文は `structural-audit.md`）
+（親フェーズ 0.5 の要約を本文に記載）
 
 ## Subagent Outputs
 
