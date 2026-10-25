@@ -13,7 +13,7 @@
 5. matching surface で検証。「Inconclusive」や wrong-surface は pass ではない。フラグする。
 6. small ordered commit に rebase。follow-up は stack。
    **sequence-verifiable-units** principle skill。各 small unit を build・verify・commit してから次。
-7. design が contested なら出荷前に `review-orchestrator-triple-hybrid`。
+7. design が contested なら出荷前に `/agent-review`。
 8. **Opening a PR** を実行。
 
 code-coupled work（1 feature、1 migration）は checkpoint を inline にした単一 owner。blocking phase の後に内部 fan-out。parent レベル fan-out は独立 artifact を出す slice 用（audit、cross-subsystem investigation、競合 experiment）。phase boundary で checkpoint を書き直す。interrupt を鎖しない。fresh owner を spawn。

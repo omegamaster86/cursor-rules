@@ -1,9 +1,3 @@
----
-name: review-dimension-router
-model: inherit
-description: review-orchestrator 用 Dimension Router（blast 等の条件付きレーン判定）。
----
-
 # Dimension Router
 
 親オーケストレーターがフェーズ0.3で実施。`changed_files` と `diff_stat` と diff パッチのキーワードのみ（リポジトリ全体スキャン禁止）。

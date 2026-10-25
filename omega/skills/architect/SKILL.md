@@ -44,7 +44,7 @@ Arena は 1 つの synthesized design package を返す。その synthesis 決�
 
 invoker が明示的に求めたときだけ checkpoint に opt in: 「/architect with checkpoint」「stop and show me before implementing」など。synthesized design を出して sign-off まで pause。
 
-synthesis はどちらでも単独 commit として ship できる。**foundational-thinking** principle スキルの「scaffold first」モード。fill-in 中の計画・スコープ済み breakage は **outcome-oriented-execution** principle スキルに従い問題ない。実装前に設計へ adversarial 圧力をかけるなら、synthesized sketch に **review-orchestrator-triple-hybrid** スキルを走らせる。
+synthesis はどちらでも単独 commit として ship できる。**foundational-thinking** principle スキルの「scaffold first」モード。fill-in 中の計画・スコープ済み breakage は **outcome-oriented-execution** principle スキルに従い問題ない。実装前に設計へ adversarial 圧力をかけるなら、synthesized sketch に **`/agent-review`** を走らせる。
 
 人が形状を push back したら（checkpoint 中または後から）Phase A の evidence として扱う。さらにコードを書く前に re-ground して Phase B を再実行。
 

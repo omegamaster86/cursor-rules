@@ -8,7 +8,7 @@
 
 - 並列案: **multi-agent-candidates**（3 Task 必須、`multi-agent-task-enforcement.mdc`）
 - 統合前: `design-red-flags.md` で shallow module 等を弾く
-- 争点が大きいとき: `/review-orchestrator-triple-hybrid`
+- 争点が大きいとき: `/agent-review`
 
 ## `/swarm`
 

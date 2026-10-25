@@ -31,7 +31,7 @@
 
 ## レビューと ship
 
-- ブランチで `/review-orchestrator-triple-hybrid`。疑って。まだ変更しない。dismiss も読む。`
+- ブランチで `/agent-review`。疑って。まだ変更しない。dismiss も読む。`
 - `/swarm <dir> 下の各 package を check script で確認。package あたり 1 worker。1 本の report。`
 - `/forge-mode PR を開く。小さく順序付き commit、説明に evidence。`
 - `/forge-mode この PR を babysit。green にして。` 状態だけ: `/forge-mode PR <number> の状況は？未処理は？`

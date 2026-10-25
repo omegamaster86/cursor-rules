@@ -31,4 +31,4 @@
 
 **Babysit.** Opening a PR は babysit を開始しない。URL を出して build を続ける。phase / stack が揃った後、ユーザーが求めたときだけ別 pass で **Babysit**（`babysit.md`）。各 PR ごとの babysit は build を止め、後続 wave で restart される commit に check を浪費する。intent から drift した feedback には push back。
 
-PR を開く subagent は `review-orchestrator-triple-hybrid` を実行、URL を返し、babysit しない（Autopilot-full / Autopilot-stack owner は brief に従う）。parent に return。
+PR を開く subagent は `agent-review` スキルを実行、URL を返し、babysit しない（Autopilot-full / Autopilot-stack owner は brief に従う）。parent に return。

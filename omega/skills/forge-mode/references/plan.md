@@ -111,7 +111,7 @@ lint / CI / テスト骨格と契約型を機能フェーズより先に land �
 overview で、実装者が名前で適用すべき forge-mode non-negotiables を名指し：
 
 - 変更前に unfamiliar な各サブシステムで **how** スキル。
-- 出荷前に contested design で **`review-orchestrator-triple-hybrid` コマンド**による敵対的レビュー。
+- 出荷前に contested design で **`/agent-review`** による敵対的レビュー。
 - プランが監査可能記録を要するほど大きいとき **decision-log** スキルで Notion に決定を記録。
 - ユーザーが PR 監視を求めたとき **Babysit** プレイブック（`playbooks/babysit.md`）。land は **Shipping**。
 

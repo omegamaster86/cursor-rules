@@ -52,6 +52,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `swarm` | カバレッジ分割・レース・探索の N 並列ワーカー |
 | `setup-forge` | `forge-models.mdc` のインタラクティブ設定 |
 | `blast-radius` | 変更の影響範囲 |
+| `agent-review` | 担当分け並列 PR レビュー（`/agent-review` 明示起動。`lanes/` + `references/`） |
 | `tdd` | TDD ループ参照 + 失敗テスト先行のバグ修正（seam 合意・`GLOSSARY.md`） |
 | `diagnosing-bugs` | 難しいバグ・性能退行の診断ループ（feedback loop 優先） |
 | `domain-modeling` | `GLOSSARY.md` / ADR でドメインモデルを能動的に磨く |
@@ -154,9 +155,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `verify-done` | 完了前検証（forge-mode ゲート・任意呼び出し） |
 | `create-verification-skill` | 対象 PJ に `verify-<app>` を生成 |
 | `maintain-verification-skill` | `verify-<app>` の feature map 監査 |
-| `review-orchestrator-triple-hybrid` | 担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。成果物は PJ の `.cursor/agent-review/<run_id>/` |
-| `code-security` | セキュリティ監査・パッチ提案（**明示依頼時**。orchestrator 内では Security レーンが担当） |
-| `deep-review-*` / `lane-review-*` | orchestrator のサブエージェント用 |
+| `code-security` | セキュリティ監査・パッチ提案（**明示依頼時**。`agent-review` 内では Security レーンが担当） |
 
 ---
 
@@ -169,3 +168,4 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `product-design` | `cursor-ide-browser`・Cursor 状態ディレクトリ（`~/.cursor/product-design/`）前提 |
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
 | `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
+| `agent-review` | `security-review` サブエージェント前提。`/agent-review` で明示起動 |

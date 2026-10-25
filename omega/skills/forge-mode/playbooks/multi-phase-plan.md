@@ -149,7 +149,7 @@ Each live lane runs on its own cloud VM at the PR head. Drive through `control-u
 
 ## Appendix D. Links and reading list
 
-<Docs to read before editing. Which PRs get `.cursor/skills/how/SKILL.md` and `.cursor/skills/review-orchestrator-triple-hybrid`. The trail per `.cursor/skills/decision-log/SKILL.md`.>
+<Docs to read before editing. Which PRs get `.cursor/skills/how/SKILL.md` and `.cursor/skills/agent-review/SKILL.md`. The trail per `.cursor/skills/decision-log/SKILL.md`.>
 ````
 
 **Reply:** plan path、PR id と dependency と review-gated set、prototype が証明したものと unproven のままのもの、check script の output。

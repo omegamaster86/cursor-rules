@@ -13,7 +13,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | 状況 | 使うもの |
 |------|----------|
 | TypeScript / フロント実装 | `web-coding-standards` + `principles/type-system-discipline.md` |
-| 争点のある設計レビュー | `/.cursor/commands/review-orchestrator-triple-hybrid.md` |
+| 争点のある設計レビュー | `/.cursor/skills/agent-review/SKILL.md`（`/agent-review`） |
 | UI / IDE / CLI の検証 | 対象 PJ に `verify-*` があればそれを Drive。無ければ `/create-verification-skill`。完了ゲートは `/verify-done`（ブラウザ MCP または手動可） |
 | 状態フルなロジック・分岐の増殖 | `principles/model-the-domain.md` |
 | verify スキルの feature map が古い | `/.cursor/commands/maintain-verification-skill.md` |
@@ -92,7 +92,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - テストを書く・直す・残す → **test-behavior-not-implementation**（`tdd` と併用）。
 - 関数境界を越えるコード → **architect** スキル、実装前に並列設計探索。
 - 並列 fan-out（カバレッジ分割・レース・探索）→ **swarm** スキル。設計 bakeoff → **multi-agent-candidates** / architect。
-- 争点のある設計 → 出荷前に **`review-orchestrator-triple-hybrid` コマンド**（3モデル並列レビュー）。
+- 争点のある設計 → 出荷前に **`/agent-review`**（担当分け並列レビュー）。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
 - SKILL.md を作成または編集 → **create-skill** スキル（SKILL.md 作成用の Cursor 組み込み）。
 - UI / IDE / CLI を出荷 → 対象 PJ の `verify-*` があればその Drive。無ければブラウザ MCP または手動 verify。PJ に証明レシピが無いなら `/create-verification-skill`。バグ修正では同じ表面で先に自分で再現。

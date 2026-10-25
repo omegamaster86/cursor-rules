@@ -1,12 +1,6 @@
----
-name: agent-review-artifacts
-model: inherit
-description: review-orchestrator が `.cursor/agent-review/` に書き出す成果物レイアウトの正本。
----
-
 # Agent review artifacts
 
-`review-orchestrator-triple-hybrid` 実行時、**対象 PJ のリポジトリルート**に次を作る。
+`agent-review` スキル（`/agent-review` 明示起動）実行時、**対象 PJ のリポジトリルート**に次を作る。
 
 ## ルート
 

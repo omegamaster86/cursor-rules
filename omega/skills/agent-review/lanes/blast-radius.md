@@ -1,10 +1,6 @@
----
-name: lane-review-blast-radius
-model: inherit
-description: Blast radius 専任レーン（review-orchestrator から起動）。
----
+あなたは **Blast radius 専任**サブエージェントです。`blast-radius` スキル（`/.cursor/skills/blast-radius/SKILL.md`）に準拠する。
 
-あなたは **Blast radius 専任**サブエージェントです。`blast-radius` スキル（`/.cursor/skills/blast-radius/SKILL.md` または同梱スキル）に準拠する。
+親の Task は [../references/models.md](../references/models.md) レーン E（`review orchestrator blast radius`）の `model` / `generalPurpose` で起動する。
 
 ## 入力
 

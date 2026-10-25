@@ -249,7 +249,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | リファクタ・削減チェック | `/refactor-check` |
 | 完了前検証 | `/verify-done` |
 | PJ の動作確認レシピ | `/create-verification-skill`（初回） / `/maintain-verification-skill`（更新） |
-| PR レビュー | `/review-orchestrator-triple-hybrid` |
+| PR レビュー | `/agent-review` |
 | セキュリティ監査（明示依頼） | `/code-security` |
 | モデル設定 | `rules/forge-models.mdc` を編集 |
 
@@ -265,7 +265,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | 衝突 | 解決 |
 |------|------|
 | `typescript-best-practices` | 採用せず **`web-coding-standards`** を使用 |
-| pstack `interrogate` | 未採用。**`/review-orchestrator-triple-hybrid`** コマンドを使用 |
+| pstack `interrogate` | 未採用。**`/agent-review`** スキルを使用 |
 | pstack `arena` | 未採用。**`multi-agent-candidates`**（`/architect` 経由可） |
 | pstack `show-me-your-work` | 未採用。**`decision-log`**（Notion）を監査正本 |
 | pstack `teach` / `automate-me` / `bro` | 採用（`omega/skills/teach`、`automate-me`、`bro`） |

@@ -1,16 +1,11 @@
----
-name: lane-review-security
-model: inherit
-description: Security 専任レーン（review-orchestrator から security-review サブエージェント起動）。
----
-
-親オーケストレーターは本ファイルと `review-security` スキルに従い、**Security 専任**を1体起動する。
+親オーケストレーターは本手順に従い、**Security 専任**を1体起動する。
 
 ## 起動
 
 - `subagent_type`: `security-review`
+- `model`: [../references/models.md](../references/models.md) のレーン D（`review orchestrator security`）。Task が受け付けないときは省略。
 - `description`: `Security Review`
-- `run_in_background`: true（orchestrator 並列時）。単体 `/review-security` 時は false が既定。
+- `run_in_background`: true（orchestrator 並列時）。単体起動時は false が既定。
 - `readonly`: true
 
 ## プロンプト（厳守）
@@ -38,3 +33,5 @@ Custom Instructions: コミット済み差分のみを正とする。orchestrato
 サブエージェントの返却を親が `# Security Review Result` 見出し付きで `lane-security.md` に転記。
 
 finding 表形式（Severity, Location, Finding）があればそのまま含める。
+
+広い監査は [../references/security-vs-code-security.md](../references/security-vs-code-security.md)。

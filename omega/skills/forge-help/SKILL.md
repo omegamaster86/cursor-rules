@@ -67,7 +67,7 @@ disable-model-invocation: true
 | 関数境界を越える設計 | [`/architect`](../architect/SKILL.md) |
 | 並列設計案の比較 | [`/multi-agent-candidates`](../multi-agent-candidates/SKILL.md) |
 | 並列検証・レース | [`/swarm`](../swarm/SKILL.md) |
-| 争点のある diff のレビュー | **`/review-orchestrator-triple-hybrid`**（commands） |
+| 争点のある diff のレビュー | **`/agent-review`**（skill） |
 | ローカルテスト先行のバグ修正 | [`/tdd`](../tdd/SKILL.md) |
 | TS/React/Supabase の書き方 | [`/web-coding-standards`](../web-coding-standards/SKILL.md) |
 | 動作証明レシピの生成 | [`/create-verification-skill`](../create-verification-skill/SKILL.md) |

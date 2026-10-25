@@ -65,6 +65,8 @@ architect runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
 review orchestrator grok: cursor-grok-4.6-medium
 review orchestrator sonnet correctness: claude-sonnet-5-thinking-medium
 review orchestrator sonnet quality: claude-sonnet-5-thinking-medium
+review orchestrator security: claude-sonnet-5-thinking-medium
+review orchestrator blast radius: claude-sonnet-5-thinking-medium
 code security workers: grok-4.7-medium
 code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-argon-medium
 ```
