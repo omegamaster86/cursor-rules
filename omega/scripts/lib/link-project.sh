@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
+# Internal: symlink omega into a project (.cursor). Used by omega-sync / omega-sync-all.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-OMEGA="${OMEGA:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+OMEGA="${OMEGA:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 
 usage() {
-  echo "usage: omega-link /path/to/project" >&2
-  echo "       OMEGA=/path/to/omega omega-link /path/to/project" >&2
+  echo "usage: link-project.sh /path/to/project" >&2
+  echo "       OMEGA=/path/to/omega link-project.sh /path/to/project" >&2
 }
 
 if [[ $# -lt 1 ]]; then

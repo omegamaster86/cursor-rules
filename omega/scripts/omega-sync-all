@@ -2,7 +2,16 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+OMEGA="${OMEGA:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+REPO_ROOT="${CURSOR_RULES:-$(cd "$OMEGA/.." && pwd)}"
 PROJECTS_FILE="${PROJECTS_FILE:-$SCRIPT_DIR/projects.txt}"
+
+if [[ -d "$REPO_ROOT/.git" ]]; then
+  echo "pulling cursor-rules at $REPO_ROOT ..."
+  git -C "$REPO_ROOT" fetch origin main
+  git -C "$REPO_ROOT" pull --ff-only origin main
+  echo "cursor-rules @ $(git -C "$REPO_ROOT" rev-parse --short HEAD)"
+fi
 
 if [[ ! -f "$PROJECTS_FILE" ]]; then
   echo "projects file not found: $PROJECTS_FILE" >&2
@@ -13,5 +22,5 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   line="${line%%#*}"
   line="$(echo "$line" | xargs)"
   [[ -z "$line" ]] && continue
-  "$SCRIPT_DIR/omega-link" "$line"
+  "$SCRIPT_DIR/lib/link-project.sh" "$line"
 done < "$PROJECTS_FILE"

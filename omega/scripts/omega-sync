@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+OMEGA="${OMEGA:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+REPO_ROOT="${CURSOR_RULES:-$(cd "$OMEGA/.." && pwd)}"
+
+usage() {
+  echo "usage: omega-sync [/path/to/project]" >&2
+  echo "       CURSOR_RULES=/path/to/cursor-rules omega-sync ." >&2
+}
+
+if [[ $# -gt 1 ]]; then
+  usage
+  exit 1
+fi
+
+PJ="$(cd "${1:-.}" && pwd)"
+
+if [[ ! -d "$OMEGA/commands" || ! -d "$OMEGA/skills" || ! -d "$OMEGA/rules" ]]; then
+  echo "omega not found: $OMEGA" >&2
+  exit 1
+fi
+
+if [[ -d "$REPO_ROOT/.git" ]]; then
+  echo "pulling cursor-rules at $REPO_ROOT ..."
+  git -C "$REPO_ROOT" fetch origin main
+  git -C "$REPO_ROOT" pull --ff-only origin main
+  echo "cursor-rules @ $(git -C "$REPO_ROOT" rev-parse --short HEAD)"
+else
+  echo "skip pull (not a git repo): $REPO_ROOT" >&2
+fi
+
+"$SCRIPT_DIR/lib/link-project.sh" "$PJ"
