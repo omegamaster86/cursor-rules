@@ -31,7 +31,7 @@ disable-model-invocation: true
 
 ## セットアップ
 
-1. [omega ガイド](../../docs/guide/01-setup.md) に従い `omega-link`（Desktop）または Cloud テンプレを置く。
+1. [omega ガイド](../../docs/guide/01-setup.md) に従い `omega-sync`（Desktop）または Cloud テンプレを置く。
 2. [`/setup-forge`](../setup-forge/SKILL.md) で reasoning budget とロール別モデルを `forge-models.mdc` に書く。新チャットから効く。
 3. 方向が空なら先に [`/plan-interview`](../plan-interview/SKILL.md)。Ship なら `/forge-mode` と完了条件。
 

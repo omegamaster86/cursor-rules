@@ -161,7 +161,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 
 ## Cursor 専用（Codex CLI 非対象）
 
-`omega-link` / Cloud の `install-omega-cloud.sh` は `.cursor/skills` にだけリンクする。次は **Codex CLI（`~/.codex/skills` 等）へ同期しない** 想定。
+`omega-sync` / Cloud の `install-omega-cloud.sh` は `.cursor/skills` にだけリンクする。次は **Codex CLI（`~/.codex/skills` 等）へ同期しない** 想定。
 
 | スキル | 理由 |
 |--------|------|

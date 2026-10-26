@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Setup forge
 
-`~/.cursor/rules/forge-models.mdc` を書き、forge-mode のロールごとのモデルを上書きする。PJ に omega を `omega-link` 済みなら、テンプレは `.cursor/rules/forge-models.mdc`（PJ コピー）を編集してもよい。
+`~/.cursor/rules/forge-models.mdc` を書き、forge-mode のロールごとのモデルを上書きする。PJ に omega を `omega-sync` 済みなら、テンプレは `.cursor/rules/forge-models.mdc`（PJ コピー）を編集してもよい。
 
 ## Steps
 

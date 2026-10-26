@@ -6,7 +6,7 @@ omega は **Align（何を・なぜ）** と **Ship（厳密な実装・検証�
 
 ## 読む順（初回）
 
-1. [セットアップ](./01-setup.md) — `omega-link`、Cloud、`/setup-forge`
+1. [セットアップ](./01-setup.md) — `omega-sync`、Cloud、`/setup-forge`
 2. [Align と Ship](./02-align-and-forge.md) — `/plan-interview` と `/forge-mode`、Intent gate
 3. [理解する](./03-understand.md) — `/how`、`/why`、`/recall`
 4. [設計する](./04-design.md) — `/architect`、`/multi-agent-candidates`、`/swarm`

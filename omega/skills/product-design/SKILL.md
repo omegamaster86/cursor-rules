@@ -5,7 +5,7 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 
 # Product Design（Cursor）
 
-アイデア・ライブ URL・スクリーンショットから、レビュー可能なプロトタイプまでを扱う。**Cursor のみ**（`omega-link` → `.cursor/skills/product-design`）。**Codex CLI / `~/.codex/skills` 非対象。**
+アイデア・ライブ URL・スクリーンショットから、レビュー可能なプロトタイプまでを扱う。**Cursor のみ**（`omega-sync` → `.cursor/skills/product-design`）。**Codex CLI / `~/.codex/skills` 非対象。**
 
 依頼はルーター [skills/index/SKILL.md](skills/index/SKILL.md) に従う。
 

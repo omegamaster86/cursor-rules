@@ -20,8 +20,8 @@ omega/
 │   ├── forge-models.mdc              # モデル設定テンプレート（Task runner の正）
 │   └── multi-agent-task-enforcement.mdc  # multi-agent の Task 3並列必須
 └── scripts/
-    ├── omega-link             # PJ へ symlink インストール（ローカル Desktop）
-    ├── omega-link-all         # projects.txt の全 PJ を一括リンク
+    ├── omega-sync             # cursor-rules を pull してから PJ に symlink
+    ├── omega-sync-all         # pull 後に projects.txt の全 PJ を一括リンク
     ├── omega-cloud-init       # Cloud 用テンプレを PJ にコピー
     ├── install-omega-cloud.sh # Cloud VM 上で omega を展開（core）
     └── projects.txt           # リンク対象 PJ の一覧
@@ -43,24 +43,24 @@ omega/
 ### Step 0: スクリプトに実行権限を付ける（初回のみ）
 
 ```bash
-chmod +x /path/to/cursor-rules/omega/scripts/omega-link
-chmod +x /path/to/cursor-rules/omega/scripts/omega-link-all
+chmod +x /path/to/cursor-rules/omega/scripts/omega-sync
+chmod +x /path/to/cursor-rules/omega/scripts/omega-sync-all
 chmod +x /path/to/cursor-rules/omega/scripts/omega-cloud-init
 ```
 
-### Step 1: ローカル Desktop 用 — `omega-link`
+### Step 1: ローカル Desktop 用 — `omega-sync`
 
 PJ ルートで symlink を張る。**commit 不要**（`.cursor/` が gitignore されていてもよい）。
 
 ```bash
-/path/to/cursor-rules/omega/scripts/omega-link /path/to/your-project
+/path/to/cursor-rules/omega/scripts/omega-sync /path/to/your-project
 ```
 
 PJ ルートから実行する場合:
 
 ```bash
 cd /path/to/your-project
-/path/to/cursor-rules/omega/scripts/omega-link .
+/path/to/cursor-rules/omega/scripts/omega-sync .
 ```
 
 **確認:** Cursor Desktop を開き、Customize または `/forge-mode` が使えること。
@@ -103,7 +103,7 @@ Build 完了後、VM 上に omega の commands / skills / rules / agents がリ�
 
 | ファイル | いつ | 内容 |
 |----------|------|------|
-| `.cursor/rules/forge-models.mdc` | モデル割当を PJ ごとに変えたい | `omega-link` または Cloud install でテンプレがコピーされる。編集して commit 可 |
+| `.cursor/rules/forge-models.mdc` | モデル割当を PJ ごとに変えたい | `omega-sync` または Cloud install でテンプレがコピーされる。編集して commit 可 |
 | `.cursor/skills/verify-<app>/` | 動作確認レシピがある | PJ 固有。omega には含めない。repo に直接置く |
 
 ### Step 6: 複数 PJ を一括セットアップ（任意）
@@ -118,7 +118,7 @@ Build 完了後、VM 上に omega の commands / skills / rules / agents がリ�
 ローカル symlink の一括:
 
 ```bash
-/path/to/cursor-rules/omega/scripts/omega-link-all
+/path/to/cursor-rules/omega/scripts/omega-sync-all
 ```
 
 Cloud テンプレは PJ ごとに `omega-cloud-init` を実行する（一括スクリプトは未提供）。
@@ -140,7 +140,7 @@ Cloud テンプレは PJ ごとに `omega-cloud-init` を実行する（一括�
 
 | 環境 | 操作 |
 |------|------|
-| ローカル Desktop | 不要（symlink のため即反映）。skill 追加時は `omega-link` を再実行 |
+| ローカル Desktop | 共有 path は symlink で即反映。skill 追加時や再リンクは `omega-sync` |
 | Cloud Agent | 各 PJ の commit **不要**。次回 Build で `OMEGA_REF`（デフォルト `main`）の最新を取得 |
 
 ### Cloud 用環境変数（任意）
@@ -162,21 +162,21 @@ Dashboard → Cloud Agents → Secrets に設定するか、`.cursor/environment
 ### 1. スクリプトに実行権限を付ける（初回のみ）
 
 ```bash
-chmod +x /path/to/cursor-rules/omega/scripts/omega-link
-chmod +x /path/to/cursor-rules/omega/scripts/omega-link-all
+chmod +x /path/to/cursor-rules/omega/scripts/omega-sync
+chmod +x /path/to/cursor-rules/omega/scripts/omega-sync-all
 chmod +x /path/to/cursor-rules/omega/scripts/omega-cloud-init
 ```
 
 ### 2. PJ へリンク
 
 ```bash
-/path/to/cursor-rules/omega/scripts/omega-link /path/to/your-project
+/path/to/cursor-rules/omega/scripts/omega-sync /path/to/your-project
 ```
 
 PJ ルートから実行する場合:
 
 ```bash
-/path/to/cursor-rules/omega/scripts/omega-link .
+/path/to/cursor-rules/omega/scripts/omega-sync .
 ```
 
 ### 3. 複数 PJ を一括リンク（任意）
@@ -184,7 +184,7 @@ PJ ルートから実行する場合:
 `scripts/projects.txt` に PJ パスを1行ずつ書いて:
 
 ```bash
-/path/to/cursor-rules/omega/scripts/omega-link-all
+/path/to/cursor-rules/omega/scripts/omega-sync-all
 ```
 
 ### リンク後の `.cursor/` の形
@@ -199,7 +199,7 @@ PJ ルートから実行する場合:
 | `.cursor/skills/verify-*/` | PJ 固有（リンクしない） |
 | omega に無いローカル skill | そのまま残る |
 
-omega に skill を追加したら、既存 PJ で `omega-link` を再実行してください。
+omega に skill を追加したら、既存 PJ で `omega-sync` を再実行してください。
 
 ## インストール（Cloud Agent）— 詳細
 
@@ -235,7 +235,7 @@ Dashboard または Agents Window から環境を再 Build する。
 
 ### 旧 cp 方式から移行する場合
 
-`.cursor/commands` や `.cursor/agents` が **実ディレクトリ**（旧コピー）のままだと symlink がネストする可能性があります。共有分を退避または削除してから `omega-link` を実行してください。`verify-*` と omega に無いローカル skill は残して問題ありません。
+`.cursor/commands` や `.cursor/agents` が **実ディレクトリ**（旧コピー）のままだと symlink がネストする可能性があります。共有分を退避または削除してから `omega-sync` を実行してください。`verify-*` と omega に無いローカル skill は残して問題ありません。
 
 ## 使い方
 

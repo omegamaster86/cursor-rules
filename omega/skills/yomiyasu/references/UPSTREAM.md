@@ -41,4 +41,4 @@ git add yomiyasu omega/skills/yomiyasu
 git commit -m "chore: bump yomiyasu upstream and sync omega excerpt"
 ```
 
-各 PJ では `omega-link` を再実行不要（skills ディレクトリは symlink 先の正本を指すため、正本更新後は再 link でよい）。
+共有 skill は symlink のため正本更新は即反映。新 skill 追加時や `.cursor` が実ディレクトリのままのときは `omega-sync` を再実行。

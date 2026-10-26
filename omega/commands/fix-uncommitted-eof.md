@@ -23,4 +23,4 @@ bash .cursor/scripts/fix-uncommitted-eof.sh
 ## 注意
 
 - `.cursor/` は gitignore のためチーム clone には載らない（ローカル運用）。
-- `omega-link` 再実行で `.cursor/commands` が symlink に戻ったら、本コマンドを再配置する。
+- `omega-sync` 再実行で `.cursor/commands` が symlink に戻ったら、本コマンドを再配置する。

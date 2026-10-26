@@ -83,11 +83,8 @@ git commit -m "chore: pin yomiyasu at <sha>"
 
 ### omega 経由でスキルを使う
 
-`omega/scripts/omega-link` は `omega/skills/yomiyasu/` を PJ の `.cursor/skills/yomiyasu` にリンクする。正本を更新したあと、各 PJ で `omega-link` を再実行。
+`omega-sync` は `omega/skills/yomiyasu/` を PJ の `.cursor/skills/yomiyasu` にリンクする。正本を更新したあと、各 PJ で `omega-sync` を再実行。
 
 **運用:** yomiyasu は **明示依頼時** の推敲用（Cursor のみの抜粋版）。forge-mode 常時適用や他の日本語校正スキルとの同時有効化は避ける。
 
-`product-design` は **Cursor 専用**（`omega/skills/product-design/`）。Codex CLI のスキルパスには載せない。`omega-link` で各 PJ の `.cursor/skills/product-design` にリンクされる。
-
-
-
+`product-design` は **Cursor 専用**（`omega/skills/product-design/`）。Codex CLI のスキルパスには載せない。`omega-sync` で各 PJ の `.cursor/skills/product-design` にリンクされる。

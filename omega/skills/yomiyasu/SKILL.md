@@ -44,7 +44,7 @@ Claude Code プラグイン・`npx skills`・`openskills`・`.claude-plugin/` �
 Markdown を保存する推敲では、スキル同梱リンターを実行できる。
 
 ```bash
-# omega-link 後（PJ ルートから）
+# omega-sync 後（PJ ルートから）
 python3 .cursor/skills/yomiyasu/scripts/yomiyasu_lint.py path/to/file.md
 
 # cursor-rules 正本で直接
