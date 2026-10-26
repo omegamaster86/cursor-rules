@@ -114,6 +114,18 @@ def main() -> None:
                 continue
             copy_ported(path, ex_dst / rel)
 
+    # statechart tooling (SKILL.md is Japanese; hand-maintained)
+    sc_src = PSTACK / "statechart"
+    sc_dst = OMEGA / "statechart"
+    if sc_src.is_dir():
+        for path in sc_src.rglob("*"):
+            if path.is_dir():
+                continue
+            rel = path.relative_to(sc_src)
+            if rel.name == "SKILL.md":
+                continue
+            copy_ported(path, sc_dst / rel)
+
     print("Port complete.")
 
 

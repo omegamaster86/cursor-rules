@@ -2,7 +2,7 @@
 
 型チェッカーは証明アシスタントである。コンパイル時に不可能な状態、不一致のプリミティブ、未処理のバリアントを排除するために使う。ランタイムデータとして通したものは、コンパイラが止められたランタイム障害になる。
 
-あらゆる型付き言語に適用する。TypeScript では **`web-coding-standards`** スキルの `rules/ts-*.md` が構文に具体化する（`typescript-best-practices` は genai-pstack では使用しない）。
+あらゆる型付き言語に適用する。TypeScript のコード例は **`typescript-patterns`**（`references/patterns.md`）。genai の **`web-coding-standards`** と併用。
 
 **パターン:**
 

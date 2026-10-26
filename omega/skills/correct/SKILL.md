@@ -18,7 +18,7 @@ contributor はすべて、開いたファイルだけ見て、最寄りの例�
 
 1. **architecture で消す。** 状態に 1 owner、タスクに 1 つの supported なやり方。internals を隠し、誤 import を失敗させる。手同期リストを単一の source of truth に。エージェントがコピーする旧経路と dead code を削除。
 2. **型で bad state を書けなくする。** まだコンパイルするなら、lint または CI で「代わりに使う file / type / function」を error に書く。パターンが既に広いなら、増やした変更だけ fail。
-3. **振る舞いをテストする。** import 先がすべて undefined でも通るテストは直すか削除。
+3. **振る舞いをテストする。** チェックする振る舞いが壊れても pass し、内部だけ変えたら fail するテストは直すか削除。import 先がすべて undefined でも通るテストも同様。
 4. **ドキュメントと agent 規則は最後。** 判断が要るものだけ。スキップしても fail しないもの。
 
 ## 直して証明する
