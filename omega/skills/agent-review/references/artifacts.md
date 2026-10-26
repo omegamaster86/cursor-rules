@@ -8,8 +8,9 @@
 .cursor/agent-review/<run_id>/
 ```
 
-- `<run_id>`: `YYYYMMDDTHHMMSSZ-<short_head>`（UTC。例: `20261024T142530Z-a1b2c3d`）
-- 同一 run で上書きしない。新規 run は新しい `<run_id>` ディレクトリ。
+- `<run_id>`: `yyyy-mm-dd-<branch>`（ローカル日付 + 現在ブランチ名。例: `2026-10-26-feature-auth`）
+- ブランチ名の `/` は `-` に置換（`feature/foo` → `feature-foo`）。取得できないときは `no-branch`。
+- 同名ディレクトリが既にあるときは末尾に `-2`, `-3`, … を付けて上書きしない。
 
 ## ファイル一覧
 
@@ -39,3 +40,4 @@ Router 判定・構造調査・入力メタデータは **成果物ファイル�
 ## チャット出力
 
 統合後、チャットには `consolidated.md` の **要約**（Merge Recommendation + Must Fix + 各レーン1行）を出し、`artifact_dir` パスを示す。
+

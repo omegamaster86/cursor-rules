@@ -41,9 +41,10 @@
 
 [artifacts.md](artifacts.md) に従う。
 
-1. `run_id` = `date -u +%Y%m%dT%H%M%SZ`-`git rev-parse --short HEAD`
-2. `artifact_dir` = `<PJルート>/.cursor/agent-review/<run_id>/`
-3. ディレクトリを作成する（[artifacts.md](artifacts.md) のファイル以外は書かない）。
+1. `branch` = `git branch --show-current`（空なら `no-branch`）。`/`, `\` を `-` に置換。
+2. `run_id` = `date +%Y-%m-%d`-`branch`（例: `2026-10-26-feature-auth`）。
+3. `artifact_dir` = `<PJルート>/.cursor/agent-review/<run_id>/` が既に存在する場合、`run_id` を `-2`, `-3`, … 付きに変えて空き名にする。
+4. ディレクトリを作成する（[artifacts.md](artifacts.md) のファイル以外は書かない）。
 
 ---
 
@@ -130,3 +131,4 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 ## 3 統合判定（親）
 
 [consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。
+
