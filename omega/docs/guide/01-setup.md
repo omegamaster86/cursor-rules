@@ -5,11 +5,15 @@
 ## ローカル Desktop
 
 ```bash
-chmod +x /path/to/cursor-rules/omega/scripts/omega-link
-/path/to/cursor-rules/omega/scripts/omega-link /path/to/your-project
+chmod +x /path/to/cursor-rules/omega/scripts/omega-sync
+/path/to/cursor-rules/omega/scripts/omega-sync /path/to/your-project
 ```
 
+（`cursor-rules` を pull してから `.cursor` に symlink を張る。初回セットアップも更新も同じコマンド。）
+
 Cursor で `/forge-mode` と `/plan-interview` が選べれば OK。
+
+Cursor では `/sync-omega`（[commands/sync-omega.md](../../commands/sync-omega.md)）でも同じことを依頼できる。
 
 ## Cloud Agent
 
