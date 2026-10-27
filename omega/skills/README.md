@@ -58,6 +58,11 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 | `domain-modeling` | `GLOSSARY.md` / ADR でドメインモデルを能動的に磨く |
 | `recall` | チャット履歴からコンテキスト再構築 |
 | `ketchup` | このチャットでユーザー最後のメッセージ以降を平易にキャッチアップ（画像・図・action item ごとに判断材料） |
+| `ketchup-video` | `/ketchup` と同内容を短い無音スライド動画で示す（判断は動画下のテキスト） |
+| `statechart` | TLA+ と Mermaid で状態遷移・バグ経路を可視化（`/statechart`） |
+| `create-formal-verification-skill` | 形式的検証用 project-local スキル生成（TLA+ 等） |
+| `maintain-formal-verification-skill` | コード変更後に形式的検証をコードと再同期 |
+| `typescript-patterns` | TS 型パターン参照（`web-coding-standards` / 原則と併用） |
 | `sharpen` | 着手前に専門家視点・本当のゴール・指示の過不足を研ぐ（手動専用） |
 | `in-your-own-words` | ユーザーのゴールと問題を自分の言葉で言い直す（Align 補助・手動専用） |
 | `teach` | 学習ワークスペース（lessons）または変更・サブシステムの説明（`how` + `why`） |
