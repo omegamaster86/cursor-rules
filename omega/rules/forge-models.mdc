@@ -32,10 +32,10 @@ reflect judgment, divergent, synthesizer: claude-opus-5-5-high
 multi-agent-candidates runners: claude-opus-5-5-high, claude-opus-5-5-high, grok-4.7-medium
 architect runners: claude-opus-5-5-high, grok-4.7-medium
 review orchestrator grok: grok-4.7-medium
-review orchestrator sonnet correctness: claude-sonnet-5-5-high
-review orchestrator sonnet quality: claude-sonnet-5-5-high
-review orchestrator security: claude-sonnet-5-5-high
-review orchestrator blast radius: claude-sonnet-5-5-high
+review orchestrator sonnet correctness: claude-opus-5-5-high
+review orchestrator sonnet quality: claude-opus-5-5-high
+review orchestrator security: claude-opus-5-5-high
+review orchestrator blast radius: claude-opus-5-5-high
 swarm workers: grok-4.7-medium
 code security workers: grok-4.7-medium
 code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-argon-medium
