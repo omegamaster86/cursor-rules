@@ -2,7 +2,7 @@
 
 親は **Task を 1 体も起動する前**に、必ず本手順で `model` と `subagent_type` を決める。正本は **スクリプト出力の JSON のみ**（`forge-models.mdc` をスクリプトが読む）。注入ルール・記憶・手動の Default 指定は禁止。
 
-一般ルールは [task-model-resolution.md](../../forge-mode/references/task-model-resolution.md) と同じ: **ロール行が無い・`inherit`・許可リスト外 slug → Task の `model` 省略（親チャットモデル）**。
+一般ルールは [task-model-resolution.md](../../forge-mode/references/task-model-resolution.md) と同じ: **ロール行が無い・`inherit`・許可リスト外 slug → Task の `model` 省略（親チャットモデル）**。許可リストは `forge-models.mdc` の「## Task `model` で使える model」節だけをスクリプトが読む（ハードコード fallback なし。節が空なら全レーン `omit_task_model: true`）。
 
 ## 1. スクリプト実行（正本）
 

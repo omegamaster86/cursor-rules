@@ -25,7 +25,7 @@ in scope vs 明示的 out、技術またはプラットフォーム制約、pres
 コードベース探索を delegate（[`guard-the-context-window`](../principles/guard-the-context-window.md)）。
 
 - `subagent_type: "forge-agent"` を優先。`generalPurpose` は fallback。組み込み `plan` subagent_type は使わない。
-- 設定ロールに従い `model:` を明示（デフォルト code は `composer-2.5-fast`、judgment は `claude-opus-4-8-thinking-xhigh`）。
+- `model` は spawn 前に [task-model-resolution.md](task-model-resolution.md) と `.cursor/rules/forge-models.mdc` で解決する。コード探索 delegate は **`feature, refactoring`** ロール行（行が無い・`inherit`・許可リスト外は Task の `model` 省略＝親チャット）。アーキテクチャ判断が要る探索だけ **`judgment and prose`** または **`hardest tasks`**。
 
 各 explorer は file pointer、convention、dependency、test インフラ、entry point を返す。インラインダンプなし。
 
