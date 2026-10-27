@@ -6,6 +6,8 @@
 
 - Run ID:
 - Directory: `.cursor/agent-review/<run_id>/`
+- Correctness（A × B）: `lane-correctness-ab.md`
+- Correctness raw（A/B）: `lane-correctness.md`
 
 ## Inputs
 
@@ -24,13 +26,13 @@
 
 ## Subagent Outputs
 
-### Codex（Correctness）
+### Correctness（Lane A）
 
-- Status / 要約 / Overall Risk → 全文 `lane-correctness-codex.md`
+- Status / 要約 / Overall Risk → 全文 `lane-correctness.md` の `## Lane A`
 
-### Sonnet（Correctness）
+### Correctness（Lane B）
 
-- Status / 要約 / Overall Risk → 全文 `lane-correctness-sonnet.md`
+- Status / 要約 / Overall Risk → 全文 `lane-correctness.md` の `## Lane B`
 
 ### Sonnet（Quality）
 
@@ -45,6 +47,8 @@
 - Status / one fact proven|unproven → 全文 `lane-blast-radius.md`（Skipped 可）
 
 ## Correctness Lane（A × B 統合）
+
+（要約のみ。Integrated Findings・信頼度・正しさ Must Fix の正本 → **`lane-correctness-ab.md`**）
 
 ## Quality Lane（C）
 
@@ -71,4 +75,7 @@
 ## Reviewed Files
 
 ## No-Issue Statement
+
+
+
 

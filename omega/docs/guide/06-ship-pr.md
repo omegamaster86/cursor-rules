@@ -22,6 +22,7 @@
 
 ## レビュー
 
-出荷前の争点: `/agent-review`（ブランチ差分、担当分けレーン。統合結果は `.cursor/agent-review/<run_id>/consolidated.md`）。
+出荷前の争点: `/agent-review`（ブランチ差分、担当分けレーン。正しさ統合は `.cursor/agent-review/<run_id>/lane-correctness-ab.md`、全体は `consolidated.md`）。
 
 次: [離席・夜間](./07-overnight.md)
+

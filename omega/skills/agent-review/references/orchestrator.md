@@ -34,6 +34,7 @@
 - フェーズ1.9: モデル解決 — [resolve-lane-models.md](resolve-lane-models.md)（**Task 起動の直前・必須**）
 - フェーズ1: サブエージェント並列（A/B/C/D、+ E 条件付き）
 - フェーズ1.5: 起動した全レーン完了待ち
+- フェーズ2.6: Correctness A×B 統合（A/B 完了直後）— [lane-correctness-ab-format.md](lane-correctness-ab-format.md) → `lane-correctness-ab.md`
 - フェーズ2: 統合 — [consolidation.md](consolidation.md)、[consolidated-output-format.md](consolidated-output-format.md)
 
 ---
@@ -134,13 +135,32 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 
 各レーン完了時、親は直ちに `artifact_dir` の対応 `lane-*.md` に **全文転記**。
 
+- **A / B**: [artifacts.md](artifacts.md) の `lane-correctness.md` に、該当 `## Lane A` または `## Lane B` セクションへ転記（モデル名はフェーズ1.9 JSON の `lanes.A.model` / `lanes.B.model`）。
+- **C / D / E**: 従来どおり `lane-quality.md` / `lane-security.md` / `lane-blast-radius.md`。
+
 失敗時は `consolidated.md` の該当レーン要約に `Status: Failed` と parent fallback を記載する。
+
+**A と B が両方終了**（Complete または Failed）したら、C/D/E を待たず **フェーズ2.6** を実行する。
+
+---
+
+## 2.6 Correctness A×B 統合（親・必須）
+
+A と B の完了待ちが終わった直後（C/D/E の完了を待たない）、[lane-correctness-ab-format.md](lane-correctness-ab-format.md) に従い **`lane-correctness-ab.md` を書く**。
+
+- 入力: `lane-correctness.md` の両セクション + [consolidation.md](consolidation.md) の Correctness ルール
+- C/D/E がまだ走っている間も、正しさ統合ファイルは **先に完成**させてよい
 
 ---
 
 ## 3 統合判定（親）
 
-[consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。
+[consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。`lane-correctness-ab.md` は既に存在すること。
+
+
+
+
+
 
 
 

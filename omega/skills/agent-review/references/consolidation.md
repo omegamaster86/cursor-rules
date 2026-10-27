@@ -5,6 +5,8 @@
 - Both `CRITICAL` → Must Fix（高信頼）
 - 片側のみ → Must Fix 候補 + 要追加検証
 
+統合の **全文正本**は `artifact_dir/lane-correctness-ab.md`（[lane-correctness-ab-format.md](lane-correctness-ab-format.md)）。親はフェーズ2.6で必ず作成する。`consolidated.md` の `## Correctness Lane（A × B 統合）` は要約 + 同ファイルへの参照のみ（長文の再掲禁止）。
+
 ## Quality（C）
 
 - `QUALITY-BLOCKER` → Quality Conditions
@@ -41,3 +43,5 @@
 6. Must Fix の正本は **`consolidated.md` の1セクション**のみ。
 
 チャットには **Merge Recommendation**、**Must Fix**、**artifact_dir パス** を必ず出す。
+
+

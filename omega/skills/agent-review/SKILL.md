@@ -21,6 +21,7 @@ disable-model-invocation: true
 | 0.3 Router | [dimension-router.md](references/dimension-router.md) |
 | 0.5 構造 | [structural-audit.md](references/structural-audit.md) |
 | 1.9 モデル | [resolve-lane-models.md](references/resolve-lane-models.md) + `scripts/resolve-lane-models.mjs` — **Task 起動前必須** |
+| 2.6 正しさ A×B | [lane-correctness-ab-format.md](references/lane-correctness-ab-format.md) |
 | 2 統合 | [consolidation.md](references/consolidation.md)、[consolidated-output-format.md](references/consolidated-output-format.md) |
 
 ## サブエージェント（レーン）
