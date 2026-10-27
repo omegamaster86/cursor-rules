@@ -1,14 +1,22 @@
 ---
-description: forge-mode ロールごとのモデル選択（スキルデフォルトの上書き）
+description: forge-mode ロールごとのモデル選択（Task spawn の唯一の正本）
 alwaysApply: true
 ---
 # forge-mode model configuration
-# 1行1ロール。行を削除するとスキル内デフォルトにフォールバック。
+
+`.cursor/rules/forge-models.mdc` が **Task `model` の唯一の正本**。手順は `skills/forge-mode/references/task-model-resolution.md`（agent-review は `skills/agent-review/scripts/resolve-lane-models.mjs`）。
+
+- **1行1ロール**（または `feature, refactoring:` のように複数ロールを1行）。値は Task に渡す slug、または `inherit`（親チャットモデル＝Task の `model` 省略）。
+- **ロール行が無い** → その spawn では `model` を省略（チャット欄のモデルを継承）。
+- モデル変更は `/setup-forge` または本ファイルの手編集。
+
 # budget: large (xhigh) — /setup-forge で変更
 
 ## Task `model` で使える model
 
-- `inherit`（親モデル継承 — runner には使わない）
+`/setup-forge` はこのリストと照合する。ロール未設定時のフォールバックではない。
+
+- `inherit`（行の値としてのみ。Task では `model` 省略）
 - `claude-opus-5-5-medium`
 - `claude-sonnet-5-5-high`
 - `composer-2.5`
@@ -40,5 +48,4 @@ swarm workers: grok-4.7-medium
 code security workers: grok-4.7-medium
 code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-argon-medium
 
-# 並列設計 bakeoff: multi-agent-candidates / architect runners。カバレッジ・レース: swarm スキル。code-security: references/task-models.md。agent-review レーン: resolve-lane-models.mjs（上記 review orchestrator * 行）。
-# モデル変更は /setup-forge スキルまたは本ファイルの手編集。
+# 並列設計: multi-agent-candidates / architect runners。カバレッジ・レース: swarm workers。code-security: skills/code-security/references/task-models.md。agent-review: resolve-lane-models.mjs（上記 review orchestrator * 行）。

@@ -3,7 +3,7 @@
 ## 起動
 
 - `subagent_type`: `security-review`
-- `model`: フェーズ 1.9 の `resolve-lane-models.mjs` 出力 `lanes.D.model`（`forge-models.mdc` の `review orchestrator security` 行）。必ず渡す。Task が拒否したときだけ省略し、その旨を記録する。
+- `model`: フェーズ 1.9 の `resolve-lane-models.mjs` 出力 `lanes.D`（`omit_task_model: false` なら `model` を渡す。`true` なら省略＝親チャットモデル）。`security-review` が slug を拒否したときだけ省略し、その旨を記録する。
 - `description`: `Security Review`
 - `run_in_background`: true（orchestrator 並列時）。単体起動時は false が既定。
 - `readonly`: true

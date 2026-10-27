@@ -45,15 +45,13 @@ disable-model-invocation: true
 2. 各候補が産出する成果物を述べる。
 3. ルーブリックを導く。*この*タスクの成功の姿を述べ、3〜6 の具体的に採点可能な基準にする。具体: `--dry-run` フラグを追加し書き込みをスキップ。曖昧: `code is correct`。ルーブリックはフェーズ D の picker の道具。候補はタスクだけ見る。
 4. **runner を選ぶ（必須手順）**
-   - まず `.cursor/rules/forge-models.mdc` を読む。
-   - `multi-agent-candidates runners:` 行（architect 経由なら `architect runners:` 行）の slug を **順序どおり** 使う。デフォルト 3 件。
-   - 各 slug を **そのまま** Task の `model` に渡す。別名・推測・`inherit` 禁止。
-   - **`compare-models`:** 3 モデル並列（forge-models の runner 行どおり）。
-   - **`explore-shapes`:** **同一 slug を 3 回**（runner 行の先頭 1 件を推奨）。モデル差ではなく立場差で比較する。
-   - 行が無いときだけスキル内フォールバック: `claude-opus-5-5-medium`, `claude-sonnet-5-5-high`, `grok-4.7-medium`（いずれも `forge-models.mdc` の Task 有効 slug）。
-5. **出力パスを割り当てる**（`candidate-*` サブフォルダは使わない）。ベースは `.cursor/multi-agent-candidates/<task-slug>/`。各 runner は **1 ファイル** を書く。ファイル名は Task の `model` slug と一致させ、どのモデルが判断したか一目で分かるようにする（`/tmp/` はサンドボックスで読めないことがある）。
-   - **`compare-models`:** `<model-slug>.md`（例: `claude-sonnet-5-thinking-medium.md`, `gpt-5.6-sol-medium.md`, `cursor-grok-4.5-medium.md`）
-   - **`explore-shapes`:** 同一モデルを 3 回使うため `<model-slug>.<shape-slug>.md`（例: `claude-sonnet-5-thinking-medium.flat-rows.md`）。`<shape-slug>` は Assigned shape を kebab-case にした短い識別子。
+   - [task-model-resolution.md](../forge-mode/references/task-model-resolution.md) に従い `forge-models.mdc` の `multi-agent-candidates runners:` 行（architect 経由なら `architect runners:`）を解決する。
+   - 3 Task 並列。各 Task に slug を割り当てる。行が無い・`inherit`・slug 不足・許可リスト外 slug の spawn は Task の `model` を省略（親チャットモデル）。
+   - **`compare-models`:** runner 行の slug を順に使う（省略した arm は親チャットモデル）。
+   - **`explore-shapes`:** **同一解決結果の slug を 3 回**（先頭 slug。省略なら 3 回とも親チャットモデル）。モデル差ではなく立場差で比較する。
+5. **出力パスを割り当てる**（`candidate-*` サブフォルダは使わない）。ベースは `.cursor/multi-agent-candidates/<task-slug>/`。各 runner は **1 ファイル** を書く。ファイル名は使った `model` slug、省略時は `inherit.md`（`/tmp/` はサンドボックスで読めないことがある）。
+   - **`compare-models`:** `<model-slug>.md` または `inherit.md`
+   - **`explore-shapes`:** `<model-slug>.<shape-slug>.md` または `inherit.<shape-slug>.md`。`<shape-slug>` は Assigned shape を kebab-case にした短い識別子。
    - **親の統合成果物:** 同ディレクトリの **`synthesis.md`（収集ターン必須）** — 詳細テンプレ [`references/synthesis-template.md`](references/synthesis-template.md)
 
 ### プロンプト契約（モード別）
@@ -158,11 +156,11 @@ Runners 表・Dropout・ベース/グラフト/却下は **`synthesis.md` の §
 
 **`compare-models` の表:**
 
-| Model slug | Output file | Status | 主な差分（収集後に記入） |
+| Model slug（省略時は `inherit`） | Output file | Status | 主な差分（収集後に記入） |
 |------------|-------------|--------|--------------------------|
-| `claude-sonnet-5-thinking-medium` | `.cursor/multi-agent-candidates/<task-slug>/claude-sonnet-5-thinking-medium.md` | pending / in_progress / completed / failed / timeout | |
-| `gpt-5.6-sol-medium` | `…/gpt-5.6-sol-medium.md` | … | |
-| `cursor-grok-4.5-medium` | `…/cursor-grok-4.5-medium.md` | … | |
+| *forge-models runner 行の 1 件目* | `.cursor/multi-agent-candidates/<task-slug>/<slug>.md` または `inherit.md` | pending / in_progress / completed / failed / timeout | |
+| *2 件目* | `…` | … | |
+| *3 件目* | `…` | … | |
 
 **`explore-shapes` の表:**
 

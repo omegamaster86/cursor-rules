@@ -16,7 +16,7 @@ disable-model-invocation: true
 
 ### 2. 現状を読む
 
-デフォルトの形は下記 step 5。`~/.cursor/rules/forge-models.mdc` または PJ の `.cursor/rules/forge-models.mdc` があれば `# budget` 行と各ロール値を現状として読む。step 5 に無いロール行（例: 廃止された `how critics`）は落とす。
+デフォルトの形は下記 step 5。`~/.cursor/rules/forge-models.mdc` または PJ の `.cursor/rules/forge-models.mdc` があれば `# budget` 行と各ロール値を現状として読む。step 5 に無いロール行（例: 廃止された `how critics`）は落とす。**ロール行を書かないロールは Task spawn 時に親チャットモデル**（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。
 
 ### 3. Budget、マップ、確認
 
@@ -41,16 +41,18 @@ disable-model-invocation: true
 
 ```
 ---
-description: forge-mode ロールごとのモデル選択（スキルデフォルトの上書き）
+description: forge-mode ロールごとのモデル選択（Task spawn の唯一の正本）
 alwaysApply: true
 ---
 # forge-mode model configuration
-# `inherit` のロールは親チャットモデルで走る（Task の `model` を省略）
+# 正本: task-model-resolution.md（skills/forge-mode/references/）
+# `inherit` またはロール行なし → Task の `model` 省略（親チャットモデル）
 # budget: large (xhigh)
 
 ## Task `model` で使える model
+（検出した slug のみ列挙。ロール未設定時のフォールバックではない）
 
-- `inherit`（親モデル継承 — runner には使わない）
+- `inherit`
 - `claude-opus-5-5-medium`
 - `claude-sonnet-5-5-high`
 - `composer-2.5`
@@ -59,25 +61,25 @@ alwaysApply: true
 - `grok-4.7-medium`
 - `muse-wonder-1.0-high`
 
-feature, refactoring: cursor-grok-4.6-medium
-bug-fix: cursor-grok-4.6-medium
-perf-issue: cursor-grok-4.6-medium
-hillclimb: cursor-grok-4.6-medium
-judgment and prose: claude-opus-5.5-thinking-medium
-hardest tasks: claude-opus-5.5-thinking-medium
-how explorer: cursor-grok-4.6-medium
-how explainer: claude-opus-5.5-thinking-medium
-why investigators: cursor-grok-4.6-medium
-why synthesizer: claude-opus-5.5-thinking-medium
-reflect tooling: cursor-grok-4.6-medium
-reflect judgment, divergent, synthesizer: claude-opus-5.5-thinking-medium
-multi-agent-candidates runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
-swarm workers: cursor-grok-4.6-medium
-architect runners: claude-opus-5.5-thinking-medium, cursor-grok-4.6-medium
-review orchestrator grok: cursor-grok-4.6-medium
-review orchestrator sonnet correctness: claude-sonnet-5-5-high
-review orchestrator sonnet quality: claude-sonnet-5-5-high
-review orchestrator security: claude-sonnet-5-5-high
+feature, refactoring: grok-4.7-medium
+bug-fix: grok-4.7-medium
+perf-issue: grok-4.7-medium
+hillclimb: grok-4.7-medium
+judgment and prose: claude-opus-5-5-medium
+hardest tasks: claude-opus-5-5-medium
+how explorer: grok-4.7-medium
+how explainer: claude-opus-5-5-medium
+why investigators: grok-4.7-medium
+why synthesizer: claude-opus-5-5-medium
+reflect tooling: grok-4.7-medium
+reflect judgment, divergent, synthesizer: claude-opus-5-5-medium
+multi-agent-candidates runners: claude-opus-5-5-medium, claude-opus-5-5-medium, grok-4.7-medium
+swarm workers: grok-4.7-medium
+architect runners: claude-opus-5-5-medium, grok-4.7-medium
+review orchestrator grok: grok-4.7-medium
+review orchestrator sonnet correctness: claude-opus-5-5-medium
+review orchestrator sonnet quality: claude-opus-5-5-medium
+review orchestrator security: claude-opus-5-5-medium
 review orchestrator blast radius: claude-opus-5-5-medium
 code security workers: grok-4.7-medium
 code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-argon-medium

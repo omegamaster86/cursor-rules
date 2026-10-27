@@ -22,7 +22,7 @@ N 並列 cloud worker に fan out。別 slice を分担、同一 brief で race�
 1. done predicate と swarm が返す artifact または report を述べる。
 2. 形状を選ぶ。slice に partition、同一 brief で N worker race、または混在。race または混在なら spawn 前に `first pass`、`rank all`、`best-of` を宣言。
 3. N はユーザー指定または形状から導く。N は worker 総数であり cloud concurrency 上限ではない。
-4. worker model は `~/.cursor/rules/forge-models.mdc` の `swarm workers` 行から。ルールまたは行が無ければ `cursor-grok-4.6-medium`。`inherit` なら `model` を省略し worker は parent model。Task tool が slug を拒否したら default を使いそう言う。default も拒否なら error の同族で最も近い valid slug。model race なら各 arm の model を事前に名指し。
+4. worker の `model` は `swarm workers` ロール行で解決する（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。model race なら各 arm の slug を brief で事前に名指し。
 5. worker が書くときは各自 writable 出力。commit を verify または measure する brief は exact SHA を名指し。measurement brief は method も（sample 数、1 sample の定義、順序）。worker は結果に両方を記録。
 
 ## Phase B: Fan out

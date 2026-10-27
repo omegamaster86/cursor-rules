@@ -9,22 +9,19 @@ alwaysApply: true
 ## 必須
 
 1. **1メッセージで3つの Task を同時起動**（`run_in_background: true`）。順次起動・1応答でのシミュレーションは不可。
-2. **model は `forge-models.mdc` の該当ロール行**（multi-agent / architect は runner 行、agent-review は `review orchestrator *` 行など）から選択。**Task API 有効 slug**（同ファイル「## Task `model` で使える model」節）以外は `inherit` にフォールバックし、Usage に親モデルのみ出る。
+2. **`model` は [task-model-resolution.md](../skills/forge-mode/references/task-model-resolution.md) に従い `forge-models.mdc` の runner 行から解決する。** 行が無い・`inherit`・余り spawn・許可リスト外 slug は Task の `model` を省略（親チャットモデル）。スキル内のハードコード slug は使わない。
 3. **統合メモに Runners 表と Dropout 節を必須**（`architect/references/rationale-template.md` の Synthesis decision 参照）。
 
 ## 禁止
 
 - 親が「候補1/2/3」「multi-agent 統合判断」見出しで3案を単独執筆
 - Task 0回で multi-agent と称する
-- Usage ログだけで3モデル起動を証明（親 `composer-2.5` のみ計上されうる）
+- Usage ログだけで3モデル起動を証明（親のみ計上されうる）
 
 ## Task API 有効 slug
 
 **正本:** `.cursor/rules/forge-models.mdc` の「## Task `model` で使える model」節（手編集時は本節も同期する）。
 
-`inherit`, `claude-opus-5-5-medium`, `claude-sonnet-5-5-high`, `composer-2.5`, `composer-2.5-fast`, `gemini-4-argon-medium`, `grok-4.7-medium`, `muse-wonder-1.0-high`
-
 ## Runner 設定の正
 
-`forge-models.mdc` の `multi-agent-candidates runners` / `architect runners` 行。スキル内の旧デフォルト slug は参照しない。
-
+`forge-models.mdc` の `multi-agent-candidates runners` / `architect runners` 行。行が無いときは3 Task とも `model` 省略（同一チャットモデル）。
