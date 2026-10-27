@@ -9,7 +9,7 @@ Core discipline: 1 change、1 measurement、keep か revert。未テストの ch
 3. **decision-log** skill で decision log を開く。`decision.tsv`、attempt 1 行: id、hypothesis、change、before、after、delta、tests、verdict（kept か reverted）、note。各 attempt の前に読む。tree 外（gitignored）。
 4. 各 hypothesis を step 1 の architecture model に ground し、specific mechanism を名指す（「first paint を block するので boot path から X を defer」）。「何か memoize してみる」ではない。perf metric なら Perf issue playbook（`playbooks/perf-issue.md`）step 2 の performance mantras の順で hypothesis を並べる。その step の stop rule だけ借りない。
 5. Loop、iteration あたり 1 hypothesis:
-   - 設定済み hillclimb model（default `cursor-grok-4.6-medium`）で subagent に change を渡し、scope は tight。diff は supervise と review、自分で打ち込まない（**guard-the-context-window** principle skill）。複数の独立 hypothesis が live なら parallel subagent に fan out、各々 own worktree（**separate-before-serializing-shared-state** principle skill）。
+   - `forge-models.mdc` の `hillclimb` ロールで解決した model の subagent に change を渡し、scope は tight（行が無ければ親チャットモデル）。diff は supervise と review、自分で打ち込まない（**guard-the-context-window** principle skill）。複数の独立 hypothesis が live なら parallel subagent に fan out、各々 own worktree（**separate-before-serializing-shared-state** principle skill）。
    - frozen harness で before/after を measureし、regression gate を走らせる。
    - metric が noise を越えて動き、gate が green のときだけ accept。そうでなければ change を full revert。「効くかも」の tweak は keep しない。
    - accept した fix は 1 commit、変更した file だけ stage（`git add <files>`、`-A` は never）。kept/reverted どちらでも行を log。

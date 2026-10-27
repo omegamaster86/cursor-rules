@@ -24,19 +24,19 @@ legacy flat（`<id>.jsonl`）、current nested（`<id>/<id>.jsonl`）、subagent
 
 1 メッセージ、3 `Task` 呼び出し、`subagent_type: generalPurpose`、agent mode（`readonly: false`）。reviewer は transcript が参照する ticket、チャット thread、observability trace を MCP で調べる必要がある。readonly は MCP を剥がす。
 
-各 reviewer と synthesizer は `forge-models.mdc` ルールの role 行と default を名指す。`model` はその行の値、ルールや行が無ければ default。値が `inherit` なら `model` は未設定。Task ツールが slug を拒否したら default を使い、その旨を述べる。default も拒否されたらエラーメッセージから同族の最も近い有効 slug を使う。
+各 reviewer と synthesizer の `model` は下表の Role 行で解決する（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。
 
-| Lens | Role line | Default `model` | Prompt template |
-|---|---|---|---|
-| Judgment | `reflect judgment, divergent, synthesizer` | `claude-opus-5.5-thinking-medium` | `references/judgment-reviewer.md` |
-| Tooling | `reflect tooling` | `cursor-grok-4.6-medium` | `references/tooling-reviewer.md` |
-| Divergent | `reflect judgment, divergent, synthesizer` | `claude-opus-5.5-thinking-medium` | `references/divergent-reviewer.md` |
+| Lens | Role line（`forge-models.mdc`） | Prompt template |
+|---|---|---|
+| Judgment | `reflect judgment, divergent, synthesizer` | `references/judgment-reviewer.md` |
+| Tooling | `reflect tooling` | `references/tooling-reviewer.md` |
+| Divergent | `reflect judgment, divergent, synthesizer` | `references/divergent-reviewer.md` |
 
 各 template をそのまま渡し、マーク箇所を transcript path または digest に置換。reviewer は `Task` 応答本文で findings を返す。
 
 ## 3. Synthesize
 
-1 `Task` 呼び出し、`subagent_type: generalPurpose`、`model` は `reflect judgment, divergent, synthesizer` 行（default `claude-opus-5.5-thinking-medium`）、agent mode（`readonly: false`）。citation を MCP で spot 検証する。readonly は MCP を剥がす。`references/synthesizer.md` をそのまま使い、マーク箇所に各 reviewer の full output をインライン。Accepted / Rejected / Backlog リストを返す。
+1 `Task` 呼び出し、`subagent_type: generalPurpose`、`model` は `reflect judgment, divergent, synthesizer` ロール行で解決、agent mode（`readonly: false`）。citation を MCP で spot 検証する。readonly は MCP を剥がす。`references/synthesizer.md` をそのまま使い、マーク箇所に各 reviewer の full output をインライン。Accepted / Rejected / Backlog リストを返す。
 
 ## 4. Structural enforcement check
 

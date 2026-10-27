@@ -24,7 +24,7 @@ disable-model-invocation: true
 
 状態によって答えが変わるときだけ触れる。
 
-- `~/.cursor/rules/forge-models.mdc` が無い → `/setup-forge` 未実行。各ロールはスキル内デフォルト。
+- `~/.cursor/rules/forge-models.mdc` が無い → `/setup-forge` 推奨。ロール行が無い spawn は親チャットモデル（`skills/forge-mode/references/task-model-resolution.md`）。
 - PJ に `verify-*` が無い → `/create-verification-skill` を検討（動作証明）。
 
 モデル設定が効くときは、今 `/setup-forge` するか一度だけ聞く（新規・コスト・どのモデルが走るかに依存する場合）。

@@ -130,7 +130,7 @@ Cloud テンプレは PJ ごとに `omega-cloud-init` を実行する（一括�
 | `.cursor/commands/` | omega への symlink | VM 上で omega へリンク | 共有 |
 | `.cursor/agents/` | 同上 | 同上 | 共有 |
 | `.cursor/rules/global.mdc` 等 | 同上 | 同上 | 共有 |
-| `.cursor/rules/forge-models.mdc` | 初回コピー | 初回コピー | PJ 固有 |
+| `.cursor/rules/forge-models.mdc` | 初回コピー | 初回コピー | PJ 固有。Task `model` の正本（未設定ロールは親チャットモデル） |
 | `.cursor/skills/<共有>/` | omega への symlink | VM 上でリンク | 共有 |
 | `.cursor/skills/verify-*/` | PJ 固有 | PJ 固有 | omega 対象外 |
 | `.cursor/environment.json` | — | commit 必須 | Cloud のみ |

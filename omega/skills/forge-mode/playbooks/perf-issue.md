@@ -14,7 +14,7 @@
    7. Do it cheaper.
 
    早い mantra で target に届いたら止める。
-3. trace から fix を計画。function boundary を跨ぐなら先に `architect`。設定済み perf-issue model（デフォルト `cursor-grok-4.6-medium`）の subagent に委譲。diff をレビュー。post-fix trace を取得。
+3. trace から fix を計画。function boundary を跨ぐなら先に `architect`。`forge-models.mdc` の `perf-issue` ロールで解決した model の subagent に委譲（行が無ければ親チャットモデル）。diff をレビュー。post-fix trace を取得。
    **sequence-verifiable-units** principle skill を適用。次を試す前に各 attempt を検証。
 4. artifact を parse・比較（JSON to sqlite、diff）。「Inconclusive」や wrong-surface は pass ではない。フラグする。
 5. PR に measurement を引用。

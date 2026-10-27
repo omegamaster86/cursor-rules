@@ -28,7 +28,7 @@ disable-model-invocation: true
 
 design-sketch タスクと Phase A の grounding artifact で **multi-agent-candidates** スキルを走らせる。各 runner の prompt に `references/runner-prompt.md` を渡す。
 
-`forge-models.mdc` ルールの `architect runners` 行から runner を取り、`multi-agent-candidates runners` 行の代わりに使う。ルールまたはその行が無ければ `claude-opus-5.5-thinking-medium` と `cursor-grok-4.6-medium`。alias と rejected エントリは **multi-agent-candidates** スキルの Phase A の runner ルールに従う。
+`architect runners` ロール行から runner slug を取り、`multi-agent-candidates runners` 行の代わりに使う（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。行が無いときは **multi-agent-candidates** スキル Phase A の runner 手順（3 Task とも `model` 省略可）に従う。
 
 2 回設計する。最初が十分に見えても synthesis 前に構造的に異なる candidate を最低 2 つ要求する。これは **exhaust-the-design-space** principle スキルの具体化。1 形状内の点修正ではなく、形状全体の代替。
 

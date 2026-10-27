@@ -37,7 +37,7 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 | 状況 | 使うもの |
 |------|----------|
 | 変更の影響範囲 | `blast-radius` スキル |
-| モデル設定 | `.cursor/rules/forge-models.mdc` を編集（行を削除するとスキル内デフォルトにフォールバック） |
+| モデル設定 | `.cursor/rules/forge-models.mdc`（Task の正本。ロール行なしは親チャットモデル — `skills/forge-mode/references/task-model-resolution.md`） |
 | PJ にユーザー操作の証明レシピが無い | `/.cursor/commands/create-verification-skill.md` |
 | verify スキルの map が古い | `/.cursor/commands/maintain-verification-skill.md` |
 | 長時間 run・離席後レビューの決定証跡 | `decision-log` スキル |

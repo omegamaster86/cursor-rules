@@ -88,7 +88,7 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 | ファイル | 用途 |
 |----------|------|
-| `forge-models.mdc` | forge-mode のロール別モデル（`/setup-forge` または `.cursor/rules/` で手編集） |
+| `forge-models.mdc` | forge-mode の Task `model` 正本（`/setup-forge` または手編集。未設定ロールは親チャットモデル — `forge-mode/references/task-model-resolution.md`） |
 
 ### forge-mode プレイブック（23）
 

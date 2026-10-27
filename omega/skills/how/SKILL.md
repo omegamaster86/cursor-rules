@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 コードベースを探索し「X はどう動くか」に答える。サブシステムにオンボーディングするシニア相当の architectural 説明。動く mental model が作れる程度に。annotated ソースのように読ませない。
 
-各 spawn は `subagent_type: generalPurpose` かつ `readonly: true` の Task サブエージェント。explorer は `forge-models.mdc` の `how explorer` 行（default `cursor-grok-4.6-medium`）、explainer は `how explainer` 行（default `claude-opus-5.5-thinking-medium`）。`model` はその行の値、ルールや行が無ければ default。値が `inherit` なら `model` は未設定。Task ツールが slug を拒否したら default を使い、その旨を述べる。default も拒否されたらエラーメッセージから同族の最も近い有効 slug を使う。
+各 spawn は `subagent_type: generalPurpose` かつ `readonly: true` の Task サブエージェント。explorer は `how explorer`、explainer は `how explainer` ロール行で `model` を解決する（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。
 
 ## 1. Assess complexity
 

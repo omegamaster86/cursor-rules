@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * agent-review レーン用 Task model を .cursor/rules/forge-models.mdc から解決する。
- * 親オーケストレーターはフェーズ1（Task 起動）の直前に必ず実行する。
+ * 親オーケストレーターはフェーズ1.9（Task 起動）の直前に必ず実行する。
  *
  * Usage: node .cursor/skills/agent-review/scripts/resolve-lane-models.mjs [projectRoot]
  */
@@ -9,7 +9,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 
-/** Cursor Task `model` が実際に受け付ける slug（forge 意図 slug とは別） */
+/** Cursor Task `model` が実際に受け付ける slug（forge-models 許可リストと同期） */
 const CURSOR_TASK_RUNTIME_ALLOWLIST = new Set([
   'claude-opus-5-5-medium',
   'claude-sonnet-5-5-high',
@@ -27,27 +27,22 @@ const LANES = {
   A: {
     role: 'review orchestrator grok',
     subagent_type: 'generalPurpose',
-    defaultModel: 'grok-4.7-medium',
   },
   B: {
     role: 'review orchestrator sonnet correctness',
     subagent_type: 'generalPurpose',
-    defaultModel: 'claude-opus-5-5-medium',
   },
   C: {
     role: 'review orchestrator sonnet quality',
     subagent_type: 'generalPurpose',
-    defaultModel: 'claude-opus-5-5-medium',
   },
   D: {
     role: 'review orchestrator security',
     subagent_type: 'security-review',
-    defaultModel: 'claude-opus-5-5-medium',
   },
   E: {
     role: 'review orchestrator blast radius',
     subagent_type: 'generalPurpose',
-    defaultModel: 'claude-opus-5-5-medium',
   },
 }
 
@@ -81,26 +76,35 @@ function parseForgeModels(text) {
   return { roleToModel, allowed }
 }
 
-function resolveModel(role, defaultModel, roleToModel, allowed) {
+function resolveModel(role, roleToModel, allowed) {
   const fromForge = roleToModel.get(role)
-  const raw = fromForge ?? defaultModel
-  const source = fromForge != null ? 'forge-models.mdc' : 'models.md default'
 
-  if (raw === 'inherit') {
-    return { model: null, omitTaskModel: true, source, raw }
-  }
-
-  if (!allowed.has(raw)) {
+  if (fromForge == null) {
     return {
-      model: defaultModel,
-      omitTaskModel: false,
-      source: 'script defaultModel (forge slug not in Task allowlist)',
-      raw,
-      warning: `slug "${raw}" not in forge-models Task allowlist; fell back to ${defaultModel}`,
+      model: null,
+      omitTaskModel: true,
+      source: 'parent-chat (role line missing)',
+      raw: null,
     }
   }
 
-  return { model: raw, omitTaskModel: false, source, raw }
+  const raw = fromForge
+  if (raw === 'inherit') {
+    return { model: null, omitTaskModel: true, source: 'forge-models.mdc (inherit)', raw }
+  }
+
+  const allow = allowed.size > 0 ? allowed : CURSOR_TASK_RUNTIME_ALLOWLIST
+  if (!allow.has(raw)) {
+    return {
+      model: null,
+      omitTaskModel: true,
+      source: 'parent-chat (slug not in Task allowlist)',
+      raw,
+      warning: `slug "${raw}" not in forge-models Task allowlist; omitting Task model`,
+    }
+  }
+
+  return { model: raw, omitTaskModel: false, source: 'forge-models.mdc', raw }
 }
 
 let text
@@ -116,12 +120,7 @@ const lanes = {}
 const warnings = []
 
 for (const [id, cfg] of Object.entries(LANES)) {
-  const resolved = resolveModel(
-    cfg.role,
-    cfg.defaultModel,
-    roleToModel,
-    allowed,
-  )
+  const resolved = resolveModel(cfg.role, roleToModel, allowed)
   if (resolved.warning) warnings.push({ lane: id, ...resolved })
   lanes[id] = {
     role: cfg.role,
@@ -140,4 +139,3 @@ const out = {
 }
 
 console.log(JSON.stringify(out, null, 2))
-

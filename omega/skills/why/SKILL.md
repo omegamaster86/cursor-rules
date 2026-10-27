@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 `how` スキルの companion。`how` はコードが何をするか・どう動くか。`why` はどんな力が形を決めたか。
 
-各 spawn は `forge-models.mdc` ルールの role 行と default を名指す。`model` はその行の値、ルールや行が無ければ default。値が `inherit` なら `model` は未設定。Task ツールが slug を拒否したら default を使い、その旨を述べる。default も拒否されたらエラーメッセージから同族の最も近い有効 slug を使う。
+各 spawn の `model` は `why investigators` / `why synthesizer` ロール行で解決する（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。
 
 ## Operating Posture
 
@@ -81,7 +81,7 @@ source control は git と `gh` で常に利用可能。他 6 つは MCP 名、s
 
 Subagent config（各）：
 - `subagent_type`: `generalPurpose`
-- `model`: `why investigators` 行、default `cursor-grok-4.6-medium`
+- `model`: `why investigators` ロール行（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）
 - `readonly`: `false`（agent mode）。**readonly/Ask mode は使わない。** MCP アクセスを剥がし MCP バック investigator を無効化する。investigator は書き込みはしない。
 
 各 investigator が受け取るもの：
@@ -125,7 +125,7 @@ Subagent config（各）：
 1 synthesizer サブエージェントを spawn：
 
 - `subagent_type`: `generalPurpose`
-- `model`: `why synthesizer` 行、default `claude-opus-5.5-thinking-medium`
+- `model`: `why synthesizer` ロール行（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）
 - `readonly`: `false`（agent mode）。synthesizer の quality check は citation の spot 検証で MCP が要る場合がある。readonly/Ask は MCP を剥がしそれを潰す。
 
 synthesizer が受け取るもの：
