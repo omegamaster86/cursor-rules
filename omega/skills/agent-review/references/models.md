@@ -7,12 +7,14 @@
 
 | レーン | Role line（`forge-models.mdc`） | Default `model` | `subagent_type` |
 |--------|----------------------------------|-----------------|-----------------|
-| A Correctness（1本目） | `review orchestrator grok` | `gpt-5.3-codex` | `generalPurpose` |
-| B Correctness | `review orchestrator sonnet correctness` | `claude-4.6-sonnet-medium-thinking` | `generalPurpose` |
-| C Quality | `review orchestrator sonnet quality` | `claude-4.6-sonnet-medium-thinking` | `generalPurpose` |
+| A Correctness（1本目） | `review orchestrator grok` | `grok-4.7-medium` | `generalPurpose` |
+| B Correctness | `review orchestrator sonnet correctness` | `claude-sonnet-5-5-high` | `generalPurpose` |
+| C Quality | `review orchestrator sonnet quality` | `claude-sonnet-5-5-high` | `generalPurpose` |
 | D Security | `review orchestrator security` | `claude-sonnet-5-5-high` | `security-review` |
-| E Blast radius | `review orchestrator blast radius` | `claude-4.6-sonnet-medium-thinking` | `generalPurpose` |
+| E Blast radius | `review orchestrator blast radius` | `claude-opus-5-5-high` | `generalPurpose` |
 
 すべて `readonly: true`。orchestrator 並列時は `run_in_background: true`。
 
 **D:** 他レーンと同様、解決した `model` を Task に渡す。`security-review` が `model` を拒否したときだけ省略し、チャットに記録する。
+
+

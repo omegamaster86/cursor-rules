@@ -50,7 +50,7 @@ disable-model-invocation: true
    - 各 slug を **そのまま** Task の `model` に渡す。別名・推測・`inherit` 禁止。
    - **`compare-models`:** 3 モデル並列（forge-models の runner 行どおり）。
    - **`explore-shapes`:** **同一 slug を 3 回**（runner 行の先頭 1 件を推奨）。モデル差ではなく立場差で比較する。
-   - 行が無いときだけスキル内フォールバック: `claude-sonnet-5-thinking-medium`, `gpt-5.6-sol-medium`, `cursor-grok-4.5-medium`。
+   - 行が無いときだけスキル内フォールバック: `claude-opus-5-5-high`, `claude-sonnet-5-5-high`, `grok-4.7-medium`（いずれも `forge-models.mdc` の Task 有効 slug）。
 5. **出力パスを割り当てる**（`candidate-*` サブフォルダは使わない）。ベースは `.cursor/multi-agent-candidates/<task-slug>/`。各 runner は **1 ファイル** を書く。ファイル名は Task の `model` slug と一致させ、どのモデルが判断したか一目で分かるようにする（`/tmp/` はサンドボックスで読めないことがある）。
    - **`compare-models`:** `<model-slug>.md`（例: `claude-sonnet-5-thinking-medium.md`, `gpt-5.6-sol-medium.md`, `cursor-grok-4.5-medium.md`）
    - **`explore-shapes`:** 同一モデルを 3 回使うため `<model-slug>.<shape-slug>.md`（例: `claude-sonnet-5-thinking-medium.flat-rows.md`）。`<shape-slug>` は Assigned shape を kebab-case にした短い識別子。
