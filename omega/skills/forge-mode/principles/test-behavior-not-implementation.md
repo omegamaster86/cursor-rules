@@ -1,15 +1,16 @@
 # 振る舞いをテストし、実装をテストしない
 
-テストはユーザーがコードを呼び出し、観察する **正確な結果** をリテラルに assert する。import 先がすべて `undefined` を返しても通るテストは書き直すか削除する。
+テストは、呼び出し側・エンドユーザー・他サービスといった**ユーザー**から観察できることについての主張。振る舞いは interface 越しに見える戻り値、エラー、読み戻せる state、外への効果（送信リクエスト、行書き込み、メッセージ）。実装は見えないもの：private helper、内部呼び出し順、中間データ、どの内部協力者が働いたか。
 
-次の形はそのチェックに失敗する:
+次の 2 つの想像上の編集で各テストを判定する：
 
-- 弱い / 無 assert: `toBeDefined`、`toBeTruthy`、`not.toThrow`、`toBeGreaterThan(0)`。
-- 呼び出し / 不在だけ: `toHaveBeenCalled`、`not.toHaveBeenCalled`、`toBeUndefined`、`toEqual([])`。
-- 被テストコードで計算した期待値: `expect(f(a)).toBe(f(a))`。
-- 手保守 constant、config default、table 行、prompt 文字列の再掲。
-- 被テストを呼ばず、テストが組んだデータだけを assert。
+- **振る舞いを壊す。** 誤った値、効果の欠落、二重効果。テストがまだ pass なら何も証明していない。典型：契約より緩い assert、被テストコードで計算した期待値、走らせない constant の再掲、テストが自分で組んだデータだけを assert。
+- **実装だけ変える。** 観察可能な結果は同じで内部を組み替える。テストが fail なら実装に pin されている。refactor ごとに書き直し、バグは捕まえない。
 
-修正: テスト本体で被テストを 1 つの具体 input で呼び、リテラル output または効果を assert する。
+1 つ目で fail、2 つ目で生き残るテストを残す。具体 input でユーザー interface から drive し、期待値は要件から導き、契約が約束するものだけ assert（過不足なし）。
 
-table 行をまたぐ関係（2 table に同じ key、存在する parent）と `*.test-d.ts` の型のみチェックは残してよい。
+契約が決める。例：「空カートでは請求しない」なら payment client が呼ばれない assert は振る舞い。請求されるケースと対にし、call を見えることを示す。モック外部サービスが受け取る payload は外部が観察するので振る舞い。内部 helper 呼び出しは実装。空リストは「一致なし」の正答であり、何か結果が要るだけの hollow check ではない。誰も読まない exact メッセージは文言 pin。呼び出し側が分岐する error **型**は契約。
+
+invariant pin（2 table に同じ key、compile-time 型チェック）も可。invariant が振る舞い。
+
+次の形は弱い / 無 assert として書き直すか削除：`toBeDefined`、`toHaveBeenCalled` のみ、被テストを呼ばない再掲。table 行をまたぐ関係と `*.test-d.ts` の型のみチェックは残してよい。
