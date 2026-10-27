@@ -52,5 +52,3 @@ fallback は `scripts/resolve-lane-models.mjs` の `defaultModel` のみが正�
 
 起動ログ・`consolidated.md` の model と、直前のスクリプト出力が一致していること。不一致なら **起動をやり直す**（再レビューはユーザー指示または `/agent-review` 再実行）。
 
-
-

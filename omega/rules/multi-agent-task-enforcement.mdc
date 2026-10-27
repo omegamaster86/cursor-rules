@@ -28,5 +28,3 @@ alwaysApply: true
 
 `forge-models.mdc` の `multi-agent-candidates runners` / `architect runners` 行。スキル内の旧デフォルト slug は参照しない。
 
-
-
