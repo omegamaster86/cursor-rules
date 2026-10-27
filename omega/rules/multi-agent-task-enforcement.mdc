@@ -20,7 +20,7 @@ alwaysApply: true
 
 ## Task API 有効 slug
 
-**正本:** `.cursor/rules/forge-models.mdc` の「## Task `model` で使える model」節（手編集時は本節も同期する）。
+**正本:** `.cursor/rules/forge-models.mdc` の「## Task `model` で使える model」節のみ。`/setup-forge` または手編集で mdc を更新する。他ファイルに slug リストを複製しない。
 
 ## Runner 設定の正
 

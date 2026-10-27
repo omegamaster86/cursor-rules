@@ -9,20 +9,6 @@
 import { readFileSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 
-/** Cursor Task `model` が実際に受け付ける slug（forge-models 許可リストと同期） */
-const CURSOR_TASK_RUNTIME_ALLOWLIST = new Set([
-  'claude-opus-5-5-medium',
-  'claude-sonnet-5-5-high',
-  'composer-2.5',
-  'composer-2.5-fast',
-  'cursor-grok-4.6-medium',
-  'gemini-3.8-flash-medium',
-  'gemini-4-argon-medium',
-  'gpt-5.6-sol-medium',
-  'grok-4.7-medium',
-  'muse-wonder-1.0-high',
-])
-
 const LANES = {
   A: {
     role: 'review orchestrator grok',
@@ -93,8 +79,18 @@ function resolveModel(role, roleToModel, allowed) {
     return { model: null, omitTaskModel: true, source: 'forge-models.mdc (inherit)', raw }
   }
 
-  const allow = allowed.size > 0 ? allowed : CURSOR_TASK_RUNTIME_ALLOWLIST
-  if (!allow.has(raw)) {
+  if (allowed.size === 0) {
+    return {
+      model: null,
+      omitTaskModel: true,
+      source: 'parent-chat (Task allowlist empty in forge-models.mdc)',
+      raw,
+      warning:
+        'forge-models.mdc has no parsed Task allowlist bullets; omitting Task model for all lanes',
+    }
+  }
+
+  if (!allowed.has(raw)) {
     return {
       model: null,
       omitTaskModel: true,
