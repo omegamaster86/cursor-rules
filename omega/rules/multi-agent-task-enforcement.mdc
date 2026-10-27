@@ -22,10 +22,11 @@ alwaysApply: true
 
 **正本:** `.cursor/rules/forge-models.mdc` の「## Task `model` で使える model」節（手編集時は本節も同期する）。
 
-`inherit`, `claude-opus-5-5-high`, `claude-sonnet-5-5-high`, `composer-2.5`, `composer-2.5-fast`, `gemini-4-argon-medium`, `grok-4.7-medium`, `muse-wonder-1.0-high`
+`inherit`, `claude-opus-5-5-medium`, `claude-sonnet-5-5-high`, `composer-2.5`, `composer-2.5-fast`, `gemini-4-argon-medium`, `grok-4.7-medium`, `muse-wonder-1.0-high`
 
 ## Runner 設定の正
 
 `forge-models.mdc` の `multi-agent-candidates runners` / `architect runners` 行。スキル内の旧デフォルト slug は参照しない。
+
 
 

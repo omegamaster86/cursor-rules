@@ -31,6 +31,7 @@
 - フェーズ0.3: Dimension Router — [dimension-router.md](dimension-router.md)
 - フェーズ0.5: 構造チェック — [structural-audit.md](structural-audit.md)
 - フェーズ0.6: PR 既存コメント（任意）
+- フェーズ1.9: モデル解決 — [resolve-lane-models.md](resolve-lane-models.md)（**Task 起動の直前・必須**）
 - フェーズ1: サブエージェント並列（A/B/C/D、+ E 条件付き）
 - フェーズ1.5: 起動した全レーン完了待ち
 - フェーズ2: 統合 — [consolidation.md](consolidation.md)、[consolidated-output-format.md](consolidated-output-format.md)
@@ -76,9 +77,18 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 
 ---
 
+## 1.9 モデル解決（親・必須）
+
+[resolve-lane-models.md](resolve-lane-models.md) に従い、`node .cursor/skills/agent-review/scripts/resolve-lane-models.mjs` を実行する。出力 JSON の `lanes` をそのまま Task に使う。
+
+- **禁止**: スクリプト未実行、注入ルールや記憶上の `forge-models` だけで `model` を決めること。
+- `omit_task_model: true` のレーンのみ Task の `model` を省略する。
+
+---
+
 ## 2 サブエージェント並列起動
 
-起動前に `.cursor/rules/forge-models.mdc` を読み、[models.md](models.md) で **レーンごとの `subagent_type` と `model`** を解決する。各 Task に必ず渡す。
+フェーズ **1.9 の JSON 出力**だけで起動する（`subagent_type` と `model` は JSON の各レーンから）。`model` は解決値を **そのまま**渡す（省略は `omit_task_model` のときのみ）。
 
 同一メッセージで **A/B/C/D を必ず同時起動**（`run_in_background: true`）。`launch_blast_radius` なら **E も同時**。
 
@@ -131,4 +141,8 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 ## 3 統合判定（親）
 
 [consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。
+
+
+
+
 

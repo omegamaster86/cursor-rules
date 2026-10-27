@@ -51,7 +51,7 @@ alwaysApply: true
 ## Task `model` で使える model
 
 - `inherit`（親モデル継承 — runner には使わない）
-- `claude-opus-5-5-high`
+- `claude-opus-5-5-medium`
 - `claude-sonnet-5-5-high`
 - `composer-2.5`
 - `composer-2.5-fast`
@@ -78,7 +78,7 @@ review orchestrator grok: cursor-grok-4.6-medium
 review orchestrator sonnet correctness: claude-sonnet-5-5-high
 review orchestrator sonnet quality: claude-sonnet-5-5-high
 review orchestrator security: claude-sonnet-5-5-high
-review orchestrator blast radius: claude-opus-5-5-high
+review orchestrator blast radius: claude-opus-5-5-medium
 code security workers: grok-4.7-medium
 code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-argon-medium
 ```

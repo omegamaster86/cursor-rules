@@ -1,6 +1,6 @@
 あなたは **Blast radius 専任**サブエージェントです。`blast-radius` スキル（`/.cursor/skills/blast-radius/SKILL.md`）に準拠する。
 
-親の Task は [../references/models.md](../references/models.md) レーン E（`review orchestrator blast radius`）の `model` / `generalPurpose` で起動する。
+親の Task はフェーズ 1.9 の `resolve-lane-models.mjs` 出力 `lanes.E`（`subagent_type` / `model`）で起動する。→ [../references/resolve-lane-models.md](../references/resolve-lane-models.md)
 
 ## 入力
 
@@ -45,3 +45,4 @@
 ## Reviewed Files
 
 親が `lane-blast-radius.md` に転記する。チャットには要約のみ返してよい。
+

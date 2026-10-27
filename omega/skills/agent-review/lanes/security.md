@@ -3,7 +3,7 @@
 ## 起動
 
 - `subagent_type`: `security-review`
-- `model`: [../references/models.md](../references/models.md) のレーン D（既定 `claude-sonnet-5-5-high`、`review orchestrator security` で上書き可）。他レーンと同様に必ず渡す。Task が拒否したときだけ省略し、その旨を記録する。
+- `model`: フェーズ 1.9 の `resolve-lane-models.mjs` 出力 `lanes.D.model`（`forge-models.mdc` の `review orchestrator security` 行）。必ず渡す。Task が拒否したときだけ省略し、その旨を記録する。
 - `description`: `Security Review`
 - `run_in_background`: true（orchestrator 並列時）。単体起動時は false が既定。
 - `readonly`: true
@@ -35,3 +35,4 @@ Custom Instructions: コミット済み差分のみを正とする。上記 Base
 finding 表形式（Severity, Location, Finding）があればそのまま含める。
 
 広い監査は [../references/security-vs-code-security.md](../references/security-vs-code-security.md)。
+

@@ -12,6 +12,7 @@
 - Base Branch:
 - Changed Files Count:
 - Diff Stat:
+- Resolved lane models:（`resolve-lane-models.mjs` の `lanes` 出力を表または JSON で記載）
 
 ## Dimension Router
 
@@ -70,3 +71,4 @@
 ## Reviewed Files
 
 ## No-Issue Statement
+
