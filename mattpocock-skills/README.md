@@ -4,8 +4,8 @@
 
 | 項目 | 値 |
 |------|-----|
-| 追跡コミット | `5beb35b040e3de97e54fa9e386d7e42d15c295c2`（`UPSTREAM_COMMIT`） |
-| 更新日 | 2026-10-20 |
+| 追跡コミット | `59db609eb1e18aaf59b63284d0e52255aff0c63c`（`UPSTREAM_COMMIT`） |
+| 更新日 | 2026-10-28 |
 
 omega で採用している抜粋は `omega/skills/grilling`（および入口 `grill-me`）。同期手順は `omega/skills/grilling/references/UPSTREAM.md`。
 
