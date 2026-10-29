@@ -17,9 +17,11 @@ alwaysApply: true
 **`/forge-mode` が起動されているとき**は、本 `global.mdc` の以下より **`forge-mode` コマンドとスキルが優先**します。
 
 - タスク分析の詳細フォーマット（セクション1）→ forge-mode の Principles + プレイブックに置き換え
-- 「実行結果報告」固定フォーマット（セクション5）→ プレイブックの返答形式に従い、固定フォーマットは不要
+- 「実行結果報告」固定フォーマット（セクション5）→ **forge-mode 中はセクション5の `# 実行結果報告` を出力しない**。実装・修正ターンは **`/verify-done` の Step 4 レポート（PASS 表）** で締める。プレイブックの返答形式に従い、固定フォーマットは不要
 - 「不明点は必ず確認」→ `/forge-mode` かつ Intent gate 通過後の可逆作業は `forge-mode/principles/never-block-on-the-human.md` に従い進めてよい。gate が `blocked` なら確認せず進まない。プロダクト方向が未確定なら `/plan-interview` を先に使う
 - 「明示的指示以外変更しない」→ プレイブックスコープ内の実装変更は可（Intent gate 通過後）
+
+**forge-mode 中の完了報告:** Lints / ReadLints のみでは完了とみなさない。TypeScript 変更後は `verify-done` で typecheck（例: `tsc --noEmit`）を proof に含め、IDE・ビルドが赤のまま「完了」と言わない（詳細は `commands/forge-mode.md` 完了ゲート、`commands/verify-done.md`）。
 
 **通常チャット**（forge-mode 未起動）では、以下の標準フローを適用します。
 
@@ -108,3 +110,4 @@ alwaysApply: true
 ---
 
 以上の指示に従い、確実で質の高い実装を行います。
+

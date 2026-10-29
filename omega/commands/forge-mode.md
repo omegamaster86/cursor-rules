@@ -28,6 +28,8 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 
 - テスト suite 全件はデフォルトにしない。変更に応じた proof を選ぶ（command 内 Tier 参照）。
 - **PASS** するまで「完了」「done」と言わない。FAIL / PARTIAL のまま PR を開かない（ユーザーが明示 proceed した場合を除く）。
+- 実装・修正ターンの **最終返信** には `verify-done` **Step 4** の結果レポート（**PASS** にチェックが付いた表）を含める。**PASS 表なしでターンを終了しない**。
+- IDE Problems・`tsc`・ランタイムの **未解決エラーが残った状態** で、`global.mdc` の「# 実行結果報告」形式や「完了しました」で締めない。ReadLints だけ green でも typecheck / caller 未更新なら完了不可。
 - ユーザーは `/forge-mode` 外でも `/verify-done` を単独呼び出しできる。
 
 ## 補足ルーティング
@@ -57,3 +59,4 @@ Intent gate が `blocked` のときは本節を走らせない（Align では検
 ## 軽い作業向けではない
 
 typo 修正・1行変更・単純な質問には本コマンドを使わない。通常の Agent チャット（`global.mdc` のみ）で足りる。
+

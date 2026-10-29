@@ -48,9 +48,17 @@ description: タスク完了宣言の前に、変更に応じた proof を選び
 | **C** | ロジック・API・DB・フォーム・認証 | 影響パスの **実行**（unit / 対象テストファイル / curl / RPC / SQL Editor） |
 | **D** | 統合・複数層・UI フロー | 入力→出力チェーン（E2E / Playwright / 手動 smoke / equivalence script） |
 
+**TypeScript 必須 proof（`.ts` / `.tsx` を diff に含む場合）:**
+
+1. `git diff`（または検証スコープ）に **`.ts` / `.tsx` の変更が1行でもある** → PJ の **プロジェクト全体 typecheck** を proof 表に **必ず1行** 載せて実行する。
+   - 優先: `package.json` の `typecheck` / `check:types` 等の script
+   - 無ければ: `npx tsc --noEmit`（monorepo ならルートまたは変更 package の `tsconfig` に合わせる）
+2. **FAIL なら完了宣言不可**（未使用 import だけの Tier A 相当を除く — その場合も TS ファイルを触ったなら typecheck は走らせる）。
+3. **export 形状・返り値型・Promise 化** を変えた場合: 全 caller を同一タスク内で更新し、typecheck が **green になるまで** PASS にしない（caller だけ未更新の compile error は「中途半端完了」）。
+
 **選定ルール:**
 
-- 「ビルドが通った」「lint が通った」は **Tier B 以下では proof にならない**。
+- 「ビルドが通った」「lint が通った」は **Tier B 以下では proof にならない**（TS/TSX 変更時は **実行済み typecheck の pass** が表に必要）。
 - 「テスト suite 全件 green」は **デフォルトにしない**。変更に関係するテスト・パスだけ実行する。
 - リファクタで behavior 不変を claim する場合: equivalence harness / old-vs-new diff script / recorded baseline replay（**compiles だけは pin にならない**）。
 - 可能なら **再実行可能なスクリプト**（決定論的 compare）を残す。
@@ -119,3 +127,4 @@ PJ にテストがある場合の参照（任意）:
 - 単位ごとの積み方: `forge-mode/principles/sequence-verifiable-units.md`
 - ユーザー操作レシピの生成 / メンテ: `commands/create-verification-skill.md`、`commands/maintain-verification-skill.md`
 - forge-mode 入口: `commands/forge-mode.md`
+
