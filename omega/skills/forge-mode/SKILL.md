@@ -75,6 +75,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 残りのトリガー：
 
+- タスクへの最初のメッセージ → ユーザーの goal、解決している問題、変更を出すタスクなら想定する最小変更を自分の言葉で述べる。確認を待たない。証拠がユーザーが求めた変更を否定するなら示して止まる。各サブエージェント brief の冒頭、各 PR の `## Why`、最終報告（完全指定の 1 行編集を除く）も同じ goal で開く。
 - Intent gate が `blocked` なら、以下のトリガー（how、AskQuestion 分類、architect、実装）は発火しない。
 - 非自明な変更、アーキテクチャ決定、または「本当に確かか？」→ **how** スキル。
 - 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → **先に Intent gate。** `blocked` なら質問も prototype もしない。`plan-interview` へ。gate 通過後: 何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断は Align に戻す（Ship 中に grilling しない）。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
@@ -221,4 +222,4 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 実装系プレイブック（Feature / Bug fix / Refactoring）と Multi-phase plan は、実装前に **File change map** と **Data flow** の Mermaid を出す（Cursor Plan モード互換。詳細は `references/plan-diagrams.md`）。
 
-PR 監視スクリプト: `.cursor/skills/forge-mode/scripts/watch-pr/watch-pr`。オーケストレーション CLI: `bun .cursor/skills/forge-mode/scripts/orch/orch.ts`。
+PR 監視スクリプト: `.cursor/skills/forge-mode/scripts/watch-pr/watch-pr`。多日プログラムは **Orchestrate** プレイブック（エージェント主導の `Task` 振り分け。専用 orch CLI は使わない）。

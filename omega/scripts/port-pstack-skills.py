@@ -46,9 +46,20 @@ REPLACEMENTS: list[tuple[str, str]] = [
     (r"inherit-parent", "inherit"),
     (r"`auto` or `inherit`", "`inherit`"),
     (r"typescript-best-practices", "web-coding-standards"),
+    (r"subagent_type: \"poteto-agent\"", 'subagent_type: "forge-agent"'),
+    (r"pstack/skills/poteto-mode", ".cursor/skills/forge-mode"),
+    (r"pstack/skills/forge-mode", ".cursor/skills/forge-mode"),
+    (r"pstack/skills/", ".cursor/skills/"),
+    (r"pstack/skills/how/SKILL.md` and `pstack/skills/interrogate/SKILL.md`. The trail per `pstack/skills/decision-log/SKILL.md`",
+     "`.cursor/skills/how/SKILL.md` and `.cursor/skills/agent-review/SKILL.md`. The trail per the **decision-log** skill"),
 ]
 
 SKIP_PLAYBOOKS = {"opening-a-pr.md"}
+
+# omega playbooks / architect references / feature-map example は日本語正本。上流 diff は手マージ。
+PORT_PLAYBOOKS_FROM_UPSTREAM = False
+PORT_ARCHITECT_REFERENCES_FROM_UPSTREAM = False
+PORT_VERIFICATION_EXAMPLES_FROM_UPSTREAM = False
 
 # omega ワークフロー SKILL.md は日本語を正とする。上流からの SKILL 本文は手マージ（本スクリプトでは上書きしない）。
 WORKFLOW_SKILLS: list[str] = []
@@ -75,13 +86,13 @@ def copy_ported(src: Path, dst: Path) -> None:
 
 
 def main() -> None:
-    # Playbooks (except opening-a-pr)
-    pb_src = PSTACK / MODE_UPSTREAM / "playbooks"
-    pb_dst = OMEGA / MODE_OMEGA / "playbooks"
-    for path in sorted(pb_src.glob("*.md")):
-        if path.name in SKIP_PLAYBOOKS:
-            continue
-        copy_ported(path, pb_dst / path.name)
+    if PORT_PLAYBOOKS_FROM_UPSTREAM:
+        pb_src = PSTACK / MODE_UPSTREAM / "playbooks"
+        pb_dst = OMEGA / MODE_OMEGA / "playbooks"
+        for path in sorted(pb_src.glob("*.md")):
+            if path.name in SKIP_PLAYBOOKS:
+                continue
+            copy_ported(path, pb_dst / path.name)
 
     # Scripts tree
     scripts_src = PSTACK / MODE_UPSTREAM / "scripts"
@@ -93,28 +104,29 @@ def main() -> None:
             rel = path.relative_to(scripts_src)
             copy_ported(path, scripts_dst / rel)
 
-    # Architect references
-    for ref in (PSTACK / "architect/references").glob("*.md"):
-        copy_ported(ref, OMEGA / "architect/references" / ref.name)
+    if PORT_ARCHITECT_REFERENCES_FROM_UPSTREAM:
+        for ref in (PSTACK / "architect/references").glob("*.md"):
+            copy_ported(ref, OMEGA / "architect/references" / ref.name)
 
     for name in WORKFLOW_SKILLS:
         src = PSTACK / name / "SKILL.md"
         if src.is_file():
             copy_ported(src, OMEGA / name / "SKILL.md")
 
-    # create-verification-skill example (upstream rename create-note -> keep omega create-item if exists)
-    ex_src = PSTACK / "create-verification-skill/references/feature-map-example"
-    ex_dst = OMEGA / "create-verification-skill/references/feature-map-example"
-    if ex_src.is_dir():
-        for path in ex_src.rglob("*"):
-            if path.is_dir():
-                continue
-            rel = path.relative_to(ex_src)
-            if rel.name == "create-note.md" and (ex_dst / "create-item.md").is_file():
-                continue
-            copy_ported(path, ex_dst / rel)
+    if PORT_VERIFICATION_EXAMPLES_FROM_UPSTREAM:
+        ex_src = PSTACK / "create-verification-skill/references/feature-map-example"
+        ex_dst = OMEGA / "create-verification-skill/references/feature-map-example"
+        if ex_src.is_dir():
+            for path in ex_src.rglob("*"):
+                if path.is_dir():
+                    continue
+                rel = path.relative_to(ex_src)
+                if rel.name == "create-note.md" and (ex_dst / "create-item.md").is_file():
+                    continue
+                copy_ported(path, ex_dst / rel)
 
-    # statechart tooling (SKILL.md is Japanese; hand-maintained)
+    # statechart tooling (SKILL.md is Japanese; hand-maintained).
+    # Regression corpus + *.test.ts live in a follow-up PR (omega-statechart-test-corpus).
     sc_src = PSTACK / "statechart"
     sc_dst = OMEGA / "statechart"
     if sc_src.is_dir():
@@ -124,6 +136,8 @@ def main() -> None:
             rel = path.relative_to(sc_src)
             if rel.name == "SKILL.md":
                 continue
+            if rel.parts[:2] == ("scripts", "test"):
+                continue
             copy_ported(path, sc_dst / rel)
 
     print("Port complete.")
@@ -131,3 +145,10 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
