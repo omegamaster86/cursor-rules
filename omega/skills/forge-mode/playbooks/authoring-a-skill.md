@@ -1,12 +1,12 @@
 ### Authoring or modifying a skill
 
-**You own the skill's voice.**
+**skill の voice を自分が持つ。**
 
-1. Use the **create-skill** skill (Cursor's built-in for authoring SKILL.md files).
-2. Validate the skill: frontmatter has `name` and `description`, referenced files exist, cross-skill links resolve.
-3. Test cases if structural. Skip if subjective.
-4. Run **Opening a PR**.
+1. **create-skill** skill を使う（SKILL.md 執筆用の Cursor 組み込み）。
+2. skill を validate：frontmatter に `name` と `description`、参照 file が存在、cross-skill link が resolve。
+3. structural なら test case。subjective なら skip。
+4. **Opening a PR** を実行。
 
-When in doubt, delete. Keep only prose that changes a decision. Tell it to do the thing and skip the reason. Explain only when the rule is confusing without one. Match tone to scope. Point at structural sources (types, READMEs, config) per the **encode-lessons-in-structure** principle skill. Delegate to other skills by path. Don't restate. A workflow you keep hitting but isn't captured → propose a new skill.
+迷ったら delete。判断を変える prose だけ残す。やることを言い、理由は skip。rule がそれなしで混乱するときだけ説明。tone は scope に合わせる。**encode-lessons-in-structure** principle skill に沿い structural source（types、README、config）を指す。他 skill は path で delegate。restate しない。繰り返し当たる workflow が未 capture → 新 skill を提案。
 
-**Reply:** summary of the skill, key design decisions, validation notes.
+**Reply:** skill の要約、主要 design decision、validation notes。

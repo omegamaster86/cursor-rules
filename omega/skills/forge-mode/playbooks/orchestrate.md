@@ -1,25 +1,25 @@
 ### Orchestrate
 
-**You run the program, never the code. Decide which agent does each piece of work, then check what each one produces.** For a standing project handed to one coordinator chat: multi-day, many stacked PRs, dozens to hundreds of subagents, few human turns. One task driven to a predicate is Autonomous run. One ambitious run that needs a bespoke workflow is figure-it-out. Work that one agent could finish inside the session's budget is not a program.
+**program を自分が持ち、code は never。どの agent にどの work を渡すか決め、各 agent が出したものを確認する。** 1 つの standing coordinator chat に whole project を渡すとき: multi-day、many stacked PR、dozens から hundreds の subagent、human turn は少ない。1 task を predicate まで drive するのは Autonomous run。1 ambitious run で bespoke workflow が要るのは figure-it-out。session budget 内で 1 agent が finish できる work は program ではない。
 
-Run it with your own tools. Spawn workers with `Task`. Keep the program's state in the Project tracker (`notes.md`) and the Project store. Watch each PR with PR and CI event subscriptions when your harness has them. Call no scripts, run no polling loops, and never relay messages or status between agents.
+自分の tool で回す。worker は `Task` で spawn。program state は Project tracker（`notes.md`）と Project store に置く。harness が持つなら PR と CI event subscription で各 PR を watch。script を呼ばない、polling loop を回さない、agent 間で message や status を relay しない。
 
 #### Topology
 
-- **One owner per PR.** The owner is the only writer of its branch and carries the PR from build to merge. Only the owner pushes, rebases, or retargets it. Closing or retargeting a base PR orphans every PR above it, so the owner does that only on your call. You never author or edit code. Conflicted merges, chain rebases, and fixes go to owners.
-- **A fresh worker for each independent task.** Its kickoff carries everything it needs, including each upstream report it depends on, pasted in full. Workers can't see their siblings. Run workers on a new cloud VM (`environment: "cloud"`) unless the work needs this machine: a `control-ui` or `control-cli` runtime check (from `cursor-team-kit`), local transcripts, a simulator, or auth that exists only here. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section.
-- **A sub-coordinator only when one area has many parallel workers.** It owns that area's workers and kickoffs and sends you one rollup, never raw worker reports. Stop at three levels: you, sub-coordinators, and workers. Keep about ten workers in flight per coordinator, and start the next one as each finishes instead of waiting on a whole batch.
-- **Fork when new work needs a worker's built state,** such as its checkout, uncommitted changes, or a running process. Message a worker only for a follow-up on the same work. Never message one to check on it, because a message restarts an idle agent.
-- **Each PR gets a verifier that isn't its author,** on a different model family. The owner merges only on that verifier's pass at the current head.
-- **Start with one unit.** Take it through kickoff, owner, verifier, and merge before you fan out, so a flaw in the kickoff costs one agent instead of fifty. On near-identical cheap units, the first unit is that test.
+- **PR ごとに owner 1 人。** owner だけが branch を書き、build から merge まで PR を carry。push・rebase・retarget も owner のみ。base PR を close または retarget すると上に積んだ PR すべて orphan するので、owner がそれをやるのはあなたの指示があるときだけ。code を author/edit しない。conflicted merge、chain rebase、fix は owner へ。
+- **独立 task ごとに fresh worker。** kickoff に依存する upstream report は全文 paste を含め必要なものを全部載せる。worker は sibling を見えない。`control-ui` か `control-cli` runtime check（`cursor-team-kit`）、local transcript、simulator、この machine にしかない auth が要る場合以外は新しい cloud VM（`environment: "cloud"`）で worker を走らせる。各 subagent の reasoning level と fast/standard speed は Subagents section に従って job ごとに選ぶ。
+- **1 area に parallel worker が many のときだけ sub-coordinator。** その area の worker と kickoff を own し、raw worker report ではなく rollup 1 本を送る。depth は 3 で止める: あなた、sub-coordinator、worker。coordinator あたり in-flight worker はおおよそ 10。batch 全体を待たず、1 本終わるたび次を start。
+- **worker の built state（checkout、uncommitted changes、running process など）が要る新 work は fork。** 同じ work の follow-up だけ worker に message。check のため message しない。message は idle agent を restart する。
+- **各 PR に author 以外の verifier。** 別 model family。owner は verifier が current head で pass したときだけ merge。
+- **1 unit から start。** kickoff、owner、verifier、merge まで 1 unit を通してから fan out。kickoff の flaw が 1 agent のコストで済む。near-identical で cheap な unit では最初の unit がその test。
 
 #### Supervision
 
-- **Each kickoff names the evidence that proves the work is done,** such as a command and its expected output, a control-skill check, or an artifact. It also names the goal, the paths the worker may and may not write, and the actions it must not take. If you can't name the evidence, the unit isn't scoped yet.
-- **Read the diff or the artifact, not only the worker's summary.** Green CI is an input to a verdict, not a verdict. Behavioral work needs more than a type check. A verdict covers one head SHA, so a new push needs a new verdict. Read a sample of each sub-coordinator's kickoffs while its workers run, and fix its instructions when one fails.
-- **Send back work that drifts from scope or grows past what was asked.** Keep only the fixes that block the program, and park the rest as follow-ups.
-- **Check a PR's live state before you report on it,** with `gh pr view` and `gh pr checks` or your forge's equivalents, not the worker's last report. Account for every worker you spawned as done, replaced, or absorbed into another worker's scope.
-- **Stop or replace a worker that stalls or loops.** Judge it by its pushes and PR activity, not its status text. Retry by cause: a smaller scope after a context or memory limit, the same kickoff after a dropped connection, and a different model after a tool error. After two retries, drop the unit and replan around it. When a stopped worker returns late, check its result against the PR's current state, and hand any unique findings to a fresh worker.
-- **Ask the user only for a real decision or a blocker,** such as an irreversible action, a product or preference call that no experiment settles, or a dead end that survived a replan. Rebase mechanics, retries, CI flakes, review triage, and "should I keep going" never reach the user.
+- **各 kickoff は work 完了の evidence を名指す。** command と expected output、control-skill check、artifact など。goal、書いてよい path と書いてはいけない path、してはいけない action も名指す。evidence を名指せなければ unit はまだ scope していない。
+- **worker summary だけでなく diff か artifact を読む。** green CI は verdict の input であって verdict ではない。behavioral work は typecheck 以上が要る。verdict は 1 head SHA を cover。新 push には新 verdict。sub-coordinator の worker が走る間、kickoff の sample を読み、1 本 fail したら instruction を fix。
+- **scope から drift した、または ask を超えて肥大した work は戻す。** program を block する fix だけ keep。残りは follow-up に park。
+- **report 前に PR の live state を確認。** worker の last report ではなく `gh pr view` と `gh pr checks`（または forge 相当）。spawn した worker すべてを done、replaced、別 worker scope に absorbed のどれかで account。
+- **stall または loop する worker は stop または replace。** status text ではなく push と PR activity で judge。cause ごとに retry: context/memory limit 後は smaller scope、drop 後は同じ kickoff、tool error 後は別 model。2 retry 後は unit を drop して replan。stop した worker が late return したら PR の current state と照合し、unique finding は fresh worker へ。
+- **user に聞くのは real decision か blocker だけ。** irreversible action、experiment が settle しない product/preference call、replan 後も残る dead end。rebase mechanics、retry、CI flake、review triage、「続けるべきか」は user に届けない。
 
-**Reply:** what landed against the goal, each PR's live state and verdict with its link, what was dropped and why, and the decisions waiting on the user.
+**Reply:** goal に対して何が land したか、各 PR の live state と verdict（link 付き）、drop したものと理由、user 待ちの decision。

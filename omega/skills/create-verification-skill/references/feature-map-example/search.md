@@ -1,45 +1,45 @@
 # Search notes
 
-Search lets a user find notes by title or body text, inspect a matching note, and distinguish no matches from an unavailable search.
+Search はユーザーが title または body テキストで note を見つけ、match した note を inspect し、match なしと search 不可を区別できる。
 
 ## Sub-features
 
-- `search-open` opens search from each supported browser entry point.
-- `search-match` returns title and body matches without changing note data.
-- `search-open-result` opens a result in the note editor.
-- `search-empty` shows a complete empty state for a query with no matches.
-- `search-clear` removes the query and restores the recent-notes view.
-- `search-cli` returns the same matching notes from the terminal.
+- `search-open` はサポートされる各 browser entry point から search を開く。
+- `search-match` は note data を変えず title と body match を返す。
+- `search-open-result` は結果を note editor で開く。
+- `search-empty` は match なし query の完全 empty state を示す。
+- `search-clear` は query を除去し recent-notes view を復元する。
+- `search-cli` は terminal から同じ match note を返す。
 
 ## How to get to it (user POV)
 
-- Choose the `Search` button in the browser toolbar.
-- Press `/` in the browser while focus is outside an editable field.
-- Run `notes search <query>` in a terminal.
+- browser toolbar の `Search` ボタンを選ぶ。
+- editable field 外に focus がある browser で `/` を押す。
+- terminal で `notes search <query>` を実行。
 
 ## Driving it with control-notes
 
 Preconditions:
 
-- Notes is healthy at `http://127.0.0.1:4173`.
-- The disposable data directory contains `Quarterly plan` with body text `Draft budget`.
-- `control-notes doctor` reports the expected URL and data directory.
+- Notes は `http://127.0.0.1:4173` で healthy。
+- disposable data directory に body `Draft budget` の `Quarterly plan` がある。
+- `control-notes doctor` が期待 URL と data directory を報告。
 
-- **Toolbar entry.** Choose the `Search` button. Run `control-notes browser click --role button --name "Search"`. A dialog named `Search notes` appears with focus in its searchbox.
-- **Keyboard entry.** Close the dialog, focus the page, and press `/`. Run `control-notes browser press --key "/"`. The same dialog appears and the page does not insert a slash.
-- **Title match.** Type `quarterly`. Run `control-notes browser fill --role searchbox --name "Search notes" --value "quarterly"`. The `Search results` list contains `Quarterly plan` and does not contain `Grocery list`.
-- **Body match.** Replace the query with `budget`. Run `control-notes browser fill --role searchbox --name "Search notes" --value "budget"`. The result `Quarterly plan` remains visible with a body-match excerpt.
-- **Open result.** Choose `Quarterly plan`. Run `control-notes browser click --role link --name "Quarterly plan"`. The dialog closes and the editor heading reads `Quarterly plan`.
-- **Empty state.** Reopen search and enter `volcano`. Run `control-notes browser fill --role searchbox --name "Search notes" --value "volcano"`. A status named `No matching notes` appears after search completes.
-- **Clear query.** Choose `Clear search`. Run `control-notes browser click --role button --name "Clear search"`. The searchbox is empty and the `Recent notes` region replaces the result list.
-- **CLI match.** Search from the terminal. Run `control-notes cli -- notes search "quarterly" --format json`. Exit code `0` and stdout contain one object whose title is `Quarterly plan`.
-- **CLI miss.** Search for an absent value. Run `control-notes cli -- notes search "volcano" --format json`. Exit code `0` and stdout are `[]`.
-- **Proof.** Capture the populated result state. Run `control-notes browser snapshot --aria --path artifacts/search/results.aria.txt` and `control-notes browser screenshot --path artifacts/search/results.png`. Both artifacts identify Notes, the query, and `Quarterly plan`.
+- **Toolbar entry.** `Search` ボタンを選ぶ。`control-notes browser click --role button --name "Search"` を実行。`Search notes` という dialog が出て searchbox に focus。
+- **Keyboard entry.** dialog を閉じ、page に focus し `/` を押す。`control-notes browser press --key "/"` を実行。同じ dialog が出て page に slash は入らない。
+- **Title match.** `quarterly` を入力。`control-notes browser fill --role searchbox --name "Search notes" --value "quarterly"` を実行。`Search results` リストに `Quarterly plan` があり `Grocery list` はない。
+- **Body match.** query を `budget` に置換。`control-notes browser fill --role searchbox --name "Search notes" --value "budget"` を実行。結果 `Quarterly plan` が body-match excerpt 付きで見える。
+- **Open result.** `Quarterly plan` を選ぶ。`control-notes browser click --role link --name "Quarterly plan"` を実行。dialog が閉じ editor heading は `Quarterly plan`。
+- **Empty state.** search を再開し `volcano` を入力。`control-notes browser fill --role searchbox --name "Search notes" --value "volcano"` を実行。search 完了後 `No matching notes` という status。
+- **Clear query.** `Clear search` を選ぶ。`control-notes browser click --role button --name "Clear search"` を実行。searchbox は空で `Recent notes` region が result list に代わる。
+- **CLI match.** terminal から search。`control-notes cli -- notes search "quarterly" --format json` を実行。exit code `0` と stdout に title が `Quarterly plan` の object が 1 つ。
+- **CLI miss.** 無い値を search。`control-notes cli -- notes search "volcano" --format json` を実行。exit code `0` と stdout は `[]`。
+- **Proof.** 結果が入った state を capture。`control-notes browser snapshot --aria --path artifacts/search/results.aria.txt` と `control-notes browser screenshot --path artifacts/search/results.png` を実行。両 artifact が Notes、query、`Quarterly plan` を同定。
 
 ## Gotchas
 
-- Pressing `/` while the editor or searchbox has focus inserts text instead of opening search.
-- Results update after a short debounce. Wait for the results list or empty status, not a fixed sleep.
-- Archived notes are excluded unless the user enables `Include archived`.
-- The CLI defaults to human-readable output. Use `--format json` for stable assertions.
-- Opening a result changes browser state. Reopen search before proving another query.
+- editor または searchbox に focus があるとき `/` は search を開かず text を挿入する。
+- 結果は短い debounce 後に更新。固定 sleep ではなく results list または empty status を待つ。
+- archived note はユーザーが `Include archived` を有効にしない限り除外。
+- CLI は human-readable 出力がデフォルト。安定 assertion には `--format json`。
+- 結果を開くと browser state が変わる。別 query を証明する前に search を再開。
