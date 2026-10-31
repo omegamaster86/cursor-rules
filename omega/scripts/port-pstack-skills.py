@@ -125,7 +125,8 @@ def main() -> None:
                     continue
                 copy_ported(path, ex_dst / rel)
 
-    # statechart tooling (SKILL.md is Japanese; hand-maintained)
+    # statechart tooling (SKILL.md is Japanese; hand-maintained).
+    # Regression corpus + *.test.ts live in a follow-up PR (omega-statechart-test-corpus).
     sc_src = PSTACK / "statechart"
     sc_dst = OMEGA / "statechart"
     if sc_src.is_dir():
@@ -135,6 +136,8 @@ def main() -> None:
             rel = path.relative_to(sc_src)
             if rel.name == "SKILL.md":
                 continue
+            if rel.parts[:2] == ("scripts", "test"):
+                continue
             copy_ported(path, sc_dst / rel)
 
     print("Port complete.")
@@ -142,6 +145,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
 
 
