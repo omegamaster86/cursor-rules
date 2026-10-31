@@ -45,8 +45,12 @@ REPLACEMENTS: list[tuple[str, str]] = [
     (r"claude-opus-5-5-max", "claude-opus-5.5-thinking-medium"),
     (r"inherit-parent", "inherit"),
     (r"`auto` or `inherit`", "`inherit`"),
-    (r"typescript-best-practices", "web-coding-standards"),
-]
+    (r"subagent_type: \"poteto-agent\"", 'subagent_type: "forge-agent"'),
+    (r"pstack/skills/poteto-mode", ".cursor/skills/forge-mode"),
+    (r"pstack/skills/forge-mode", ".cursor/skills/forge-mode"),
+    (r"pstack/skills/", ".cursor/skills/"),
+    (r"pstack/skills/how/SKILL.md` and `pstack/skills/interrogate/SKILL.md`. The trail per `pstack/skills/decision-log/SKILL.md`",
+     "`.cursor/skills/how/SKILL.md` and `.cursor/skills/agent-review/SKILL.md`. The trail per the **decision-log** skill"),
 
 SKIP_PLAYBOOKS = {"opening-a-pr.md"}
 
@@ -131,3 +135,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
