@@ -18,6 +18,7 @@ Product Design プラグインは次のスキル群を提供する:
 - ImageGen で明確に新しいプロダクトアイデアを生成。
 - 既存プロダクトアプリを軽量プロトタイプにクローン。
 - チーム共有用の軽量またはインタラクティブプロトタイプのビルド。
+- 引き渡し後の美学・コピー仕上げ（brush-up）。
 
 ## Communication Style
 
@@ -34,7 +35,7 @@ Product Design プラグインは次のスキル群を提供する:
 
 ユーザーが focused スキルを名指ししたら、そのスキルを先に読む。関連スキルで置き換えない。
 
-依頼が `$user-context`、`$get-context`、`$research`、`$ideate`、`$image-to-code`、`$url-to-code`、`$audit`、`$design-qa`、`$share` に一致したら focused スキルを読み従う。
+依頼が `$user-context`、`$get-context`、`$research`、`$ideate`、`$image-to-code`、`$url-to-code`、`$audit`、`$design-qa`、`$brush-up`、`$share` に一致したら focused スキルを読み従う。
 
 既存プロダクト体験の監査、レビュー、critique、inspect、assess、analyze、evaluate、フィードバック依頼は `$audit` を直接読み込む。先に `$get-context` は読まない。同じ依頼でその後ビルド・修正・リデザイン・実装も求めるなら、先に `$audit`、その後通常ワークフロー。
 
@@ -43,6 +44,8 @@ Product Design プラグインは次のスキル群を提供する:
 ライブ URL のクローン・再現は `$url-to-code` を直接読み込む。
 
 URL に基づくリデザイン・改善・新サイトは `$get-context` でリデザインブリーフを確認。`Like <URL>` はリデザインでありクローンではない。現サイトをスクショでキャプチャし、それらを `$ideate` の Image Gen 呼び出しに添付してから `$ideate` を実行。
+
+既存 Product Design プロトタイプの **tighten / polish / brush up / ブラッシュアップ / テンプレ感を減らす / 仕上げ** は `$brush-up` を直接読み込む。`design-qa` が `blocked` の間は `$brush-up` に進まない。`$url-to-code` で忠実クローンのみが契約のときは [critical-overrides](../../references/critical-overrides.md) が `$brush-up` より優先する。
 
 ## Environment (Cursor)
 
@@ -139,3 +142,7 @@ Product Design セットアップコンテキストの preflight、保存、回�
 ### $design-qa
 
 引き渡し前に、ソースビジュアルとレンダリング実装の両方がある Product Design プロトタイプを比較する内部ヘルパーとしてのみルーティング。プロトタイプ、URL-to-code、image-to-code ビルド後。広い UX critique、監査、プロダクトフローレビューにはルーティングしない。`audit` を使う。
+
+### $brush-up
+
+既存 runnable プロトタイプの美学・タイポ・コピー・装飾リファイン。layout・IA・ルートは原則維持。frontend-design 由来の [aesthetic-refine](../brush-up/references/aesthetic-refine.md) に従う。tighten、polish、brush up、ブラッシュアップ、テンプレ感、仕上げ依頼にルーティング。design-qa 未完了、忠実クローンのみ契約、アノテーション1点修正には使わない。
