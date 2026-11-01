@@ -107,4 +107,4 @@ HTTP ヘルス、ビルド成功、デプロイ成功をブラウザ検証の代
     - ローカルで動かし続け、dev サーバーとローカル URL。
     - 明示デプロイ依頼までデプロイしない。
     - プレビュー後は `critical-overrides.md` の共有引き渡し。
-    - [critical-overrides](../../references/critical-overrides.md#build-handoff) の nudge を含める。
+    - [critical-overrides](../../references/critical-overrides.md#ビルド引き渡し) の nudge を含める。ユーザーが tighten 等で返答したら [$brush-up](../brush-up/SKILL.md)。
