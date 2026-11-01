@@ -8,7 +8,7 @@
 ## omega に含めるもの（意図的な抜粋）
 
 - `SKILL.md` — omega 向けに再構成（Cursor のみ。Claude / openskills 手順なし）
-- `references/writing-rules.md` — 上流 `SKILL.md` §1 相当（omega 用に分割）
+- `references/writing-rules.md` — 上流 `skills/yomiyasu/SKILL.md` §1 相当（omega 用に分割）
 - `references/gemini-syntax.md`, `slop-catalog.md`, `domains/*.md` — 上流と同一内容をコピー
 - `scripts/yomiyasu_lint.py`, `yomiyasu_diff.py` — 上流と同一内容をコピー
 
@@ -42,3 +42,4 @@ git commit -m "chore: bump yomiyasu upstream and sync omega excerpt"
 ```
 
 共有 skill は symlink のため正本更新は即反映。新 skill 追加時や `.cursor` が実ディレクトリのままのときは `omega-sync` を再実行。
+

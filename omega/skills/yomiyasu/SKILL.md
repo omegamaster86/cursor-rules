@@ -37,7 +37,7 @@ Claude Code プラグイン・`npx skills`・`openskills`・`.claude-plugin/` �
 
 ### 2. 書き直し
 
-`writing-rules.md` とドメイン仕様に従い、`gemini-syntax.md` / `slop-catalog.md` で語表・構文を直す。上流 `SKILL.md` Step 2 のチェックリスト（指示代名詞、比喩、接続、予告文、箇条書きと文末など）に沿う。直す箇所がほとんどなければ無理に書き換えない。
+`writing-rules.md` とドメイン仕様に従い、`gemini-syntax.md` / `slop-catalog.md` で語表・構文を直す。書き直し前に `yomiyasu_lint.py` で候補を見る（種類が決まっていれば `--doc-type`）。lint は合図ではなく手がかり — 指摘語を別語に差し替えるだけで済ませない。上流 Step 2 のチェックリスト（指示代名詞、比喩と「効く」、直訳語、接続、予告文、箇条書きと文末など）に沿う。直す箇所がほとんどなければ無理に書き換えない。
 
 ### 3. 静的検査（任意）
 
@@ -51,7 +51,7 @@ python3 .cursor/skills/yomiyasu/scripts/yomiyasu_lint.py path/to/file.md
 python3 omega/skills/yomiyasu/scripts/yomiyasu_lint.py path/to/file.md
 ```
 
-CI 用: `--strict`。指摘は機械候補。評価語・必要な否定は無理に消さない。修正ループは最大2回。
+CI 用: `--strict`。種類が決まっていれば `--doc-type`（上流と同じ13種）。指摘は機械候補。評価語・必要な否定は無理に消さない。修正ループは最大2回。
 
 ### 4. Diff 点検（任意・長文）
 
@@ -86,6 +86,6 @@ python3 .cursor/skills/yomiyasu/scripts/yomiyasu_diff.py before.txt after.txt --
 
 ## 上流との関係
 
-正本リポジトリは cursor-rules 直下の git submodule `yomiyasu/`。omega に載せているのは **Cursor 用の抜粋**（`references/` 一部 + `scripts/yomiyasu_lint.py` + `yomiyasu_diff.py`）。取り込み手順は `references/UPSTREAM.md`。
+正本リポジトリは cursor-rules 直下の git submodule `yomiyasu/`（上流 **v2.5.0**）。omega に載せているのは **Cursor 用の抜粋**（`references/` 一部 + `scripts/yomiyasu_lint.py` + `yomiyasu_diff.py`）。取り込み手順は `references/UPSTREAM.md`。
 
 出典: [nanaism/yomiyasu](https://github.com/nanaism/yomiyasu)（MIT）
