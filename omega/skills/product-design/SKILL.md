@@ -1,6 +1,6 @@
 ---
 name: product-design
-description: "プロダクト設計ワークフロー（Cursor 専用）: UXリサーチ、監査、ビジュアル探索、URLクローン、モック実装、デザインQA、プロトタイプ共有。product-design、プロトタイプ、画面監査、URLをクローン、モックを実装、デザインQA に使用。Codex CLI では使用しない。"
+description: "プロダクト設計ワークフロー（Cursor 専用）: UXリサーチ、監査、ビジュアル探索、URLクローン、モック実装、デザインQA、美学ブラッシュアップ、プロトタイプ共有。product-design、プロトタイプ、画面監査、URLをクローン、モックを実装、デザインQA、ブラッシュアップ に使用。Codex CLI では使用しない。"
 ---
 
 # Product Design（Cursor）
@@ -23,6 +23,7 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 | ライブ画面の再現 | `url-to-code` | キャプチャに基づくローカルプロトタイプ |
 | モック実装 | `image-to-code` | 選択デザインのインタラクティブ実装 |
 | UX 監査 | `audit` | スクリーンショット付きの findings |
+| 仕上げ・テンプレ感の削減 | `brush-up` | レイアウト維持の美学・コピーリファイン |
 | 共有 | `share` | デプロイ URL |
 
 ## サブスキル
@@ -37,6 +38,7 @@ description: "プロダクト設計ワークフロー（Cursor 専用）: UXリ�
 | `url-to-code` | ライブ URL のクローン |
 | `image-to-code` | 選択モックの実装 |
 | `design-qa` | 実装とソースの比較 QA |
+| `brush-up` | 引き渡し後などの美学・コピー仕上げ |
 | `share` | デプロイ・共有 URL |
 
 ## 実行時の必須
