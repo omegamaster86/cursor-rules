@@ -18,7 +18,7 @@ bash /path/to/cursor-rules/omega/scripts/omega-sync .
 ```
 
 2. pull 結果を報告する（`Already up to date` でも明記）。取り込めた場合は `git -C "$CURSOR_RULES" log -5 --oneline` を要約する。
-3. `omega-sync` 完了後、変更が symlink 経由で見える主要差分（例: `agent-review`、`forge-models`）があれば一言触れる。
+3. `omega-sync` 完了後、変更が symlink 経由で見える主要差分（例: `agent-review`、`forge-models`）があれば一言触れる。`.cursor/rules/forge-models.mdc` が PJ 内の実ファイルだった場合は **削除して正本への symlink に差し替え**る（`link-project.sh` の canonical link）。
 4. **コミット・push はユーザーが依頼したときだけ**（PJ および `cursor-rules` 双方）。
 
 ## 人間向け（ターミナル）
@@ -29,3 +29,4 @@ chmod +x /path/to/cursor-rules/omega/scripts/omega-sync
 ```
 
 `omega/scripts/projects.txt` に PJ を書いておけば、全 PJ 一括は `omega/scripts/omega-sync-all` を実行する。
+

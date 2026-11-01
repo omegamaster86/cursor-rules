@@ -103,7 +103,7 @@ Build 完了後、VM 上に omega の commands / skills / rules / agents がリ�
 
 | ファイル | いつ | 内容 |
 |----------|------|------|
-| `.cursor/rules/forge-models.mdc` | モデル割当を PJ ごとに変えたい | `omega-sync` または Cloud install でテンプレがコピーされる。編集して commit 可 |
+| `.cursor/rules/forge-models.mdc` | モデル割当を PJ ごとに変えたい | **ローカル:** `omega-sync` で正本 symlink（実ファイルは差し替え）。PJ だけ変えるなら `~/.cursor/rules/forge-models.mdc`。**Cloud:** 初回 install で repo にコピー（編集して commit 可） |
 | `.cursor/skills/verify-<app>/` | 動作確認レシピがある | PJ 固有。omega には含めない。repo に直接置く |
 
 ### Step 6: 複数 PJ を一括セットアップ（任意）
@@ -130,7 +130,7 @@ Cloud テンプレは PJ ごとに `omega-cloud-init` を実行する（一括�
 | `.cursor/commands/` | omega への symlink | VM 上で omega へリンク | 共有 |
 | `.cursor/agents/` | 同上 | 同上 | 共有 |
 | `.cursor/rules/global.mdc` 等 | 同上 | 同上 | 共有 |
-| `.cursor/rules/forge-models.mdc` | 初回コピー | 初回コピー | PJ 固有。Task `model` の正本（未設定ロールは親チャットモデル） |
+| `.cursor/rules/forge-models.mdc` | omega への symlink | 初回コピー | ローカルは正本追従。Cloud は PJ コピー。Task `model` の正本（未設定ロールは親チャットモデル） |
 | `.cursor/skills/<共有>/` | omega への symlink | VM 上でリンク | 共有 |
 | `.cursor/skills/verify-*/` | PJ 固有 | PJ 固有 | omega 対象外 |
 | `.cursor/environment.json` | — | commit 必須 | Cloud のみ |
@@ -194,7 +194,7 @@ PJ ルートから実行する場合:
 | `.cursor/commands/` | omega への symlink |
 | `.cursor/agents/` | omega への symlink |
 | `.cursor/rules/global.mdc` 等 | omega への symlink |
-| `.cursor/rules/forge-models.mdc` | 初回のみコピー（PJ ごとに編集可） |
+| `.cursor/rules/forge-models.mdc` | omega への symlink（`omega-sync` で実ファイルは差し替え） |
 | `.cursor/skills/<共有 skill>/` | omega への symlink |
 | `.cursor/skills/verify-*/` | PJ 固有（リンクしない） |
 | omega に無いローカル skill | そのまま残る |
@@ -294,3 +294,6 @@ https://github.com/mattpocock/skills/tree/main/skills
 https://github.com/cursor/plugins/tree/main/pstack 
 https://github.com/openai/plugins/tree/main/plugins
 https://github.com/nanaism/yomiyasu
+
+
+

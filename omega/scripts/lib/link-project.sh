@@ -55,9 +55,8 @@ for rule in global.mdc multi-agent-task-enforcement.mdc; do
   link_path "$OMEGA/rules/$rule" "$PJ/.cursor/rules/$rule"
 done
 
-if [[ ! -e "$PJ/.cursor/rules/forge-models.mdc" ]]; then
-  cp "$OMEGA/rules/forge-models.mdc" "$PJ/.cursor/rules/forge-models.mdc"
-fi
+# PJ コピーは sync のたびに正本へ差し替え（実ファイルは削除して symlink）
+link_path_canonical "$OMEGA/rules/forge-models.mdc" "$PJ/.cursor/rules/forge-models.mdc"
 
 link_path_canonical "$OMEGA/skills/README.md" "$PJ/.cursor/skills/README.md"
 
@@ -68,3 +67,4 @@ for skill in "$OMEGA/skills"/*/; do
 done
 
 echo "linked omega -> $PJ/.cursor"
+
