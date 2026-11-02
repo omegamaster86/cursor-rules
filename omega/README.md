@@ -256,7 +256,7 @@ Dashboard または Agents Window から環境を再 Build する。
 ## モードの関係
 
 - **通常モード**: `global.mdc` が適用。タスク分析・実行結果報告フォーマットあり。
-- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/forge-mode/principles/`）が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則24本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。ユーザー操作の証明レシピは **`/create-verification-skill`**。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
+- **forge-mode**: `/forge-mode` コマンド起動時、`commands/forge-mode.md` と `skills/forge-mode/`（原則は `skills/principle-*/`（24 本））が `global.mdc` より優先。起動直後に **Intent gate**（Align vs Ship）。`blocked` ならプレイブックに入らず `/plan-interview` へ。原則24本 + プレイブック + 検証重視。完了前検証は **`/verify-done`** が正本。ユーザー操作の証明レシピは **`/create-verification-skill`**。検証・層配線は genai ドメインスキル、リファクタ調査は `/refactor-check` が正本。
 
 コマンド（入口）とスキル（原則・プレイブック本体）はどちらも **forge-mode** という名前で統一しています。
 
@@ -269,7 +269,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | pstack `arena` | 未採用。**`multi-agent-candidates`**（`/architect` 経由可） |
 | pstack `show-me-your-work` | 未採用。**`decision-log`**（Notion）を監査正本 |
 | pstack `teach` / `automate-me` / `bro` | 採用（`omega/skills/teach`、`automate-me`、`bro`） |
-| pstack `correct` / `benchmark-checklist` | 採用（`omega/skills/correct`、`benchmark-checklist`）。原則 **explain-the-number** は `forge-mode/principles/` |
+| pstack `correct` / `benchmark-checklist` | 採用（`omega/skills/correct`、`benchmark-checklist`）。原則 **explain-the-number** は `principle-explain-the-number` |
 | `poteto-agent` | **`forge-agent`** にリネーム |
 | `cursor-team-kit`（deslop, control-*） | 未導入時は skip、手動 verify で代替 |
 | grilling vs never-block | **Intent gate。** Align は `/plan-interview`（→ `grilling` の frontier ラウンド）。Ship は `/forge-mode`。同じターンで両方オンにしない |

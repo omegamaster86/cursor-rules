@@ -12,17 +12,17 @@
 
 ## 1. Re-read principles
 
-`forge-mode` スキルの **Principles** セクションを最初から最後まで読み、インデックスする `principles/` の leaf も読む。原則がすべてのプラン決定を統治。cross-link する。
+`forge-mode` スキルの **Principles** セクションを最初から最後まで読み、インデックスする **principle-<title>** leaf スキル も読む。原則がすべてのプラン決定を統治。cross-link する。
 
 ## 2. Scope and constraints
 
-スコープと制約の読み取りを1段落で述べる。プロダクト方向が空ならプランを続けず Intent gate `blocked`（`/plan-interview`）。gate 通過後、実行の分岐で genuinely ambiguous な intent だけ `AskQuestion`（[`never-block-on-the-human`](../principles/never-block-on-the-human.md)）。各 open question に concrete オプション。
+スコープと制約の読み取りを1段落で述べる。プロダクト方向が空ならプランを続けず Intent gate `blocked`（`/plan-interview`）。gate 通過後、実行の分岐で genuinely ambiguous な intent だけ `AskQuestion`（[`never-block-on-the-human`](../../principle-never-block-on-the-human/SKILL.md)）。各 open question に concrete オプション。
 
 in scope vs 明示的 out、技術またはプラットフォーム制約、preserve するパターン、done の定義を resolve。
 
 ## 3. Explore in subagents
 
-コードベース探索を delegate（[`guard-the-context-window`](../principles/guard-the-context-window.md)）。
+コードベース探索を delegate（[`guard-the-context-window`](../../principle-guard-the-context-window/SKILL.md)）。
 
 - `subagent_type: "forge-agent"` を優先。`generalPurpose` は fallback。組み込み `plan` subagent_type は使わない。
 - `model` は spawn 前に [task-model-resolution.md](task-model-resolution.md) と `.cursor/rules/forge-models.mdc` で解決する。コード探索 delegate は **`feature, refactoring`** ロール行（行が無い・`inherit`・許可リスト外は Task の `model` 省略＝親チャット）。アーキテクチャ判断が要る探索だけ **`judgment and prose`** または **`hardest tasks`**。
@@ -58,7 +58,7 @@ NN-slug/
 
 - 1関数または型＋テスト、または1バグ fix。「1ファイル」ではない。
 - 触るファイル2〜3、最大。
-- option value を保つため8〜10の小フェーズを3〜4の大フェーズより優先（[`foundational-thinking`](../principles/foundational-thinking.md)）。
+- option value を保つため8〜10の小フェーズを3〜4の大フェーズより優先（[`foundational-thinking`](../../principle-foundational-thinking/SKILL.md)）。
 - フェーズに5テストケース超または3関数超なら split。
 
 ### Overview file
@@ -81,11 +81,11 @@ NN-slug/
 - overview へ back-link。
 - **Goal.** フェーズが達成すること。
 - **Changes.** 影響ファイルと high level の変更。what と why、how ではない。コード snippet なし。
-- **Data structures.** 主要型または schema を名指し。1行スケッチのみ（[`foundational-thinking`](../principles/foundational-thinking.md)）。
+- **Data structures.** 主要型または schema を名指し。1行スケッチのみ（[`foundational-thinking`](../../principle-foundational-thinking/SKILL.md)）。
 - **Verification.** セクション6参照。
 - フェーズが overview の図と大きくずれるときだけ、phase 内に差分 Mermaid を追加。
 
-lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（[`foundational-thinking`](../principles/foundational-thinking.md)）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
+lint / CI / テスト骨格と契約型を機能フェーズより先に land するよう順序（[`foundational-thinking`](../../principle-foundational-thinking/SKILL.md)）。フロント / バックの完了順は揃えなくてよい。各フェーズは独立して shippable。
 
 既存コードに触れる変更では、新要件を初日から持っていたらどう見えるかを問い、holistic に再設計する。incremental に deliver。
 

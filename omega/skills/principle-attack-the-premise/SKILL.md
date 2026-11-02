@@ -1,0 +1,21 @@
+---
+name: principle-attack-the-premise
+description: "Apply when two or more fixes that share one premise have failed the same gate. Write the premise down and test it directly before you write another fix that assumes it."
+disable-model-invocation: true
+---
+
+# 前提を攻撃する（Attack the Premise）
+
+同じ前提を共有する修正が 2 回以上、同じゲートで失敗したら、修正ではなく**前提**を疑う。
+
+**理由:** 失敗した fix ごとに、その fix が暗黙に信じていた信念に反する証拠が増える。同じ前提の上に 3 つ目の fix を書くのは、原因がそこではないと evidence が既に言っている場所に effort を使う。
+
+**パターン:**
+- **前提を 1 文で書く。** 失敗した fix がすべて暗黙に信じていた文
+- **次の fix の前に前提を試す。** 前提が偽なら結果が変わる観察を見つけ、実行する。失敗の**分布**（大きさだけでなく誰が偏るか）を見る。チェックは `build-the-lever.md` のとおり再実行可能にする
+- **evidence に従う。** 前提と矛盾するなら原因は別。失敗の共通点で前提が予測しなかったものを探す。前提を裏付けるなら `fix-root-causes.md` の「なぜ」を続ける。早い fix は結果ではなく原因の対症だったかもしれない
+- **補償ではなく条件を除去する**（`laziness-protocol.md`）。常に同じ側が負けるなら、そこに置く仕組みを変える。毎 run の後片付けだけする mechanism は原因を残す
+
+**止める:** 前提が書かれ、試される前に次の fix を始めない
+
+**区別:** **principle-redesign-from-first-principles** は新要件で設計を組み直す。本原則は**現設計が真だと仮定している事実**を疑う。

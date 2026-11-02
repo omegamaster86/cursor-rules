@@ -6,16 +6,18 @@ disable-model-invocation: true
 
 # Forge mode
 
+同梱スキルはこのファイルから `../<name>/SKILL.md`。`forge-agent` プロンプトにもこのファイルの絶対パスを渡す。
+
 ## ルーティング
 
 forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 | 状況 | 使うもの |
 |------|----------|
-| TypeScript / フロント実装 | `web-coding-standards` + `principles/type-system-discipline.md` |
+| TypeScript / フロント実装 | `web-coding-standards` + **principle-type-system-discipline** |
 | 争点のある設計レビュー | `/.cursor/skills/agent-review/SKILL.md`（`/agent-review`） |
 | UI / IDE / CLI の検証 | 対象 PJ に `verify-*` があればそれを Drive。無ければ `/create-verification-skill`。完了ゲートは `/verify-done`（ブラウザ MCP または手動可） |
-| 状態フルなロジック・分岐の増殖 | `principles/model-the-domain.md` |
+| 状態フルなロジック・分岐の増殖 | **principle-model-the-domain** |
 | verify スキルの feature map が古い | `/.cursor/commands/maintain-verification-skill.md` |
 | コード実装のサブエージェント | `subagent_type: "forge-agent"` |
 | 単ファイル調査 | `/.cursor/commands/file-brief.md` |
@@ -40,7 +42,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## 譲れないルール
 
-**複数ステップのタスクはすべて、最初の項目が下の Principles セクションを全文読むことである todo リストから始める。** 原則がここにあるすべてのトリガーの基盤となる。返信では、意思決定を形作った各原則と、それが変えた具体的な選択を名指しする。意思決定の裏がない引用は `principles/` の leaf をスキップしたことを意味する。leaf のルールが駆動した実際の選択にたどり着かなければならない。
+**複数ステップのタスクはすべて、最初の項目が下の Principles セクションを全文読むことである todo リストから始める。** 原則がここにあるすべてのトリガーの基盤となる。返信では、意思決定を形作った各原則と、それが変えた具体的な選択を名指しする。意思決定の裏がない引用は leaf `SKILL.md` を読まずに引用したことを意味する。leaf のルールが駆動した実際の選択にたどり着かなければならない。
 
 ## Intent gate（Align vs Ship）
 
@@ -79,12 +81,12 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - Intent gate が `blocked` なら、以下のトリガー（how、AskQuestion 分類、architect、実装）は発火しない。
 - 非自明な変更、アーキテクチャ決定、または「本当に確かか？」→ **how** スキル。
 - 「どのアプローチか」「どうすべきか」「何をすべきか」の分岐で `AskQuestion` しようとしている → **先に Intent gate。** `blocked` なら質問も prototype もしない。`plan-interview` へ。gate 通過後: 何かを実行して観察すれば答えられる事実（動作、タイミング、レイアウト、出力、パフォーマンス、eval が分離するかどうか）なら、人間が答えるものではない。Prototype プレイブック（`playbooks/prototype.md`）でスケッチし、結果に決定させる。タスクが引用付き回答が成果物の読み取り専用 Investigation なら、その中に留まり、スケッチを作らず証拠から答える。実験で決着できない genuine なプロダクトまたは嗜好の判断は Align に戻す（Ship 中に grilling しない）。質問は遅い道。使い捨てプローブの方が通常は速く答え、人間には決定ではなく結果を反応してもらえる。
-- コードがある → まず契約（データ形状）を名指しする（`principles/foundational-thinking.md`）。状態・ライフサイクル・散在する if なら **model-the-domain**（`principles/model-the-domain.md`）。
-- 既存設計に要件を足す → **redesign-from-first-principles**。ボルトオンしない。`principles/redesign-from-first-principles.md`。
-- デバッグ・症状の沈黙（nil-check、ガード追加）→ **fix-root-causes**。`principles/fix-root-causes.md`。
-- プロダクト / UX / スコープのトレードオフ（gate 通過後）→ **experience-first**。`principles/experience-first.md`。
-- 並行アクターが同じファイル・ブランチ・キーを書きそう → **separate-before-serializing-shared-state**。`principles/separate-before-serializing-shared-state.md`。
-- フェーズ付き rewrite / 移行 → **outcome-oriented-execution**。橋を恒久化しない。`principles/outcome-oriented-execution.md`。内部 API 刷新なら **migrate-callers-then-delete-legacy-apis**（`principles/migrate-callers-then-delete-legacy-apis.md`）。
+- コードがある → まず契約（データ形状）を名指しする（**principle-foundational-thinking**）。状態・ライフサイクル・散在する if なら **model-the-domain**（**principle-model-the-domain**）。
+- 既存設計に要件を足す → **redesign-from-first-principles**。ボルトオンしない。**principle-redesign-from-first-principles**。
+- デバッグ・症状の沈黙（nil-check、ガード追加）→ **fix-root-causes**。**principle-fix-root-causes**。
+- プロダクト / UX / スコープのトレードオフ（gate 通過後）→ **experience-first**。**principle-experience-first**。
+- 並行アクターが同じファイル・ブランチ・キーを書きそう → **separate-before-serializing-shared-state**。**principle-separate-before-serializing-shared-state**。
+- フェーズ付き rewrite / 移行 → **outcome-oriented-execution**。橋を恒久化しない。**principle-outcome-oriented-execution**。内部 API 刷新なら **migrate-callers-then-delete-legacy-apis**（**principle-migrate-callers-then-delete-legacy-apis**）。
 - リファクタ・削減・抽象を足す衝動 → **laziness-protocol**、**subtract-before-you-add**（`refactor-check` と併用）。追いにくいコード → **minimize-reader-load**。
 - 同じ前提の fix が同じゲートで 2 回以上失敗 → **attack-the-premise**（次の fix の前に census）。
 - 先例のない UI / アーキテクチャで正解が自明でない → **exhaust-the-design-space**（Prototype または multi-agent-candidates explore-shapes）。
@@ -97,7 +99,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 - 非自明な複数ステップ → throughput checkpoint を書く（Feature ステップ 3）。
 - SKILL.md を作成または編集 → **create-skill** スキル（SKILL.md 作成用の Cursor 組み込み）。
 - UI / IDE / CLI を出荷 → 対象 PJ の `verify-*` があればその Drive。無ければブラウザ MCP または手動 verify。PJ に証明レシピが無いなら `/create-verification-skill`。バグ修正では同じ表面で先に自分で再現。
-- ベンチを走らせる、perf を自分で計測する、測った speedup / regression を報告またはそれに基づいて動く → **benchmark-checklist** スキル。数字を信じる前に **explain-the-number**（`principles/explain-the-number.md`）。
+- ベンチを走らせる、perf を自分で計測する、測った speedup / regression を報告またはそれに基づいて動く → **benchmark-checklist** スキル。数字を信じる前に **explain-the-number**（**principle-explain-the-number**）。
 - PR 状態・CI・レビュー・Bugbot（「babysit」「get it green」「check on PR X」）→ **Babysit** プレイブック（`playbooks/babysit.md`）。Cursor 組み込み babysit には委譲しない。
 - merge / land / ship の明示依頼 → **Shipping** プレイブック（`playbooks/shipping.md`）。Babysit の後半。
 - 多日・多 PR の standing プログラム → **Orchestrate** プレイブック（`playbooks/orchestrate.md`）。
@@ -109,46 +111,48 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 
 ## Principles
 
-適用する原則ごとに `principles/` の leaf を全文読む。各エントリは適用タイミングを名指しする。
+Read the leaf skill in full for any principle you apply. Each entry names when it applies. Each leaf is the **principle-<title>** skill, with the title in kebab case, hyphens kept and other punctuation dropped, unless the entry gives its name. Typing `/principle-<name>` loads one on demand.
+
+適用する原則ごとに **principle-<title>** の leaf `SKILL.md` を全文読む。各エントリは適用タイミングを名指しする。返信では、読んだ leaf の原則だけ cite する。
 
 **Core**
 
-- **Laziness Protocol.** リファクタ、diff サイズ、抽象・層・シグナル配線を足したくなったとき。削除と最小変更を優先。`principles/laziness-protocol.md`。
-- **Foundational Thinking.** ロジックを書く前（forge-mode 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。`principles/foundational-thinking.md`。
-- **Redesign From First Principles.** 既存設計に新しい要件を統合するとき。ボルトオンせず、最初からその要件があったかのように再設計する。`principles/redesign-from-first-principles.md`。
-- **Attack the Premise.** 同じ前提を共有する fix が同じゲートで 2 回以上失敗。次の fix の前に census。`principles/attack-the-premise.md`。
-- **Subtract Before You Add.** 追加・refactor・rewrite の sequence。dead weight を先に削る。`principles/subtract-before-you-add.md`。
-- **Minimize Reader Load.** 追いにくいコードのレビュー・整形。層数と読者が保持する状態。`principles/minimize-reader-load.md`。
-- **Outcome-Oriented Execution.** フェーズ境界が明示された rewrite / 移行。中間互換より最終形。日常の小さな PR では読まない。`principles/outcome-oriented-execution.md`。
-- **Experience First.** Intent gate 通過後のプロダクト・UX・スコープのトレードオフ。実装都合より体験。方向が空なら `/plan-interview`。`principles/experience-first.md`。
-- **Exhaust the Design Space.** 先例のない UI / アーキテクチャで正解が自明でない。commit 前に 2–3 案。`principles/exhaust-the-design-space.md`。
-- **Build the Lever.** 非自明な作業（移行・分析・チェック含む）。手作業より rerun 可能な tool。`principles/build-the-lever.md`。
+- **Laziness Protocol.** リファクタ、diff サイズ、抽象・層・シグナル配線を足したくなったとき。削除と最小変更を優先。**principle-laziness-protocol**。
+- **Foundational Thinking.** ロジックを書く前（forge-mode 有無で共通）：契約先行のデータ形状、フロント/バック並行トラック、scaffold vs feature、型収束と抽象化の切り分け、並行編集の隔離。実装の書き方はドメインスキルが正。**principle-foundational-thinking**。
+- **Redesign From First Principles.** 既存設計に新しい要件を統合するとき。ボルトオンせず、最初からその要件があったかのように再設計する。**principle-redesign-from-first-principles**。
+- **Attack the Premise.** 同じ前提を共有する fix が同じゲートで 2 回以上失敗。次の fix の前に census。**principle-attack-the-premise**。
+- **Subtract Before You Add.** 追加・refactor・rewrite の sequence。dead weight を先に削る。**principle-subtract-before-you-add**。
+- **Minimize Reader Load.** 追いにくいコードのレビュー・整形。層数と読者が保持する状態。**principle-minimize-reader-load**。
+- **Outcome-Oriented Execution.** フェーズ境界が明示された rewrite / 移行。中間互換より最終形。日常の小さな PR では読まない。**principle-outcome-oriented-execution**。
+- **Experience First.** Intent gate 通過後のプロダクト・UX・スコープのトレードオフ。実装都合より体験。方向が空なら `/plan-interview`。**principle-experience-first**。
+- **Exhaust the Design Space.** 先例のない UI / アーキテクチャで正解が自明でない。commit 前に 2–3 案。**principle-exhaust-the-design-space**。
+- **Build the Lever.** 非自明な作業（移行・分析・チェック含む）。手作業より rerun 可能な tool。**principle-build-the-lever**。
 
 **Architecture**
 
-- **Model the Domain.** 状態のあるロジック、分岐や shape 仮定がファイルをまたぐとき。ドメインを構造にエンコードし、boolean と if の増殖を止める。`principles/model-the-domain.md`。
-- **Boundary Discipline.** 検証・エラー・framework adapter の配線。境界に guard、内部は pure。`principles/boundary-discipline.md`。
-- **Type System Discipline.** 型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。`principles/type-system-discipline.md`。
-- **Make Operations Idempotent.** クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。`principles/make-operations-idempotent.md`。
-- **Migrate Callers Then Delete Legacy APIs.** 新 internal API と旧 caller が共存するとき。同一 wave で migrate + delete。`principles/migrate-callers-then-delete-legacy-apis.md`。
-- **Separate Before Serializing Shared State.** 並行アクターが同じミュータブルを書きそうなとき。共有を先に消す。ロックは最後。`principles/separate-before-serializing-shared-state.md`。
+- **Model the Domain.** 状態のあるロジック、分岐や shape 仮定がファイルをまたぐとき。ドメインを構造にエンコードし、boolean と if の増殖を止める。**principle-model-the-domain**。
+- **Boundary Discipline.** 検証・エラー・framework adapter の配線。境界に guard、内部は pure。**principle-boundary-discipline**。
+- **Type System Discipline.** 型付き言語で型またはシグネチャを設計するとき。非法状態を表現不能に、プリミティブに brand、外部データは境界で parse。検証の所在はルーティングの genai ドメイン規約を参照。**principle-type-system-discipline**。
+- **Make Operations Idempotent.** クラッシュとリトライの中で走るコマンド、ライフサイクルステップ、ループを設計するとき。同じ end state に収束。**principle-make-operations-idempotent**。
+- **Migrate Callers Then Delete Legacy APIs.** 新 internal API と旧 caller が共存するとき。同一 wave で migrate + delete。**principle-migrate-callers-then-delete-legacy-apis**。
+- **Separate Before Serializing Shared State.** 並行アクターが同じミュータブルを書きそうなとき。共有を先に消す。ロックは最後。**principle-separate-before-serializing-shared-state**。
 
 **Verification**
 
-- **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は `principles/prove-it-works.md`（任意）。
-- **Fix Root Causes.** デバッグ中。症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない。`principles/fix-root-causes.md`。
-- **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。`principles/sequence-verifiable-units.md`。
-- **Test Behavior, Not Implementation.** テストの作成・変更・維持。ユーザー視点のリテラル assert。`principles/test-behavior-not-implementation.md`。
-- **Explain the Number.** 信じる・報告する・動く前に、自分で測った数値（speedup、regression、throughput、latency、eval 結果）。limiter を特定し、別物を測っていないことを除外。perf は **benchmark-checklist** で手順完走。`principles/explain-the-number.md`。
+- **Prove It Works** — 実行手順の正本は **`/verify-done`** コマンド（`commands/verify-done.md`）。タスク後、完了宣言前。テストは手段の一つ；変更に応じて proof を選ぶ。プロキシや「コンパイル通った」ではなく実アーティファクトで検証。背景は **principle-prove-it-works**（任意）。
+- **Fix Root Causes.** デバッグ中。症状をごまかさず根本で直す。再現が先。nil-check で crash を黙らせない。**principle-fix-root-causes**。
+- **Sequence Work into Verifiable Units.** 複数ステップ作業（スイープ、マイグレーション、類似編集の run）とコミット・PR の積み方。各単位がチェックで終わる小さな単位に分割し、次の前に各単位を検証、順序はシーケンス自身が証明するように。**principle-sequence-verifiable-units**。
+- **Test Behavior, Not Implementation.** テストの作成・変更・維持。ユーザー視点のリテラル assert。**principle-test-behavior-not-implementation**。
+- **Explain the Number.** 信じる・報告する・動く前に、自分で測った数値（speedup、regression、throughput、latency、eval 結果）。limiter を特定し、別物を測っていないことを除外。perf は **benchmark-checklist** で手順完走。**principle-explain-the-number**。
 
 **Delegation**
 
-- **Guard the Context Window.** コンテキストが埋まる：大きな出力、長いファイル、繰り返し読み取り、fan-out プランニング。 bulk はサブエージェントへ、メインスレッドには要約を保持。`principles/guard-the-context-window.md`。
-- **Never Block on the Human.** Intent gate が alignment 済み / skip のときの実行分岐のみ。可逆作業で「X すべきか？」と聞きたくなったとき進め、結果を提示し、人間に course-correct させる。`blocked` のときは本原則を適用しない。`principles/never-block-on-the-human.md`。
+- **Guard the Context Window.** コンテキストが埋まる：大きな出力、長いファイル、繰り返し読み取り、fan-out プランニング。 bulk はサブエージェントへ、メインスレッドには要約を保持。**principle-guard-the-context-window**。
+- **Never Block on the Human.** Intent gate が alignment 済み / skip のときの実行分岐のみ。可逆作業で「X すべきか？」と聞きたくなったとき進め、結果を提示し、人間に course-correct させる。`blocked` のときは本原則を適用しない。**principle-never-block-on-the-human**。
 
 **Meta**
 
-- **Encode Lessons in Structure.** 同じ指示を2回目書こうとしている自分に気づいたとき。テキストを増やす代わりに lint、metadata フラグ、runtime check、script としてエンコード。`principles/encode-lessons-in-structure.md`。
+- **Encode Lessons in Structure.** 同じ指示を2回目書こうとしている自分に気づいたとき。テキストを増やす代わりに lint、metadata フラグ、runtime check、script としてエンコード。**principle-encode-lessons-in-structure**。
 
 ## Autonomy
 

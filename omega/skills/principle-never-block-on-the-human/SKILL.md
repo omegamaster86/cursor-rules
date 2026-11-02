@@ -1,0 +1,17 @@
+---
+name: principle-never-block-on-the-human
+description: "Apply when tempted to ask 'should I do X?' on reversible work."
+disable-model-invocation: true
+---
+
+# 人間をブロックしない
+
+人間は非同期に監督する。エージェントは unblock のまま。妥当な決定をし、進め、後から人間に course-correct させる。コード変更は可逆でレビュー可能なので、間違った決定はブロックより通常コストが低い。
+
+- 進めてから提示する。作業して結果を見せる。「X すべきか？」と聞かない。X をして理由を説明する。
+- システムを自己修復させる。問題に気づいたら log し、次の round で直す。
+- 不可逆操作（force-push、本番データ削除、外部メッセージ送信）は依然 confirmation が要る。
+- 可逆操作（コード、メモ、タスク分割）はブロックせず進める。
+- プロダクト方向は人間から来る。実行はブロックしない。
+
+**omega:** Intent gate が `blocked` のときは本原則を適用しない（Align は `/plan-interview`）。

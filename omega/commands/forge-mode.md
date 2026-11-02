@@ -10,7 +10,7 @@ description: 非自明な実装・調査のエントリ。forge-mode スキル�
 
 1. `/.cursor/skills/forge-mode/SKILL.md`（**Principles** と **Intent gate** を含む全文）
 2. `/.cursor/skills/forge-mode/SKILL.md` の **ルーティング** セクション
-3. 適用する原則ごとに `/.cursor/skills/forge-mode/principles/` の該当 `.md` を leaf として全文読む
+3. 適用する原則ごとに 該当 **`principle-<title>`** スキル（`/.cursor/skills/principle-<title>/SKILL.md`） を leaf として全文読む
 
 ## 起動時の必須フロー
 

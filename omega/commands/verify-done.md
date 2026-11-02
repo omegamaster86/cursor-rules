@@ -12,7 +12,7 @@ description: タスク完了宣言の前に、変更に応じた proof を選び
 
 **テストは手段の一つ。** 毎回 `npm test` 全件は不要。変更種別に応じて **1〜3 個の proof** を選び実行する。
 
-哲学・背景は `forge-mode/principles/prove-it-works.md`。本コマンドが **実行手順の正本**。
+哲学・背景は `principle-prove-it-works/SKILL.md`。本コマンドが **実行手順の正本**。
 
 ## いつ使う
 
@@ -123,8 +123,8 @@ PJ にテストがある場合の参照（任意）:
 
 ## 関連
 
-- 哲学: `forge-mode/principles/prove-it-works.md`
-- 単位ごとの積み方: `forge-mode/principles/sequence-verifiable-units.md`
+- 哲学: `principle-prove-it-works/SKILL.md`
+- 単位ごとの積み方: `principle-sequence-verifiable-units/SKILL.md`
 - ユーザー操作レシピの生成 / メンテ: `commands/create-verification-skill.md`、`commands/maintain-verification-skill.md`
 - forge-mode 入口: `commands/forge-mode.md`
 

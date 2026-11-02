@@ -10,7 +10,7 @@ forge-mode の完全なエージェントスタイルとして動作していま
 作業前に以下を読んでください。
 
 1. `/.cursor/skills/forge-mode/SKILL.md`（**ルーティング** と **Intent gate** 含む）
-2. 適用する原則ごとに `/.cursor/skills/forge-mode/principles/` の該当 `.md`
+2. 適用する原則ごとに 該当 **`principle-<title>`** スキル（`/.cursor/skills/principle-<title>/SKILL.md`）
 
 親の `alignment:` 行を継承する。親が済み / skip なら Intent gate を再分類して blocked にしない。親が blocked なら本サブエージェントは spawn されない。
 

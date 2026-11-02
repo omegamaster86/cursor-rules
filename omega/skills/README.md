@@ -94,58 +94,58 @@ Next.js / Supabase プロジェクト向けの書き方・配置規約。
 
 Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature / Refactoring / Prototype / Visual parity / Authoring a skill / Eval / **Babysit** / **Shipping** / Autonomous run / **Orchestrate** / **Autopilot-stack** / **Autopilot-full** / Session pickup / Pause safely / Multi-phase plan / **Worktree cleanup** / Opening a PR。太字は pstack から追加した PR・夜間運用系。Bugbot 参照: `forge-mode/references/bugbot-triage.md`。スクリプト: `forge-mode/scripts/watch-pr`、`orch`、`worktree-audit.sh`。
 
-### 原則（`forge-mode/principles/`）24本
+### 原則（`principle-*`）24 本
 
-`forge-mode` の Principles インデックスから **on-demand** で読む。`/forge-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ `forge-mode/principles/*.md` を全文読む。
+`omega/skills/principle-<name>/SKILL.md`。`forge-mode` の Principles インデックスから **on-demand** で読む。`/forge-mode` 起動時はインデックスを先に読み、タスクに該当する leaf のみ **`/principle-<name>`** または Read で全文読む。
 
 #### Core
 
-| ファイル | 適用タイミング | 内容 |
+| スキル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `laziness-protocol.md` | リファクタ・diff・抽象/層の追加 | 削除と最小変更を優先 |
-| `foundational-thinking.md` | ロジックを書く前（forge-mode 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先 |
-| `redesign-from-first-principles.md` | 既存設計に要件を足すとき | ボルトオンせず、最初からその要件があった形に再設計 |
-| `attack-the-premise.md` | 同じ前提の fix が同じゲートで連続失敗 | census の後、前提を疑う |
-| `subtract-before-you-add.md` | 追加・refactor・rewrite の順序 | 先に dead weight を削る |
-| `minimize-reader-load.md` | 追いにくいコード | 辿る層数と読者が保持する状態を減らす |
-| `outcome-oriented-execution.md` | フェーズ付き rewrite / 移行 | 中間互換より最終形。小さな PR では読まない |
-| `experience-first.md` | Intent gate 通過後の UX・スコープ | 実装都合より体験。方向が空なら `/plan-interview` |
-| `exhaust-the-design-space.md` | 先例のない UI / アーキテクチャ | commit 前に 2–3 案（Prototype 等） |
-| `build-the-lever.md` | 非自明な編集・移行・分析 | codemod / script 等、reviewer が rerun できる tool |
+| `principle-laziness-protocol` | リファクタ・diff・抽象/層の追加 | 削除と最小変更を優先 |
+| `principle-foundational-thinking` | ロジックを書く前（forge-mode 有無で共通） | 契約先行のデータ形状。フロント/バック並行トラック。CI・型・テスト骨格を機能より先 |
+| `principle-redesign-from-first-principles` | 既存設計に要件を足すとき | ボルトオンせず、最初からその要件があった形に再設計 |
+| `principle-attack-the-premise` | 同じ前提の fix が同じゲートで連続失敗 | census の後、前提を疑う |
+| `principle-subtract-before-you-add` | 追加・refactor・rewrite の順序 | 先に dead weight を削る |
+| `principle-minimize-reader-load` | 追いにくいコード | 辿る層数と読者が保持する状態を減らす |
+| `principle-outcome-oriented-execution` | フェーズ付き rewrite / 移行 | 中間互換より最終形。小さな PR では読まない |
+| `principle-experience-first` | Intent gate 通過後の UX・スコープ | 実装都合より体験。方向が空なら `/plan-interview` |
+| `principle-exhaust-the-design-space` | 先例のない UI / アーキテクチャ | commit 前に 2–3 案（Prototype 等） |
+| `principle-build-the-lever` | 非自明な編集・移行・分析 | codemod / script 等、reviewer が rerun できる tool |
 
 #### Architecture
 
-| ファイル | 適用タイミング | 内容 |
+| スキル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `model-the-domain.md` | 状態ロジック・分岐の増殖 | ドメインを構造に載せる |
-| `boundary-discipline.md` | 検証・adapter・エラー配線 | 境界に guard、内部 pure（genai 規約と併読） |
-| `type-system-discipline.md` | 型・シグネチャ設計 | 非法状態を表現不能に、境界で parse |
-| `make-operations-idempotent.md` | リトライ下のコマンド・ループ | 同じ最終状態に収束 |
-| `migrate-callers-then-delete-legacy-apis.md` | 新旧 internal API 共存 | 同一 wave で migrate + delete |
-| `separate-before-serializing-shared-state.md` | 並行アクターが同じ状態を書く | 共有を先に消す。ロックは最後 |
+| `principle-model-the-domain` | 状態ロジック・分岐の増殖 | ドメインを構造に載せる |
+| **principle-boundary-discipline** | 検証・adapter・エラー配線 | 境界に guard、内部 pure（genai 規約と併読） |
+| `principle-type-system-discipline` | 型・シグネチャ設計 | 非法状態を表現不能に、境界で parse |
+| `principle-make-operations-idempotent` | リトライ下のコマンド・ループ | 同じ最終状態に収束 |
+| `principle-migrate-callers-then-delete-legacy-apis` | 新旧 internal API 共存 | 同一 wave で migrate + delete |
+| `principle-separate-before-serializing-shared-state` | 並行アクターが同じ状態を書く | 共有を先に消す。ロックは最後 |
 
 #### Verification
 
-| ファイル | 適用タイミング | 内容 |
+| スキル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `prove-it-works.md` | 完了宣言の前 | 正本は **`/verify-done`** |
-| `fix-root-causes.md` | デバッグ中 | 再現→根本。nil-check で黙らせない |
-| `sequence-verifiable-units.md` | マルチステップ・PR の積み方 | 各単位が check で終わる |
-| `test-behavior-not-implementation.md` | テストの作成・変更 | リテラル expected、実装 pin を避ける |
-| `explain-the-number.md` | 測った数値を信じる・報告する前 | limiter と別物測定の除外。**benchmark-checklist** が手順正本 |
+| `principle-prove-it-works` | 完了宣言の前 | 正本は **`/verify-done`** |
+| `principle-fix-root-causes` | デバッグ中 | 再現→根本。nil-check で黙らせない |
+| `principle-sequence-verifiable-units` | マルチステップ・PR の積み方 | 各単位が check で終わる |
+| `principle-test-behavior-not-implementation` | テストの作成・変更 | リテラル expected、実装 pin を避ける |
+| `principle-explain-the-number` | 測った数値を信じる・報告する前 | limiter と別物測定の除外。**benchmark-checklist** が手順正本 |
 
 #### Delegation
 
-| ファイル | 適用タイミング | 内容 |
+| スキル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `guard-the-context-window.md` | コンテキスト逼迫時 | bulk はサブエージェントへ |
-| `never-block-on-the-human.md` | Intent gate 通過後の実行分岐 | 可逆作業は進めて事後修正 |
+| `principle-guard-the-context-window` | コンテキスト逼迫時 | bulk はサブエージェントへ |
+| `principle-never-block-on-the-human` | Intent gate 通過後の実行分岐 | 可逆作業は進めて事後修正 |
 
 #### Meta
 
-| ファイル | 適用タイミング | 内容 |
+| スキル | 適用タイミング | 内容 |
 |----------|----------------|------|
-| `encode-lessons-in-structure.md` | 同じ指示を2回目書こうとしたとき | lint・script 等にエンコード |
+| `principle-encode-lessons-in-structure` | 同じ指示を2回目書こうとしたとき | lint・script 等にエンコード |
 
 ---
 
@@ -174,3 +174,5 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
 | `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
 | `agent-review` | `security-review` サブエージェント前提。`/agent-review` で明示起動 |
+
+
