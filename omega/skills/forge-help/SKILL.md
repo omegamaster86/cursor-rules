@@ -83,7 +83,7 @@ disable-model-invocation: true
 | 繰り返しミスの構造修正 | [`/correct`](../correct/SKILL.md) |
 | 案内 | `/forge-help` |
 
-原則は `forge-mode/principles/`。ユーザーは名前で steer（例: prove it works）。[ガイド 08](../../docs/guide/08-principles.md)。
+原則は **`principle-*`**（`omega/skills/principle-<name>/SKILL.md`）。`/principle-<name>` で 1 本だけ載せられる。ユーザーは名前でも steer（例: prove it works）。[ガイド 08](../../docs/guide/08-principles.md)。
 
 - `/recall` は最近の複数チャットから topic の文脈を再構築する。`/ketchup` はこのチャットだけで、ユーザー最後のメッセージ以降を扱う。特定チャットや branch の再開は Session pickup プレイブック。
 

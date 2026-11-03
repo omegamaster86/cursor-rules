@@ -13,7 +13,7 @@ omega は **Align（何を・なぜ）** と **Ship（厳密な実装・検証�
 5. [作って証明する](./05-build-and-verify.md) — プレイブック、`/verify-done`、`verify-*`
 6. [PR と land](./06-ship-pr.md) — Babysit、Shipping、レビュー orchestrator
 7. [離席・夜間](./07-overnight.md) — `decision-log`、Autopilot、Orchestrate
-8. [原則で舵を取る](./08-principles.md) — `forge-mode/principles/` の 23 本
+8. [原則で舵を取る](./08-principles.md) — `principle-*` 24 本
 9. [自分用にする](./09-customize.md) — `forge-models.mdc`、スキル追加
 10. [レシピと落とし穴](./10-recipes.md)
 
@@ -30,3 +30,4 @@ omega は **Align（何を・なぜ）** と **Ship（厳密な実装・検証�
 方向が空なら plan-interview。実装・調査・PR 運用は forge-mode がプレイブックを選び、必要なスキルをステップごとに呼びます。
 
 次: [セットアップ](./01-setup.md)
+

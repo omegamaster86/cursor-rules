@@ -1,0 +1,93 @@
+---
+name: principle-foundational-thinking
+description: "Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature work, asking what concurrent actors share. Get the data structures right so downstream code becomes obvious."
+disable-model-invocation: true
+---
+
+# 基礎的思考
+
+**いつ・何を先に決めるか** の正本。forge-mode の有無で思考を変えない。実装の書き方・ファイル配置・層の配線は **`web-coding-standards`**、**`nextjs-directory-structure`**、**`supabase-implementation`** 等のドメインスキルが正。
+
+## 構造決定 vs コード決定
+
+**構造的決定**（スキーマ・層・API 契約・enum）はオプション価値を守る。遅い段階での変更は書き直しになりやすい。
+
+**コードレベルの決定**（関数分割・命名・3行の重複）はシンプルさを守る。早すぎる抽象化より明示を優先する。
+
+型とデータモデルは収束させる。層ごとに別名 DTO を手書きしない（**`supabase-data-access`**）。
+
+---
+
+## 1. 契約先行
+
+ロジックの前に **データ形状**（フィールド・enum・API 入出力・エラー形）を決める。支配的なアクセスパターン（一覧ソート、検索キー等）を先に固定する。形状がライフサイクルや分岐の塊なら **model-the-domain**（../principle-model-the-domain/SKILL.md）。
+
+| 担当 | 進め方 |
+|------|--------|
+| フロント | **`mock-store-guide`** または共有 Zod / 型で先行可 |
+| バック | migration → 型再生成（**`types-generation`**） |
+| 合流 | 型を1系統に収束（**`ts-database-types`**） |
+
+契約がずれたら、実装を進める前に契約を直す。
+
+---
+
+## 2. トラック並行
+
+フロントとバックの **完了順は揃えなくてよい**。バックエンド完了を待ってから UI を書く必要はない。
+
+```
+Track A（フロント）: 契約型 + mock-store / 仮 API → 画面
+Track B（バック）:   migration → Edge Function → DB Function
+合流:                型再生成 + mock を実 API に差し替え
+```
+
+「データ構造を先に」＝ **契約を先に固定** の意味であり、「バックが全部終わるまでフロントを書かない」ではない。
+
+---
+
+## 3. スキャフォールド
+
+lint / CI / テスト骨格は **機能コードより先** に整える。
+
+| スキャフォールド | 参照 |
+|-----------------|------|
+| Biome / lint | **`web-library-guide`** の `dev-linting` |
+| テスト配置 | **`nextjs-directory-structure`** の `structure-overall` |
+| 共有契約型 | **`ts-type-location`** |
+
+「動く最小」は **機能コード** に限定する。基盤と契約は機能より先。
+
+---
+
+## 4. 抽象化（コンポーネント vs データ型）
+
+対象によってタイミングが違う。
+
+| 対象 | 方針 |
+|------|------|
+| **データ契約型**（`Todo`, `CreateTodoInput`, Zod schema） | 早く `src/types` 等に共通化してよい |
+| **UI コンポーネント** | 2ページ目までページ固有（`_components/`）— **`colocation-shared`** が優先 |
+
+コンポーネントの共通化判断で「再利用可能コンポーネントを作る」とぶつかったら、**`colocation-shared`** を優先する。
+
+コードレベルでは行ではなく構造を DRY にする。3つの類似文は、早すぎる抽象化よりまだ優れている。振る舞いとエッジケースをテストする（行数ではない）。
+
+---
+
+## 5. 並行編集
+
+複数人・複数エージェントが同時に触る前に隔離を検討する。
+
+「別のアクターがこれを並行して変更したらどうなるか？」と問う。「何も起きない」でなければ隔離する（ブランチ分割・ファイル分割・フェーズ分割）。同一 migration・同一契約型定義の同時編集に注意。手順の正本は **`separate-before-serializing-shared-state.md`**（共有を先に消す。ロックは最後）。
+
+---
+
+## チェックリスト
+
+- [ ] 主要フィールド・enum・API 入出力を1行以上スケッチした
+- [ ] フロント / バックどちらから着手しても契約型が参照できる
+- [ ] lint / 型チェック / テスト骨格が機能追加前に通る
+- [ ] ドメイン型は `src/types`、画面専用 ViewModel のみページ内
+- [ ] コンポーネント共通化は2ページ目まで待っている
+- [ ] 3層の各層は同じ契約型を import している

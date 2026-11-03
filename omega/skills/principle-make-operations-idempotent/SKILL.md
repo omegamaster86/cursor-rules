@@ -1,0 +1,24 @@
+---
+name: principle-make-operations-idempotent
+description: "Apply when designing commands, lifecycle steps, or processing loops that run amid crashes, restarts, and retries. Converge to the same end state regardless of partial prior runs."
+disable-model-invocation: true
+---
+
+# 操作を冪等にする
+
+クラッシュ・再起動・リトライのあいだでも、何回実行しても、前回がどこで止まっても、正しい状態に収束するよう操作を設計する。状態を変える操作は答える：「2 回走らせたら？」「前回が途中で落ちたら？」
+
+**理由:** コマンド、ライフサイクル、処理ループはクラッシュとリトライが普通。部分 state が次の結果を変えるなら、再起動はすべてデバッグになる。
+
+**考え方:** 各ステップは「前が何をしようとしたか」ではなく**今ある state**から導く。現 state を読み、目標と比べ、差分だけ適用。この形なら繰り返し安全（もうやることが無い）。
+
+run が残す lock、temp file、半書き record、claimed job は、次 run が**古い**と判定できること。古さは「前が止まりうるすべての地点」で真になる evidence で判断。次 run が判定できない marker は、クラッシュごとに手 cleanup。
+
+**パターン例:** 収束する起動、コンテンツ等価でのクリーンアップ、PID ベースの自己修復ロック、失敗作業のきれいな再生成。
+
+**テスト:**
+1. 連続 2 回でどうなるか
+2. あらゆる可能点でクラッシュしたらどうなるか
+3. 再実行は同じ最終 state に収束するか
+
+いずれかが「残された state 次第」なら reconciliation が要る。

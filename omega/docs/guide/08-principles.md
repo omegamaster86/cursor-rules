@@ -1,6 +1,6 @@
 # 原則で舵を取る
 
-23 本は `forge-mode/principles/` に leaf がある。forge-mode 起動時はインデックスを読み、タスクに該当するものだけ全文読む。
+24 本は `principle-*`（`omega/skills/principle-<name>/SKILL.md`）として同梱される。forge-mode 起動時はインデックスを読み、タスクに該当するものだけ全文読む。`/principle-<name>` でも 1 本だけ載せられる。
 
 チャットで原則名を出すと agent が該当 leaf を開きやすい。
 
@@ -16,3 +16,5 @@
 一覧: [skills/README.md](../../skills/README.md) の原則表。
 
 次: [自分用にする](./09-customize.md)
+
+

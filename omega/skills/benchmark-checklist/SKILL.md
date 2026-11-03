@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Benchmark checklist
 
-自分で出す performance 数字（PR の before / after、regression 主張、hillclimb harness、ライブラリや設定の選択）に使う。**なぜ** は `forge-mode/principles/explain-the-number.md`。各問いは run からの evidence で答える。コードを読んだ guess では答えない。
+自分で出す performance 数字（PR の before / after、regression 主張、hillclimb harness、ライブラリや設定の選択）に使う。**なぜ** は `principle-explain-the-number/SKILL.md`。各問いは run からの evidence で答える。コードを読んだ guess では答えない。
 
 ユーザーが求めた quick ballpark なら 1 run でよい。それでも問い 4 と 7 は確認し、「1 run」と明記する。選択肢の比較は ballpark ではない。
 

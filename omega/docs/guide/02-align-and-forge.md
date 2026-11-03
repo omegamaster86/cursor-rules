@@ -27,6 +27,6 @@
 /forge-mode この仕様で実装して。<plan-interview で出た alignment 行を貼る>
 ```
 
-プレイブックは todo に verbatim コピーされる。原則（`principles/`）は該当 leaf を全文読んでから手を動かす。
+プレイブックは todo に verbatim コピーされる。原則（**principle-<title>**）は該当 leaf スキル を全文読んでから手を動かす。
 
 次: [理解する](./03-understand.md)

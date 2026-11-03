@@ -73,7 +73,7 @@ flowchart TB
 
 ## 必須図 2: Data flow
 
-入力 → 変換 → 出力（または UI → hook → API → 表示）を示す。契約（データ形状）の名前をノード／エッジに載せる（[`foundational-thinking`](../principles/foundational-thinking.md)）。
+入力 → 変換 → 出力（または UI → hook → API → 表示）を示す。契約（データ形状）の名前をノード／エッジに載せる（[`foundational-thinking`](../../principle-foundational-thinking/SKILL.md)）。
 
 ```mermaid
 flowchart TD

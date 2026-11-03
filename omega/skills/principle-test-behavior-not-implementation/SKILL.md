@@ -1,0 +1,22 @@
+---
+name: principle-test-behavior-not-implementation
+description: "Apply when you write, change, or keep a test. Assert what the code's users can observe, so that the test fails when that behavior breaks and keeps passing when only the internals change."
+disable-model-invocation: true
+---
+
+# 振る舞いをテストし、実装をテストしない
+
+テストは、呼び出し側・エンドユーザー・他サービスといった**ユーザー**から観察できることについての主張。振る舞いは interface 越しに見える戻り値、エラー、読み戻せる state、外への効果（送信リクエスト、行書き込み、メッセージ）。実装は見えないもの：private helper、内部呼び出し順、中間データ、どの内部協力者が働いたか。
+
+次の 2 つの想像上の編集で各テストを判定する：
+
+- **振る舞いを壊す。** 誤った値、効果の欠落、二重効果。テストがまだ pass なら何も証明していない。典型：契約より緩い assert、被テストコードで計算した期待値、走らせない constant の再掲、テストが自分で組んだデータだけを assert。
+- **実装だけ変える。** 観察可能な結果は同じで内部を組み替える。テストが fail なら実装に pin されている。refactor ごとに書き直し、バグは捕まえない。
+
+1 つ目で fail、2 つ目で生き残るテストを残す。具体 input でユーザー interface から drive し、期待値は要件から導き、契約が約束するものだけ assert（過不足なし）。
+
+契約が決める。例：「空カートでは請求しない」なら payment client が呼ばれない assert は振る舞い。請求されるケースと対にし、call を見えることを示す。モック外部サービスが受け取る payload は外部が観察するので振る舞い。内部 helper 呼び出しは実装。空リストは「一致なし」の正答であり、何か結果が要るだけの hollow check ではない。誰も読まない exact メッセージは文言 pin。呼び出し側が分岐する error **型**は契約。
+
+invariant pin（2 table に同じ key、compile-time 型チェック）も可。invariant が振る舞い。
+
+次の形は弱い / 無 assert として書き直すか削除：`toBeDefined`、`toHaveBeenCalled` のみ、被テストを呼ばない再掲。table 行をまたぐ関係と `*.test-d.ts` の型のみチェックは残してよい。
