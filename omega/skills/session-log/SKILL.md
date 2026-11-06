@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 1. **safe boundary で止める**（**pause-safely** playbook の 1〜2 と同趣旨）。現在の atomic step を finish または back out。known-broken state で mid-edit stop しない。新しい作業は開始しない。nested subagent は cancel。irreversible line（force-push、deploy、データ削除）は越えない。
 2. **ローカル状態を検証。** `git branch --show-current`、`git status -sb` を実行。ブランチ名・未コミットファイル・verify 済みかを session-log に載せる。uncommitted edit があり失うと困るなら、ユーザーの明示がなくても **1 つの `wip:` commit** を提案する（**pause-safely** の 3）。`gh`、課題トラッカー、MCP による PR/issue 調査はしない。
-3. **session-log ファイルを Write。** 本文は **5,000 文字以内**。diff 全文・Shell ログ・長いコードブロックは載せない。行番号 + パス + 結論だけ。下記テンプレートに沿う。
+3. **session-log ファイルを Write。** パスは上記「出力先」の **日本語ファイル名** 規則に従う。本文は **5,000 文字以内**。diff 全文・Shell ログ・長いコードブロックは載せない。行番号 + パス + 結論だけ。下記テンプレートに沿う。
 4. **このチャットでは続けない。** session-log Write 後、同スレッドで実装・調査を再開しない。ユーザーに新規チャット手順を返す。
 5. **任意:** ユーザーが `/summarize` を使うなら **session-log を先に Write** してから。要約後も session-log を `@` または Read で渡す。
 
@@ -22,15 +22,22 @@ disable-model-invocation: true
 
 | 条件 | パス |
 |------|------|
-| デフォルト | `.cursor/session-log/YYYY-MM-DD-session.md` |
-| 名前付きタスク | `.cursor/session-log/YYYY-MM-DD-<task-slug>.md`（ユーザーまたはブランチ名から slug） |
+| デフォルト | `.cursor/session-log/YYYY-MM-DD-セッション.md` |
+| 名前付きタスク | `.cursor/session-log/YYYY-MM-DD-<短い日本語タスク名>.md` |
+
+**ファイル名は日本語で付ける。** 英語の `session` / `task-slug` / ブランチ名のそのままコピーは使わない。
+
+- **短い日本語タスク名:** ユーザーが言った作業内容、またはブランチの意図を **日本語 2〜15 字程度** に要約（例: `認証リファクタ`, `session-logスキル修正`, `CI失敗調査`）。
+- **区切り:** 日付とタスク名の間は `-`。タスク名内の空白は `-` にしてよい（例: `2026-11-04-セッションログの命名.md`）。
+- **禁止文字:** `/ \ : * ? " < > |` は含めない。
+- 同日に複数 handoff する場合はタスク名を変えて別ファイルにする（上書きしない）。
 
 `.cursor/session-log/` はセッション再開用。**commit しない**（`.gitignore` 推奨をユーザーに一言）。decision-log の `.log/*.md` とは別物（session-log = 再開用、decision-log = 監査用）。
 
 ## ファイルテンプレート
 
 ```markdown
-# Session log — <task-slug>
+# Session log — <短い日本語タスク名>
 
 更新: YYYY-MM-DD
 ブランチ: <branch>
@@ -62,13 +69,13 @@ disable-model-invocation: true
 session-log パスと、**手動**の新規チャット手順を必ず返す。例:
 
 ```markdown
-`.cursor/session-log/2026-07-10-session.md` に書きました。このチャットでは続けません。
+`.cursor/session-log/2026-07-10-認証フロー修正.md` に書きました。このチャットでは続けません。
 
 1. このチャットを閉じる
 2. 新規チャット（Cmd+N）
 3. 以下を貼る:
 
-@.cursor/session-log/2026-07-10-session.md
+@.cursor/session-log/2026-07-10-認証フロー修正.md
 session-log の「次の一手」から続けて。<ユーザー制約があればここ>
 ```
 
