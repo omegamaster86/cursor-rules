@@ -18,23 +18,6 @@
 
 ---
 
-## ドメインスキル（genai 由来）
-
-Next.js / Supabase プロジェクト向けの書き方・配置規約。
-
-| スキル | 用途 |
-|--------|------|
-| `web-coding-standards` | TypeScript、React、Tailwind、フォーム、Supabase クライアント |
-| `web-library-guide` | 推奨ライブラリ選定 |
-| `nextjs-directory-structure` | App Router のディレクトリ配置 |
-| `nextjs-code-review` | Next.js PR レビューチェックリスト |
-| `supabase-implementation` | DB、Edge Functions、RLS、型生成 |
-| `supabase-code-review` | Supabase PR レビューチェックリスト |
-| `code-security` | セキュリティ監査・パッチ提案（`jobs/` 内の手順。**明示依頼時**） |
-| `mock-store-guide` | DB 前のモックストアパターン |
-
----
-
 ## ワークフロースキル（pstack 由来）
 
 ### 調査・設計・レビュー
@@ -174,5 +157,3 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
 | `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
 | `agent-review` | `security-review` サブエージェント前提。`/agent-review` で明示起動 |
-
-
