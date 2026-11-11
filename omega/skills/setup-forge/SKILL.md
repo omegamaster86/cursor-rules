@@ -57,9 +57,9 @@ alwaysApply: true
 - `claude-sonnet-5-5-high`
 - `composer-2.5`
 - `composer-2.5-fast`
-- `gemini-4-argon-medium`
+- `gemini-4-carbon-medium`
 - `grok-4.7-medium`
-- `muse-wonder-1.0-high`
+- `muse-wonder-1.0-medium`
 
 feature, refactoring: grok-4.7-medium
 bug-fix: grok-4.7-medium
@@ -76,13 +76,13 @@ reflect judgment, divergent, synthesizer: claude-opus-5-5-medium
 multi-agent-candidates runners: claude-opus-5-5-medium, claude-opus-5-5-medium, grok-4.7-medium
 swarm workers: grok-4.7-medium
 architect runners: claude-opus-5-5-medium, grok-4.7-medium
-review orchestrator grok: grok-4.7-medium
+review orchestrator grok: gemini-4-carbon-medium
 review orchestrator sonnet correctness: claude-opus-5-5-medium
 review orchestrator sonnet quality: claude-opus-5-5-medium
 review orchestrator security: claude-opus-5-5-medium
 review orchestrator blast radius: claude-opus-5-5-medium
 code security workers: grok-4.7-medium
-code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-argon-medium
+code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-carbon-medium
 ```
 
 ### 6. 確認
