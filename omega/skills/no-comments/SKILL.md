@@ -1,14 +1,12 @@
 ---
 name: no-comments
-description: Comment Sicko を起動し、受理した指摘を直す。制約コメントはエンコード提案。/no-comments。
+description: コメントの read-only 査読（削除しない）。冗長・抑制コメントの指摘レポート。/no-comments。コメント削除はユーザーが明示したときだけ。
 disable-model-invocation: true
 ---
 
-# No comments
+# No comments（査読のみ）
 
-Comment Sicko を起動する。受理した指摘にだけ手を入れる。
-
-Comment Sicko の判断をそのまま信頼する。
+**omega 方針: コメントはエージェントが勝手に消さない。** 本スキルは Sicko による **レポート** のみ。コメント本文の削除・短文化・encode 後の削除は、ユーザーがファイルや行を明示した場合だけ行う。
 
 ## Scope
 
@@ -17,8 +15,6 @@ Comment Sicko の判断をそのまま信頼する。
 ## Steps
 
 1. `Task` を `subagent_type: "comment-sicko"` で起動。scope を渡す。サブエージェントの reasoning / speed は **forge-mode** スキルの Subagents 節に従う。ルールの再掲はしない。
-2. レポートと diff を見る。アプリケーションコードの編集、スコープ逸脱、例外で守られた削除、誤った `MUST KILL` 理由、意図的に残したコードを有罪にするフラグは拒否する。当社コードの驚きに対する reshape フラグは actionable のまま。そういうコメントは復元しない。keep は変更不能なものについて証明があるときだけ残す。スコープ内の lint / TypeScript 抑制の見落としを監査する。正しさ・安全の抑制は actionable `MUST KILL` のまま。復元は exact な例外とスコープ内証明があるときだけ。薄い `IMPORTANT` / `do not remove` の kill/keep の前に `/how` または `/why` でシンボルを走らせる。kill が曖昧なら復元しない。keep が反証されたかまだ曖昧なら削除。拒否したレポートは 1 回だけ失敗理由を付けてやり直す。2 回目も拒否なら open として報告し `/no-comments` は fail。
-3. 受理した trivial フラグは dead path 削除、パラメータ削除、正しい API 使用で直す。形の変更が要るものは受理セットと周辺コード向けに `/architect` を 1 回。スケッチで止める。Architect は形、Step 4 が実装。
-4. スコープ内で最小の根本原因修正を実装。名前の付いた workaround はすべて除去。根本原因がスコープ外ならスコープ内の最小修正を land し残りは open。意図の指針は `principle-fix-root-causes/SKILL.md` と `principle-redesign-from-first-principles/SKILL.md`。どちらもフェンス拡大やスコープ外の個別対症療法を許可しない。症状ガードの bolt-on はしない。
-5. `do not remove` / `do not change wording` / `talk to X before changing` 系の制約コメント。変更不能なものの keep は残す。スコープ内で最安の型・runtime・test・CI lint を提案。インタラクティブ承認を待つ。無人・eval は呼び出し側の事前承認が必要。承認されたら encode してから削除。そうでなければ削除し制約を open として報告し、スコープ外のスケッチを書く。
-6. 削除数、復元コメント、再実行、architect スケッチ、修正、エンコード提案・実施、未強制の制約、その他 open 作業を報告する。
+2. レポートを要約してユーザーに渡す。**レポートを理由にコメントを削除しない。** `MUST KILL` や削除候補は「要検討」として扱い、ユーザーが GO と言うまでファイルを変えない。
+3. ユーザーが **特定コメントの削除または encode** を明示したときだけ、その指示どおり最小の編集を行う（型・test・lint へのエンコードは **`principle-encode-lessons-in-structure`** に沿う）。
+4. 報告: 査読した範囲、Keep / 要検討の件数、ユーザー指示で実施した変更（無ければ「コメント変更なし」）。

@@ -7,7 +7,7 @@ verdict は 1 patch を覆い、green CI は 1 head を覆う。step 4 は code-
 1. **operator の gate が先。** grant は queue の item だけ。operator が自分用と名指した item と queue 外 PR は merge-ready で stop。plan の述べを求めるだけは go ではない。
 2. **PR ごとに 1 owner を spawn。置き換え可能な場所に work を置く。** program 用に forge を 1 回 resolve。GitHub CLI（`gh`）が default。Origin が使えるなら PR 操作はすべて `origin pr ...`。なければ `gh` と fallback を記録。`gt` は要求しない。各 owner は Cursor cloud agent。`playbooks/opening-a-pr.md` で PR を開き、real artifact で証明し、`playbooks/babysit.md` で green まで、step 4–5 が clear したら merge。
 
-   PR は早く開き CI と bot を並行させる。code-ready は slop-strip（`cursor-team-kit` の `/deslop`）と `/no-comments` の後。full swarm は finished code に走る。そのあと current trunk に rebase し code-ready head を report。self-proof は patch が land する base で走る。later head と merge-ready（self-proof、CI、babysit 完了）を report。fix round は trunk conflict か CI break までその base に留まる。rebase は CI を再起動する。code-ready push と verifier が要る later push の前に、触った path で repo の check を committed head で走らせる。
+   PR は早く開き CI と bot を並行させる。code-ready は slop-strip（`cursor-team-kit` の `/deslop`）、任意で **`code-simplifier`** スキル。コメント査読（`/no-comments`、削除なし）はユーザーが要ったときだけ。full swarm は finished code に走る。そのあと current trunk に rebase し code-ready head を report。self-proof は patch が land する base で走る。later head と merge-ready（self-proof、CI、babysit 完了）を report。fix round は trunk conflict か CI break までその base に留まる。rebase は CI を再起動する。code-ready push と verifier が要る later push の前に、触った path で repo の check を committed head で走らせる。
 
    VM は死ぬと仮定。すぐ push し root agent の store（system prompt の path）で **decision-log** スキルに従い trail を開始。保持する unit ごとに push。subagent を spawn した者は id、state、過去 run の stuck-after runtime を store に記録し parent が死んでも root が probe できる。force-push は自分の branch だけ `--force-with-lease` を最後に push した SHA に pin。自分が作っていない push では stop し root に report。
 3. **owner を trunk から parallel、stack しない。** 各 PR は単独 land。
@@ -23,3 +23,6 @@ verdict は 1 patch を覆い、green CI は 1 head を覆う。step 4 は code-
 7. **operator の stop で即 stand down。** hold は全 owner に zero-writes order。各々 stand を report し operator が release するまで brief を hold。
 
 **Reply:** **ketchup** スキルで、各 PR の state と verdict、merge したもの、countersign と理由、open operator gate、各 PR と trail への link を含めて operator をキャッチアップ。
+
+
+

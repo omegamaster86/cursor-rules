@@ -25,6 +25,7 @@ forge-mode から他スキル・コマンドへ委譲するときの参照。
 | Next.js / Supabase 実装 | `nextjs-directory-structure`, `web-coding-standards`, `supabase-implementation` の `rules/` |
 | 検証・層配線・BFF | `web-coding-standards` の `form-validation`、`nextjs-directory-structure` の `practice-bff` / `practice-server-actions`、`supabase-implementation` の `edge-auth` |
 | リファクタ・削減・簡素化（ユーザー指示時） | `/.cursor/commands/refactor-check.md` |
+| 挙動固定のまま直近 diff の仕上げ編集 | **`code-simplifier`** スキル（`/.cursor/skills/code-simplifier/SKILL.md`） |
 | 完了宣言前の検証（forge-mode ゲート） | `/.cursor/commands/verify-done.md` |
 | 長時間・離席後レビュー・ループ実行の決定証跡 | **`decision-log`** スキル（Notion。TSV / show-me-your-work は使わない） |
 | 設計・経緯の「なぜ」（動機・トレードオフ・履歴） | **`why`** スキル（how はランタイム・構造） |

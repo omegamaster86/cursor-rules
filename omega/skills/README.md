@@ -65,7 +65,8 @@
 | `maintain-verification-skill` | 上記のソース読み + ライブ drive によるメンテ |
 | `unslop` | AI tell・ filler の除去（playbook・`teach` / `automate-me` から参照） |
 | `technical-writing` | Diátaxis + 開発者文体（`multi-phase-plan` 等） |
-| `no-comments` | Comment Sicko によるコメント整理（review 前） |
+| `no-comments` | コメント査読レポートのみ（**削除しない**。明示指示時だけ編集） |
+| `code-simplifier` | 挙動不変で直近 diff のコード仕上げ（明示起動） |
 
 ### 設定（rules/）
 
@@ -157,3 +158,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
 | `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
 | `agent-review` | `security-review` サブエージェント前提。`/agent-review` で明示起動 |
+
+
+
+

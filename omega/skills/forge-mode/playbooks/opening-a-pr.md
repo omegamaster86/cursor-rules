@@ -6,6 +6,8 @@
 
 **Commits.** liberally commit。PR 前に small ordered commit に rebase。各 commit は future PR：landable、story を語る順序。fix が just-made commit に属すなら amend。separable なら new commit。
 
+**Polish（任意）.** 挙動を変えず diff だけ整えるなら **`code-simplifier`** スキル。コメント査読（削除しない）は `/no-comments`。削減・追跡ホップの調査は `/refactor-check`（編集しない）。
+
 **Titles.** Conventional Commits: `type(scope): subject`。`feat` / `fix` / `docs` / `refactor` / `test` / `chore` / `perf`。scope は変更領域（例 `omega`、`forge-mode`）。subject は短く imperative。変更を担う実シンボルがあれば名指す。末尾に period なし。
 
 **Descriptions.** PR body は briefing。diff を持つ reviewer が 1 分以内に「なぜ」「何を意図的に外した」「何が壊れうる」「どう証明した」を把握できる。短い文。identifier の壁は避ける。squash commit body は PR body と同じ。40 行を超えるなら body を削る。
@@ -32,3 +34,6 @@
 **Babysit.** Opening a PR は babysit を開始しない。URL を出して build を続ける。phase / stack が揃った後、ユーザーが求めたときだけ別 pass で **Babysit**（`babysit.md`）。各 PR ごとの babysit は build を止め、後続 wave で restart される commit に check を浪費する。intent から drift した feedback には push back。
 
 PR を開く subagent は `agent-review` スキルを実行、URL を返し、babysit しない（Autopilot-full / Autopilot-stack owner は brief に従う）。parent に return。
+
+
+

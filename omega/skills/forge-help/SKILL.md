@@ -75,7 +75,7 @@ disable-model-invocation: true
 | セキュリティ監査・パッチ提案（明示依頼） | [`/code-security`](../code-security/SKILL.md) |
 | 文体の推敲（AI tell 除去） | [`/unslop`](../unslop/SKILL.md) |
 | ドキュメント・PR 本文の技術文 | [`/technical-writing`](../technical-writing/SKILL.md) |
-| コメント整理（review 前） | [`/no-comments`](../no-comments/SKILL.md) |
+| コメント査読（削除しない） | [`/no-comments`](../no-comments/SKILL.md) |
 | 大規模・横断変更のプラン | [`/figure-it-out`](../figure-it-out/SKILL.md) |
 | 長時間 run の監査 | [`/decision-log`](../decision-log/SKILL.md) |
 | ロール別モデル | [`/setup-forge`](../setup-forge/SKILL.md) |
