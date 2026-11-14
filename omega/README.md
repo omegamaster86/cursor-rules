@@ -1,6 +1,5 @@
-# genai-pstack
-
-genai（Next.js / Supabase ドメイン規約）と pstack（厳密エンジニアリングワークフロー）を統合した Cursor ルールセットの試作版です。
+# pstack
+ pstack（厳密エンジニアリングワークフロー）と独自skillを統合した Cursor ルールセットの試作版です。
 
 初めての方は [omega ガイド](docs/guide/README.md)（セットアップ → plan-interview / forge-mode → verify / PR land）から。
 
@@ -294,6 +293,3 @@ https://github.com/mattpocock/skills/tree/main/skills
 https://github.com/cursor/plugins/tree/main/pstack 
 https://github.com/openai/plugins/tree/main/plugins
 https://github.com/nanaism/yomiyasu
-
-
-
