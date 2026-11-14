@@ -33,4 +33,3 @@
 ```
 
 `findings.jsonl` が機械可読の正本。重大度: [severity.md](severity.md)
-

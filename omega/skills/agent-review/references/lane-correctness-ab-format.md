@@ -52,4 +52,3 @@
 ```
 
 Failed レーンがあるとき: Integrated Findings は成功側のみで埋め、Cross-Check Summary に parent fallback を記載する。
-

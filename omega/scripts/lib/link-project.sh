@@ -67,4 +67,3 @@ for skill in "$OMEGA/skills"/*/; do
 done
 
 echo "linked omega -> $PJ/.cursor"
-

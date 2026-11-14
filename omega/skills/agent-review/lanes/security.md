@@ -35,4 +35,3 @@ Custom Instructions: コミット済み差分のみを正とする。上記 Base
 finding 表形式（Severity, Location, Finding）があればそのまま含める。
 
 広い監査は [../references/security-vs-code-security.md](../references/security-vs-code-security.md)。
-

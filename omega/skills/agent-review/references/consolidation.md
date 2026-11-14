@@ -43,5 +43,3 @@
 6. Must Fix の正本は **`consolidated.md` の1セクション**のみ。
 
 チャットには **Merge Recommendation**、**Must Fix**、**artifact_dir パス** を必ず出す。
-
-

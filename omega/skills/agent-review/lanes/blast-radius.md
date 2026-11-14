@@ -45,4 +45,3 @@
 ## Reviewed Files
 
 親が `lane-blast-radius.md` に転記する。チャットには要約のみ返してよい。
-

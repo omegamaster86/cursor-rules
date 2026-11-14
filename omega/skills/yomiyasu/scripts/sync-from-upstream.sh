@@ -62,4 +62,3 @@ PY
 echo "Copied references/, lists/, scripts/."
 echo "Upstream SKILL: $UP_SKILL"
 echo "Manual: merge upstream SKILL.md §2–§3 into omega/skills/yomiyasu/SKILL.md if needed."
-

@@ -34,5 +34,3 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 ## ユーザーへの締め
 
 finding 数、レポートパス、verified か、fixes 希望の質問（finding があるときのみ）。
-
-

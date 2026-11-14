@@ -156,13 +156,3 @@ A と B の完了待ちが終わった直後（C/D/E の完了を待たない）
 ## 3 統合判定（親）
 
 [consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。`lane-correctness-ab.md` は既に存在すること。
-
-
-
-
-
-
-
-
-
-

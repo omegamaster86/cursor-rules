@@ -23,5 +23,3 @@ patch-verifier は次を JSON で返す:
 - `REVIEWED_PATHS`, 実行したテスト
 
 並列で **adversarial researcher**（diff のみスコープ）に「この変更で新たに開いた経路、または finding の別経路が残るか」を聞く。1 回だけ revision ラウンド可。
-
-

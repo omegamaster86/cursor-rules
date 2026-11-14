@@ -14,4 +14,3 @@ cleanup が欠けた feature や本物の bug を露わにしたら切り出し�
 8. small ordered commit に rebase。subtraction commit、その後 reshape、その後 follow-on cleanup。**sequence-verifiable-units** principle skill で各 behavior-preserving slice を次の前に green。**Opening a PR** を実行。
 
 **Reply:** 変えた構造、pin した contract、equivalence proof、reader-load delta、出荷したものと revert したもの。新挙動なし。
-

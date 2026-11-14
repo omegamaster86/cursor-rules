@@ -29,4 +29,3 @@ chmod +x /path/to/cursor-rules/omega/scripts/omega-sync
 ```
 
 `omega/scripts/projects.txt` に PJ を書いておけば、全 PJ 一括は `omega/scripts/omega-sync-all` を実行する。
-

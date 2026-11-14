@@ -44,5 +44,3 @@ authorized scope を広げない。現リビジョンのソースのみ（必要
 ## Diff 限定モード
 
 [scan-diff.md](scan-diff.md) から呼ばれたときは、変更ファイルを中心に読み、**変更が関与しない既存バグ**は `preExisting` として coverage に記録し finding には載せない。
-
-

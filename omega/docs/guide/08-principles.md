@@ -16,5 +16,3 @@
 一覧: [skills/README.md](../../skills/README.md) の原則表。
 
 次: [自分用にする](./09-customize.md)
-
-
