@@ -28,7 +28,7 @@ cp "$UP/references/fact-recovery-details.md" "$SKILL_DIR/references/"
 cp "$UP/references/domains/"*.md "$SKILL_DIR/references/domains/"
 cp "$UP/references/doc-types/"*.md "$SKILL_DIR/references/doc-types/"
 cp "$UP/references/lists/"*.txt "$SKILL_DIR/references/lists/"
-cp "$UP/scripts/yomiyasu_lint.py" "$UP/scripts/yomiyasu_diff.py" "$SKILL_DIR/scripts/"
+cp "$UP/scripts/yomiyasu_lint.py" "$UP/scripts/yomiyasu_diff.py" "$UP/scripts/markdown_visibility.py" "$SKILL_DIR/scripts/"
 
 export SKILL_DIR
 python3 - <<'PY'
@@ -62,3 +62,4 @@ PY
 echo "Copied references/, lists/, scripts/."
 echo "Upstream SKILL: $UP_SKILL"
 echo "Manual: merge upstream SKILL.md §2–§3 into omega/skills/yomiyasu/SKILL.md if needed."
+

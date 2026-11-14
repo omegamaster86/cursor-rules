@@ -12,7 +12,7 @@
 - `references/gemini-syntax.md`, `slop-catalog.md`, `calques.md`, `rephrase-test.md`, `review-points.md` — 上流と同一
 - `references/audience.md`, `persona.md`, `fact-recovery.md`, `fact-recovery-details.md` — 上流と同一
 - `references/doc-types/*.md`, `references/domains/*.md`, `references/lists/*.txt` — 上流と同一
-- `scripts/yomiyasu_lint.py`, `yomiyasu_diff.py` — 上流 `scripts/` と同一
+- `scripts/yomiyasu_lint.py`, `yomiyasu_diff.py`, `markdown_visibility.py` — 上流 `scripts/` と同一
 
 ## omega に含めないもの
 
@@ -44,3 +44,4 @@ git commit -m "chore: bump yomiyasu upstream and sync omega excerpt"
 ```
 
 共有 skill は symlink のため正本更新は即反映。`.cursor` が実ディレクトリのままのときは `omega-sync` を再実行。
+
