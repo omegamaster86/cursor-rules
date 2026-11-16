@@ -59,4 +59,9 @@ Router 判定・構造調査・入力メタデータは **単独の成果物フ�
 
 ## チャット出力
 
-統合後、チャットには `consolidated.md` の **要約**（Merge Recommendation + Must Fix + 各レーン1行）を出し、`artifact_dir` パスを示す。正しさの詳細は `lane-correctness-ab.md` を案内する。
+統合後、チャットには [consolidated-output-format.md](consolidated-output-format.md) の **`# Triple Hybrid Review Result` 全文**を必ず出す（`/review-orchestrator-triple-hybrid` と同型）。`consolidated.md` と **同一内容**とする。
+
+- 要約のみ・ファイルパス案内のみで終えることは禁止
+- サブエージェント長文の丸ごと再掲は不要（統合済みセクションに集約）
+- `lane-correctness-ab.md` は表形式の補助成果物。チャットの正本は統合レポート本文
+

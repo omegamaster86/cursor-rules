@@ -31,7 +31,7 @@
 - Overall `Block`: Correctness CRITICAL、Structural ビルド破綻、Security Critical
 - `Approve with conditions`: QUALITY-BLOCKER、Security High、blast unproven（tier L）
 
-統合全文を **`consolidated.md`** に書く。
+統合全文を **`consolidated.md`** に書き、**同じ全文をチャットに投稿**する。
 
 ## 共通ポリシー
 
@@ -39,7 +39,8 @@
 2. レーン分担を守り、他レーンの深掘りをしない。
 3. 抽象論禁止。再現条件・影響・最小修正案。
 4. nextjs-code-review 準拠は主に A/B（[lane-map.md](lane-map.md)）。
-5. サブエージェント長文の再掲はせず、**ファイルパスを案内**する。
-6. Must Fix の正本は **`consolidated.md` の1セクション**のみ。
+5. サブエージェントの生ログ全文は再掲しない。統合セクションに finding 単位で載せる（生ログは `lane-*.md`）。
+6. Must Fix の正本は **`consolidated.md` / チャット** の `## Must Fix Before Merge` のみ。
 
-チャットには **Merge Recommendation**、**Must Fix**、**artifact_dir パス** を必ず出す。
+チャットには [consolidated-output-format.md](consolidated-output-format.md) の **`# Triple Hybrid Review Result` 全文**を必ず出す（要約のみ禁止）。
+

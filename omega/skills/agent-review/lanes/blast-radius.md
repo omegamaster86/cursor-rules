@@ -44,4 +44,5 @@
 
 ## Reviewed Files
 
-親が `lane-blast-radius.md` に転記する。チャットには要約のみ返してよい。
+親が `lane-blast-radius.md` に転記する。チャットはフェーズ2の統合レポート（`## Blast Radius Lane（E）` / `## Subagent Outputs`）に集約する。
+

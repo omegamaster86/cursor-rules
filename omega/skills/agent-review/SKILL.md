@@ -1,6 +1,6 @@
 ---
 name: agent-review
-description: "担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。争点あるブランチ・PR で `/agent-review` を明示起動。成果物は `.cursor/agent-review/yyyy-mm-dd-<branch>/`。"
+description: "担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。争点あるブランチ・PR で `/agent-review` を明示起動。統合結果はチャットに `# Triple Hybrid Review Result` 全文（バックアップ: `.cursor/agent-review/yyyy-mm-dd-<branch>/`）。"
 disable-model-invocation: true
 ---
 

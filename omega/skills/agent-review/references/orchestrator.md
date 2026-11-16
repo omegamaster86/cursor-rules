@@ -156,3 +156,7 @@ A と B の完了待ちが終わった直後（C/D/E の完了を待たない）
 ## 3 統合判定（親）
 
 [consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。`lane-correctness-ab.md` は既に存在すること。
+
+1. `artifact_dir/consolidated.md` に統合レポート全文を書く。
+2. **チャットに同一内容を投稿する**（`/review-orchestrator-triple-hybrid` 同型の `# Triple Hybrid Review Result`）。要約のみ・成果物パスだけの返却は禁止。
+
