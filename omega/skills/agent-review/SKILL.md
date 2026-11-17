@@ -1,6 +1,6 @@
 ---
 name: agent-review
-description: "担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。争点あるブランチ・PR で `/agent-review` を明示起動。統合結果はチャットに `# Triple Hybrid Review Result` 全文（バックアップ: `.cursor/agent-review/yyyy-mm-dd-<branch>/`）。"
+description: "担当分け並列 PR レビュー（正しさ×2 / 品質 / セキュリティ / 条件付き blast）。争点あるブランチ・PR で `/agent-review` を明示起動。統合結果はチャットに `# Triple Hybrid Review Result` 全文のみ（ファイル・フォルダは作らない）。"
 disable-model-invocation: true
 ---
 
@@ -16,7 +16,7 @@ disable-model-invocation: true
 
 | フェーズ | reference |
 |----------|-----------|
-| 0 成果物 | [artifacts.md](references/artifacts.md) |
+| 0 出力 | [artifacts.md](references/artifacts.md) |
 | 1 base・差分 | [base-resolution.md](references/base-resolution.md) |
 | 0.3 Router | [dimension-router.md](references/dimension-router.md) |
 | 0.5 構造 | [structural-audit.md](references/structural-audit.md) |

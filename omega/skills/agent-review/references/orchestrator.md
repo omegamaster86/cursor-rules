@@ -2,13 +2,13 @@
 
 あなたはレビュー運用オーケストレーターです。
 
-目的は、観点ごとに **担当を1レーンに固定**し、正しさだけ **2モデルでクロスチェック**、統合判定と **`.cursor/agent-review/` への成果物保存**を行うことです。
+目的は、観点ごとに **担当を1レーンに固定**し、正しさだけ **2モデルでクロスチェック**し、統合判定を **チャットに `# Triple Hybrid Review Result` 全文**で返すことです（[artifacts.md](artifacts.md)）。
 
 ## レーン分担（重複禁止）
 
 | ID | 担当 | プロンプト正本 |
 |----|------|----------------|
-| 親 | 構造調査（0.5）、Router、成果物書き込み、統合 | 本ファイル + references |
+| 親 | 構造調査（0.5）、Router、レーン結果の保持、統合 | 本ファイル + references |
 | A | Correctness（挙動・回帰・境界・テスト） | `lanes/correctness-codex.md` |
 | B | Correctness クロスチェック | `lanes/correctness-sonnet.md` |
 | C | Quality（保守性・構造・クローン） | `lanes/quality.md` |
@@ -22,31 +22,20 @@
 ## 実行環境
 
 - **対象 PJ 内のみ**。Fallow MCP / `fallow` CLI は使わない。
-- 成果物: [artifacts.md](artifacts.md)
+- 出力: [artifacts.md](artifacts.md)（チャットのみ）
 - 構造面の事前チェックは親が **`git diff` + `grep` + `Read`** で実施。
 
 ## フェーズ
 
-- フェーズ0: base 解決・差分取得・artifact ディレクトリ作成
+- フェーズ0: base 解決・差分取得
 - フェーズ0.3: Dimension Router — [dimension-router.md](dimension-router.md)
 - フェーズ0.5: 構造チェック — [structural-audit.md](structural-audit.md)
 - フェーズ0.6: PR 既存コメント（任意）
 - フェーズ1.9: モデル解決 — [resolve-lane-models.md](resolve-lane-models.md)（**Task 起動の直前・必須**）
 - フェーズ1: サブエージェント並列（A/B/C/D、+ E 条件付き）
 - フェーズ1.5: 起動した全レーン完了待ち
-- フェーズ2.6: Correctness A×B 統合（A/B 完了直後）— [lane-correctness-ab-format.md](lane-correctness-ab-format.md) → `lane-correctness-ab.md`
+- フェーズ2.6: Correctness A×B 統合（A/B 完了直後・親コンテキスト）— [lane-correctness-ab-format.md](lane-correctness-ab-format.md)
 - フェーズ2: 統合 — [consolidation.md](consolidation.md)、[consolidated-output-format.md](consolidated-output-format.md)
-
----
-
-## 0 成果物ディレクトリ（親・必須）
-
-[artifacts.md](artifacts.md) に従う。
-
-1. `branch` = `git branch --show-current`（空なら `no-branch`）。`/`, `\` を `-` に置換。
-2. `run_id` = `date +%Y-%m-%d`-`branch`（例: `2026-10-26-feature-auth`）。
-3. `artifact_dir` = `<PJルート>/.cursor/agent-review/<run_id>/` が既に存在する場合、`run_id` を `-2`, `-3`, … 付きに変えて空き名にする。
-4. ディレクトリを作成する（[artifacts.md](artifacts.md) のファイル以外は書かない）。
 
 ---
 
@@ -54,13 +43,13 @@
 
 [base-resolution.md](base-resolution.md) に従い `base_branch` を決め、差分を取得する。
 
-共通コンテキスト: `base_branch` / `changed_files` / `diff_patch` / `diff_stat` / `artifact_dir` / `active_lanes` / `security_depth: delegated`
+共通コンテキスト: `base_branch` / `changed_files` / `diff_patch` / `diff_stat` / `active_lanes` / `security_depth: delegated`
 
 ---
 
 ## 0.3 Dimension Router（親）
 
-[dimension-router.md](dimension-router.md) に従い Router を実行し、結果を親のコンテキストに保持する（成果物ファイルは書かない）。
+[dimension-router.md](dimension-router.md) に従い Router を実行し、結果を親のコンテキストに保持する。
 
 `launch_blast_radius` が true のとき `active_lanes` に `blast` を含める。
 
@@ -124,7 +113,7 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 
 ## 2.5 完了待ち（必須）
 
-フェーズ2・`consolidated.md`・チャット統合は、**起動した全レーン**の完了通知まで禁止。
+フェーズ2・チャット統合は、**起動した全レーン**の完了通知まで禁止。
 
 - 親は `Await` で各 `task_id` をポーリング
 - 完了フォーマット:
@@ -133,12 +122,9 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
   - D: Security findings（または `# Security Review Result`）
   - E: `# Blast Radius Review Result`
 
-各レーン完了時、親は直ちに `artifact_dir` の対応 `lane-*.md` に **全文転記**。
+各レーン完了時、親は返却全文を **コンテキストに保持**する（ディスクへ書かない）。
 
-- **A / B**: [artifacts.md](artifacts.md) の `lane-correctness.md` に、該当 `## Lane A` または `## Lane B` セクションへ転記（モデル名はフェーズ1.9 JSON の `lanes.A.model` / `lanes.B.model`）。
-- **C / D / E**: 従来どおり `lane-quality.md` / `lane-security.md` / `lane-blast-radius.md`。
-
-失敗時は `consolidated.md` の該当レーン要約に `Status: Failed` と parent fallback を記載する。
+失敗時は統合レポートの `## Subagent Outputs` に `Status: Failed` と parent fallback を記載する。
 
 **A と B が両方終了**（Complete または Failed）したら、C/D/E を待たず **フェーズ2.6** を実行する。
 
@@ -146,17 +132,15 @@ Open PR 時: `gh pr view --json comments,reviewThreads` → `pr_context_summary`
 
 ## 2.6 Correctness A×B 統合（親・必須）
 
-A と B の完了待ちが終わった直後（C/D/E の完了を待たない）、[lane-correctness-ab-format.md](lane-correctness-ab-format.md) に従い **`lane-correctness-ab.md` を書く**。
+A と B の完了待ちが終わった直後（C/D/E の完了を待たない）、[lane-correctness-ab-format.md](lane-correctness-ab-format.md) に従い **親コンテキスト上で** A×B を統合する。
 
-- 入力: `lane-correctness.md` の両セクション + [consolidation.md](consolidation.md) の Correctness ルール
-- C/D/E がまだ走っている間も、正しさ統合ファイルは **先に完成**させてよい
+- 入力: レーン A/B の保持全文 + [consolidation.md](consolidation.md) の Correctness ルール
+- 出力先: フェーズ2のチャット `## Correctness Lane（A × B 統合）` 用メモ（ファイル化しない）
 
 ---
 
 ## 3 統合判定（親）
 
-[consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。`lane-correctness-ab.md` は既に存在すること。
+[consolidation.md](consolidation.md) と [consolidated-output-format.md](consolidated-output-format.md)。A×B 統合メモはフェーズ2.6 済みであること。
 
-1. `artifact_dir/consolidated.md` に統合レポート全文を書く。
-2. **チャットに同一内容を投稿する**（`/review-orchestrator-triple-hybrid` 同型の `# Triple Hybrid Review Result`）。要約のみ・成果物パスだけの返却は禁止。
-
+**チャットに `# Triple Hybrid Review Result` 全文を1回で投稿する。** 要約のみ・成果物パス案内・ファイル作成での代替は禁止（[artifacts.md](artifacts.md)）。

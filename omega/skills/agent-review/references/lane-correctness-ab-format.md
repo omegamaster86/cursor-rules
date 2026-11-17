@@ -1,54 +1,41 @@
-# lane-correctness-ab.md 出力フォーマット（厳守）
+# Correctness A×B 統合（フェーズ2.6・親コンテキスト）
 
-親は **レーン A と B の両方が完了**（または片方 Failed）した直後（オーケストレーター **フェーズ2.6**）、フェーズ2の `consolidated.md` より **先に** 本ファイルを `artifact_dir` に書く。統合ルールは [consolidation.md](consolidation.md) の **Correctness（A × B）** に従う。
+親は **レーン A と B の両方が完了**（または片方 Failed）した直後、オーケストレーター **フェーズ2.6** で A×B を統合する。統合ルールは [consolidation.md](consolidation.md) の **Correctness（A × B）** に従う。
 
-生のサブエージェント出力は [artifacts.md](artifacts.md) の `lane-correctness.md` にある。本ファイルは **重複指摘のマージ・信頼度付け・正しさレーン単体の Must Fix** の正本。
+入力は親が保持しているレーン A/B の `# Deep Review Result` 全文。**ファイルは作らない**（[artifacts.md](artifacts.md)）。統合結果は最終チャットの `## Correctness Lane（A × B 統合）` に載せる。
 
-```markdown
-# Correctness Lane（A × B 統合）
+## 親が作る統合メモ（内部）
 
-## Lane Models
+次の観点を整理し、finding を [consolidated-output-format.md](consolidated-output-format.md) の箇条書き形式に落とし込む。
 
-- Lane A: <model from lanes.A>
-- Lane B: <model from lanes.B>
+### Cross-Check Summary（親メモ）
 
-## Lane Status
-
-- A: Complete | Failed — <1行要約>
-- B: Complete | Failed — <1行要約>
-
-## Cross-Check Summary
-
-- Both reported CRITICAL on same issue: <件数>（高信頼 Must Fix 候補）
+- Both reported CRITICAL on same issue: <件数>
 - A-only CRITICAL: <件数>
 - B-only CRITICAL: <件数>
-- Severity conflicts: <件数>（A/B で重大度が食い違う指摘）
+- Severity conflicts: <件数>
 
-## Integrated Findings
-
-| ID | Finding | Severity | Confidence | Sources | Notes |
-|----|---------|----------|------------|---------|-------|
-| C1 | … | CRITICAL / IMPORTANT / LOW | high（両方） / medium（片方） / low | A, B / A / B | 再現・影響・最小修正案 |
-
-信頼度:
+### 信頼度
 
 - **high**: 同一論点で両レーンが `CRITICAL`、または両方が同趣旨の IMPORTANT 以上
-- **medium**: 片側のみ `CRITICAL` → Must Fix 候補 + **要追加検証** を Notes に書く
+- **medium**: 片側のみ `CRITICAL` → Must Fix 候補 + **要追加検証**
 - **low**: 片側のみ LOW、または片側 Failed で残側のみ
 
-## Correctness Must Fix
+### Integrated Findings → チャットへの載せ方
 
-（Integrated Findings からマージ前の正しさ Must Fix。全体の Must Fix 正本は `consolidated.md`）
+各 finding を次の形で `## Correctness Lane（A × B 統合）` に列挙する:
 
-## Correctness Can Defer
-
-## Nextjs Code Review Compliance（A × B）
-
-（A/B の準拠評価を統合。矛盾は Severity conflicts にも反映）
-
-## Raw Transcripts
-
-- `lane-correctness.md`（Lane A / Lane B 全文）
+```markdown
+- [CRITICAL|IMPORTANT|LOW] タイトル
+  - Source: LaneA / LaneB / Both
+  - 事象:
+  - 根拠:
+  - 再現条件:
+  - 影響範囲:
+  - 最小修正案:
+  - 推奨テスト:
 ```
 
-Failed レーンがあるとき: Integrated Findings は成功側のみで埋め、Cross-Check Summary に parent fallback を記載する。
+Failed レーンがあるとき: finding は成功側を主にし、Cross-Check Summary に parent fallback を記載する。
+
+該当なし: `No integrated correctness findings.`

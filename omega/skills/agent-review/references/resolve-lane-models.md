@@ -24,11 +24,11 @@ JSON の `lanes.A` … `lanes.E` それぞれ:
 | `model` | `omit_task_model: false` のとき **必ず** Task の `model` に設定 |
 | `omit_task_model: true` | Task の `model` を省略（親チャットモデル） |
 
-`warnings` が空でないときは、チャットと `consolidated.md` の Inputs に **Resolved lane models** と併記する。
+`warnings` が空でないときは、チャットの `## Inputs` に **Resolved lane models** と併記する。
 
 ## 3. 記録
 
-`consolidated.md` の **Inputs** に次を載せる:
+チャット統合レポートの **## Inputs** に次を載せる:
 
 - `Resolved lane models:` — スクリプト出力の `lanes`（lane ID → `model` / `resolved_from`）
 
@@ -50,4 +50,6 @@ JSON の `lanes.A` … `lanes.E` それぞれ:
 
 ## 6. 検証
 
-起動ログ・`consolidated.md` の model と、直前のスクリプト出力が一致していること。不一致なら **起動をやり直す**（再レビューはユーザー指示または `/agent-review` 再実行）。
+起動ログ・チャット `## Inputs` の model と、直前のスクリプト出力が一致していること。不一致なら **起動をやり直す**（再レビューはユーザー指示または `/agent-review` 再実行）。
+
+

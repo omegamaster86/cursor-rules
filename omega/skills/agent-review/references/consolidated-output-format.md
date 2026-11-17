@@ -1,13 +1,8 @@
-# consolidated.md / チャット出力フォーマット（厳守）
+# チャット出力フォーマット（厳守）
 
-フェーズ2完了後、親は次を **同一内容**で行う。
+フェーズ2完了後、親は **チャットに下記 `# Triple Hybrid Review Result` 全文を投稿する**（唯一の正本。[artifacts.md](artifacts.md)）。
 
-1. `artifact_dir/consolidated.md` に書く（ローカルバックアップ）
-2. **チャットに下記 `# Triple Hybrid Review Result` 全文を投稿する**
-
-要約のみ・`artifact_dir` 案内だけ・レーン全文のファイル参照だけで終えることは **禁止**。`/review-orchestrator-triple-hybrid` と同様、統合レポートはチャット上で完結させる。
-
-末尾の `## Artifact Paths` はバックアップ用パスの記録のみ（本文の代替にしない）。
+要約のみ・ファイルパス案内だけ・レーン全文のファイル参照だけで終えることは **禁止**。
 
 ---
 
@@ -172,9 +167,5 @@
 - Quality blocker がない場合: `No quality blockers found.`
 - 残留リスクを1-3件記載
 
-## Artifact Paths
 
-- Run ID:
-- Directory: `.cursor/agent-review/<run_id>/`
-- Correctness raw（A/B）: `lane-correctness.md`
-- Correctness 表形式統合（任意参照）: `lane-correctness-ab.md`
+

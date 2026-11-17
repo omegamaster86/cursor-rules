@@ -1,67 +1,28 @@
-# Agent review artifacts
+# Agent review 出力（チャットのみ）
 
-`agent-review` スキル（`/agent-review` 明示起動）実行時、**対象 PJ のリポジトリルート**に次を作る。
+`/agent-review` の **唯一の正本**はチャット上の `# Triple Hybrid Review Result` 全文（[consolidated-output-format.md](consolidated-output-format.md)）。`/review-orchestrator-triple-hybrid` と同型。
 
-## ルート
+## 禁止
 
-```text
-.cursor/agent-review/<run_id>/
-```
+- `Write` / `mkdir` / シェルでの作成によるレビュー成果物（`.cursor/agent-review/`、`lane-*.md`、`consolidated.md` など）
+- レーン途中・統合後に「ファイルに書いたので参照してください」で終えること
+- 要約のみ・ファイルパス案内のみで終えること
 
-- `<run_id>`: `yyyy-mm-dd-<branch>`（ローカル日付 + 現在ブランチ名。例: `2026-10-26-feature-auth`）
-- ブランチ名の `/` は `-` に置換（`feature/foo` → `feature-foo`）。取得できないときは `no-branch`。
-- 同名ディレクトリが既にあるときは末尾に `-2`, `-3`, … を付けて上書きしない。
+## 親が保持するもの（コンテキストのみ）
 
-## ファイル一覧
+| 保持時点 | 内容 |
+|----------|------|
+| 各レーン完了 | A/B: `# Deep Review Result` 全文、C: `# Code Quality Review Result`、D/E: 各レーン最終フォーマット |
+| A と B 完了後（フェーズ2.6） | [lane-correctness-ab-format.md](lane-correctness-ab-format.md) に従った A×B 統合メモ（チャットの `## Correctness Lane（A × B 統合）` 用） |
+| 全レーン完了後（フェーズ2） | 統合レポート草案 → **最終ターンでチャットに全文投稿** |
 
-| ファイル | 作成者 | 内容 |
-|----------|--------|------|
-| `lane-correctness.md` | 親（A/B 完了ごとに追記） | `# Correctness Lane Raw` + `## Lane A` / `## Lane B` に各 `# Deep Review Result` 全文 |
-| `lane-correctness-ab.md` | 親（A と B 完了後・フェーズ2直前） | **Correctness（A × B 統合）** — [lane-correctness-ab-format.md](lane-correctness-ab-format.md) |
-| `lane-quality.md` | 親 | `# Code Quality Review Result` 全文 |
-| `lane-security.md` | 親 | Security サブエージェントの findings 全文 |
-| `lane-blast-radius.md` | 親（起動時のみ） | Blast レーン全文 |
-| `consolidated.md` | 親（フェーズ2） | `# Triple Hybrid Review Result` 統合レポート |
+サブエージェントは **readonly**。親は返却をコンテキストに溜め、ディスクへ転記しない。
 
-サブエージェントは **readonly** のためファイルは書かない。親が各レーン完了後に **そのまま転記**する。
+Router 判定・構造調査・入力メタデータも **単独ファイルに書かない**。統合レポートの該当セクションにのみ載せる。
 
-正しさレーンの **読み物の正本**は `lane-correctness-ab.md`。生ログは `lane-correctness.md`。
+## チャット出力（必須）
 
-Router 判定・構造調査・入力メタデータは **単独の成果物ファイルに書かない**。親のコンテキストと `consolidated.md` の該当セクションに載せる。
+統合後、親は [consolidated-output-format.md](consolidated-output-format.md) の **`# Triple Hybrid Review Result` から末尾まで**をチャットに投稿する。
 
-## lane-correctness.md の構造
-
-初回（レーン A または B の先着）でファイルを作り、見出しを固定する:
-
-```markdown
-# Correctness Lane Raw
-
-## Lane A (<resolved model>)
-
-（A 完了時に `# Deep Review Result` 全文をここに転記。未完了なら `(pending)`）
-
-## Lane B (<resolved model>)
-
-（B 完了時に全文。未完了なら `(pending)`）
-```
-
-`lane-correctness-codex.md` / `lane-correctness-sonnet.md` は **廃止**（後方互換のため親は作らない）。
-
-## Git
-
-- `.cursor/agent-review/` は **ローカル成果物**。対象 PJ の `.gitignore` に追記を推奨:
-
-```gitignore
-.cursor/agent-review/
-```
-
-- cursor-rules リポジトリ自体にサンプル run をコミットしない。
-
-## チャット出力
-
-統合後、チャットには [consolidated-output-format.md](consolidated-output-format.md) の **`# Triple Hybrid Review Result` 全文**を必ず出す（`/review-orchestrator-triple-hybrid` と同型）。`consolidated.md` と **同一内容**とする。
-
-- 要約のみ・ファイルパス案内のみで終えることは禁止
-- サブエージェント長文の丸ごと再掲は不要（統合済みセクションに集約）
-- `lane-correctness-ab.md` は表形式の補助成果物。チャットの正本は統合レポート本文
-
+- サブエージェント生ログの丸ごと再掲は不要（統合セクションに finding 単位で集約）
+- `## Correctness Lane（A × B 統合）` にはフェーズ2.6の統合結果を **箇条書きで載せる**（別ファイルへの参照で代替しない）

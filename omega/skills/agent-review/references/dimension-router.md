@@ -37,4 +37,5 @@
 - launch_blast_radius
 - tier（S: ≤10 files / M: 11–49 / L: ≥50 または migration +2 あり）
 
-統合時は `consolidated.md` の Dimension Router セクションに載せる。
+統合時はチャットの `## Dimension Router` セクションに載せる。
+

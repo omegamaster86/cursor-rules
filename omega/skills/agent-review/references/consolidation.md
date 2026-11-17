@@ -5,7 +5,7 @@
 - Both `CRITICAL` → Must Fix（高信頼）
 - 片側のみ → Must Fix 候補 + 要追加検証
 
-統合の **全文正本**は `artifact_dir/lane-correctness-ab.md`（[lane-correctness-ab-format.md](lane-correctness-ab-format.md)）。親はフェーズ2.6で必ず作成する。`consolidated.md` の `## Correctness Lane（A × B 統合）` は要約 + 同ファイルへの参照のみ（長文の再掲禁止）。
+A×B 統合はフェーズ2.6で親コンテキスト上に行う（[lane-correctness-ab-format.md](lane-correctness-ab-format.md)）。チャットの `## Correctness Lane（A × B 統合）` に **統合済み finding を箇条書きで載せる**（ファイル参照で代替しない）。
 
 ## Quality（C）
 
@@ -31,7 +31,7 @@
 - Overall `Block`: Correctness CRITICAL、Structural ビルド破綻、Security Critical
 - `Approve with conditions`: QUALITY-BLOCKER、Security High、blast unproven（tier L）
 
-統合全文を **`consolidated.md`** に書き、**同じ全文をチャットに投稿**する。
+統合全文を **チャットにのみ**投稿する（[artifacts.md](artifacts.md)）。
 
 ## 共通ポリシー
 
@@ -39,8 +39,11 @@
 2. レーン分担を守り、他レーンの深掘りをしない。
 3. 抽象論禁止。再現条件・影響・最小修正案。
 4. nextjs-code-review 準拠は主に A/B（[lane-map.md](lane-map.md)）。
-5. サブエージェントの生ログ全文は再掲しない。統合セクションに finding 単位で載せる（生ログは `lane-*.md`）。
-6. Must Fix の正本は **`consolidated.md` / チャット** の `## Must Fix Before Merge` のみ。
+5. サブエージェントの生ログ全文は再掲しない。統合セクションに finding 単位で載せる（生ログは親コンテキストのみ保持）。
+6. Must Fix の正本は **チャット** の `## Must Fix Before Merge` のみ。
 
 チャットには [consolidated-output-format.md](consolidated-output-format.md) の **`# Triple Hybrid Review Result` 全文**を必ず出す（要約のみ禁止）。
+
+
+
 
