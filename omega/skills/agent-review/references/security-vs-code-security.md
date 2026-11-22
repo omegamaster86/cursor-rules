@@ -7,5 +7,6 @@
 | スコープ | ブランチ差分・PR 向け triage | codebase / repository / changes / patches |
 | 成果物 | チャット統合レポートの Security セクション | `.cursor/CODE-SECURITY-<UTC>/` |
 
-深い threat model・パッチ生成・広いツリースキャンは `/code-security`。PR マージ前の専任セキュリティ監査は orchestrator の D レーン。
+深い threat model・パッチ生成・広いツリースキャンは `/code-security`（調査レンズは `code-security/references/lenses/`）。PR 上の短い表は orchestrator の D レーン。大 diff のマージ前は `/code-security` を正とし、D レーンはスモークに使う。
+
 

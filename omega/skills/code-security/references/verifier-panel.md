@@ -14,6 +14,13 @@
 - **reject** — 反証（別ガード、到達不能、誤認）をソース行で示せる
 - **uncertain** — 証拠不足（accept に数えない）
 
+## 追加の reject / uncertain（レンズ）
+
+- ファイル名正規表現は通るのに「クライアントとポリシーが不一致」だけを根拠にしている → **reject**（ユーザー未拘束は別経路として残ってよい）
+- migration が `GRANT EXECUTE TO service_role` のみ、と書いて `ALTER DEFAULT PRIVILEGES … FUNCTIONS … authenticated|anon` を未確認 → **uncertain**（accept 不可）
+- Edge の管理者ガードだけを根拠に、同名 RPC の PostgREST 直叩きに触れていない → **uncertain**
+- 空配列や null の意味を DB 関数まで読まず「全員対象になる」と断定 → **uncertain**
+
 ## パッチ検証（suggest-patches 用）
 
 patch-verifier は次を JSON で返す:
@@ -23,3 +30,4 @@ patch-verifier は次を JSON で返す:
 - `REVIEWED_PATHS`, 実行したテスト
 
 並列で **adversarial researcher**（diff のみスコープ）に「この変更で新たに開いた経路、または finding の別経路が残るか」を聞く。1 回だけ revision ラウンド可。
+

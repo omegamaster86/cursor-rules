@@ -28,6 +28,7 @@ argument-hint: "ジョブ（codebase / repository / changes / diff / patches）�
 
 ## 共通
 
+- 調査レンズ: [references/lenses/README.md](references/lenses/README.md)（Supabase / Edge の差分では必須）
 - Task の `model`: [references/task-models.md](references/task-models.md)（`forge-models.mdc` の role 行で上書き）
 - Lead: [references/security-lead.md](references/security-lead.md)
 - 成果物: `.cursor/CODE-SECURITY-<UTC>/` — [references/artifacts.md](references/artifacts.md)

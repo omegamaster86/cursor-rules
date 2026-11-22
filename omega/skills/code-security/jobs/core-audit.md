@@ -17,7 +17,8 @@ authorized scope を広げない。現リビジョンのソースのみ（必要
 プロンプト要旨（Task に渡す）:
 
 - 静的解析。SQLi、XSS、認証/認可欠落、IDOR、パストラバーサル、コマンド注入、SSRF、不安全デシリアライズ、秘密の埋め込み等
-- 各 finding: CWE、severity、confidence、根拠行、反証、修正案
+- Supabase / Edge が scope にあるときは [../references/lenses/README.md](../references/lenses/README.md) の必須レンズを一巡する。候補が無いレンズは `lens_coverage.json` に理由を書く
+- 各 finding: CWE、severity、confidence、`lens`、根拠行、反証、修正案。1 finding = 1 攻撃経路
 - 返却: JSON `{ "findings": [], "fully_reviewed_files": [], "resolved_questions": [] }`
 
 ### 3. Threat model
@@ -26,7 +27,7 @@ authorized scope を広げない。現リビジョンのソースのみ（必要
 
 ### 4. Focused investigators（Task 並列、allowance 内）
 
-パケットごとに 1 Task。切り口は Forward / Backward / AuthZ / Open。baseline と重複する finding は後でマージ（別 CWE・別経路は分離）。
+パケットごとに 1 Task。切り口は Forward / Backward / AuthZ / Open。baseline と重複する finding は後でマージ（別 CWE・別経路は分離）。AuthZ パケットには `admin-rpc` / `pg-grant` / `rpc-idor` を含めてよい。
 
 ### 5. カバレッジ
 
@@ -44,3 +45,5 @@ authorized scope を広げない。現リビジョンのソースのみ（必要
 ## Diff 限定モード
 
 [scan-diff.md](scan-diff.md) から呼ばれたときは、変更ファイルを中心に読み、**変更が関与しない既存バグ**は `preExisting` として coverage に記録し finding には載せない。
+
+

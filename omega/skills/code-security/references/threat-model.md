@@ -25,5 +25,6 @@ Investigator の切り口（codex-security 流）:
 
 - **Forward** — 入力から敏感操作へ
 - **Backward** — 敏感操作から呼び出し元へ
-- **AuthZ / ロジック** — 所有者・テナント・状態遷移
+- **AuthZ / ロジック** — 所有者・テナント・状態遷移。Supabase では [lenses/supabase-postgrest.md](lenses/supabase-postgrest.md) の `admin-rpc` / `rpc-idor` / `pg-grant`
 - **Open** — 上記に当てはまらない有力なリード
+

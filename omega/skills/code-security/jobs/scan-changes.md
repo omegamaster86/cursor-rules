@@ -28,10 +28,11 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 3. コスト確認（scan-codebase 同様）
 4. `<scanRoot>/.cursor/CODE-SECURITY-<ts>/`（[../references/artifacts.md](../references/artifacts.md)）、stamp: `job` `scan-changes`、`mode` `changes` または `commit`
 5. 変更ファイルをグループ化（~25 ファイル/グループ、high で並列増）
-6. **Researchers** — 変更行からデータフローを追う。変更が原因でない既存バグは `preExisting`
-7. **Verifier panel** — scan-codebase 同様
+6. **Researchers** — 変更行からデータフローを追う。変更が原因でない既存バグは `preExisting`。加えて [../references/lenses/README.md](../references/lenses/README.md) の必須レンズを適用し、候補ゼロのレンズは成果物ディレクトリの `lens_coverage.json` に理由を書く。1 候補 = 1 攻撃経路
+7. **Verifier panel** — scan-codebase 同様。Critical / High は panel 完了まで `verified` にしない
 8. レポート・redact・cleanup
 
 ## キックオフ文に含めるもの
 
 ベース ref、変更ファイル数、effort、パネル完了まで離席可、checkout を変えないでほしい旨。
+

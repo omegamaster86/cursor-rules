@@ -25,7 +25,7 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 3. **成果物ディレクトリ** — [../references/artifacts.md](../references/artifacts.md)。stamp の `job`: `scan-codebase`, `mode`: `scan`
 4. **Inventory Task**（low 以外）— トップレベルディレクトリをコンポーネントに分割。未割当ディレクトリがあれば coverage に記録
 5. **Threat model** — [../references/threat-model.md](../references/threat-model.md)
-6. **Researchers** — 並列 Task。各 scope で脆弱性 candidate を JSON 配列で返す（id はまだ仮 `C1` 可）
+6. **Researchers** — 並列 Task。各 scope で脆弱性 candidate を JSON 配列で返す（id はまだ仮 `C1` 可）。scope に Supabase / Edge が含まれるときは [../references/lenses/README.md](../references/lenses/README.md) をプロンプトに含め、`lens` を付ける。`lens_coverage.json` を成果物ディレクトリに書く
 7. **Verifier panel** — finding ごとに 3 verifier Task。2/3 accept で `F<n>` を採番し verified
 8. **Redact** — レポート生成前に秘密値を `[REDACTED]` に置換
 9. **RESULTS.md / findings.jsonl** — [../references/report-format.md](../references/report-format.md)。`verification.status`: researchers 全員返却かつ panel 完了なら `verified`、否则 `unverified` と理由
@@ -34,3 +34,4 @@ Task の `model`: [../references/task-models.md](../references/task-models.md)�
 ## ユーザーへの締め
 
 finding 数、レポートパス、verified か、fixes 希望の質問（finding があるときのみ）。
+
