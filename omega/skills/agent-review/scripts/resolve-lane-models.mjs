@@ -11,15 +11,15 @@ import { resolve, join } from 'node:path'
 
 const LANES = {
   A: {
-    role: 'review orchestrator grok',
+    role: 'review orchestrator opus',
     subagent_type: 'generalPurpose',
   },
   B: {
-    role: 'review orchestrator sonnet correctness',
+    role: 'review orchestrator gemini correctness',
     subagent_type: 'generalPurpose',
   },
   C: {
-    role: 'review orchestrator sonnet quality',
+    role: 'review orchestrator gemini quality',
     subagent_type: 'generalPurpose',
   },
   D: {

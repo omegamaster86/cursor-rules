@@ -76,9 +76,9 @@ reflect judgment, divergent, synthesizer: claude-opus-5-5-medium
 multi-agent-candidates runners: claude-opus-5-5-medium, claude-opus-5-5-medium, grok-4.7-medium
 swarm workers: grok-4.7-medium
 architect runners: claude-opus-5-5-medium, grok-4.7-medium
-review orchestrator grok: gemini-4-carbon-medium
-review orchestrator sonnet correctness: claude-opus-5-5-medium
-review orchestrator sonnet quality: claude-opus-5-5-medium
+review orchestrator opus: claude-opus-5-5-medium
+review orchestrator gemini correctness: gemini-4-carbon-medium
+review orchestrator gemini quality: gemini-4-carbon-medium
 review orchestrator security: claude-opus-5-5-medium
 review orchestrator blast radius: claude-opus-5-5-medium
 code security workers: grok-4.7-medium

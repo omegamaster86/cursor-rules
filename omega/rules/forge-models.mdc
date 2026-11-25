@@ -39,9 +39,9 @@ reflect tooling: claude-opus-5-5-medium
 reflect judgment, divergent, synthesizer: gemini-4-carbon-medium
 multi-agent-candidates runners: gemini-4-carbon-medium, gemini-4-carbon-medium, claude-opus-5-5-medium
 architect runners: gemini-4-carbon-medium, claude-opus-5-5-medium
-review orchestrator grok: gemini-4-carbon-medium
-review orchestrator sonnet correctness: gemini-4-carbon-medium
-review orchestrator sonnet quality: gemini-4-carbon-medium
+review orchestrator opus: claude-opus-5-5-medium
+review orchestrator gemini correctness: gemini-4-carbon-medium
+review orchestrator gemini quality: gemini-4-carbon-medium
 review orchestrator security: gemini-4-carbon-medium
 review orchestrator blast radius: gemini-4-carbon-medium
 swarm workers: claude-opus-5-5-medium

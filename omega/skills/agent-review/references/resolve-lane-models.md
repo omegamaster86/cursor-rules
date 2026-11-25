@@ -36,9 +36,9 @@ JSON の `lanes.A` … `lanes.E` それぞれ:
 
 | レーン | `forge-models.mdc` ロール行 | `subagent_type` |
 |--------|-----------------------------|-----------------|
-| A | `review orchestrator grok` | `generalPurpose` |
-| B | `review orchestrator sonnet correctness` | `generalPurpose` |
-| C | `review orchestrator sonnet quality` | `generalPurpose` |
+| A | `review orchestrator opus` | `generalPurpose` |
+| B | `review orchestrator gemini correctness` | `generalPurpose` |
+| C | `review orchestrator gemini quality` | `generalPurpose` |
 | D | `review orchestrator security` | `security-review` |
 | E | `review orchestrator blast radius` | `generalPurpose` |
 
@@ -51,5 +51,3 @@ JSON の `lanes.A` … `lanes.E` それぞれ:
 ## 6. 検証
 
 起動ログ・チャット `## Inputs` の model と、直前のスクリプト出力が一致していること。不一致なら **起動をやり直す**（再レビューはユーザー指示または `/agent-review` 再実行）。
-
-

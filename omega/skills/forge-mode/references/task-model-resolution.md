@@ -7,7 +7,7 @@ forge 系のすべての `Task` spawn は **`.cursor/rules/forge-models.mdc` を
 ## 手順
 
 1. spawn 前に `forge-models.mdc` を読む。
-2. 対象 **ロール行**を探す（例: `bug-fix:`, `review orchestrator grok:`）。`feature, refactoring:` のように複数ロールが1行のときは、いずれかのロール名でマッチする。
+2. 対象 **ロール行**を探す（例: `bug-fix:`, `review orchestrator opus:`）。`feature, refactoring:` のように複数ロールが1行のときは、いずれかのロール名でマッチする。
 3. **行が無い** → Task の `model` を**省略**（親チャットモデル）。
 4. **値が `inherit`** → 同上（`model` 省略）。
 5. **値が slug** → その slug を Task に渡す。カンマ区切りリスト（`multi-agent-candidates runners:` 等）は左から順に各 spawn に1 slug。spawn 数が slug 数より多いとき、余りは `model` 省略（親チャットモデル）。
