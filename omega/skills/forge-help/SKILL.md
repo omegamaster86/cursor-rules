@@ -56,6 +56,7 @@ disable-model-invocation: true
 | 何を・なぜ・用語（Align） | [`/plan-interview`](../plan-interview/SKILL.md) |
 | ゴールを自分の言葉で言い直す（Align 補助） | [`/in-your-own-words`](../in-your-own-words/SKILL.md) |
 | 着手前にタスクを研ぐ | [`/sharpen`](../sharpen/SKILL.md) |
+| 作っているものの専門家の言葉を借りて説明を書き直す | [`/reframe`](../reframe/SKILL.md) |
 | コードの動き・配置 | [`/how`](../how/SKILL.md) |
 | 設計 rationale・経緯 | [`/why`](../why/SKILL.md) |
 | 最近のチャットから文脈 | [`/recall`](../recall/SKILL.md) |

@@ -18,6 +18,8 @@ disable-model-invocation: true
 
 デフォルトの形は下記 step 5。`~/.cursor/rules/forge-models.mdc` または PJ の `.cursor/rules/forge-models.mdc` があれば `# budget` 行と各ロール値を現状として読む。step 5 に無いロール行（例: 廃止された `how critics`）は落とす。**ロール行を書かないロールは Task spawn 時に親チャットモデル**（[task-model-resolution.md](../forge-mode/references/task-model-resolution.md)）。
 
+古い既定は Gemini 席に `gemini-4-carbon-*`、その次に `gemini-4-neon-high` を書いていた。`gemini-4-carbon-*` と、`gemini-4-neon-*` 以外の `gemini-4-*` は同 effort の `gemini-4-neon-*` に置き換える（`medium` はそのまま `gemini-4-neon-medium`）。パネル系ロール（`multi-agent-candidates runners`、`architect runners`、`review orchestrator gemini *`、`code security verifier panel`）に残る `gemini-4-neon-high` だけは古い既定なので、そのロールの budget target の `gemini-4-neon-*` に置き換える。それ以外の `gemini-4-neon-*` はユーザーの選択として残す。置き換えた行をユーザーに伝える。
+
 ### 3. Budget、マップ、確認
 
 **(a) budget を聞く。** AskQuestion を優先。次の 4 択（ラベルはそのまま）。既存 budget があれば名指す。ルールが無いときは `large` がスキルデフォルトと同じと伝える。
@@ -27,7 +29,7 @@ disable-model-invocation: true
 - `medium — high reasoning`
 - `small — medium reasoning`
 
-**(b) 適用。** スキルデフォルトから作業表を構築。再実行時はユーザーが変えたロールはファミリ・リスト・`inherit` を保持。`unlimited` / `large` / `medium` / `small` は実 slug の effort を `max` / `xhigh` / `high` / `medium` に下げる（`max` > `xhigh` > `high` > `medium` > `low`、末尾 `fast` の前のトークンが effort）。結果が検出集合に無ければ同ファミリで target 以下の最高 effort、なければ要選択。`inherit` は変えない。Grok 系は effort の上限が `xhigh` のことが多い。
+**(b) 適用。** スキルデフォルトから作業表を構築。再実行時はユーザーが変えたロールはファミリ・リスト・`inherit` を保持。`unlimited` / `large` / `medium` / `small` は実 slug の effort を `max` / `xhigh` / `high` / `medium` に下げる（`max` > `xhigh` > `high` > `medium` > `low`、末尾 `fast` の前のトークンが effort）。結果が検出集合に無ければ同ファミリで target 以下の最高 effort、なければ要選択。`inherit` は変えない。Grok 系は effort の上限が `xhigh` のことが多い。Gemini 4 Neon は `low` から `xhigh` まであり、`max` と `fast` は無い。`high` で頭打ちにしない。`unlimited` / `large` は `gemini-4-neon-xhigh`、`medium` は `gemini-4-neon-high`、`small` は `gemini-4-neon-medium`。検出集合に無ければ target 以下の最高 Neon effort を使う。
 
 **(c) ロール一覧を見せて確認。** 検出外 slug は要選択とマーク。step 2 で落とした行も列挙。そのままかロール単位で変更かを聞く。リスト型ロール（`multi-agent-candidates runners`、`architect runners`、`review orchestrator *`）はエントリ数＝fan-out 数。`swarm workers` は各ワーカーのデフォルト（レース arm は brief で別指定可）。
 
@@ -57,7 +59,7 @@ alwaysApply: true
 - `claude-sonnet-5-5-high`
 - `composer-2.5`
 - `composer-2.5-fast`
-- `gemini-4-carbon-medium`
+- `gemini-4-neon-medium`
 - `grok-4.7-medium`
 - `muse-wonder-1.0-medium`
 
@@ -77,12 +79,12 @@ multi-agent-candidates runners: claude-opus-5-5-medium, claude-opus-5-5-medium, 
 swarm workers: grok-4.7-medium
 architect runners: claude-opus-5-5-medium, grok-4.7-medium
 review orchestrator opus: claude-opus-5-5-medium
-review orchestrator gemini correctness: gemini-4-carbon-medium
-review orchestrator gemini quality: gemini-4-carbon-medium
+review orchestrator gemini correctness: gemini-4-neon-medium
+review orchestrator gemini quality: gemini-4-neon-medium
 review orchestrator security: claude-opus-5-5-medium
 review orchestrator blast radius: claude-opus-5-5-medium
 code security workers: grok-4.7-medium
-code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-carbon-medium
+code security verifier panel: grok-4.7-medium, claude-sonnet-5-5-high, gemini-4-neon-medium
 ```
 
 ### 6. 確認

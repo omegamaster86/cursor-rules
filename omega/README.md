@@ -243,6 +243,7 @@ Dashboard または Agents Window から環境を再 Build する。
 | 軽い修正・質問 | 通常チャット（`global.mdc` のみ） |
 | 本格的な実装・調査 | `/forge-mode`（プロダクト方向が未確定なら先に `/plan-interview`） |
 | 計画・用語のすり合わせ | `/plan-interview` |
+| 呼び方が定まらない | `/reframe` |
 | ファイル調査 | `/file-brief` |
 | 流用チェック | `/reuse-check` |
 | リファクタ・削減チェック | `/refactor-check` |
@@ -294,4 +295,5 @@ https://github.com/mattpocock/skills/tree/main/skills
 https://github.com/cursor/plugins/tree/main/pstack 
 https://github.com/openai/plugins/tree/main/plugins
 https://github.com/nanaism/yomiyasu
+
 
