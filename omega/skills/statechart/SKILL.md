@@ -16,7 +16,7 @@ repo 外の scratch で作業する。TLA+ spec と config を書き、次を実
 <skill dir>/scripts/statechart SPEC.tla [--config FILE] [--view FILE] [--out DIR]
 ```
 
-`scripts/statechart.ts` は TypeScript なので、TypeScript を実行できるランタイムで動かす。
+`scripts/statechart.ts` は TypeScript なので、TypeScript を実行できるランタイムで動かす。`scripts/statechart` はランタイムを選ぶ POSIX シェルスクリプト。ネイティブ Windows では Node 22.18〜22.x、または Node 23.6 以降で `node --disable-warning=ExperimentalWarning <skill dir>/scripts/statechart.ts` を実行する。
 
 初回実行は mise で TLC と Java を入れ、ネットワークが要る。
 

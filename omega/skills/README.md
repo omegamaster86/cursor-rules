@@ -47,6 +47,7 @@
 | `maintain-formal-verification-skill` | コード変更後に形式的検証をコードと再同期 |
 | `typescript-patterns` | TS 型パターン参照（`web-coding-standards` / 原則と併用） |
 | `sharpen` | 着手前に専門家視点・本当のゴール・指示の過不足を研ぐ（手動専用） |
+| `reframe` | 専門家の用語と隣接分野の言い方で説明を書き直す（手動専用。引用は開いて確認） |
 | `in-your-own-words` | ユーザーのゴールと問題を自分の言葉で言い直す（Align 補助・手動専用） |
 | `teach` | 学習ワークスペース（lessons）または変更・サブシステムの説明（`how` + `why`） |
 | `automate-me` | チャット履歴と質問から personal `-mode` スキルを起草・更新 |
@@ -158,6 +159,7 @@ Investigation / Bug fix / Perf / Hillclimb / Runtime・Trace forensics / Feature
 | `yomiyasu` | Cursor 抜粋版。明示依頼時のみ（上表） |
 | `code-security` | 自己完結スキャン手順。明示依頼時のみ（上表） |
 | `agent-review` | `security-review` サブエージェント前提。`/agent-review` で明示起動 |
+
 
 
 
