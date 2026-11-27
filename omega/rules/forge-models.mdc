@@ -21,7 +21,7 @@ alwaysApply: true
 - `claude-sonnet-5-5-high`
 - `composer-2.5`
 - `composer-2.5-fast`
-- `gemini-4-carbon-medium`
+- `gemini-4-neon-medium`
 - `grok-4.7-medium`
 - `muse-wonder-1.0-medium`
 
@@ -29,24 +29,24 @@ feature, refactoring: claude-opus-5-5-medium
 bug-fix: claude-opus-5-5-medium
 perf-issue: claude-opus-5-5-medium
 hillclimb: claude-opus-5-5-medium
-judgment and prose: gemini-4-carbon-medium
-hardest tasks: gemini-4-carbon-medium
+judgment and prose: gemini-4-neon-medium
+hardest tasks: gemini-4-neon-medium
 how explorer: claude-opus-5-5-medium
-how explainer: gemini-4-carbon-medium
+how explainer: gemini-4-neon-medium
 why investigators: claude-opus-5-5-medium
-why synthesizer: gemini-4-carbon-medium
+why synthesizer: gemini-4-neon-medium
 reflect tooling: claude-opus-5-5-medium
-reflect judgment, divergent, synthesizer: gemini-4-carbon-medium
-multi-agent-candidates runners: gemini-4-carbon-medium, gemini-4-carbon-medium, claude-opus-5-5-medium
-architect runners: gemini-4-carbon-medium, claude-opus-5-5-medium
+reflect judgment, divergent, synthesizer: gemini-4-neon-medium
+multi-agent-candidates runners: gemini-4-neon-medium, gemini-4-neon-medium, claude-opus-5-5-medium
+architect runners: gemini-4-neon-medium, claude-opus-5-5-medium
 review orchestrator opus: claude-opus-5-5-medium
-review orchestrator gemini correctness: gemini-4-carbon-medium
-review orchestrator gemini quality: gemini-4-carbon-medium
-review orchestrator security: gemini-4-carbon-medium
-review orchestrator blast radius: gemini-4-carbon-medium
+review orchestrator gemini correctness: gemini-4-neon-medium
+review orchestrator gemini quality: gemini-4-neon-medium
+review orchestrator security: gemini-4-neon-medium
+review orchestrator blast radius: gemini-4-neon-medium
 swarm workers: claude-opus-5-5-medium
 code security workers: claude-opus-5-5-medium
-code security verifier panel: claude-opus-5-5-medium, claude-sonnet-5-5-high, gemini-4-carbon-medium
-code-simplifier: gemini-4-carbon-medium
+code security verifier panel: claude-opus-5-5-medium, claude-sonnet-5-5-high, gemini-4-neon-medium
+code-simplifier: gemini-4-neon-medium
 
 # 並列設計: multi-agent-candidates / architect runners。カバレッジ・レース: swarm workers。code-security: skills/code-security/references/task-models.md。code-simplifier スキル: skills/code-simplifier/references/task-models.md。agent-review: resolve-lane-models.mjs（上記 review orchestrator * 行）。
